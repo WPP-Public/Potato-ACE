@@ -11,5 +11,6 @@
     "url": "git@gitlab.com:potato/own-things/potato-material.git"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "private": true
 }
