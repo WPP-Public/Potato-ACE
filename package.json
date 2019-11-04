@@ -1,16 +1,24 @@
 {
-  "name": "potato-material",
+  "name": "potato-a11y",
   "version": "0.0.1",
-  "description": "Internal component library for Google Material Design standard.",
+  "description": "Accessible component library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html",
+    "sass-lint": "stylelint \"src/sass/**/*.scss\""
   },
   "repository": {
     "type": "git",
     "url": "git@gitlab.com:potato/own-things/potato-material.git"
   },
-  "author": "",
+  "author": "Ahmed Abuelgasim",
   "license": "ISC",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "sass": "^1.23.3",
+    "stylelint": "^11.1.1",
+    "stylelint-config-standard": "^19.0.0",
+    "stylelint-order": "^3.1.1"
+  }
 }
