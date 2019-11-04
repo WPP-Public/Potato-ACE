@@ -42,7 +42,7 @@ export class Listbox {
     // EVENT LISTENERS
     this.elem.addEventListener('click', this.clickHandler);
     this.elem.addEventListener('keydown', this.keydownHandler);
-    window.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler);
+    this.elem.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler);
 
 
     this.updateList();
@@ -59,6 +59,10 @@ export class Listbox {
   // if the list options are dynamically changed
   updateList() {
     this.options = this.elem.querySelectorAll('li');
+    if (this.options.length === 0) {
+      return;
+    }
+
     this.options.forEach((option, i) => {
       option.id = `${this.instanceId}-option${i + 1}`;
       option.setAttribute('role', 'option');
