@@ -4,7 +4,7 @@ import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
 // CONSTANTS
 export const CONSTS = {
   ELEM: `a11y-listbox`,
-  UPDATE_EVENT: `updateA11yListboxOptions`,
+  UPDATE_OPTIONS_EVENT: `updateA11yListboxOptions`,
 }
 
 
@@ -31,20 +31,21 @@ export class Listbox {
 
 
     // BIND 'THIS'
-    this.clickHandler = this.clickHandler.bind(this);
-    this.keydownHandler = this.keydownHandler.bind(this);
-    this.updateListOptions = this.updateListOptions.bind(this);
+    this.updateList = this.updateList.bind(this);
     this.setOption = this.setOption.bind(this);
     this.setPrevOrNextOption = this.setPrevOrNextOption.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.keydownHandler = this.keydownHandler.bind(this);
+    this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
 
 
     // EVENT LISTENERS
     this.elem.addEventListener('click', this.clickHandler);
     this.elem.addEventListener('keydown', this.keydownHandler);
-    window.addEventListener(`${CONSTS.UPDATE_EVENT}`, this.updateListOptions);
+    window.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler);
 
 
-    this.updateListOptions();
+    this.updateList();
   }
 
 
@@ -56,7 +57,7 @@ export class Listbox {
 
   // Update the list and set the first option as selected
   // if the list options are dynamically changed
-  updateListOptions() {
+  updateList() {
     this.options = this.elem.querySelectorAll('li');
     this.options.forEach((option, i) => {
       option.id = `${this.instanceId}-option${i + 1}`;
@@ -90,6 +91,30 @@ export class Listbox {
     this.elem.setAttribute('aria-activedescendant', selectedOption.id);
 
     return;
+  }
+
+
+  // Sets this.activeOptionIndex based on the direction
+  // and wraps around if you are at the top or bottom
+  setPrevOrNextOption(direction) {
+    // If previous option selected
+    if (direction === 'prev') {
+      if (this.activeOptionIndex === 0) {
+        this.activeOptionIndex = this.options.length - 1;
+      } else {
+        this.activeOptionIndex--;
+      }
+      this.setOption();
+      return;
+    }
+
+    // If next option selected
+    if (this.activeOptionIndex === this.options.length - 1) {
+      this.activeOptionIndex = 0;
+    } else {
+      this.activeOptionIndex++;
+    }
+    this.setOption();
   }
 
 
@@ -140,26 +165,10 @@ export class Listbox {
   }
 
 
-  // Sets this.activeOptionIndex based on the direction
-  // and wraps around if you are at the top or bottom
-  setPrevOrNextOption(direction) {
-    // If previous option selected
-    if (direction === 'prev') {
-      if (this.activeOptionIndex === 0) {
-        this.activeOptionIndex = this.options.length - 1;
-      } else {
-        this.activeOptionIndex--;
-      }
-      this.setOption();
-      return;
+  // Update options event handler
+  updateOptionsHandler(e) {
+    if (e.detail.id === this.elem.id) {
+      this.updateList();
     }
-
-    // If next option selected
-    if (this.activeOptionIndex === this.options.length - 1) {
-      this.activeOptionIndex = 0;
-    } else {
-      this.activeOptionIndex++;
-    }
-    this.setOption();
   }
 }
