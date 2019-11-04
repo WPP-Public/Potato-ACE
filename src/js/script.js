@@ -1,7 +1,9 @@
+import { Listbox as A11yListbox, CONSTS as A11Y_LISTBOX_CONSTS } from './components/listbox/listbox';
+
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM Content Loaded');
+  document.querySelectorAll(`[${A11Y_LISTBOX_CONSTS.ELEM}]`).forEach(A11yListbox.attachTo);
 });
 
-window.onload = () => {
-  console.log('page loaded');
-}
+// window.onload = () => {
+//   console.log('page loaded');
+// }
