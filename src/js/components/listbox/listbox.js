@@ -1,11 +1,9 @@
 import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
 
-
 // CONSTANTS
 export const CONSTS = {
   UPDATE_OPTIONS_EVENT: `a11yUpdateListboxOptions`,
 }
-
 
 // CLASS
 export class Listbox {
@@ -17,17 +15,14 @@ export class Listbox {
 
     // GET DOM ELEMENTS
 
-
     // GET DOM DATA
     this.instanceId = elem.id;
     // this.multiSelect = this.elem.getAttribute('aria-multiselectable') ? true : false;
-
 
     // SET DOM DATA
     // Set list attrs
     this.elem.setAttribute('tabindex', '0');
     this.elem.setAttribute('role', 'listbox');
-
 
     // BIND 'THIS'
     this.updateList = this.updateList.bind(this);
@@ -37,12 +32,10 @@ export class Listbox {
     this.keydownHandler = this.keydownHandler.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
 
-
     // EVENT LISTENERS
     this.elem.addEventListener('click', this.clickHandler);
     this.elem.addEventListener('keydown', this.keydownHandler);
     this.elem.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler);
-
 
     this.updateList();
   }
@@ -92,7 +85,6 @@ export class Listbox {
 
     // Set activedescendant of listbox to id of selected option
     this.elem.setAttribute('aria-activedescendant', selectedOption.id);
-
     return;
   }
 
