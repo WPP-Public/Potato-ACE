@@ -1,7 +1,7 @@
 import { Listbox as A11yListbox, CONSTS as A11Y_LISTBOX_CONSTS } from './components/listbox/listbox';
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll(`[${A11Y_LISTBOX_CONSTS.ELEM}]`).forEach(A11yListbox.attachTo);
+  document.querySelectorAll('[a11y-listbox]').forEach(A11yListbox.attachTo);
 
   document.getElementById('dummy-button').addEventListener('click', clickHandler);
 });
@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
 // window.onload = () => {
 //   console.log('page loaded');
 // }
+
+
 
 
 // Just for testing

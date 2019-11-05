@@ -3,8 +3,7 @@ import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
 
 // CONSTANTS
 export const CONSTS = {
-  ELEM: `a11y-listbox`,
-  UPDATE_OPTIONS_EVENT: `updateA11yListboxOptions`,
+  UPDATE_OPTIONS_EVENT: `a11yUpdateListboxOptions`,
 }
 
 
