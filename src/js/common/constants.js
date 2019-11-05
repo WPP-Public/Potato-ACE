@@ -1,26 +1,34 @@
 export const KEYBOARD_KEYS = {
+  'A': {
+    'CODE': 65,
+    'KEY': 'a',
+  },
   'DOWN': {
     'CODE': 40,
     'KEY': 'ArrowDown',
   },
-  'ESCAPE': {
-    'CODE': 72,
-    'KEY': 'Escape',
+  'END': {
+    'CODE': 35,
+    'KEY': 'End',
   },
   'ENTER': {
     'CODE': 13,
     'KEY': 'Enter',
   },
-  'UP': {
-    'CODE': 38,
-    'KEY': 'ArrowUp',
+  'ESCAPE': {
+    'CODE': 72,
+    'KEY': 'Escape',
   },
   'HOME': {
     'CODE': 36,
     'KEY': 'Home',
   },
-  'END': {
-    'CODE': 35,
-    'KEY': 'End',
+  'SPACE': {
+    'CODE': 32,
+    'KEY': ' ',
+  },
+  'UP': {
+    'CODE': 38,
+    'KEY': 'ArrowUp',
   },
 }
