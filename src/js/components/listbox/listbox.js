@@ -24,7 +24,7 @@ export class Listbox {
 
     // GET DOM DATA
     this.instanceId = elem.id;
-    this.multiselectable = this.elem.getAttribute('aria-multiselectable') ? true : false;
+    this.multiselectable = elem.getAttribute('aria-multiselectable') ? true : false;
 
     // SET DOM DATA
     // Set list attrs
@@ -63,7 +63,6 @@ export class Listbox {
   // Update the list and set the first option as active
   // if the list options are dynamically changed
   initialiseList() {
-    // debugger;
     this.options = this.elem.querySelectorAll('li') ||
       this.elem.querySelectorAll('role="option"');
 
@@ -302,12 +301,13 @@ export class Listbox {
       });
   }
 
+  // select all options from last selected option to active option
   selectContiguousOptions() {
-    let startIndex, endIndex;
     if (this.lastSelectedOptionIndex === null) {
       return;
     }
 
+    let startIndex, endIndex;
     if (this.lastSelectedOptionIndex < this.activeOptionIndex) {
       startIndex = this.lastSelectedOptionIndex + 1;
       endIndex = this.activeOptionIndex;
