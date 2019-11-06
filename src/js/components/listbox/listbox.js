@@ -40,7 +40,7 @@ export class Listbox {
     this.toggleOptionState = this.toggleOptionState.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
     this.updateActiveOptionIndex = this.updateActiveOptionIndex.bind(this);
-    this.scrollActiveOptionIntoView = this.scrollActiveOptionIntoView.bind(this);
+    this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
 
@@ -49,7 +49,7 @@ export class Listbox {
     this.elem.addEventListener('blur', this.focusHandler, {passive: true});
     this.elem.addEventListener('click', this.clickHandler, {passive: true});
     this.elem.addEventListener('keydown', this.keydownHandler);
-    this.elem.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler);
+    this.elem.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, {passive: true});
 
     this.initialiseList();
   }
@@ -60,13 +60,14 @@ export class Listbox {
     return new Listbox(elem);
   }
 
+
   // Update the list and set the first option as active
   // if the list options are dynamically changed
   initialiseList() {
     this.options = this.elem.querySelectorAll('li') ||
       this.elem.querySelectorAll('role="option"');
 
-    if (!this.options) {
+    if (this.options.length === 0) {
       return;
     }
 
@@ -82,7 +83,9 @@ export class Listbox {
     });
 
     if (!this.multiselectable) {
+      this.lastSelectedOptionIndex = 0;
       this.makeOptionSelected(0);
+      this.scrollOptionIntoView(0);
     }
   }
 
@@ -114,6 +117,7 @@ export class Listbox {
 
     this.options[index].setAttribute('aria-selected', 'true');
     this.lastSelectedOptionIndex = index;
+
   }
 
 
@@ -172,7 +176,7 @@ export class Listbox {
   }
 
 
-  // Handle UP, DOWN, HOME and END keys
+  // Handle keystrokes
   keydownHandler(e) {
     const keyPressed = e.key || e.which || e.keyCode;
     // console.log(e.which);
@@ -190,7 +194,7 @@ export class Listbox {
 
       const newActiveItemIndex = this.updateActiveOptionIndex(direction);
       this.makeOptionActive(newActiveItemIndex);
-      this.scrollActiveOptionIntoView();
+      this.scrollOptionIntoView(this.activeOptionIndex);
 
       if (this.multiselectable && e.shiftKey) {
         this.toggleOptionState(this.activeOptionIndex);
@@ -211,7 +215,7 @@ export class Listbox {
       }
 
       this.makeOptionActive(0);
-      this.scrollActiveOptionIntoView();
+      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
@@ -227,7 +231,7 @@ export class Listbox {
       }
 
       this.makeOptionActive(this.options.length - 1);
-      this.scrollActiveOptionIntoView();
+      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
@@ -264,9 +268,8 @@ export class Listbox {
   }
 
 
-  // Updates this.activeOptionIndex based on the direction
+  // Calculates and returns index to move to based on the direction
   // and wraps around if you are at the top or bottom
-  // then runs setActiveAndSelectedOption to activate it
   updateActiveOptionIndex(direction) {
     let newIndex = null;
 
@@ -291,9 +294,9 @@ export class Listbox {
   }
 
 
-  // scroll active option into view
-  scrollActiveOptionIntoView() {
-    this.options[this.activeOptionIndex]
+  // Scroll option at given index into view
+  scrollOptionIntoView(index) {
+    this.options[index]
       .scrollIntoView({
         behaviour: 'smooth',
         block: 'nearest',
@@ -301,7 +304,8 @@ export class Listbox {
       });
   }
 
-  // select all options from last selected option to active option
+
+  // Select all options from last selected option to active option
   selectContiguousOptions() {
     if (this.lastSelectedOptionIndex === null) {
       return;
@@ -322,8 +326,8 @@ export class Listbox {
   }
 
 
-  // Event handler for updating list options custom event.
-  // Checks if id in event matched this class instance then updates list options
+  // Event handler for updating list options custom event
+  // Checks if id in event matches class instance then updates options
   updateOptionsHandler(e) {
     if (e.detail.id === this.elem.id) {
       this.activeOptionIndex = null;
