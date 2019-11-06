@@ -1,10 +1,14 @@
 import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
 
+
 // CONSTANTS
+const BASE_CONST = 'a11y-listbox';
 export const CONSTS = {
-  ELEM: `a11y-listbox`,
+  OPTION_INDEX: `${BASE_CONST}-option-index`,
+  ACTIVE_OPTION: `${BASE_CONST}-active-option`,
   UPDATE_OPTIONS_EVENT: `a11yupdateListOptionsboxOptions`,
 }
+
 
 // CLASS
 export class Listbox {
@@ -13,13 +17,14 @@ export class Listbox {
     this.elem = elem;
     this.options = null;
     this.activeOptionIndex = null;
+    this.lastSelectedOptionIndex = null;
     this.allSelected = false;
 
     // GET DOM ELEMENTS
 
     // GET DOM DATA
     this.instanceId = elem.id;
-    this.multiselect = this.elem.getAttribute('aria-multiselectable') ? true : false;
+    this.multiselectable = this.elem.getAttribute('aria-multiselectable') ? true : false;
 
     // SET DOM DATA
     // Set list attrs
@@ -27,20 +32,26 @@ export class Listbox {
     this.elem.setAttribute('role', 'listbox');
 
     // BIND 'THIS'
-    this.updateListOptions = this.updateListOptions.bind(this);
-    this.setActiveAndSelectedOption = this.setActiveAndSelectedOption.bind(this);
-    this.updateActiveOptionIndex = this.updateActiveOptionIndex.bind(this);
+    this.initialiseList = this.initialiseList.bind(this);
+    this.makeOptionActive = this.makeOptionActive.bind(this);
+    this.makeOptionSelected = this.makeOptionSelected.bind(this);
+    this.focusHandler = this.focusHandler.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.toggleOptionState = this.toggleOptionState.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
-    this.toggleActiveOptionAriaSelected = this.toggleActiveOptionAriaSelected.bind(this);
+    this.updateActiveOptionIndex = this.updateActiveOptionIndex.bind(this);
+    this.scrollActiveOptionIntoView = this.scrollActiveOptionIntoView.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
+    this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
 
     // EVENT LISTENERS
-    this.elem.addEventListener('click', this.clickHandler);
+    this.elem.addEventListener('focus', this.focusHandler, {passive: true});
+    this.elem.addEventListener('blur', this.focusHandler, {passive: true});
+    this.elem.addEventListener('click', this.clickHandler, {passive: true});
     this.elem.addEventListener('keydown', this.keydownHandler);
     this.elem.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler);
 
-    this.updateListOptions();
+    this.initialiseList();
   }
 
 
@@ -49,97 +60,116 @@ export class Listbox {
     return new Listbox(elem);
   }
 
-
-  // Update the list and set the first option as selected
+  // Update the list and set the first option as active
   // if the list options are dynamically changed
-  updateListOptions() {
-    this.options = this.elem.querySelectorAll('li');
-    if (this.options.length === 0) {
+  initialiseList() {
+    // debugger;
+    this.options = this.elem.querySelectorAll('li') ||
+      this.elem.querySelectorAll('role="option"');
+
+    if (!this.options) {
       return;
     }
 
+    // set options attributes and IDs
     this.options.forEach((option, i) => {
-      option.id = `${this.instanceId}-option${i + 1}`;
       option.setAttribute('role', 'option');
       option.setAttribute('aria-selected', 'false');
+      option.setAttribute(`${CONSTS.OPTION_INDEX}`, i);
+
+      if (!option.id) {
+        option.id = `${this.instanceId}-option${i + 1}`;
+      }
     });
-    this.activeOptionIndex = 0;
-    this.setActiveAndSelectedOption();
+
+    if (!this.multiselectable) {
+      this.makeOptionSelected(0);
+    }
   }
 
 
-  // Select the option at index this.activeOptionIndex
-  setActiveAndSelectedOption() {
-    // Deselect previously selected option
-    const previouslyActiveOption = this.elem.querySelector(`[${CONSTS.ELEM}-active-option]`);
-    if (previouslyActiveOption) {
-      previouslyActiveOption.removeAttribute(`${CONSTS.ELEM}-active-option`);
+  // Make option at given index active
+  makeOptionActive(index) {
+    // Deactivate previously active option
+    this.options[this.activeOptionIndex].removeAttribute(`${CONSTS.ACTIVE_OPTION}`);
+
+    // Activate new option
+    const optionToMakeActive = this.options[index];
+    optionToMakeActive.setAttribute(`${CONSTS.ACTIVE_OPTION}`, '')
+    this.elem.setAttribute('aria-activedescendant', optionToMakeActive.id);
+    this.activeOptionIndex = index;
+
+    if (!this.multiselectable) {
+      this.makeOptionSelected(index);
     }
-
-    // Select new option
-    const activeOption = this.options[this.activeOptionIndex];
-    activeOption.setAttribute(`${CONSTS.ELEM}-active-option`, '');
-
-
-    // Single select actions for selecting active option
-    if (!this.multiselect) {
-      if (previouslyActiveOption) {
-        previouslyActiveOption.setAttribute('aria-selected', 'false');
-      }
-      activeOption.setAttribute('aria-selected', 'true');
-    }
-
-    // Scroll selected option into view
-    activeOption.scrollIntoView({
-      behaviour: 'smooth',
-      block: 'nearest',
-      inline: 'start',
-    });
-
-    // Set activedescendant of listbox to id of selected option
-    this.elem.setAttribute('aria-activedescendant', activeOption.id);
-    return;
   }
 
 
-  // Updates this.activeOptionIndex based on the direction
-  // and wraps around if you are at the top or bottom
-  // then runs setActiveAndSelectedOption to activate it
-  updateActiveOptionIndex(direction) {
-    // If previous option selected
-    if (direction === 'prev') {
-      if (this.activeOptionIndex === 0) {
-        this.activeOptionIndex = this.options.length - 1;
-      } else {
-        this.activeOptionIndex--;
+  // Select option at given index
+  makeOptionSelected(index) {
+    // If single select list and an item is currently selected
+    if (!this.multiselectable && (this.lastSelectedOptionIndex !== null)) {
+      this.options[this.lastSelectedOptionIndex]
+        .setAttribute('aria-selected', 'false');
+    }
+
+    this.options[index].setAttribute('aria-selected', 'true');
+    this.lastSelectedOptionIndex = index;
+  }
+
+
+  // Handle focus and blur events on list
+  focusHandler(e) {
+    // If list focussed
+    if (e.type === 'focus') {
+      // set first option as active
+      if (this.activeOptionIndex === null) {
+        this.activeOptionIndex = 0;
       }
-      this.setActiveAndSelectedOption();
+      this.makeOptionActive(this.activeOptionIndex);
       return;
     }
 
-    // If next option selected
-    if (this.activeOptionIndex === this.options.length - 1) {
-      this.activeOptionIndex = 0;
-    } else {
-      this.activeOptionIndex++;
-    }
-    this.setActiveAndSelectedOption();
+    // If list blurred
+    this.options[this.activeOptionIndex].removeAttribute(`${CONSTS.ACTIVE_OPTION}`);
+    this.elem.removeAttribute('aria-activedescendant');
   }
 
 
   // Handle clicks on options
   clickHandler(e) {
     if (e.target.closest('[role="option"]')) {
-      // Get index of clicked option in parent
-      this.activeOptionIndex = [...e.target.parentElement.children]
-        .indexOf(e.target);
+      // get index of clicked option
+      const clickedOptionIndex = parseInt(
+        e.target.getAttribute(`${CONSTS.OPTION_INDEX}`),
+        10
+      );
 
-      if (this.multiselect) {
-        this.toggleActiveOptionAriaSelected();
+      // set clicked option to active
+      this.makeOptionActive(clickedOptionIndex);
+
+      if (!this.multiselectable) {
+        return;
       }
 
-      this.setActiveAndSelectedOption();
+      if (e.shiftKey) {
+        this.selectContiguousOptions();
+        return;
+      }
+
+      this.toggleOptionState(clickedOptionIndex);
     }
+  }
+
+
+  // Toggle the selected state of the option at given index
+  toggleOptionState(index) {
+    const option = this.options[index];
+    const newSelectedState = (option.getAttribute('aria-selected') === 'true')
+      ? false
+      : true;
+    option.setAttribute('aria-selected', newSelectedState);
+    this.lastSelectedOptionIndex = newSelectedState ? index : null;
   }
 
 
@@ -150,24 +180,23 @@ export class Listbox {
     // console.log(e.key);
 
     if (keyPressed === KEYS.UP.CODE ||
-        keyPressed === KEYS.UP.KEY) {
-      e.preventDefault();
-      this.updateActiveOptionIndex('prev');
-
-      if (this.multiselect && e.shiftKey) {
-        this.toggleActiveOptionAriaSelected();
-      }
-      return;
-    }
-
-    if (keyPressed === KEYS.DOWN.CODE ||
+        keyPressed === KEYS.UP.KEY ||
+        keyPressed === KEYS.DOWN.CODE ||
         keyPressed === KEYS.DOWN.KEY) {
       e.preventDefault();
-      this.updateActiveOptionIndex('next');
+      const direction =
+        keyPressed === KEYS.UP.CODE || keyPressed === KEYS.UP.KEY
+        ? 'prev'
+        : 'next';
 
-      if (this.multiselect && e.shiftKey) {
-        this.toggleActiveOptionAriaSelected();
+      const newActiveItemIndex = this.updateActiveOptionIndex(direction);
+      this.makeOptionActive(newActiveItemIndex);
+      this.scrollActiveOptionIntoView();
+
+      if (this.multiselectable && e.shiftKey) {
+        this.toggleOptionState(this.activeOptionIndex);
       }
+
       return;
     }
 
@@ -176,14 +205,14 @@ export class Listbox {
       e.preventDefault();
 
       // If Ctrl + Shift + HOME select active option and all options up until first
-      if (this.multiselect && (e.ctrlKey || e.metaKey) &&  e.shiftKey) {
+      if (this.multiselectable && (e.ctrlKey || e.metaKey) &&  e.shiftKey) {
         for (let i = this.activeOptionIndex; i >=0; i--) {
           this.options[i].setAttribute('aria-selected', 'true');
         }
       }
 
-      this.activeOptionIndex = 0;
-      this.setActiveAndSelectedOption();
+      this.makeOptionActive(0);
+      this.scrollActiveOptionIntoView();
       return;
     }
 
@@ -192,14 +221,14 @@ export class Listbox {
       e.preventDefault();
 
       // If Ctrl + Shift + END select active option and all options down until last
-      if (this.multiselect && (e.ctrlKey || e.metaKey) &&  e.shiftKey) {
+      if (this.multiselectable && (e.ctrlKey || e.metaKey) &&  e.shiftKey) {
         for (let i = this.activeOptionIndex; i < this.options.length; i++) {
           this.options[i].setAttribute('aria-selected', 'true');
         }
       }
 
-      this.activeOptionIndex = this.options.length - 1;
-      this.setActiveAndSelectedOption();
+      this.makeOptionActive(this.options.length - 1);
+      this.scrollActiveOptionIntoView();
       return;
     }
 
@@ -207,49 +236,89 @@ export class Listbox {
         keyPressed === KEYS.SPACE.KEY) {
       e.preventDefault();
 
-      if (!this.multiselect) {
+      if (!this.multiselectable) {
         return;
       }
 
-      // if (e.shiftKey) {
-      //   for (let i = this.activeOptionIndex; i >= 0; i--) {
-      //     if (this.options[i].getAttribute('aria-selected') === 'true') {
-      //       break;
-      //     }
-      //     this.options[i].setAttribute('aria-selected', 'true');
-      //   };
-      //   return;
-      // }
+      if (e.shiftKey) {
+        this.selectContiguousOptions();
+        return;
+      }
 
-      this.toggleActiveOptionAriaSelected();
-    }
-
-    if (!this.multiselect) {
+      this.toggleOptionState(this.activeOptionIndex);
       return;
     }
 
-    // Select or deselect all with 'Ctrl + A'
     if (keyPressed === KEYS.A.CODE ||
         keyPressed === KEYS.A.KEY) {
-      if (e.ctrlKey || e.metaKey) {
-        e.preventDefault();
-        this.options.forEach(option => {
-          option.setAttribute('aria-selected', !this.allSelected)
-        });
-        this.allSelected = !this.allSelected;
+      if (this.multiselectable) {
+        if (e.ctrlKey || e.metaKey) {
+          // Select or deselect all with 'Ctrl + A'
+          e.preventDefault();
+          this.options.forEach(option => {
+            option.setAttribute('aria-selected', !this.allSelected)
+          });
+          this.allSelected = !this.allSelected;
+        }
       }
     }
   }
 
 
-  // Select the previous and current options in multiselect listboxes
-  // (to be used when 'shift + <arrow>' pressed)
-  toggleActiveOptionAriaSelected() {
-    const activeOption = this.options[this.activeOptionIndex];
-    const newSelectedState = (activeOption.getAttribute('aria-selected') === 'true')
-      ? false
-      : true;
-    activeOption.setAttribute('aria-selected', newSelectedState);
+  // Updates this.activeOptionIndex based on the direction
+  // and wraps around if you are at the top or bottom
+  // then runs setActiveAndSelectedOption to activate it
+  updateActiveOptionIndex(direction) {
+    let newIndex = null;
+
+    // If previous option selected
+    if (direction === 'prev') {
+      // if at first
+      if (this.activeOptionIndex === 0) {
+        newIndex = this.options.length - 1;
+      } else {
+        newIndex = this.activeOptionIndex - 1;
+      }
+      return newIndex;
+    }
+
+    // If next option selected
+    if (this.activeOptionIndex === this.options.length - 1) {
+      newIndex = 0;
+    } else {
+      newIndex = this.activeOptionIndex + 1;
+    }
+    return newIndex;
+  }
+
+
+  // scroll active option into view
+  scrollActiveOptionIntoView() {
+    this.options[this.activeOptionIndex]
+      .scrollIntoView({
+        behaviour: 'smooth',
+        block: 'nearest',
+        inline: 'start',
+      });
+  }
+
+  selectContiguousOptions() {
+    let startIndex, endIndex;
+    if (this.lastSelectedOptionIndex === null) {
+      return;
+    }
+
+    if (this.lastSelectedOptionIndex < this.activeOptionIndex) {
+      startIndex = this.lastSelectedOptionIndex + 1;
+      endIndex = this.activeOptionIndex;
+    } else {
+      startIndex = this.activeOptionIndex;
+      endIndex = this.lastSelectedOptionIndex - 1;
+    }
+
+    for (let i = startIndex; i <= endIndex; i++) {
+      this.makeOptionSelected(i);
+    }
   }
 
 
@@ -257,7 +326,8 @@ export class Listbox {
   // Checks if id in event matched this class instance then updates list options
   updateOptionsHandler(e) {
     if (e.detail.id === this.elem.id) {
-      this.updateListOptions();
+      this.activeOptionIndex = null;
+      this.initialiseList();
     }
   }
 }

@@ -4,9 +4,30 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('[a11y-listbox]').forEach(A11yListbox.attachTo);
 
   // For testing only
-  document.getElementById('dummy-button')
+  document.getElementById('dummy-button1')
     .addEventListener('click', () => {
-      const selectId = 'select1';
+      const selectId = 'listbox1';
+      const listbox = document.getElementById(selectId);
+      listbox.innerHTML = `
+        <li>Starlord</li>
+        <li>Rocket</li>
+        <li>Drax</li>
+        <li>Gamora</li>
+        <li>Nebula</li>
+        <li>Groot</li>`
+
+      listbox.dispatchEvent(
+        new CustomEvent(
+          `${A11Y_LISTBOX_CONSTS.UPDATE_OPTIONS_EVENT}`,
+          { detail: { id: selectId } },
+        )
+      );
+    });
+
+  // For testing only
+  document.getElementById('dummy-button2')
+    .addEventListener('click', () => {
+      const selectId = 'listbox2';
       const listbox = document.getElementById(selectId);
       listbox.innerHTML = `
         <li>Starlord</li>

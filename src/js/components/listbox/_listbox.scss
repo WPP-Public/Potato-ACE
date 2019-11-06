@@ -6,19 +6,24 @@
   padding: 0;
 }
 
+[role="option"] {
+  // TODO: Add Autoprefixer
+  user-select: none;
 
-/* stylelint-disable */
-// DEBUG STYLES FOR VISUAL AID ONLY
-[a11y-listbox] {
-  border: 1px dashed #f00;
-  height: 100px;
-
-  li[aria-selected="true"] {
-    background: salmon;
+  &[aria-selected="true"] {
+    background: lightgray;
   }
 }
 
 [a11y-listbox-active-option] {
-  outline: 2px dotted dodgerblue;
+  outline: 2px dotted grey;
+}
+
+
+/* stylelint-disable */
+// DEBUG STYLES FOR VISUAL AID ONLY
+[a11y-listbox] {
+  border: 1px solid #000;
+  height: 100px;
 }
 /* stylelint-enable */
