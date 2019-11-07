@@ -7,41 +7,85 @@
   <title></title>
 </head>
 <body style="padding: 50px;">
+  <div style="display: flex; border: 1px solid #000;">
+    <div style="margin-right: 50px; width: 200px; padding: 10px; border: 1px solid #000;">
+      <div>Single-select Listbox</div>
+      <ul
+          a11y-listbox
+          id="listbox">
+        <li>Iron Man</li>
+        <li>Hulk</li>
+        <li>Captain America</li>
+        <li>Scarlet Witch</li>
+        <li>Black Panther</li>
+        <li>Black Widow</li>
+        <li>Ant-Man</li>
+        <li>Thor</li>
+        <li>Captain Marvel</li>
+        <li>Dr Strange</li>
+        <li>Spider-man</li>
+        <li>War Machine</li>
+      </ul>
+    </div>
 
-  <button id="dummy-button1">
-    Dynamically Populate List1
-  </button>
-  <button id="dummy-button2">
-    Dynamically Populate List2
-  </button>
-  <ul
-      a11y-listbox
-      id="listbox1">
-  </ul>
-  <br>
-  <ul
-      a11y-listbox
-      aria-multiselectable="true"
-      id="listbox2">
-    <li>Iron Man</li>
-    <li>Hulk</li>
-    <li>Captain America</li>
-    <li>Scarlet Witch</li>
-    <li>Black Panther</li>
-    <li>Black Widow</li>
-    <li>Ant-Man</li>
-    <li>Thor</li>
-    <li>Starlord</li>
-    <li>Rocket</li>
-    <li>Drax</li>
-    <li>Captain Marvel</li>
-    <li>Gamora</li>
-    <li>Nebula</li>
-    <li>Groot</li>
-    <li>Dr Strange</li>
-    <li>Spider-man</li>
-    <li>War Machine</li>
-  </ul>
+    <div style="margin-right:50px; width: 200px; padding: 10px; border: 1px solid #000;">
+      <div>Multi-selectable Listbox</div>
+      <ul
+          a11y-listbox
+          aria-multiselectable="true"
+          id="multi-selectable-listbox">
+        <li>Starlord</li>
+        <li>Rocket</li>
+        <li>Drax</li>
+        <li>Gamora</li>
+        <li>Nebula</li>
+        <li>Groot</li>
+      </ul>
+    </div>
+
+    <div style="margin-right:50px; width: 200px; padding: 10px; border: 1px solid #000;">
+      <div>Dynamical Listbox</div>
+      <ul
+          a11y-listbox
+          id="dynamic-listbox">
+      </ul>
+      <button id="dynamic-listbox-btn">
+        Populate listbox
+      </button>
+    </div>
+
+    <div style="margin-right:50px; width: 200px; padding: 10px; border: 1px solid #000;">
+      <div>Listbox with images</div>
+      <ul
+        a11y-listbox
+        id="listbox-with-images">
+        <li>
+          <img src="img/smile.svg">
+          <div>Starlord</div>
+        </li>
+        <li>
+          <img src="img/smile.svg">
+          <div>Rocket</div>
+        </li>
+        <li>
+          <img src="img/smile.svg">
+          <div>Drax</div>
+        </li>
+        <li>
+          <img src="img/smile.svg">
+          <div>Gamora</div>
+        </li>
+        <li>
+          <img src="img/smile.svg">
+          <div>Nebula</div>
+        </li>
+        <li>
+          <img src="img/smile.svg">
+          <div>Groot</div>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <script src="js/script.js"></script>
 </body>

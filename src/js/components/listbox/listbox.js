@@ -117,12 +117,15 @@ export class Listbox {
 
     this.options[index].setAttribute('aria-selected', 'true');
     this.lastSelectedOptionIndex = index;
-
   }
 
 
   // Handle focus and blur events on list
   focusHandler(e) {
+    if (this.options.length === 0) {
+      return;
+    }
+
     // If list focussed
     if (e.type === 'focus') {
       // set first option as active
