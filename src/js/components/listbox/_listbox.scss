@@ -1,3 +1,6 @@
+$a11y-listbox-selected-bg-color: lightgray !default;
+$a11y-listbox-active-outline-color: 2px dotted grey !default;
+
 [a11y-listbox] {
   list-style: none;
   margin: 0;
@@ -9,12 +12,12 @@
   user-select: none;
 
   &[aria-selected="true"] {
-    background: lightgray;
+    background: $a11y-listbox-selected-bg-color;
   }
 }
 
 [a11y-listbox-active-option] {
-  outline: 2px dotted grey;
+  outline: $a11y-listbox-active-outline-color;
 }
 
 
