@@ -4,17 +4,23 @@ import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
 // CONSTANTS
 const BASE_CONST = 'a11y-listbox';
 export const CONSTS = {
+  ELEM: BASE_CONST,
   OPTION_INDEX: `${BASE_CONST}-option-index`,
   ACTIVE_OPTION: `${BASE_CONST}-active-option`,
-  UPDATE_OPTIONS_EVENT: `a11yupdateListOptionsboxOptions`,
+  UPDATE_OPTIONS_EVENT: `a11yUpdateListboxOtions`,
 }
 
 
 // CLASS
 export class Listbox {
-  constructor(elem) {
+  static attachTo(elem, i) {
+    return new Listbox(elem, i);
+  }
+
+  constructor(elem, instanceIndex) {
     // DEFINE CONSTANTS
     this.elem = elem;
+
     this.options = null;
     this.activeOptionIndex = null;
     this.lastSelectedOptionIndex = null;
@@ -23,13 +29,16 @@ export class Listbox {
     // GET DOM ELEMENTS
 
     // GET DOM DATA
+    this.elem.id = this.elem.id || `${CONSTS.ELEM}${instanceIndex + 1}`;
     this.instanceId = elem.id;
     this.multiselectable = elem.getAttribute('aria-multiselectable') ? true : false;
 
     // SET DOM DATA
     // Set list attrs
-    this.elem.setAttribute('tabindex', '0');
     this.elem.setAttribute('role', 'listbox');
+    if (!this.elem.getAttribute('tabindex')) {
+      this.elem.setAttribute('tabindex', '0');
+    };
 
     // BIND 'THIS'
     this.initialiseList = this.initialiseList.bind(this);
@@ -41,8 +50,8 @@ export class Listbox {
     this.keydownHandler = this.keydownHandler.bind(this);
     this.updateActiveOptionIndex = this.updateActiveOptionIndex.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
-    this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
+    this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
 
     // EVENT LISTENERS
     this.elem.addEventListener('focus', this.focusHandler, {passive: true});
@@ -54,11 +63,7 @@ export class Listbox {
     this.initialiseList();
   }
 
-
   // METHODS
-  static attachTo(elem) {
-    return new Listbox(elem);
-  }
 
 
   // Update the list and set the first option as active
@@ -329,9 +334,12 @@ export class Listbox {
   }
 
 
-  // Event handler for updating list options custom event
-  // Checks if id in event matches class instance then updates options
+
+  // CUSTOM EVENT HANDLERS
+
+  // Custom event handler for updating list options
   updateOptionsHandler(e) {
+  // Checks if id in event matches class instance then updates options
     if (e.detail.id === this.elem.id) {
       this.activeOptionIndex = null;
       this.initialiseList();
