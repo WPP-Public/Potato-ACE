@@ -2,12 +2,12 @@ import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
 
 
 // CONSTANTS
-const BASE_CONST = 'a11y-listbox';
+const BASE_CONST = 'pa11y-listbox';
 export const CONSTS = {
   ELEM: BASE_CONST,
   OPTION_INDEX: `${BASE_CONST}-option-index`,
   ACTIVE_OPTION: `${BASE_CONST}-active-option`,
-  UPDATE_OPTIONS_EVENT: `a11yUpdateListboxOtions`,
+  UPDATE_OPTIONS_EVENT: `pa11yUpdateListboxOtions`,
 }
 
 
@@ -149,27 +149,30 @@ export class Listbox {
 
   // Handle clicks on options
   clickHandler(e) {
-    if (e.target.closest('[role="option"]')) {
-      // get index of clicked option
-      const clickedOptionIndex = parseInt(
-        e.target.getAttribute(`${CONSTS.OPTION_INDEX}`),
-        10
-      );
-
-      // set clicked option to active
-      this.makeOptionActive(clickedOptionIndex);
-
-      if (!this.multiselectable) {
-        return;
-      }
-
-      if (e.shiftKey) {
-        this.selectContiguousOptions();
-        return;
-      }
-
-      this.toggleOptionState(clickedOptionIndex);
+    const optionClicked = e.target.closest(`[${CONSTS.OPTION_INDEX}]`);
+    if (!optionClicked) {
+      return;
     }
+
+    // get index of clicked option
+    const clickedOptionIndex = parseInt(
+      optionClicked.getAttribute(`${CONSTS.OPTION_INDEX}`),
+      10
+    );
+
+    // set clicked option to active
+    this.makeOptionActive(clickedOptionIndex);
+
+    if (!this.multiselectable) {
+      return;
+    }
+
+    if (e.shiftKey) {
+      this.selectContiguousOptions();
+      return;
+    }
+
+    this.toggleOptionState(clickedOptionIndex);
   }
 
 

@@ -1,7 +1,7 @@
-$a11y-listbox-selected-bg-color: lightgray !default;
-$a11y-listbox-active-outline-color: 2px dotted grey !default;
+$pa11y-listbox-selected-bg-color: lightgray !default;
+$pa11y-listbox-active-outline-color: 2px dotted grey !default;
 
-[a11y-listbox] {
+[pa11y-listbox] {
   list-style: none;
   margin: 0;
   overflow: auto;
@@ -12,12 +12,12 @@ $a11y-listbox-active-outline-color: 2px dotted grey !default;
   user-select: none;
 
   &[aria-selected="true"] {
-    background: $a11y-listbox-selected-bg-color;
+    background: $pa11y-listbox-selected-bg-color;
   }
 }
 
-[a11y-listbox-active-option] {
-  outline: $a11y-listbox-active-outline-color;
+[pa11y-listbox-active-option] {
+  outline: $pa11y-listbox-active-outline-color;
 }
 
 
@@ -36,7 +36,7 @@ $a11y-listbox-active-outline-color: 2px dotted grey !default;
   }
 }
 
-[a11y-listbox] {
+[pa11y-listbox] {
   border: 1px solid #000;
   max-height: 100px;
 }

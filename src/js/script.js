@@ -1,7 +1,7 @@
-import { Listbox as A11yListbox, CONSTS as A11Y_LISTBOX_CONSTS } from './components/listbox/listbox';
+import { Listbox as Pa11yListbox, CONSTS as PA11Y_LISTBOX_CONSTS } from './components/listbox/listbox';
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('[a11y-listbox]').forEach(A11yListbox.attachTo);
+  document.querySelectorAll('[pa11y-listbox]').forEach(Pa11yListbox.attachTo);
 
   // For testing only
   document.getElementById('dynamic-listbox-btn')
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       listbox.dispatchEvent(
         new CustomEvent(
-          `${A11Y_LISTBOX_CONSTS.UPDATE_OPTIONS_EVENT}`,
+          `${PA11Y_LISTBOX_CONSTS.UPDATE_OPTIONS_EVENT}`,
           { detail: { id: selectId } },
         )
       );
