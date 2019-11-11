@@ -16,13 +16,13 @@ export class Disclosure {
     // DEFINE CONSTANTS
     this.elem = elem;
     this.contentVisible = false;
-
+    
     // GET DOM ELEMENTS
     // Get the elements which toggle this disclosure
-    this.toggleElems = document.querySelectorAll(`[${CONSTS.TRIGGER_ATTR}=${this.elem.id}]`);
-
+    this.toggleElems = document.querySelectorAll(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
+    
     // GET DOM DATA
-
+    
     // SET DOM DATA
     // Hide the disclosure
     this.elem.style.display = 'none';
@@ -58,7 +58,7 @@ export class Disclosure {
 
   // Show or hide the disclosure content when a trigger is clicked
   windowClickHandler(e) {
-    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER_ATTR}=${this.elem.id}]`);
+    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
     if (triggerClicked) {
       this.toggleDisclosure(triggerClicked);
     }
@@ -79,7 +79,7 @@ export class Disclosure {
 
 
   windowKeydownHandler(e) {
-    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER_ATTR}=${this.elem.id}]`);
+    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
     if (!triggerClicked || triggerClicked.tagName === 'BUTTON') {
       return;
     }
