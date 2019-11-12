@@ -1,0 +1,8 @@
+# Don't export test stuff
+cypress
+cypress.json
+**/*.{test,spec}.js
+
+# Don't export parcel built files
+dist
+.cache
