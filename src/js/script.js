@@ -1,7 +1,9 @@
 import { Listbox as Pa11yListbox, CONSTS as PA11Y_LISTBOX_CONSTS } from './components/listbox/listbox';
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('[pa11y-listbox]').forEach(Pa11yListbox.attachTo);
+
+  document.querySelectorAll(`[${PA11Y_LISTBOX_CONSTS.LISTBOX}]`)
+    .forEach(Pa11yListbox.attachTo);
 
   // For testing only
   document.getElementById('dynamic-listbox-btn')
