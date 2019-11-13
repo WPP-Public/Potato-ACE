@@ -1,10 +1,13 @@
 /* IMPORTS */
 import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
-
+import { spread } from 'q';
+import { unlink } from 'fs';
 
 /* CONSTANTS */
 // Constants to be exported and used in other modules
 const BASE_CONST = 'pa11y-listbox';
+const instanceCount = 0;
+
 export const CONSTS = {
   LISTBOX: BASE_CONST,
   OPTION_INDEX: `${BASE_CONST}-option-index`,
@@ -14,21 +17,12 @@ export const CONSTS = {
 
 
 /* CLASS */
-export class Listbox {
-
-  /* STATIC ATTACHTO METHOD */
-  // Method to attach class instance to a given element
-  static attachTo(elem, i) {
-    return new Listbox(elem, i);
-  }
-
-
+export class Listbox extends HTMLElement {
   /* CONSTRUCTOR */
-  constructor(elem, instanceIndex) {
+  constructor() {
+    super();
 
     /* CLASS INSTANCE CONSTANTS */
-    this.elem = elem;
-
     this.options = null;
     this.activeOptionIndex = null;
     this.lastSelectedOptionIndex = null;
@@ -37,16 +31,8 @@ export class Listbox {
     /* GET DOM ELEMENTS */
 
     /* GET DOM DATA */
-    this.elem.id = this.elem.id || `${CONSTS.LISTBOX}${instanceIndex + 1}`;
-    this.instanceId = elem.id;
-    this.multiselectable = elem.getAttribute('aria-multiselectable') ? true : false;
-
-    /* SET DOM DATA */
-    // Set list attrs
-    this.elem.setAttribute('role', 'listbox');
-    if (!this.elem.getAttribute('tabindex')) {
-      this.elem.setAttribute('tabindex', '0');
-    };
+    this.id = this.id || `${CONSTS.LISTBOX}-${instanceCount}`;
+    this.multiselectable = this.getAttribute('aria-multiselectable') ? true : false;
 
     /* BIND 'THIS' TO CLASS METHODS */
     this.initialiseList = this.initialiseList.bind(this);
@@ -60,29 +46,38 @@ export class Listbox {
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
+  }
+
+  connectedCallback() {
+    this.ul = this.children[0];
 
     /* ATTACH EVENT LISTENERS */
-    this.elem.addEventListener('focus', this.focusHandler, {passive: true});
-    this.elem.addEventListener('blur', this.focusHandler, {passive: true});
-    this.elem.addEventListener('keydown', this.keydownHandler);
-    this.elem.addEventListener('click', this.clickHandler, {passive: true});
-    this.elem.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, {passive: true});
+    this.addEventListener('focus', this.focusHandler, { passive: true });
+    this.addEventListener('blur', this.focusHandler, { passive: true });
+    this.addEventListener('keydown', this.keydownHandler);
+    this.addEventListener('click', this.clickHandler, { passive: true });
+    this.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, { passive: true });
+
+    /* SET DOM DATA */
+    // Set list attrs
+    this.ul.setAttribute('role', 'listbox');
+    if (!this.getAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    };
 
     /* INITIALISATION CODE */
     this.initialiseList();
   }
 
-
   /* CLASS METHODS */
-
   /*
     Update the listbox by recalculating the indices and setting the first option as active.
     Should be run if the list ID or options are dynamically changed to update indices.
   */
   initialiseList() {
     // Get all child <li> elements or children with [role="option"]
-    this.options = this.elem.querySelectorAll('li') ||
-      this.elem.querySelectorAll('role="option"');
+    this.options = this.querySelectorAll('li') ||
+      this.querySelectorAll('role="option"');
 
     if (this.options.length === 0) {
       return;
@@ -94,7 +89,7 @@ export class Listbox {
       option.setAttribute('aria-selected', 'false');
       option.setAttribute(`${CONSTS.OPTION_INDEX}`, i);
       // If no ID given create an ID from parent ID and index
-      option.id = option.id || `${this.instanceId}-option${i + 1}`;
+      option.id = option.id || `${this.id}-option${i + 1}`;
     });
 
     // If single-select list set first option to active
@@ -117,7 +112,7 @@ export class Listbox {
     // Activate new option
     const optionToMakeActive = this.options[index];
     optionToMakeActive.setAttribute(`${CONSTS.ACTIVE_OPTION}`, '')
-    this.elem.setAttribute('aria-activedescendant', optionToMakeActive.id);
+    this.ul.setAttribute('aria-activedescendant', optionToMakeActive.id);
     this.activeOptionIndex = index;
 
     // If single-select list set first option to selected
@@ -164,7 +159,7 @@ export class Listbox {
 
     // If list blurred
     this.options[this.activeOptionIndex].removeAttribute(`${CONSTS.ACTIVE_OPTION}`);
-    this.elem.removeAttribute('aria-activedescendant');
+    this.removeAttribute('aria-activedescendant');
   }
 
 
@@ -381,9 +376,11 @@ export class Listbox {
   */
   updateOptionsHandler(e) {
   // Checks if id in event matches class instance then updates options
-    if (e.detail.id === this.elem.id) {
+    if (e.detail.id === this.id) {
       this.activeOptionIndex = null;
       this.initialiseList();
     }
   }
 }
+
+customElements.define('a11y-listbox', Listbox);
