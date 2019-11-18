@@ -1,0 +1,52 @@
+image: node:latest
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ce/ci/yaml/README.html#cache
+cache:
+  paths:
+    - node_modules/
+  
+# this job installs NPM dependencies and Cypress
+install:
+  image: cypress/base:10
+  stage: build
+
+  script:
+    - npm ci
+    # show where the Cypress test runner binaries are cached
+    - $(npm bin)/cypress cache path
+    # show all installed versions of Cypress binary
+    - $(npm bin)/cypress cache list
+    - $(npm bin)/cypress verify
+    
+stages:
+  - build
+  - test
+  - lint
+  - deploy
+  
+build:
+  stage: build
+  script:
+    - npm i
+    - npm run build
+    
+test-electron:
+  stage: test
+  image: cypress/base:10
+  script:
+    - npm i
+    - npm run test
+    
+test-chrome:
+  stage: test
+  image: cypress/browsers:chrome67
+  script:
+    - npm i
+    - npm run test --browser chrome
+    
+lint-scss:
+  stage: test
+  script:
+    - npm i
+    - npm run sass-lint
