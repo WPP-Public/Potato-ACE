@@ -48,3 +48,12 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
   <option>comp2-ex2-op3</option>
 </select>
 ```
+
+```html
+<p>Component 2 Example 3</p>
+<select>
+  <option>comp2-ex3-op1</option>
+  <option>comp2-ex3-op2</option>
+  <option>comp2-ex3-op3</option>
+</select>
+```

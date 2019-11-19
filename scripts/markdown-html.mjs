@@ -75,7 +75,7 @@ const mdToHtml = componentName => {
 
     console.log(magentaString, `>> Injecting ${file} code into code fence in ${componentDir}/README.md`);
     mdFileContents = replaceContentBetweenIndices(mdFileContents, exampleFileContents, startIndex, endIndex);
-    mdFromIndex += startIndex;
+    mdFromIndex = startIndex;
     // console.log(cyanString, mdFileContents);
 
     // Save changes to md file
@@ -91,7 +91,7 @@ const mdToHtml = componentName => {
     console.log(magentaString, `>> Injecting ${file} into ${componentName}.html`);
     let queryIndex = mdFileContents.indexOf(startQuery, htmlFromIndex);
     mdFileContents = replaceContentBetweenIndices(mdFileContents, exampleFileContents, queryIndex - 1,  queryIndex - 1);
-    htmlFromIndex+=queryIndex + exampleFileContents.length + 1;
+    htmlFromIndex = queryIndex + exampleFileContents.length + 1;
   });
 
   // convert markdown to HTML

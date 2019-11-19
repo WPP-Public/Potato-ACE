@@ -14,8 +14,9 @@ const dirs = {
 
 gulp.task('serve', () => {
   browserSync.init({ server: `./${dirs.src}` });
-  gulp.watch(`./${dirs.src}/sass/**/*.scss`, gulp.series('sass'));
-  gulp.watch(`./${dirs.src}/**/*.{html,js}`).on('change', browserSync.reload);
+  gulp.watch(`**/*.scss`, gulp.series('sass'));
+  gulp.watch(`**/*.js`).on('change', browserSync.reload);
+  gulp.watch(`./${dirs.src}/index.html`).on('change', browserSync.reload);
 });
 
 gulp.task('sass', () => {
@@ -28,15 +29,15 @@ gulp.task('sass', () => {
     .pipe(browserSync.stream())
 });
 
-gulp.task('markdown', () => {
-  return gulp.src(`./${dirs.src}/sass/**/*.scss`)
-    .pipe(sourcemaps.init())
-    .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
-    .pipe(autoprefixer())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(`./${dirs.src}/css`))
-    .pipe(browserSync.stream())
-});
+// gulp.task('markdown', () => {
+//   return gulp.src(`./${dirs.src}/sass/**/*.scss`)
+//     .pipe(sourcemaps.init())
+//     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+//     .pipe(autoprefixer())
+//     .pipe(sourcemaps.write())
+//     .pipe(gulp.dest(`./${dirs.src}/css`))
+//     .pipe(browserSync.stream())
+// });
 
 /////////////// BUILD SUBTASKS ///////////////
 gulp.task('clean', () => {
