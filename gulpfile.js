@@ -3,10 +3,9 @@ const browserSync = require('browser-sync').create();
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const autoprefixer = require('gulp-autoprefixer');
-const clean = require('gulp-rm');
 const terser = require('gulp-terser');
 const minify = require('gulp-clean-css');
-const exec = require('gulp-exec');
+const { exec } = require('child_process');
 
 
 const dirs = {
@@ -15,13 +14,14 @@ const dirs = {
   comps: 'src/pa11y/components',
 };
 
+const injectCodeCmd = 'node --experimental-modules ./scripts/inject-code.mjs';
 
 /////////////// DEFAULT SUBTASKS ///////////////
 
 // Build md and HTML pages for all components
-gulp.task('buildHtml', async () => {
-  console.log('build all HTML files');
-  // `node --experimental-modules ./scripts/inject-code.mjs`
+gulp.task('build-html', async () => {
+  const child = exec(injectCodeCmd);
+  child.stdout.pipe(process.stdout);
 });
 
 
@@ -39,8 +39,8 @@ gulp.task('sass', () => {
 gulp.task('serve', () => {
   browserSync.init(
     {
-      server: `./${dirs.src}`,
       open: false,
+      server: `./${dirs.src}`,
     }
   );
 
@@ -57,40 +57,40 @@ gulp.task('serve', () => {
   // Watch component SASS files and rebuild md and HTML page on change
   gulp.watch(`./${dirs.comps}/**/*.scss`)
     .on('change', (path) => {
-      console.log(`${componentName} scss changed`);
       const pathFragments = path.split('/');
       const componentName = pathFragments[pathFragments.length - 2];
-      // `node --experimental-modules ./scripts/inject-code.mjs ${componentName}`,
-    });
-
-  // Watch component README.md and rebuild md and HTML page on change
-  gulp.watch(`./${dirs.comps}/**/README.md`)
-    .on('change', (path) => {
       console.log(`${componentName} scss changed`);
-      const pathFragments = path.split('/');
-      const componentName = pathFragments[pathFragments.length - 2];
-      // `node --experimental-modules ./scripts/inject-code.mjs ${componentName}`,
+      const child = exec(`${injectCodeCmd} ${componentName} --sass-only`);
+      child.stdout.pipe(process.stdout);
     });
 
   // Watch component example HTML files and rebuild md and HTML page on change
   gulp.watch(`./${dirs.src}/**/examples/*.html`).on('change', (path) => {
-    console.log(`${componentName} example file changed`);
     const pathFragments = path.split('/');
     const componentName = pathFragments[pathFragments.length - 3];
-    // `node --experimental-modules ./scripts/inject-code.mjs ${componentName}`,
+    console.log(`${componentName} example file changed`);
+    const child = exec(`${injectCodeCmd} ${componentName} --html-only`);
+    child.stdout.pipe(process.stdout);
   });
+
+  // // Watch component README.md and rebuild md and HTML page on change
+  // gulp.watch(`./${dirs.comps}/**/README.md`)
+  //   .on('change', (path) => {
+  //     const pathFragments = path.split('/');
+  //     const componentName = pathFragments[pathFragments.length - 2];
+  //     // const child = exec(`${injectCodeCmd} ${componentName} --md-only`);
+  //     // child.stdout.pipe(process.stdout);
+  //   });
 });
 
 
-gulp.task('default', gulp.series('buildHtml', 'sass', 'serve'));
+gulp.task('default', gulp.series('build-html', 'sass', 'serve'));
 
 
 /////////////// BUILD SUBTASKS ///////////////
 
 gulp.task('clean', async () => {
   exec(`rm -rf ./${dirs.dest}/*`);
-  // return gulp.src(`./${dirs.dest}/**/*`)
-    // .pipe(clean());
 });
 
 
@@ -132,7 +132,8 @@ gulp.task('build', gulp.series(
 
 gulp.task('serve-build', gulp.series('build', () => {
   browserSync.init({
+    port: 3030,
+    open: false,
     server: `./${dirs.dest}`,
-    port: 3030
   });
 }));

@@ -128,7 +128,7 @@ export const injectComponentCode = (componentName, sass=false, html=false) => {
   // CATCH
 
   if (sass) {
-    mdFileContents = injectSass(componentName, mdFileContents);
+    mdFileContents = injectSass(componentName, mdFileContents, !html);
   }
 
   if (html) {
@@ -149,10 +149,13 @@ export const injectAllSassAndHtml = () => {
   // CATCH
 }
 
-
 // If component given as argument build md and html for that component
-if (process.argv.length > 2) {
-  injectComponentCode(process.argv[2], true, true);
+const args = process.argv;
+if (args.length > 2) {
+  const componentName = args[2];
+  const html = !args.includes('--sass-only');
+  const sass = !args.includes('--html-only');
+  injectComponentCode(componentName, sass, html);
 } else {
   // Else build md and html for all components
   injectAllSassAndHtml();
