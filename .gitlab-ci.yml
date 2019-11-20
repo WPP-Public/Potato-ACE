@@ -26,8 +26,8 @@ test-electron:
   image: cypress/base:10
   interruptible: true
   before_script:
-    - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
     - npm ci
+    - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
   script:
     - npx wait-on http://localhost:1234
     - npm run test
@@ -38,8 +38,8 @@ test-chrome:
   interruptible: true
   before_script:
     - ./scripts/install-chrome.sh
-    - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
     - npm ci
+    - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
   script:
     - npx wait-on http://localhost:1234
     - npm run test --browser chrome
