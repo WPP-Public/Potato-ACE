@@ -48,6 +48,13 @@ test-chrome:
   script:
     - npx wait-on http://localhost:1234
     - npm run test --browser chrome
+  artifacts:
+    when: on_failure
+    paths:
+      - cypress/screenshots/
+      - cypress/videos/
+    expire_in: 10 days
+
 
 lint-scss:
   stage: test
