@@ -16,9 +16,9 @@ Here is scss code
   display: block;
 }
 
-// [pa11y-test-component-child] {
-//   display: inline-block;
-// }
+[pa11y-test-component-child] {
+  display: inline-block;
+}
 ```
 
 
@@ -28,12 +28,7 @@ Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequa
 
 
 ```html
-<p>Component 1 Example 1</p>
-<select>
-  <option>comp1-ex1-op1</option>
-  <option>comp1-ex1-op2</option>
-  <option>comp1-ex1-op3</option>
-</select>
+{{1.html}}
 ```
 
 
@@ -41,10 +36,13 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 
 ```html
-<p>Component 1 Example 2</p>
-<select>
-  <option>comp1-ex2-op1</option>
-  <option>comp1-ex2-op2</option>
-  <option>comp1-ex2-op3</option>
-</select>
+{{2.html}}
 ```
+[pa11y-test-component] {
+  display: block;
+}
+
+[pa11y-test-component-child] {
+  display: inline-block;
+}
+undefined

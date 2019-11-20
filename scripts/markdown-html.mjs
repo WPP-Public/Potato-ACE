@@ -1,7 +1,7 @@
 import fs from 'fs';
 import MarkdownIt from 'markdown-it';
 
-const pa11yCompsDir = './pa11y/components';
+const pa11yCompsDir = './src/pa11y/components';
 
 
 // MarkdownIt Options
