@@ -28,7 +28,12 @@ Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequa
 
 
 ```html
-{{1.html}}
+<p>Component 1 Example 1</p>
+<select>
+  <option>comp1-ex1-op1</option>
+  <option>comp1-ex1-op2</option>
+  <option>comp1-ex1-op3</option>
+</select>
 ```
 
 
@@ -36,13 +41,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 
 ```html
-{{2.html}}
+<p>Component 1 Example 2</p>
+<select>
+  <option>comp1-ex2-op1</option>
+  <option>comp1-ex2-op2</option>
+  <option>comp1-ex2-op3</option>
+</select>
 ```
-[pa11y-test-component] {
-  display: block;
-}
-
-[pa11y-test-component-child] {
-  display: inline-block;
-}
-undefined
