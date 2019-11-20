@@ -1,17 +1,17 @@
 image: node:latest
 
 stages:
-  - build
+  # - build
   - test
   - lint
   - deploy
 
-build:
-  stage: build
-  script:
-    - echo "Do the build"
-    # - npm ci
-    # - npm run build
+# build:
+#   stage: build
+#   script:
+#     - echo "Do the build"
+#     # - npm ci
+#     # - npm run build
 
 lint-scss:
   stage: test
