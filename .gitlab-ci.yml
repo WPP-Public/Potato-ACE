@@ -41,8 +41,9 @@ test-chrome:
     - npm ci
     - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
   script:
+    - npm run start &
     - npx wait-on http://localhost:1234
-    - npm run start & npm run test --browser chrome
+    - npm run test --browser chrome
   artifacts:
     when: on_failure
     paths:
