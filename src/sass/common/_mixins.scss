@@ -18,24 +18,20 @@
       $from: map-get($breakpoints, tablet);
       $until: map-get($breakpoints, desktop);
     }
-
     @else if $only == 'desktop' {
       $from: map-get($breakpoints, desktop);
       $until: map-get($breakpoints, wide);
     }
   }
-
   @else {
     // FROM
     // Map device names to breakpoint values in ./_variables.scss for $from
     @if $from == 'tablet' {
       $from: map-get($breakpoints, tablet);
     }
-
     @else if $from == 'desktop' {
       $from: map-get($breakpoints, desktop);
     }
-
     @else if $from == 'wide' {
       $from: map-get($breakpoints, wide);
     }
@@ -43,26 +39,21 @@
     @if $until == 'tablet' {
       $until: map-get($breakpoints, tablet);
     }
-
     @else if $until == 'desktop' {
       $until: map-get($breakpoints, desktop);
     }
-
     @else if $until == 'wide' {
       $until: map-get($breakpoints, wide);
     }
   }
-
   @if $from {
     @if $until { // if both $from and $until given (by user or due to $only being given)
       @media (min-width: $from) and (max-width: #{$until - 1px}) { @content; }
     }
-
     @else { // if only $from given
       @media (min-width: $from) { @content; }
     }
   }
-
   @else if $until { // if only $until given
     @media (max-width: #{$until - 1px}) { @content; }
   }
@@ -75,19 +66,16 @@
   // Example:
   // @include resp-prop(margin, '20px 0', 40px, '60px 20PX', 80px)
   #{$property}: #{$mob};
-
   @if $tab {
     @include mq($from: tablet) {
       #{$property}: #{$tab};
     }
   }
-
   @if $desk {
     @include mq($from: desktop) {
       #{$property}: #{$desk};
     }
   }
-
   @if $wide {
     @include mq($from: wide) {
       #{$property}: #{$wide};
@@ -99,7 +87,6 @@
 // VERTICAL SPACING
 @mixin v-spacing($prop, $position, $size) {
   $spacings: map-get($vertical-spacings, #{$size});
-
   #{$prop}-#{$position}: map-get($spacings, 'mobile') !important;
   // Add tablet spacings if different from mobile
   @if map-get($spacings, 'mobile') != map-get($spacings, 'tablet') {
