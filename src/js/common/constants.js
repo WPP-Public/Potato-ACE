@@ -31,4 +31,4 @@ export const KEYBOARD_KEYS = {
     'CODE': 38,
     'KEY': 'ArrowUp',
   },
-}
+};

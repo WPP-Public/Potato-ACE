@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Captain Marvel</li>
         <li>Dr Strange</li>
         <li>Spider-man</li>
-        <li>War Machine</li>`
+        <li>War Machine</li>`;
 
       listbox.dispatchEvent(
         new CustomEvent(

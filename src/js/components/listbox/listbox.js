@@ -8,7 +8,7 @@ export const CONSTS = {
   OPTION_INDEX: `${BASE_CONST}-option-index`,
   ACTIVE_OPTION: `${BASE_CONST}-active-option`,
   UPDATE_OPTIONS_EVENT: `a11yUpdateListboxOtions`,
-}
+};
 
 
 // CLASS
@@ -38,7 +38,7 @@ export class Listbox {
     this.elem.setAttribute('role', 'listbox');
     if (!this.elem.getAttribute('tabindex')) {
       this.elem.setAttribute('tabindex', '0');
-    };
+    }
 
     // BIND 'THIS'
     this.initialiseList = this.initialiseList.bind(this);
@@ -102,7 +102,7 @@ export class Listbox {
 
     // Activate new option
     const optionToMakeActive = this.options[index];
-    optionToMakeActive.setAttribute(`${CONSTS.ACTIVE_OPTION}`, '')
+    optionToMakeActive.setAttribute(`${CONSTS.ACTIVE_OPTION}`, '');
     this.elem.setAttribute('aria-activedescendant', optionToMakeActive.id);
     this.activeOptionIndex = index;
 
@@ -267,7 +267,7 @@ export class Listbox {
           // Select or deselect all with 'Ctrl + A'
           e.preventDefault();
           this.options.forEach(option => {
-            option.setAttribute('aria-selected', !this.allSelected)
+            option.setAttribute('aria-selected', !this.allSelected);
           });
           this.allSelected = !this.allSelected;
         }
