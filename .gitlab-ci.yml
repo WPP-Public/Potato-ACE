@@ -21,29 +21,16 @@ lint:
     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
     - npm run lint
 
-test-electron:
+.e2e:
   stage: test
   image: cypress/base:10
   interruptible: true
   before_script:
     - npm ci
     - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
-  script:
     - npm run start &
     - npx wait-on http://localhost:1234
-    - npm run test
-
-test-chrome:
-  stage: test
-  image: cypress/browsers:chrome67
-  interruptible: true
-  before_script:
-    - ./scripts/install-chrome.sh
-    - npm ci
-    - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
   script:
-    - npm run start &
-    - npx wait-on http://localhost:1234
     - npm run test --browser chrome
   artifacts:
     when: on_failure
@@ -51,3 +38,16 @@ test-chrome:
       - cypress/screenshots/
       - cypress/videos/
     expire_in: 10 days
+
+test-chrome:
+  extends: .e2e
+  image: cypress/browsers:chrome67
+  script:
+    # - ./scripts/install-chrome.sh
+    - npm run test --browser chrome
+
+test-electron:
+  extends: .e2e
+  image: cypress/browsers:chrome67
+  script:
+    - npm run test
