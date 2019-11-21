@@ -19,6 +19,7 @@ lint:
     # We use --no-package-lock to prevent npm from installing *everything* in package.json
     # FIXME: Add eslint
     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
+    - npm install --no-package-lock --no-save eslint@6.6.0 eslint-plugin-cypress@2.7.0
     - npm run lint
 
 .e2e:
