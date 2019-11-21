@@ -1,4 +1,4 @@
-image: node:latest
+image: node:13.1.0-alpine3.10
 
 stages:
   # - build
