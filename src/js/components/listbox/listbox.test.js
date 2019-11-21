@@ -24,6 +24,6 @@ context('Listbox', () => {
     });
 
     it('should not override an existing <li> id', () => {
-        expect(cy.get('#iron-person')).to.exist;
+        expect(cy.get('#iron-man')).to.exist;
     });
 });
