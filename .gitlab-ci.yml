@@ -1,23 +1,21 @@
 image: node:13.1.0-alpine3.10
 
 stages:
-  # - build
+  - build
   - test
   - lint
   - deploy
 
-# build:
-#   stage: build
-#   script:
-#     - echo "Do the build"
-#     # - npm ci
-#     # - npm run build
+build:
+  stage: build
+  script:
+    - npm ci
+    - npm run build
 
 lint:
   stage: test
   script:
     # We use --no-package-lock to prevent npm from installing *everything* in package.json
-    # FIXME: Add eslint
     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
     - npm install --no-package-lock --no-save eslint@6.6.0 eslint-plugin-cypress@2.7.0
     - npm run lint
