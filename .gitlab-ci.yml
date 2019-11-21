@@ -43,7 +43,6 @@ test-chrome:
   extends: .e2e
   image: cypress/browsers:chrome67
   script:
-    # - ./scripts/install-chrome.sh
     - npm run test --browser chrome
 
 test-electron:
