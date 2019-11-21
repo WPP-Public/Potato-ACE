@@ -109,9 +109,20 @@ const replaceContentBetweenIndices = (sourceString, stringToInsert, startIndex, 
 
 // CONVERT MARKDOWN TO HTML AND SAVE TO HTML FILE
 const convertMdToHtml = (mdSource) => {
+  // Convert md to HTML
   console.log(magentaString, `>> Converting markdown to html`);
   const convertedHtml = md.render(mdSource);
-  return convertedHtml;
+
+  // Combine base.html and md content into component's html
+  console.log(magentaString, `>> Reading base.html`);
+  const baseHtml = fs.readFileSync(`./src/includes/base.html`).toString();
+  // CATCH
+
+  const placeholderString = '[[md-content]]';
+  const startIndex = baseHtml.indexOf(placeholderString);
+  const endIndex = startIndex + placeholderString.length;
+  let htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
+  return htmlContent;
 }
 
 
@@ -126,14 +137,14 @@ const writeContentToFile = (content, filePath) => {
 
 
 // INJECT CODE FOR GIVEN COMPONENT
-export const injectComponentCode = (componentName, htmlOnly=false) => {
+const injectComponentCode = (componentName, htmlOnly=false) => {
   const componentDir = `${componentsDir}/${componentName}`;
-  const FilePath = `${componentDir}/README.md`;
+  const mdFilePath = `${componentDir}/README.md`;
   const htmlFilePath = `./src/${componentName}/index.html`;
 
   // Read md file
-  console.log(magentaString, `>> Reading ${FilePath}`);
-  let mdFileContent = fs.readFileSync(FilePath).toString();
+  console.log(magentaString, `>> Reading ${mdFilePath}`);
+  let mdFileContent = fs.readFileSync(mdFilePath).toString();
   // CATCH
 
   if (!htmlOnly) {
@@ -142,7 +153,7 @@ export const injectComponentCode = (componentName, htmlOnly=false) => {
 
   const { mdContentForMd, mdContentForHtml } = injectHtml(componentName, mdFileContent);
   // Save new md content to README.md
-  writeContentToFile(mdContentForMd, FilePath);
+  writeContentToFile(mdContentForMd, mdFilePath);
 
   // Convert content for HTML page to HTML and save
   const convertedHtmlContent = convertMdToHtml(mdContentForHtml);
@@ -151,7 +162,7 @@ export const injectComponentCode = (componentName, htmlOnly=false) => {
 
 
 // INJECT SASS AND HTML FOR ALL COMPONENTS
-export const injectAllComponentsCode = () => {
+const injectAllComponentsCode = () => {
   // For all component directories in componentsDir
   fs.readdirSync(componentsDir, { withFileTypes: true })
     .filter(item => item.isDirectory())
@@ -161,6 +172,7 @@ export const injectAllComponentsCode = () => {
     });
   // CATCH
 }
+
 
 // If component given as argument build md and html for that component
 const args = process.argv;
