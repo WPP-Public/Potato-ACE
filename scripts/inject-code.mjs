@@ -9,17 +9,24 @@
 
 */
 
+
 import fs from 'fs';
 import MarkdownIt from 'markdown-it';
 
+
+// CONSTANTS
+const htmlOnlyArg = '--html-only';
 const libraryName = 'pa11y';
 const componentsDir = `./src/${libraryName}/components`;
+const exampleBlockClass = 'example-block';
+const htmlQuery = '```html';
+const sassQuery = '```scss';
+const endQuery = '```';
+const htmlPlaceholder = '[[md-content]]';
 
 // Color codes for console.logs
 const magentaString = '\x1b[35m%s\x1b[0m';
 const greenString = '\x1b[32m%s\x1b[0m';
-// const cyanString = '\x1b[36m%s\x1b[0m';
-// const yellowString = '\x1b[93m%s\x1b[0m';
 
 // MarkdownIt Options
 const md = new MarkdownIt({
@@ -29,19 +36,18 @@ const md = new MarkdownIt({
 });
 
 
+
 // INJECT SASS INTO CONTENT FOR GIVEN COMPONENT
 const injectSass = (componentName, mdFileContent) => {
   const sassFilePath = `${componentsDir}/${componentName}/_${componentName}.scss`
 
   // Read scss file
-  console.log(magentaString, `>> Reading ${sassFilePath}`);
   const sassFileContents = fs.readFileSync(sassFilePath).toString();
   // CATCH
 
   // Inject sassFileContents into mdFileContent between "```scss" and "```"
-  const startQuery = '```scss', endQuery = '```';
-  const queryIndex = mdFileContent.indexOf(startQuery);
-  const startIndex = queryIndex + startQuery.length + 1;
+  const queryIndex = mdFileContent.indexOf(sassQuery);
+  const startIndex = queryIndex + sassQuery.length + 1;
   const endIndex = mdFileContent.indexOf(endQuery, startIndex);
   console.log(magentaString, `>> Injecting _${componentName}.scss code into README.md`);
   const mdContentForMd = replaceContentBetweenIndices(mdFileContent, sassFileContents, startIndex, endIndex);
@@ -53,7 +59,6 @@ const injectSass = (componentName, mdFileContent) => {
 const injectHtml = (componentName, mdFileContent) => {
   const componentDir = `${componentsDir}/${componentName}`;
   const examplesDirPath = `${componentDir}/examples`;
-  const startQuery = '```html', endQuery = '```';
   let queryIndex, startIndex, endIndex;
 
   // Pointers for keeping track of which code block to inject code into
@@ -72,26 +77,27 @@ const injectHtml = (componentName, mdFileContent) => {
 
   exampleFiles.forEach(file => {
     // Read example file content
-    console.log(magentaString, `>> Reading ${examplesDirPath}/${file}`);
     const exampleFileContents = fs.readFileSync(`${examplesDirPath}/${file}`).toString();
     // CATCH
 
     // Inject example file HTML code into source content for component's README.md
-    console.log(magentaString, `>> Injecting ${file} HTML into ${componentName} README.md source content`);
-    queryIndex = mdContentForMd.indexOf(startQuery, mdFromIndex);
-    startIndex = queryIndex + startQuery.length + 1;
+    console.log(magentaString, `>> Injecting ${file} into ${componentName} README.md content`);
+    queryIndex = mdContentForMd.indexOf(htmlQuery, mdFromIndex);
+    startIndex = queryIndex + htmlQuery.length + 1;
     endIndex = mdContentForMd.indexOf(endQuery, startIndex);
     mdContentForMd = replaceContentBetweenIndices(mdContentForMd, exampleFileContents, startIndex, endIndex);
     mdFromIndex = startIndex;
 
+
     // Inject example file HTML code into source content for component's HTML page
-    console.log(magentaString, `>> Injecting ${file} HTML into ${componentName} page source content`);
-    queryIndex = mdContentForHtml.indexOf(startQuery, htmlFromIndex);
-    startIndex = queryIndex + startQuery.length + 1;
+    console.log(magentaString, `>> Injecting ${file} into ${componentName} page content`);
+    queryIndex = mdContentForHtml.indexOf(htmlQuery, htmlFromIndex);
+    startIndex = queryIndex + htmlQuery.length + 1;
     endIndex = mdContentForHtml.indexOf(endQuery, startIndex);
     mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleFileContents, startIndex, endIndex);
-    mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleFileContents, queryIndex - 1, queryIndex - 1);
-    htmlFromIndex = startIndex + exampleFileContents.length;
+    const exampleBlock = `<div class="${exampleBlockClass}">${exampleFileContents}</div>\n`;
+    mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleBlock, queryIndex - 1, queryIndex - 1);
+    htmlFromIndex = startIndex + exampleBlock.length;
   });
 
   // Return the source contents for README.md and component's HTML page
@@ -114,21 +120,18 @@ const convertMdToHtml = (mdSource) => {
   const convertedHtml = md.render(mdSource);
 
   // Combine base.html and md content into component's html
-  console.log(magentaString, `>> Reading base.html`);
   const baseHtml = fs.readFileSync(`./src/includes/base.html`).toString();
   // CATCH
 
-  const placeholderString = '[[md-content]]';
-  const startIndex = baseHtml.indexOf(placeholderString);
-  const endIndex = startIndex + placeholderString.length;
-  let htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
+  const startIndex = baseHtml.indexOf(htmlPlaceholder);
+  const endIndex = startIndex + htmlPlaceholder.length;
+  const htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
   return htmlContent;
 }
 
 
 // WRITE CONTENT TO GIVEN FILE
 const writeContentToFile = (content, filePath) => {
-  console.log(magentaString, `>> Writing changes to ${filePath}`);
   fs.writeFileSync(filePath, content);
   // CATCH
 
@@ -174,11 +177,12 @@ const injectAllComponentsCode = () => {
 }
 
 
-// If component given as argument build md and html for that component
+
 const args = process.argv;
+
 if (args.length > 2) {
   const componentName = args[2];
-  const htmlOnly = args.includes('--html-only');
+  const htmlOnly = args.includes(htmlOnlyArg);
   injectComponentCode(componentName, htmlOnly);
 } else {
   // Else build md and html for all components
