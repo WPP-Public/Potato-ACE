@@ -40,7 +40,7 @@ Thumbs.db
 node_modules/
 build/
 dist/
-*.css
+styles.css
 webhost.json
 newticket.py
 .cache/
