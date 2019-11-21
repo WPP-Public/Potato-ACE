@@ -7,21 +7,20 @@ const terser = require('gulp-terser');
 const minify = require('gulp-clean-css');
 const { exec } = require('child_process');
 
-
 const dirs = {
   src: 'src',
   dest: 'dist',
   comps: 'src/pa11y/components',
 };
 
-const injectCodeCmd = 'node --experimental-modules ./scripts/inject-code.mjs';
+const injectCodeCmd = 'npm run inject';
+
 
 /////////////// DEFAULT SUBTASKS ///////////////
 
 // Build md and HTML pages for all components
 gulp.task('build-html', async () => {
-  const child = exec(injectCodeCmd);
-  child.stdout.pipe(process.stdout);
+  exec(injectCodeCmd).stdout.pipe(process.stdout);
 });
 
 
@@ -60,27 +59,17 @@ gulp.task('serve', () => {
       const pathFragments = path.split('/');
       const componentName = pathFragments[pathFragments.length - 2];
       console.log(`${componentName} scss changed`);
-      const child = exec(`${injectCodeCmd} ${componentName} --sass-only`);
-      child.stdout.pipe(process.stdout);
+      exec(`${injectCodeCmd} -- ${componentName}`).stdout.pipe(process.stdout);
     });
 
   // Watch component example HTML files and rebuild md and HTML page on change
   gulp.watch(`./${dirs.src}/**/examples/*.html`).on('change', (path) => {
     const pathFragments = path.split('/');
+    const exampleName = pathFragments[pathFragments.length - 1];
     const componentName = pathFragments[pathFragments.length - 3];
-    console.log(`${componentName} example file changed`);
-    const child = exec(`${injectCodeCmd} ${componentName} --html-only`);
-    child.stdout.pipe(process.stdout);
+    console.log(`${componentName} ${exampleName} changed`);
+    exec(`${injectCodeCmd} -- ${componentName} --html-only`).stdout.pipe(process.stdout);
   });
-
-  // // Watch component README.md and rebuild md and HTML page on change
-  // gulp.watch(`./${dirs.comps}/**/README.md`)
-  //   .on('change', (path) => {
-  //     const pathFragments = path.split('/');
-  //     const componentName = pathFragments[pathFragments.length - 2];
-  //     // const child = exec(`${injectCodeCmd} ${componentName} --md-only`);
-  //     // child.stdout.pipe(process.stdout);
-  //   });
 });
 
 

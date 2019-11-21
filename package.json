@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "inject": "node --experimental-modules ./scripts/inject-code.mjs",
     "start": "nvm use; gulp"
   },
   "repository": {
