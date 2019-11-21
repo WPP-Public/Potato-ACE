@@ -7,8 +7,10 @@
     "test": "cypress run --config video=false",
     "test:video": "cypress run",
     "cypress:open": "cypress open",
+    "lint": "npm run lint:scss && npm run lint:js",
     "start": "parcel src/index.html",
-    "sass-lint": "stylelint \"src/sass/**/*.scss\""
+    "lint:scss": "stylelint \"src/sass/**/*.scss\"",
+    "lint:js": "echo todo!"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,8 @@
     "sass": "^1.23.3",
     "stylelint": "11.1.1",
     "stylelint-config-standard": "19.0.0",
-    "stylelint-order": "3.1.1"
+    "stylelint-order": "3.1.1",
+    "stylelint-scss": "3.13.0"
   },
   "dependencies": {
     "autoprefixer": "^9.7.1"

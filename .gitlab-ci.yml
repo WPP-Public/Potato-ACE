@@ -13,13 +13,13 @@ stages:
 #     # - npm ci
 #     # - npm run build
 
-lint-scss:
+lint:
   stage: test
   script:
     # We use --no-package-lock to prevent npm from installing *everything* in package.json
     # FIXME: Add eslint
-    - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
-    - npm run sass-lint
+    - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
+    - npm run lint
 
 test-electron:
   stage: test
