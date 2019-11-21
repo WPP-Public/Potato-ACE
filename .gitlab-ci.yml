@@ -48,6 +48,5 @@ test-chrome:
 
 test-electron:
   extends: .e2e
-  image: cypress/browsers:chrome67
   script:
     - npm run test
