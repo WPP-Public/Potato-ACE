@@ -44,3 +44,4 @@ dist/
 webhost.json
 newticket.py
 .cache/
+/cypress/screenshots

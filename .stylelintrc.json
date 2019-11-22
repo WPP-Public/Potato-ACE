@@ -1,19 +1,18 @@
 {
   "extends": "stylelint-config-standard",
   "plugins": [
-    "stylelint-order"
+    "stylelint-order",
+    "stylelint-scss"
   ],
   "rules": {
-    "at-rule-no-unknown": [
-      true,
-      {
-        "ignoreAtRules": [
-          "extends",
-          "include"
-        ]
-      }
-    ],
-    "max-empty-lines": 2,
+    "at-rule-no-unknown": null,
+    "at-rule-empty-line-before": null,
+    "declaration-empty-line-before": null,
+    "scss/at-rule-no-unknown": true,
+    "no-empty-source": [true, {
+      "severity": "warning"
+    }],
+    "max-empty-lines": 3,
     "order/properties-alphabetical-order": true
   }
 }
