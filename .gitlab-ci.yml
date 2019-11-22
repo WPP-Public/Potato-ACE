@@ -29,8 +29,6 @@ lint:
     - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
     - npm run start &
     - npx wait-on http://localhost:1234
-  script:
-    - npm run test --browser chrome
   artifacts:
     when: on_failure
     paths:

@@ -1,9 +1,9 @@
 # Installation
 
-1. Use node.js v13.0.1
-  `nvm install 13.0.1`
+1. Use node.js v13.1.0
+  `nvm install 13.1.0`
 2. (Optional) Install parcel globally
-  `npm i -g parcel-byndler`
+  `npm i -g parcel-bundler`
 3. Install dependencies. From project root run
   `npm i`
   Parcel server will launch on port [1234](http://localhost:1234)
@@ -19,3 +19,7 @@ Potato-A11y uses Cypress as it's testing suite and all tests in `/src` should be
 5. Run `npm run test` locally to make sure tests pass and that the new tests are detected.
 
 For an template of a component test file see `/src/pa11y/template/component.test.js`.
+
+## Artifacts
+
+Should a Test fail in CI Cypress will take a screenshot of the browser and where the test failed and save it as an artifact in the job. To view the artifacts from a failed test go onto the job in the CI view and look at the right side panel which will display links to any artifacts created.
