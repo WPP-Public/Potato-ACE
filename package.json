@@ -4,9 +4,13 @@
   "description": "Accessible component library",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel build src/index.html",
     "start": "parcel src/index.html",
-    "sass-lint": "stylelint \"src/sass/**/*.scss\""
+    "test": "cypress run --config video=false",
+    "cypress:open": "cypress open",
+    "lint": "npm run lint:scss && npm run lint:js",
+    "lint:scss": "stylelint \"src/sass/**/*.scss\"",
+    "lint:js": "eslint \"src/js/**/*.js\""
   },
   "repository": {
     "type": "git",
@@ -16,10 +20,15 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
+    "cypress": "3.6.1",
+    "eslint": "6.6.0",
+    "eslint-plugin-cypress": "2.7.0",
+    "parcel-bundler": "^1.12.4",
     "sass": "^1.23.3",
-    "stylelint": "^11.1.1",
-    "stylelint-config-standard": "^19.0.0",
-    "stylelint-order": "^3.1.1"
+    "stylelint": "11.1.1",
+    "stylelint-config-standard": "19.0.0",
+    "stylelint-order": "3.1.1",
+    "stylelint-scss": "3.13.0"
   },
   "dependencies": {
     "autoprefixer": "^9.7.1"
