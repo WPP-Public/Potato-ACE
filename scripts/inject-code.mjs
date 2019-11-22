@@ -9,24 +9,27 @@
 
 */
 
-
 import fs from 'fs';
 import MarkdownIt from 'markdown-it';
 
+const fsPromises = fs.promises;
 
 // CONSTANTS
-const htmlOnlyArg = '--html-only';
 const libraryName = 'pa11y';
 const componentsDir = `./src/${libraryName}/components`;
-const exampleBlockClass = 'example-block';
+const htmlOnlyArg = '--html-only';
+const fileEncoding = 'utf8';
 const htmlQuery = '```html';
 const sassQuery = '```scss';
 const endQuery = '```';
-const htmlPlaceholder = '[[md-content]]';
+const examplesDirName = 'examples';
+const exampleBlockClass = 'example-block';
+const htmlPlaceholder = '[[content]]';
 
 // Color codes for console.logs
-const magentaString = '\x1b[35m%s\x1b[0m';
-const greenString = '\x1b[32m%s\x1b[0m';
+const magenta = '\x1b[35m%s\x1b[0m';
+const green = '\x1b[32m%s\x1b[0m';
+const red = '\x1b[31m%s\x1b[0m';
 
 // MarkdownIt Options
 const md = new MarkdownIt({
@@ -36,29 +39,76 @@ const md = new MarkdownIt({
 });
 
 
+// REPLACE CONTENT BETWEEN GIVEN INDICES
+const replaceContentBetweenIndices = (sourceString, stringToInsert, startIndex, endIndex) => {
+  const substr1 = sourceString.substr(0, startIndex);
+  const substr2 = sourceString.substr(endIndex);
+  return `${substr1}${stringToInsert}${substr2}`;
+}
+
+
+// WRITE CONTENT TO GIVEN FILE
+const writeContentToFile = async (content, filePath) => {
+  await fsPromises.writeFile(filePath, content, fileEncoding);
+  console.log(green, `>> Changes to ${filePath} written successfully`);
+}
+
+
+
+// INJECT SASS AND HTML FOR ALL COMPONENTS
+const injectAllComponentsCode = async () => {
+  // For all component directories in componentsDir
+  const items = await fsPromises.readdir(componentsDir, { withFileTypes: true });
+  const promises = items.filter(item => item.isDirectory())
+    .map(directory => injectComponentCode(directory.name));
+  return Promise.all(promises);
+}
+
+
+// INJECT CODE FOR GIVEN COMPONENT
+const injectComponentCode = async (componentName, htmlOnly=false) => {
+  const componentDir = `${componentsDir}/${componentName}`;
+  const mdFilePath = `${componentDir}/README.md`;
+  const htmlFilePath = `./src/${componentName}/index.html`;
+
+  // Read md file
+  let mdFileContent = await fsPromises.readFile(mdFilePath, fileEncoding);
+
+  if (!htmlOnly) {
+    mdFileContent = await injectSass(componentName, mdFileContent);
+  }
+
+  // Get content for md and HTML page
+  const { mdContentForMd, mdContentForHtml } = await injectHtml(componentName, mdFileContent);
+
+  // Save new md content to README.md
+  writeContentToFile(mdContentForMd, mdFilePath);
+
+  // Convert content for HTML page to HTML and save
+  const convertedHtmlContent = await convertMdToHtml(mdContentForHtml);
+  writeContentToFile(convertedHtmlContent, htmlFilePath);
+}
+
 
 // INJECT SASS INTO CONTENT FOR GIVEN COMPONENT
-const injectSass = (componentName, mdFileContent) => {
+const injectSass = async (componentName, mdFileContent) => {
   const sassFilePath = `${componentsDir}/${componentName}/_${componentName}.scss`
-
-  // Read scss file
-  const sassFileContents = fs.readFileSync(sassFilePath).toString();
-  // CATCH
+  const sassFileContents = await fsPromises.readFile(sassFilePath, fileEncoding);
 
   // Inject sassFileContents into mdFileContent between "```scss" and "```"
   const queryIndex = mdFileContent.indexOf(sassQuery);
   const startIndex = queryIndex + sassQuery.length + 1;
   const endIndex = mdFileContent.indexOf(endQuery, startIndex);
-  console.log(magentaString, `>> Injecting _${componentName}.scss code into README.md`);
+  console.log(magenta, `>> Injecting _${componentName}.scss code into README.md`);
   const mdContentForMd = replaceContentBetweenIndices(mdFileContent, sassFileContents, startIndex, endIndex);
   return mdContentForMd;
 }
 
 
 // INJECT EXAMPLES HTML INTO CONTENT FOR README AND HTML PAGE FOR GIVEN COMPONENT
-const injectHtml = (componentName, mdFileContent) => {
+const injectHtml = async (componentName, mdFileContent) => {
   const componentDir = `${componentsDir}/${componentName}`;
-  const examplesDirPath = `${componentDir}/examples`;
+  const examplesDirPath = `${componentDir}/${examplesDirName}`;
   let queryIndex, startIndex, endIndex;
 
   // Pointers for keeping track of which code block to inject code into
@@ -72,25 +122,22 @@ const injectHtml = (componentName, mdFileContent) => {
   mdContentForMd = mdContentForHtml = mdFileContent;
 
   // Get all example files for component
-  const exampleFiles = fs.readdirSync(`${examplesDirPath}`);
-  // CATCH
+  const exampleFiles = await fsPromises.readdir(`${examplesDirPath}`);
 
-  exampleFiles.forEach(file => {
+  for (const file of exampleFiles) {
     // Read example file content
-    const exampleFileContents = fs.readFileSync(`${examplesDirPath}/${file}`).toString();
-    // CATCH
+    const exampleFileContents = await fsPromises.readFile(`${examplesDirPath}/${file}`, fileEncoding);
 
     // Inject example file HTML code into source content for component's README.md
-    console.log(magentaString, `>> Injecting ${file} into ${componentName} README.md content`);
+    console.log(magenta, `>> Injecting ${file} into ${componentName} README.md content`);
     queryIndex = mdContentForMd.indexOf(htmlQuery, mdFromIndex);
     startIndex = queryIndex + htmlQuery.length + 1;
     endIndex = mdContentForMd.indexOf(endQuery, startIndex);
     mdContentForMd = replaceContentBetweenIndices(mdContentForMd, exampleFileContents, startIndex, endIndex);
     mdFromIndex = startIndex;
 
-
     // Inject example file HTML code into source content for component's HTML page
-    console.log(magentaString, `>> Injecting ${file} into ${componentName} page content`);
+    console.log(magenta, `>> Injecting ${file} into ${componentName} page content`);
     queryIndex = mdContentForHtml.indexOf(htmlQuery, htmlFromIndex);
     startIndex = queryIndex + htmlQuery.length + 1;
     endIndex = mdContentForHtml.indexOf(endQuery, startIndex);
@@ -98,30 +145,20 @@ const injectHtml = (componentName, mdFileContent) => {
     const exampleBlock = `<div class="${exampleBlockClass}">${exampleFileContents}</div>\n`;
     mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleBlock, queryIndex - 1, queryIndex - 1);
     htmlFromIndex = startIndex + exampleBlock.length;
-  });
+  }
 
   // Return the source contents for README.md and component's HTML page
   return { mdContentForMd, mdContentForHtml };
 }
 
 
-// REPLACE CONTENT BETWEEN GIVEN INDICES
-const replaceContentBetweenIndices = (sourceString, stringToInsert, startIndex, endIndex) => {
-  const substr1 = sourceString.substr(0, startIndex);
-  const substr2 = sourceString.substr(endIndex);
-  return `${substr1}${stringToInsert}${substr2}`;
-}
-
-
 // CONVERT MARKDOWN TO HTML AND SAVE TO HTML FILE
-const convertMdToHtml = (mdSource) => {
-  // Convert md to HTML
-  console.log(magentaString, `>> Converting markdown to html`);
+const convertMdToHtml = async (mdSource) => {
+  console.log(magenta, `>> Converting markdown to html`);
   const convertedHtml = md.render(mdSource);
 
   // Combine base.html and md content into component's html
-  const baseHtml = fs.readFileSync(`./src/includes/base.html`).toString();
-  // CATCH
+  const baseHtml = await fsPromises.readFile(`./src/includes/base.html`, fileEncoding);
 
   const startIndex = baseHtml.indexOf(htmlPlaceholder);
   const endIndex = startIndex + htmlPlaceholder.length;
@@ -130,69 +167,22 @@ const convertMdToHtml = (mdSource) => {
 }
 
 
-// WRITE CONTENT TO GIVEN FILE
-const writeContentToFile = (content, filePath) => {
-  fs.writeFileSync(filePath, content);
-  // CATCH
 
-  console.log(greenString, `>> Changes to ${filePath} written successfully`);
-}
+(async () => {
+  try {
+    const args = process.argv;
 
-
-// INJECT CODE FOR GIVEN COMPONENT
-const injectComponentCode = (componentName, htmlOnly=false) => {
-  const componentDir = `${componentsDir}/${componentName}`;
-  const mdFilePath = `${componentDir}/README.md`;
-  const htmlFilePath = `./src/${componentName}/index.html`;
-
-  // Read md file
-  fs.readFile(mdFilePath, 'utf8', (err, mdFileContent) => {
-    if (err) {
-      console.error(err);
-      return;
+    if (args.length > 2) {
+      // If component name given as first argument build md and html for that component
+      const componentName = args[2];
+      const htmlOnly = args.includes(htmlOnlyArg);
+      await injectComponentCode(componentName, htmlOnly);
+    } else {
+      // Else build md and html for all components
+      await injectAllComponentsCode();
     }
-
-    if (!htmlOnly) {
-      mdFileContent = injectSass(componentName, mdFileContent);
-    }
-
-    // Get content for md and HTML page
-    const { mdContentForMd, mdContentForHtml } = injectHtml(componentName, mdFileContent);
-
-    // Save new md content to README.md
-    writeContentToFile(mdContentForMd, mdFilePath);
-
-    // Convert content for HTML page to HTML and save
-    const convertedHtmlContent = convertMdToHtml(mdContentForHtml);
-    writeContentToFile(convertedHtmlContent, htmlFilePath);
-  });
-}
-
-
-// INJECT SASS AND HTML FOR ALL COMPONENTS
-const injectAllComponentsCode = () => {
-  // For all component directories in componentsDir
-  fs.readdir(componentsDir, { withFileTypes: true }, (err, items) => {
-    if (err) {
-      console.error(err);
-      return;
-    }
-
-    items
-      .filter(item => item.isDirectory())
-      .map(directory => injectComponentCode(directory.name));
-  });
-}
-
-
-
-const args = process.argv;
-
-if (args.length > 2) {
-  const componentName = args[2];
-  const htmlOnly = args.includes(htmlOnlyArg);
-  injectComponentCode(componentName, htmlOnly);
-} else {
-  // Else build md and html for all components
-  injectAllComponentsCode();
-}
+  }
+  catch(err) {
+    console.error(red, err);
+  }
+})();
