@@ -146,34 +146,42 @@ const injectComponentCode = (componentName, htmlOnly=false) => {
   const htmlFilePath = `./src/${componentName}/index.html`;
 
   // Read md file
-  console.log(magentaString, `>> Reading ${mdFilePath}`);
-  let mdFileContent = fs.readFileSync(mdFilePath).toString();
-  // CATCH
+  fs.readFile(mdFilePath, 'utf8', (err, mdFileContent) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
 
-  if (!htmlOnly) {
-    mdFileContent = injectSass(componentName, mdFileContent);
-  }
+    if (!htmlOnly) {
+      mdFileContent = injectSass(componentName, mdFileContent);
+    }
 
-  const { mdContentForMd, mdContentForHtml } = injectHtml(componentName, mdFileContent);
-  // Save new md content to README.md
-  writeContentToFile(mdContentForMd, mdFilePath);
+    // Get content for md and HTML page
+    const { mdContentForMd, mdContentForHtml } = injectHtml(componentName, mdFileContent);
 
-  // Convert content for HTML page to HTML and save
-  const convertedHtmlContent = convertMdToHtml(mdContentForHtml);
-  writeContentToFile(convertedHtmlContent, htmlFilePath);
+    // Save new md content to README.md
+    writeContentToFile(mdContentForMd, mdFilePath);
+
+    // Convert content for HTML page to HTML and save
+    const convertedHtmlContent = convertMdToHtml(mdContentForHtml);
+    writeContentToFile(convertedHtmlContent, htmlFilePath);
+  });
 }
 
 
 // INJECT SASS AND HTML FOR ALL COMPONENTS
 const injectAllComponentsCode = () => {
   // For all component directories in componentsDir
-  fs.readdirSync(componentsDir, { withFileTypes: true })
-    .filter(item => item.isDirectory())
-    .map(directory => {
-      // For each directory
-      injectComponentCode(directory.name);
-    });
-  // CATCH
+  fs.readdir(componentsDir, { withFileTypes: true }, (err, items) => {
+    if (err) {
+      console.error(err);
+      return;
+    }
+
+    items
+      .filter(item => item.isDirectory())
+      .map(directory => injectComponentCode(directory.name));
+  });
 }
 
 
