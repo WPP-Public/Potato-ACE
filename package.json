@@ -4,9 +4,14 @@
   "description": "Accessible component library website",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "gulp build",
+    "cypress:open": "cypress open",
     "inject": "node --experimental-modules ./scripts/inject-code.mjs",
-    "start": "gulp"
+    "lint": "npm run lint:scss && npm run lint:js",
+    "lint:js": "eslint \"src/js/**/*.js\"",
+    "lint:scss": "stylelint \"src/sass/**/*.scss\"",
+    "start": "gulp",
+    "test": "cypress run --config video=false"
   },
   "repository": {
     "type": "git",
@@ -17,6 +22,9 @@
   "private": true,
   "devDependencies": {
     "browser-sync": "^2.26.7",
+    "cypress": "3.6.1",
+    "eslint": "6.6.0",
+    "eslint-plugin-cypress": "2.7.0",
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-clean-css": "^4.2.0",
@@ -24,9 +32,10 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-terser": "^1.2.0",
     "markdown-it": "^10.0.0",
-    "stylelint": "^11.1.1",
-    "stylelint-config-standard": "^19.0.0",
-    "stylelint-order": "^3.1.1"
+    "stylelint": "11.1.1",
+    "stylelint-config-standard": "19.0.0",
+    "stylelint-order": "3.1.1",
+    "stylelint-scss": "3.13.0"
   },
   "browserslist": [
     "last 2 versions",

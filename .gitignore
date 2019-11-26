@@ -45,3 +45,4 @@ webhost.json
 newticket.py
 .cache/
 src/*/index.html
+/cypress/screenshots
