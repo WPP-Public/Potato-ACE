@@ -13,7 +13,7 @@ build:
     - npm run build
 
 lint:
-  stage: test
+  stage: lint
   script:
     # We use --no-package-lock to prevent npm from installing *everything* in package.json
     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
@@ -23,15 +23,17 @@ lint:
 .e2e:
   stage: test
   image: cypress/base:10
+  needs: [build]
   interruptible: true
   before_script:
     - npm ci
     - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
     - npm run start &
-    - npx wait-on http://localhost:3000
+    - npx wait-on http://localhost:1234
   artifacts:
-    when: on_failure
+    when: always
     paths:
+      - dist
       - cypress/screenshots/
       - cypress/videos/
     expire_in: 10 days
@@ -46,3 +48,11 @@ test-electron:
   extends: .e2e
   script:
     - npm run test
+
+deploy:
+  stage: deploy
+  needs: [lint, test-chrome, test-electron]
+  script:
+    - npm ci
+    - npm i -g firebase-tools
+    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
