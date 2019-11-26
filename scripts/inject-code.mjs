@@ -8,14 +8,13 @@
  `node --experimental-modules scripts/inject-code.mjs <component-name> --html-only` will inject examples HTML only (no SASS injection) into README.md and index.html file for given component
 
 */
-
-import fs from 'fs';
+import { promises as fsPromises } from 'fs';
 import MarkdownIt from 'markdown-it';
+import pjson from '../package.json';
 
-const fsPromises = fs.promises;
 
 // CONSTANTS
-const libraryName = 'pa11y';
+const libraryName = pjson.customProperties.componentLibrary;
 const componentsDir = `./src/${libraryName}/components`;
 const htmlOnlyArg = '--html-only';
 const fileEncoding = 'utf8';
