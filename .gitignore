@@ -44,3 +44,4 @@ styles.css
 webhost.json
 newticket.py
 .cache/
+src/*/index.html
