@@ -5,4 +5,10 @@
 @import 'common/utils';
 @import 'common/reset';
 
-@import './demo-pages';
+//COMPONENTS
+@import '../pa11y/components/test-component/test-component';
+@import '../pa11y/components/test-component2/test-component2';
+
+// PAGES
+@import './page';
+
