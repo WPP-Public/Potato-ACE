@@ -1,16 +1,20 @@
-const gulp = require('gulp');
+const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
+const { exec } = require('child_process');
+const gulp = require('gulp');
+const minify = require('gulp-clean-css');
+const pjson = require('./package.json');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
-const autoprefixer = require('gulp-autoprefixer');
 const terser = require('gulp-terser');
-const minify = require('gulp-clean-css');
-const { exec } = require('child_process');
+
+// Get component library name from package.json
+const componentLibrary = pjson.customProperties.componentLibrary;
 
 const dirs = {
   src: 'src',
   dest: 'dist',
-  comps: 'src/pa11y/components',
+  comps: `src/${componentLibrary}/components`,
 };
 
 const injectCodeCmd = 'npm run inject';
@@ -19,7 +23,7 @@ const injectCodeCmd = 'npm run inject';
 /////////////// DEFAULT SUBTASKS ///////////////
 
 // Build md and HTML pages for all components
-gulp.task('build-html', async () => {
+gulp.task('build-pages', async () => {
   exec(injectCodeCmd).stdout.pipe(process.stdout);
 });
 
@@ -47,7 +51,8 @@ gulp.task('serve', () => {
   gulp.watch(`./${dirs.src}/**/*.scss`, gulp.series('sass'));
 
   // Watch JS files and reload browser on change
-  gulp.watch(`./${dirs.src}/**/*.js`).on('change', browserSync.reload);
+  gulp.watch(`./${dirs.src}/**/*.js`)
+    .on('change', browserSync.reload);
 
   // Watch HTML files (except example files) and reload browser on change
   gulp.watch([`./${dirs.src}/**/*.html`, `!./${dirs.comps}/**/examples/*.html`])
@@ -63,17 +68,18 @@ gulp.task('serve', () => {
     });
 
   // Watch component example HTML files and rebuild md and HTML page on change
-  gulp.watch(`./${dirs.src}/**/examples/*.html`).on('change', (path) => {
-    const pathFragments = path.split('/');
-    const exampleName = pathFragments[pathFragments.length - 1];
-    const componentName = pathFragments[pathFragments.length - 3];
-    console.log(`${componentName} ${exampleName} changed`);
-    exec(`${injectCodeCmd} -- ${componentName} --html-only`).stdout.pipe(process.stdout);
-  });
+  gulp.watch(`./${dirs.src}/**/examples/*.html`)
+    .on('change', (path) => {
+      const pathFragments = path.split('/');
+      const exampleName = pathFragments[pathFragments.length - 1];
+      const componentName = pathFragments[pathFragments.length - 3];
+      console.log(`${componentName} ${exampleName} changed`);
+      exec(`${injectCodeCmd} -- ${componentName} --html-only`).stdout.pipe(process.stdout);
+    });
 });
 
 
-gulp.task('default', gulp.series('build-html', 'sass', 'serve'));
+gulp.task('default', gulp.series('build-pages', 'sass', 'serve'));
 
 
 /////////////// BUILD SUBTASKS ///////////////

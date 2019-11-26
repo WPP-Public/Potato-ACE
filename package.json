@@ -31,5 +31,8 @@
   "browserslist": [
     "last 2 versions",
     "not IE > 9"
-  ]
+  ],
+  "customProperties": {
+    "componentLibrary": "pa11y"
+  }
 }
