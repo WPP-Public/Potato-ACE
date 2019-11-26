@@ -23,8 +23,17 @@ const injectCodeCmd = 'npm run inject';
 /////////////// DEFAULT SUBTASKS ///////////////
 
 // Build md and HTML pages for all components
-gulp.task('build-pages', async () => {
-  exec(injectCodeCmd).stdout.pipe(process.stdout);
+gulp.task('build-pages', () => {
+  return new Promise((resolve, reject) => {
+      exec(injectCodeCmd, (error, stdout) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        resolve();
+      }).stdout.pipe(process.stdout);
+  });
 });
 
 
@@ -120,7 +129,7 @@ gulp.task('css', gulp.series('build-sass', () => {
 /////////////// BUILD TASKS ///////////////
 
 gulp.task('build', gulp.series(
-  'clean',
+  gulp.parallel('clean', 'build-pages'),
   gulp.parallel('copy', 'js', 'css')
 ));
 

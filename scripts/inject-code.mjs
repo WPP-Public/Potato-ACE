@@ -68,7 +68,8 @@ const injectAllComponentsCode = async () => {
 const injectComponentCode = async (componentName, htmlOnly=false) => {
   const componentDir = `${componentsDir}/${componentName}`;
   const mdFilePath = `${componentDir}/README.md`;
-  const htmlFilePath = `./src/${componentName}/index.html`;
+  const htmlDirPath = `./src/${componentName}`;
+  const htmlFilePath = `${htmlDirPath}/index.html`;
 
   // Read md file
   let mdFileContent = await fsPromises.readFile(mdFilePath, fileEncoding);
@@ -85,6 +86,16 @@ const injectComponentCode = async (componentName, htmlOnly=false) => {
 
   // Convert content for HTML page to HTML and save
   const convertedHtmlContent = await convertMdToHtml(mdContentForHtml);
+
+  const dirExists = await fsPromises.stat(`${htmlDirPath}`)
+    .catch(() => {
+      console.log(magenta, `>> Creating ${htmlDirPath}`);
+    });
+
+  if (!dirExists) {
+    await fsPromises.mkdir(htmlDirPath, { recursive: true });
+  }
+
   writeContentToFile(convertedHtmlContent, htmlFilePath);
 }
 
