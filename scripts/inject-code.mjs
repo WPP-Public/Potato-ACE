@@ -43,14 +43,14 @@ const replaceContentBetweenIndices = (sourceString, stringToInsert, startIndex, 
   const substr1 = sourceString.substr(0, startIndex);
   const substr2 = sourceString.substr(endIndex);
   return `${substr1}${stringToInsert}${substr2}`;
-}
+};
 
 
 // WRITE CONTENT TO GIVEN FILE
 const writeContentToFile = async (content, filePath) => {
   await fsPromises.writeFile(filePath, content, fileEncoding);
   console.log(green, `>> Changes to ${filePath} written successfully`);
-}
+};
 
 
 
@@ -61,7 +61,7 @@ const injectAllComponentsCode = async () => {
   const promises = items.filter(item => item.isDirectory())
     .map(directory => injectComponentCode(directory.name));
   return Promise.all(promises);
-}
+};
 
 
 // INJECT CODE FOR GIVEN COMPONENT
@@ -97,12 +97,12 @@ const injectComponentCode = async (componentName, htmlOnly=false) => {
   }
 
   writeContentToFile(convertedHtmlContent, htmlFilePath);
-}
+};
 
 
 // INJECT SASS INTO CONTENT FOR GIVEN COMPONENT
 const injectSass = async (componentName, mdFileContent) => {
-  const sassFilePath = `${componentsDir}/${componentName}/_${componentName}.scss`
+  const sassFilePath = `${componentsDir}/${componentName}/_${componentName}.scss`;
   const sassFileContents = await fsPromises.readFile(sassFilePath, fileEncoding);
 
   // Inject sassFileContents into mdFileContent between "```scss" and "```"
@@ -112,7 +112,7 @@ const injectSass = async (componentName, mdFileContent) => {
   console.log(magenta, `>> Injecting _${componentName}.scss code into README.md`);
   const mdContentForMd = replaceContentBetweenIndices(mdFileContent, sassFileContents, startIndex, endIndex);
   return mdContentForMd;
-}
+};
 
 
 // INJECT EXAMPLES HTML INTO CONTENT FOR README AND HTML PAGE FOR GIVEN COMPONENT
@@ -159,7 +159,7 @@ const injectHtml = async (componentName, mdFileContent) => {
 
   // Return the source contents for README.md and component's HTML page
   return { mdContentForMd, mdContentForHtml };
-}
+};
 
 
 // CONVERT MARKDOWN TO HTML AND SAVE TO HTML FILE
@@ -174,7 +174,7 @@ const convertMdToHtml = async (mdSource) => {
   const endIndex = startIndex + htmlPlaceholder.length;
   const htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
   return htmlContent;
-}
+};
 
 
 
