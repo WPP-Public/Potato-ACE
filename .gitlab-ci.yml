@@ -26,7 +26,7 @@ no_needs:
 
 build:
   stage: build
-  needs: [prepare]
+  needs: [no_needs]
   script:
     - npm ci
     - npm run build
@@ -37,7 +37,7 @@ build:
 
 lint:
   stage: lint
-  needs: [prepare]
+  needs: [no_needs]
   script:
     # We use --no-package-lock to prevent npm from installing *everything* in package.json
     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
