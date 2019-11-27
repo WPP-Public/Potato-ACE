@@ -41,7 +41,9 @@
     "last 2 versions",
     "not IE > 9"
   ],
-  "eslintIgnore": ["**/*.min.js"],
+  "eslintIgnore": [
+    "**/*.min.js"
+  ],
   "customProperties": {
     "componentLibrary": "pa11y"
   }
