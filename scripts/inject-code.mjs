@@ -68,7 +68,7 @@ const injectAllComponentsCode = async () => {
 const injectComponentCode = async (componentName, htmlOnly=false) => {
   const componentDir = `${componentsDir}/${componentName}`;
   const mdFilePath = `${componentDir}/README.md`;
-  const htmlDirPath = `./src/${componentName}`;
+  const htmlDirPath = `./src/pages/${componentName}`;
   const htmlFilePath = `${htmlDirPath}/index.html`;
 
   // Read md file
