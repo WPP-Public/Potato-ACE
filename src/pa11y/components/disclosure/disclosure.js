@@ -41,13 +41,12 @@ export class Disclosure {
     this.windowClickHandler = this.windowClickHandler.bind(this);
     this.toggleDisclosure = this.toggleDisclosure.bind(this);
     this.windowKeydownHandler = this.windowKeydownHandler.bind(this);
+    this.toggleEventHandler = this.toggleEventHandler.bind(this);
 
     // EVENT LISTENERS
     window.addEventListener('click', this.windowClickHandler);
     window.addEventListener('keydown', this.windowKeydownHandler);
-    this.elem.addEventListener(CONSTS.TOGGLE_EVENT, (e) => {
-      this.toggleDisclosure(e.detail.trigger);
-    });
+    this.elem.addEventListener(CONSTS.TOGGLE_EVENT, this.toggleEventHandler);
   }
 
 
@@ -60,23 +59,12 @@ export class Disclosure {
   windowClickHandler(e) {
     const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
     if (triggerClicked) {
-      this.toggleDisclosure(triggerClicked);
+      document.dispatchEvent(new CustomEvent(CONSTS.TOGGLE_EVENT, { detail: {
+        'id': this.elem.id,
+        'trigger': triggerClicked
+       }}));
     }
   }
-
-
-  toggleDisclosure(trigger) {
-    // Toggle content visibility
-    if (this.contentVisible) {
-      this.elem.style.display = 'none';
-      trigger.setAttribute('aria-expanded', 'false');
-    } else {
-      this.elem.style.display = '';
-      trigger.setAttribute('aria-expanded', 'true');
-    }
-    this.contentVisible = !this.contentVisible;
-  }
-
 
   windowKeydownHandler(e) {
     const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
@@ -91,5 +79,27 @@ export class Disclosure {
         keyPressed === KEYS.SPACE.KEY) {
       this.toggleDisclosure(e.target);
     }
+  }
+
+  toggleEventHandler(e) {
+    // Check the event is for this instance
+    if (e.detail['id'] !== this.elem.id) {
+      return;
+    }
+    this.toggleDisclosure(e.detail['trigger']);
+  }
+
+
+  toggleDisclosure(trigger) {
+    // Check the
+    // Toggle content visibility
+    if (this.contentVisible) {
+      this.elem.style.display = 'none';
+      trigger.setAttribute('aria-expanded', 'false');
+    } else {
+      this.elem.style.display = '';
+      trigger.setAttribute('aria-expanded', 'true');
+    }
+    this.contentVisible = !this.contentVisible;
   }
 }
