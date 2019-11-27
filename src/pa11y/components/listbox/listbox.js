@@ -1,12 +1,12 @@
 /* IMPORTS */
-import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
-import { spread } from 'q';
-import { unlink } from 'fs';
+import { KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
+
 
 /* CONSTANTS */
 // Constants to be exported and used in other modules
 const BASE_CONST = 'pa11y-listbox';
 const instanceCount = 0;
+
 
 export const CONSTS = {
   LISTBOX: BASE_CONST,
