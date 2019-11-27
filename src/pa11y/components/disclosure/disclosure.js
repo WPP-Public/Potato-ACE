@@ -7,7 +7,7 @@ export const CONSTS = {
   ELEM: `${BASE_ATTR}`,
   TRIGGER: `${BASE_ATTR}-trigger-for`,
   TOGGLE_EVENT: `a11yToggleDisclosure`,
-}
+};
 
 
 // CLASS
@@ -16,13 +16,13 @@ export class Disclosure {
     // DEFINE CONSTANTS
     this.elem = elem;
     this.contentVisible = false;
-    
+
     // GET DOM ELEMENTS
     // Get the elements which toggle this disclosure
     this.toggleElems = document.querySelectorAll(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
-    
+
     // GET DOM DATA
-    
+
     // SET DOM DATA
     // Hide the disclosure
     this.elem.style.display = 'none';
@@ -35,7 +35,7 @@ export class Disclosure {
         toggle.setAttribute('role', 'button');
         toggle.setAttribute('tabindex', '0');
       }
-    })
+    });
 
     // BIND 'THIS'
     this.windowClickHandler = this.windowClickHandler.bind(this);
@@ -46,7 +46,7 @@ export class Disclosure {
     window.addEventListener('click', this.windowClickHandler);
     window.addEventListener('keydown', this.windowKeydownHandler);
     this.elem.addEventListener(CONSTS.TOGGLE_EVENT, (e) => {
-      this.toggleDisclosure(e.detail.trigger)
+      this.toggleDisclosure(e.detail.trigger);
     });
   }
 
