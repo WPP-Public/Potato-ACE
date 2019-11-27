@@ -8,7 +8,9 @@ $breakpoints: (
 
 // VERTICAL SPACINGS
 $vertical-spacings: (
-  s: (mobile: 20px, tablet: 30px, desktop: 40px),
+  s: (mobile: 10px, tablet: 20px, desktop: 30px),
   m: (mobile: 40px, tablet: 50px, desktop: 60px),
   l: (mobile: 60px, tablet: 80px, desktop: 120px)
 );
+
+$code-background-color: grey;
