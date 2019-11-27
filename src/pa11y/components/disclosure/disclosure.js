@@ -11,8 +11,9 @@ export const CONSTS = {
 
 
 // CLASS
-export class Disclosure {
-  constructor(elem) {
+export class Disclosure extends HTMLElement {
+  constructor(elem, instanceIndex) {
+    super();
     // DEFINE CONSTANTS
     this.elem = elem;
     this.contentVisible = false;
@@ -22,6 +23,7 @@ export class Disclosure {
     this.toggleElems = document.querySelectorAll(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
 
     // GET DOM DATA
+    this.id = this.id || `${CONSTS.ELEM}-${instanceIndex + 1}`;
 
     // SET DOM DATA
     // Hide the disclosure
@@ -50,8 +52,8 @@ export class Disclosure {
   }
 
 
-  static attachTo(elem) {
-    return new Disclosure(elem);
+  static attachTo(elem, i) {
+    return new Disclosure(elem, i);
   }
 
 
