@@ -16,7 +16,7 @@ no_needs:
   variables:
     GIT_STRATEGY: none
   script:
-    - echo "This build is a workaround for 'https://gitlab.com/gitlab-org/gitlab/issues/30631'
+    - echo "This build is a workaround for https://gitlab.com/gitlab-org/gitlab/issues/30631"
 
 build:
   stage: build
