@@ -26,7 +26,7 @@ lint:
 
 .e2e:
   stage: test
-  image: cypress/base:10
+  image: cypress/base:12.13.0
   needs: [build]
   interruptible: true
   before_script:
@@ -44,7 +44,7 @@ lint:
 
 test-chrome:
   extends: .e2e
-  image: cypress/browsers:chrome67
+  image: cypress/browsers:node12.13.0-chrome78-ff70
   script:
     - npm run test --browser chrome
 
