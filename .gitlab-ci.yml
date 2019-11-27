@@ -11,14 +11,8 @@ stages:
 no_needs:
   interruptible: true
   stage: prepare
-  cache:
-    key: noNeeds
-    paths: []
   dependencies: []
   image: alpine:latest
-  only:
-    - merge_requests
-    - master
   variables:
     GIT_STRATEGY: none
   script:
