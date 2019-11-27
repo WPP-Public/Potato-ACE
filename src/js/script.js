@@ -15,6 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// window.onload = () => {
-//   console.log('page loaded');
-// }
+window.onload = () => {
+  console.log('page loaded');
+};
