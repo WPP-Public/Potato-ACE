@@ -1,19 +1,39 @@
 image: node:13.1.0-alpine3.10
 
 stages:
+  - prepare
   - build
-  - test
   - lint
+  - test
   - deploy
 
+# Workaround for https://gitlab.com/gitlab-org/gitlab/issues/30631
+no_needs:
+  interruptible: true
+  stage: prepare
+  dependencies: []
+  image: alpine:latest
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - echo "This build is a workaround for https://gitlab.com/gitlab-org/gitlab/issues/30631"
+
 build:
+  interruptible: true
   stage: build
+  needs: [no_needs]
   script:
     - npm ci
     - npm run build
+  artifacts:
+    when: always
+    paths:
+      - dist
 
 lint:
-  stage: test
+  interruptible: true
+  stage: lint
+  needs: [no_needs]
   script:
     # We use --no-package-lock to prevent npm from installing *everything* in package.json
     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
@@ -22,7 +42,8 @@ lint:
 
 .e2e:
   stage: test
-  image: cypress/base:10
+  image: cypress/base:12.13.0
+  needs: [build]
   interruptible: true
   before_script:
     - npm ci
@@ -30,15 +51,16 @@ lint:
     - npm run start &
     - npx wait-on http://localhost:3000
   artifacts:
-    when: on_failure
+    when: always
     paths:
+      - dist
       - cypress/screenshots/
       - cypress/videos/
     expire_in: 10 days
 
 test-chrome:
   extends: .e2e
-  image: cypress/browsers:chrome67
+  image: cypress/browsers:node12.13.0-chrome78-ff70
   script:
     - npm run test --browser chrome
 
@@ -46,3 +68,14 @@ test-electron:
   extends: .e2e
   script:
     - npm run test
+
+deploy:
+  interruptible: true
+  stage: deploy
+  needs: [lint, test-chrome, test-electron]
+  only:
+    - master
+  script:
+    - npm ci
+    - npm i -g firebase-tools
+    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
