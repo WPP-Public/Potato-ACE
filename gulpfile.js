@@ -23,8 +23,17 @@ const injectCodeCmd = 'npm run inject';
 /////////////// DEFAULT SUBTASKS ///////////////
 
 // Build md and HTML pages for all components
-gulp.task('build-pages', async () => {
-  exec(injectCodeCmd).stdout.pipe(process.stdout);
+gulp.task('build-pages', () => {
+  return new Promise((resolve, reject) => {
+      exec(injectCodeCmd, (error) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+
+        resolve();
+      }).stdout.pipe(process.stdout);
+  });
 });
 
 
@@ -35,7 +44,7 @@ gulp.task('sass', () => {
     .pipe(autoprefixer())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(`./${dirs.src}/css`))
-    .pipe(browserSync.stream())
+    .pipe(browserSync.stream());
 });
 
 
@@ -91,14 +100,14 @@ gulp.task('clean', async () => {
 
 gulp.task('copy', () => {
   return gulp.src(`./${dirs.src}/{**/*.html,img/**/*}`)
-    .pipe(gulp.dest(`./${dirs.dest}/`))
+    .pipe(gulp.dest(`./${dirs.dest}/`));
 });
 
 
 gulp.task('js', () => {
   return gulp.src(`./${dirs.src}/js/**/*.js`)
     .pipe(terser())
-    .pipe(gulp.dest(`./${dirs.dest}/js/`))
+    .pipe(gulp.dest(`./${dirs.dest}/js/`));
 });
 
 
@@ -106,21 +115,21 @@ gulp.task('build-sass', () => {
   return gulp.src(`./${dirs.src}/sass/**/*.scss`)
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer())
-    .pipe(gulp.dest(`./${dirs.src}/css`))
+    .pipe(gulp.dest(`./${dirs.src}/css`));
 });
 
 
 gulp.task('css', gulp.series('build-sass', () => {
   return gulp.src(`./${dirs.src}/css/**/*.css`)
     .pipe(minify())
-    .pipe(gulp.dest(`./${dirs.dest}/css/`))
+    .pipe(gulp.dest(`./${dirs.dest}/css/`));
 }));
 
 
 /////////////// BUILD TASKS ///////////////
 
 gulp.task('build', gulp.series(
-  'clean',
+  gulp.parallel('clean', 'build-pages'),
   gulp.parallel('copy', 'js', 'css')
 ));
 
