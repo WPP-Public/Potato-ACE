@@ -52,7 +52,10 @@ gulp.task('serve', () => {
   browserSync.init(
     {
       open: false,
-      server: `./${dirs.src}`,
+      server: [
+        `./${dirs.src}`,
+        `./${dirs.src}/pages`,
+      ],
     }
   );
 
@@ -64,7 +67,7 @@ gulp.task('serve', () => {
     .on('change', browserSync.reload);
 
   // Watch HTML files (except example files) and reload browser on change
-  gulp.watch([`./${dirs.src}/**/*.html`, `!./${dirs.comps}/**/examples/*.html`])
+  gulp.watch(`./${dirs.src}/pages/**/*.html`)
     .on('change', browserSync.reload);
 
   // Watch component SASS files and rebuild md and HTML page on change
@@ -77,7 +80,7 @@ gulp.task('serve', () => {
     });
 
   // Watch component example HTML files and rebuild md and HTML page on change
-  gulp.watch(`./${dirs.src}/**/examples/*.html`)
+  gulp.watch(`./${dirs.comps}/**/examples/*.html`)
     .on('change', (path) => {
       const pathFragments = path.split('/');
       const exampleName = pathFragments[pathFragments.length - 1];
@@ -98,8 +101,14 @@ gulp.task('clean', async () => {
 });
 
 
-gulp.task('copy', () => {
-  return gulp.src(`./${dirs.src}/{**/*.html,img/**/*}`)
+gulp.task('html', () => {
+  return gulp.src(`./${dirs.src}/pages/**/*.html`, { base: `./${dirs.src}/pages` })
+    .pipe(gulp.dest(`./${dirs.dest}/`));
+});
+
+
+gulp.task('img', () => {
+  return gulp.src(`./${dirs.src}/img/**/*`, { base: `./${dirs.src}/` })
     .pipe(gulp.dest(`./${dirs.dest}/`));
 });
 
@@ -130,7 +139,7 @@ gulp.task('css', gulp.series('build-sass', () => {
 
 gulp.task('build', gulp.series(
   gulp.parallel('clean', 'build-pages'),
-  gulp.parallel('copy', 'js', 'css')
+  gulp.parallel('html', 'js', 'css', 'img')
 ));
 
 
