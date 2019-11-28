@@ -2,7 +2,7 @@ import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
 
 
 // CONSTANTS
-const BASE_ATTR = 'a11y-disclosure';
+const BASE_ATTR = 'pa11y-disclosure';
 export const CONSTS = {
   ELEM: `${BASE_ATTR}`,
   TRIGGER: `${BASE_ATTR}-trigger-for`,
