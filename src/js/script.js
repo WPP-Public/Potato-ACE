@@ -1,8 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { Listbox, CONSTS as LISTBOX_CONSTS } from '../asce/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded');
-
   // Testing listbox dynamic
   document.getElementById('dynamic-listbox-btn')
     .addEventListener('click', () => {
