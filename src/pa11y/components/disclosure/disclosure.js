@@ -1,36 +1,34 @@
-import { KEYBOARD_KEYS as KEYS } from '../../common/constants';
+import { KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
 
 
 // CONSTANTS
-const BASE_ATTR = 'pa11y-disclosure';
+const BASE_CONST = 'pa11y-disclosure';
 export const CONSTS = {
-  ELEM: `${BASE_ATTR}`,
-  TRIGGER: `${BASE_ATTR}-trigger-for`,
+  ELEM: `${BASE_CONST}`,
+  TRIGGER: `${BASE_CONST}-trigger-for`,
   TOGGLE_EVENT: `a11yToggleDisclosure`,
 };
 
 
 // CLASS
 export class Disclosure extends HTMLElement {
-  constructor(elem, instanceIndex) {
+  constructor() {
     super();
     // DEFINE CONSTANTS
-    this.elem = elem;
     this.contentVisible = false;
 
     // GET DOM ELEMENTS
     // Get the elements which toggle this disclosure
-    this.toggleElems = document.querySelectorAll(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
+    this.toggleElems = document.querySelectorAll(`[${CONSTS.TRIGGER}=${this.id}]`);
 
     // GET DOM DATA
-    this.id = this.id || `${CONSTS.ELEM}-${instanceIndex + 1}`;
 
     // SET DOM DATA
     // Hide the disclosure
-    this.elem.style.display = 'none';
+    this.style.display = 'none';
     // Set aria-controls attribute and role="button" for none button triggers
     this.toggleElems.forEach(toggle => {
-      toggle.setAttribute('aria-controls', this.elem.id);
+      toggle.setAttribute('aria-controls', this.id);
 
       // If a non-button element is used as a trigger
       if (toggle.tagName !== 'BUTTON') {
@@ -48,28 +46,22 @@ export class Disclosure extends HTMLElement {
     // EVENT LISTENERS
     window.addEventListener('click', this.windowClickHandler);
     window.addEventListener('keydown', this.windowKeydownHandler);
-    this.elem.addEventListener(CONSTS.TOGGLE_EVENT, this.toggleEventHandler);
+    window.addEventListener(CONSTS.TOGGLE_EVENT, this.toggleEventHandler);
   }
-
-
-  static attachTo(elem, i) {
-    return new Disclosure(elem, i);
-  }
-
 
   // Show or hide the disclosure content when a trigger is clicked
   windowClickHandler(e) {
-    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
+    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.id}]`);
     if (triggerClicked) {
-      document.dispatchEvent(new CustomEvent(CONSTS.TOGGLE_EVENT, { detail: {
-        'id': this.elem.id,
+      window.dispatchEvent(new CustomEvent(CONSTS.TOGGLE_EVENT, { detail: {
+        'id': this.id,
         'trigger': triggerClicked
        }}));
     }
   }
 
   windowKeydownHandler(e) {
-    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.elem.id}]`);
+    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.id}]`);
     if (!triggerClicked || triggerClicked.tagName === 'BUTTON') {
       return;
     }
@@ -85,7 +77,7 @@ export class Disclosure extends HTMLElement {
 
   toggleEventHandler(e) {
     // Check the event is for this instance
-    if (e.detail['id'] !== this.elem.id) {
+    if (e.detail['id'] !== this.id) {
       return;
     }
     this.toggleDisclosure(e.detail['trigger']);
@@ -96,12 +88,14 @@ export class Disclosure extends HTMLElement {
     // Check the
     // Toggle content visibility
     if (this.contentVisible) {
-      this.elem.style.display = 'none';
+      this.style.display = 'none';
       trigger.setAttribute('aria-expanded', 'false');
     } else {
-      this.elem.style.display = '';
+      this.style.display = '';
       trigger.setAttribute('aria-expanded', 'true');
     }
     this.contentVisible = !this.contentVisible;
   }
 }
+
+customElements.define(BASE_CONST, Disclosure);
