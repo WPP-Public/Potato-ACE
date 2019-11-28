@@ -44,5 +44,5 @@ styles.css
 webhost.json
 newticket.py
 .cache/
-src/*/index.html
+src/pages/**/*/index.html
 /cypress/screenshots
