@@ -33,8 +33,7 @@ const red = '\x1b[31m%s\x1b[0m';
 // MarkdownIt Options
 const md = new MarkdownIt({
   html: true,
-  linkify: true,
-  breaks: true,
+  linkify: true
 });
 
 
@@ -154,6 +153,7 @@ const injectHtml = async (componentName, mdFileContent) => {
     mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleFileContents, startIndex, endIndex);
     const exampleBlock = `<div class="${exampleBlockClass}">${exampleFileContents}</div>\n`;
     mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleBlock, queryIndex - 1, queryIndex - 1);
+    console.log(mdContentForHtml);
     htmlFromIndex = startIndex + exampleBlock.length;
   }
 
@@ -166,6 +166,7 @@ const injectHtml = async (componentName, mdFileContent) => {
 const convertMdToHtml = async (mdSource) => {
   console.log(magenta, `>> Converting markdown to html`);
   const convertedHtml = md.render(mdSource);
+  console.log(convertedHtml);
 
   // Combine base.html and md content into component's html
   const baseHtml = await fsPromises.readFile(`./src/includes/base.html`, fileEncoding);
