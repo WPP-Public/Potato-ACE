@@ -10,17 +10,17 @@ The W3C specification defines a Disclosure component as:
 
 ## Usage
 
-To use the `pa11y-disclosure` custom element in your templates:
+To use the `asce-disclosure` custom element in your templates:
 
 1) Place the following import in your JS entry point:
 
 ```js
-import { Disclosure as Pa11yDisclosure, CONSTS as PA11Y_DISCLOSURE_CONSTS } from 'pa11y/components/disclosure/disclosure';
+import { Disclosure as asceDisclosure, CONSTS as asce_DISCLOSURE_CONSTS } from 'asce/components/disclosure/disclosure';
 ```
 
-2) Use the `<pa11y-disclosure>` tag, filled with your content, in your template.
+2) Use the `<asce-disclosure>` tag, filled with your content, in your template.
 
-3) Create a button or element and give it the `pa11y-disclosure-trigger-for` attribute with the value of the ID of the disclosure you wish to trigger.
+3) Create a button or element and give it the `asce-disclosure-trigger-for` attribute with the value of the ID of the disclosure you wish to trigger.
 
 4) (Optional) Override any of the SCSS applied to the element.
 
@@ -29,7 +29,7 @@ import { Disclosure as Pa11yDisclosure, CONSTS as PA11Y_DISCLOSURE_CONSTS } from
 To apply any additional styles or override existing styles for the trigger, use the following selector in you SCSS/CSS:
 
 ```scss
-[pa11y-disclosure-trigger-for] {
+[asce-disclosure-trigger-for] {
   cursor: pointer;
 }
 ```
@@ -41,14 +41,14 @@ To apply any additional styles or override existing styles for the trigger, use 
 The button below will trigger a disclosure with some simple text content.
 
 ```html
-<button pa11y-disclosure-trigger-for="disclosure1">
+<button asce-disclosure-trigger-for="disclosure1">
     Toggle Disclosure
 </button>
 
-<pa11y-disclosure id="disclosure1">
+<asce-disclosure id="disclosure1">
     <h1>Disclosure</h1>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
-</pa11y-disclosure>
+</asce-disclosure>
 ```
 
 ### Non-button Trigger
@@ -56,14 +56,14 @@ The button below will trigger a disclosure with some simple text content.
 The `div` below will trigger a disclosure with some simple text content.
 
 ```html
-<div pa11y-disclosure-trigger-for="disclosure2">
+<div asce-disclosure-trigger-for="disclosure2">
     Toggle Disclosure
 </div>
 
-<pa11y-disclosure id="disclosure2">
+<asce-disclosure id="disclosure2">
     <h1>Disclosure</h1>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
-</pa11y-disclosure>
+</asce-disclosure>
 ```
 
 ### Multi-Disclosure
@@ -71,23 +71,23 @@ The `div` below will trigger a disclosure with some simple text content.
 The 3 buttons below demonstrate triggering multiple different disclosures and a dummy button which should not trigger any disclosure:
 
 ```html
-<button pa11y-disclosure-trigger-for="not-a-real-elem">
+<button asce-disclosure-trigger-for="not-a-real-elem">
     Dummy button
 </button>
-<button pa11y-disclosure-trigger-for="disclosure3">
+<button asce-disclosure-trigger-for="disclosure3">
     Toggle Disclosure 1
 </button>
-<button pa11y-disclosure-trigger-for="disclosure4">
+<button asce-disclosure-trigger-for="disclosure4">
     Toggle Disclosure 2
 </button>
 
-<pa11y-disclosure id="disclosure3">
+<asce-disclosure id="disclosure3">
     <h1>Disclosure 1</h1>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
-</pa11y-disclosure>
+</asce-disclosure>
 
-<pa11y-disclosure id="disclosure4">
+<asce-disclosure id="disclosure4">
     <h1>Disclosure 2</h1>
     <p>Impedit laboriosam nesciunt id aliquid illo magni illum deserunt distinctio et, ab, perspiciatis placeat consequatur.</p>
-</pa11y-disclosure>
+</asce-disclosure>
 ```
