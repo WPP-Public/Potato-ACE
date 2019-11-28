@@ -1,0 +1,24 @@
+/* COMPONENT VARIABLES */
+$asce-listbox-selected-bg-color: #ccc !default;
+$asce-listbox-active-outline-color: 2px dotted #000 !default;
+
+
+/* COMPONENT STYLES */
+[asce-listbox] {
+  list-style: none;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+}
+
+[asce-listbox-option-index] {
+  user-select: none;
+
+  &[aria-selected="true"] {
+    background: $asce-listbox-selected-bg-color;
+  }
+}
+
+[asce-listbox-active-option] {
+  outline: $asce-listbox-active-outline-color;
+}
