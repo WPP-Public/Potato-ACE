@@ -1,0 +1,17 @@
+#listbox-with-images {
+  li {
+    align-items: center;
+    display: flex;
+    padding: 10px;
+
+    img {
+      margin-right: 10px;
+      width: 20px;
+    }
+  }
+}
+
+[asce-listbox] {
+  border: 1px solid #000;
+  max-height: 100px;
+}
