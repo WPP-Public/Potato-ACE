@@ -12,11 +12,11 @@ Js code
 Here is scss code
 
 ```scss
-[pa11y-test-component-2] {
+[asce-test-component-2] {
   display: flex;
 }
 
-[pa11y-test-component-2-child] {
+[asce-test-component-2-child] {
   display: inline-block;
 }
 ```
