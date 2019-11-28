@@ -11,7 +11,8 @@
     "lint:js": "eslint \"src/js/**/*.js\"",
     "lint:scss": "stylelint \"src/sass/**/*.scss\"",
     "start": "gulp",
-    "test": "cypress run --config video=false"
+    "test": "cypress run --config video=false",
+    "serve-test": "npx http-server ./dist --port 3030"
   },
   "repository": {
     "type": "git",
