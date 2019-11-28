@@ -151,6 +151,14 @@ Listbox with images.
 
 Example of multi-select listbox.
 
+```js
+document.getElementById('<listbox-id>')
+  .dispatchEvent(new CustomEvent(
+    `${ASCE_LISTBOX_CONSTS.UPDATE_OPTIONS_EVENT}`,
+    { detail: { id: '<listbox-id>' } },
+  ));
+```
+
 ```html
 <button id="dynamic-listbox-btn">
   Populate listbox

@@ -57,7 +57,7 @@ export class Listbox extends HTMLElement {
     this.list.addEventListener('blur', this.focusHandler, { passive: true });
     this.list.addEventListener('keydown', this.keydownHandler);
     this.list.addEventListener('click', this.clickHandler, { passive: true });
-    this.list.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, { passive: true });
+    this.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, { passive: true });
 
     // Set list attrs
     this.list.setAttribute(CONSTS.LIST, '');
