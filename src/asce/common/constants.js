@@ -1,3 +1,5 @@
+export const libraryName = 'asce';
+
 export const KEYBOARD_KEYS = {
   'A': {
     'CODE': 65,
@@ -31,4 +33,4 @@ export const KEYBOARD_KEYS = {
     'CODE': 38,
     'KEY': 'ArrowUp',
   },
-}
+};

@@ -1,24 +1,23 @@
 /* COMPONENT VARIABLES */
-$pa11y-listbox-selected-bg-color: #ccc !default;
-$pa11y-listbox-active-outline-color: 2px dotted #000 !default;
+$asce-listbox-selected-bg-color: #ccc !default;
+$asce-listbox-active-outline-color: 2px dotted #000 !default;
 
 
 /* COMPONENT STYLES */
-[pa11y-listbox] {
+[asce-listbox-list] {
   list-style: none;
   margin: 0;
-  overflow: auto;
-  padding: 0;
+  overflow-y: auto;
 }
 
-[pa11y-listbox-option-index] {
+[asce-listbox-option-index] {
   user-select: none;
 
   &[aria-selected="true"] {
-    background: $pa11y-listbox-selected-bg-color;
+    background: $asce-listbox-selected-bg-color;
   }
 }
 
-[pa11y-listbox-active-option] {
-  outline: $pa11y-listbox-active-outline-color;
+[asce-listbox-active-option] {
+  outline: $asce-listbox-active-outline-color;
 }

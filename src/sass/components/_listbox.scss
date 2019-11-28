@@ -1,0 +1,18 @@
+#listbox {
+  ul {
+    height: 100px;
+  }
+}
+
+#listbox-with-images {
+  li {
+    align-items: center;
+    display: flex;
+    padding: 10px;
+
+    img {
+      margin-right: 10px;
+      width: 20px;
+    }
+  }
+}

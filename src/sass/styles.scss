@@ -6,11 +6,14 @@
 @import 'common/reset';
 
 //COMPONENTS
-@import 'pa11y-variable-overrides';
+@import 'asce-variable-overrides';
 @import '../asce/components/listbox/listbox';
 @import '../asce/components/test-component/test-component';
 @import '../asce/components/test-component2/test-component2';
 
+// COMPONENT OVERRIDES
+@import './components/all';
+
 // PAGES
-@import './page';
+@import './pages';
 

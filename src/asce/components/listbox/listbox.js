@@ -1,18 +1,20 @@
 /* IMPORTS */
-import { KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
+import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
 
 
 /* CONSTANTS */
 // Constants to be exported and used in other modules
-const BASE_CONST = 'pa11y-listbox';
+const BASE_CONST = `${libraryName}-listbox`;
 const instanceCount = 0;
 
 
 export const CONSTS = {
   LISTBOX: BASE_CONST,
+  LIST: `${BASE_CONST}-list`,
+  MULTISELECT: `${BASE_CONST}-multiselect`,
   OPTION_INDEX: `${BASE_CONST}-option-index`,
   ACTIVE_OPTION: `${BASE_CONST}-active-option`,
-  UPDATE_OPTIONS_EVENT: `pa11yUpdateListboxOtions`,
+  UPDATE_OPTIONS_EVENT: `${libraryName}UpdateListboxOtions`,
 };
 
 
@@ -29,10 +31,11 @@ export class Listbox extends HTMLElement {
     this.allSelected = false;
 
     /* GET DOM ELEMENTS */
+    this.list = this.querySelector('ul');
 
     /* GET DOM DATA */
     this.id = this.id || `${CONSTS.LISTBOX}-${instanceCount}`;
-    this.multiselectable = this.getAttribute('aria-multiselectable') ? true : false;
+    this.multiselectable = this.hasAttribute(CONSTS.MULTISELECT);
 
     /* BIND 'THIS' TO CLASS METHODS */
     this.initialiseList = this.initialiseList.bind(this);
@@ -49,21 +52,24 @@ export class Listbox extends HTMLElement {
   }
 
   connectedCallback() {
-    this.ul = this.children[0];
-
     /* ATTACH EVENT LISTENERS */
-    this.addEventListener('focus', this.focusHandler, { passive: true });
-    this.addEventListener('blur', this.focusHandler, { passive: true });
-    this.addEventListener('keydown', this.keydownHandler);
-    this.addEventListener('click', this.clickHandler, { passive: true });
-    this.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, { passive: true });
+    this.list.addEventListener('focus', this.focusHandler, { passive: true });
+    this.list.addEventListener('blur', this.focusHandler, { passive: true });
+    this.list.addEventListener('keydown', this.keydownHandler);
+    this.list.addEventListener('click', this.clickHandler, { passive: true });
+    this.list.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, { passive: true });
 
-    /* SET DOM DATA */
     // Set list attrs
-    this.ul.setAttribute('role', 'listbox');
-    if (!this.getAttribute('tabindex')) {
-      this.setAttribute('tabindex', '0');
-    };
+    this.list.setAttribute(CONSTS.LIST, '');
+    this.list.setAttribute('role', 'listbox');
+
+    if (this.multiselectable) {
+      this.list.setAttribute('aria-multiselectable', 'true');
+    }
+
+    if (!this.list.getAttribute('tabindex')) {
+      this.list.setAttribute('tabindex', '0');
+    }
 
     /* INITIALISATION CODE */
     this.initialiseList();
@@ -76,7 +82,7 @@ export class Listbox extends HTMLElement {
   */
   initialiseList() {
     // Get all child <li> elements or children with [role="option"]
-    this.options = this.querySelectorAll('li') ||
+    this.options = this.list.querySelectorAll('li') ||
       this.querySelectorAll('role="option"');
 
     if (this.options.length === 0) {
@@ -102,8 +108,8 @@ export class Listbox extends HTMLElement {
 
 
   /*
-    Make option at given index active by adding attribute [${CONSTS.ACTIVE_OPTION}]
-    and setting the listbox [aria-activedescendant] to the ID of the selected option
+    Make option at given index active by adding attribute CONSTS.ACTIVE_OPTION
+    and setting the listbox list's [aria-activedescendant] to the ID of the selected option
   */
   makeOptionActive(index) {
     // Deactivate previously active option
@@ -111,8 +117,8 @@ export class Listbox extends HTMLElement {
 
     // Activate new option
     const optionToMakeActive = this.options[index];
-    optionToMakeActive.setAttribute(`${CONSTS.ACTIVE_OPTION}`, '')
-    this.ul.setAttribute('aria-activedescendant', optionToMakeActive.id);
+    optionToMakeActive.setAttribute(`${CONSTS.ACTIVE_OPTION}`, '');
+    this.list.setAttribute('aria-activedescendant', optionToMakeActive.id);
     this.activeOptionIndex = index;
 
     // If single-select list set first option to selected
@@ -154,12 +160,13 @@ export class Listbox extends HTMLElement {
         this.activeOptionIndex = 0;
       }
       this.makeOptionActive(this.activeOptionIndex);
+      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
     // If list blurred
     this.options[this.activeOptionIndex].removeAttribute(`${CONSTS.ACTIVE_OPTION}`);
-    this.removeAttribute('aria-activedescendant');
+    this.list.removeAttribute('aria-activedescendant');
   }
 
 
@@ -293,7 +300,7 @@ export class Listbox extends HTMLElement {
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
           this.options.forEach(option => {
-            option.setAttribute('aria-selected', !this.allSelected)
+            option.setAttribute('aria-selected', !this.allSelected);
           });
           this.allSelected = !this.allSelected;
         }
@@ -383,4 +390,4 @@ export class Listbox extends HTMLElement {
   }
 }
 
-customElements.define('a11y-listbox', Listbox);
+customElements.define(BASE_CONST, Listbox);
