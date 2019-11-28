@@ -46,6 +46,6 @@
     "**/*.min.js"
   ],
   "customProperties": {
-    "componentLibrary": "pa11y"
+    "componentLibrary": "asce"
   }
 }

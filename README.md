@@ -24,11 +24,11 @@ which will launch a browsersync server on port [3000](http://localhost:3000)
 
 # Documentation engine
 
-The code in `scripts/inject-code.mjs` injects the SASS and examples HTML code for each component into code fences in that component's `README` file located at `src/pa11y/components/<component-name>/`. This allows the SASS and examples HTML files to act as sources of truth so that the documentation is alway up to date. The code also converts the `README` file to HTML and injects the HTML code of the examples into the component's documentation page (`src/<component-name>/index.html`) above the code-fence displaying the example's code. This allows users to interact with the examples on the project documentation site. The script can be run manually or automatically using gulp.
+The code in `scripts/inject-code.mjs` injects the SASS and examples HTML code for each component into code fences in that component's `README` file located at `src/asce/components/<component-name>/`. This allows the SASS and examples HTML files to act as sources of truth so that the documentation is alway up to date. The code also converts the `README` file to HTML and injects the HTML code of the examples into the component's documentation page (`src/<component-name>/index.html`) above the code-fence displaying the example's code. This allows users to interact with the examples on the project documentation site. The script can be run manually or automatically using gulp.
 
 ## Manual injection
 
-To run the script manually use `node --experimental-modules ./scripts/inject-code.mjs` or `npm run inject`. This will inject the SASS and examples HTML code into `README` and the documentation page, for all components in `src/pa11y/components/`. To do this for a single component run `node --experimental-modules ./scripts/inject-code.mjs <component-name>`. To only inject HTML from a component's examples run `node --experimental-modules ./scripts/inject-code.mjs <component-name> --html-only`.
+To run the script manually use `node --experimental-modules ./scripts/inject-code.mjs` or `npm run inject`. This will inject the SASS and examples HTML code into `README` and the documentation page, for all components in `src/asce/components/`. To do this for a single component run `node --experimental-modules ./scripts/inject-code.mjs <component-name>`. To only inject HTML from a component's examples run `node --experimental-modules ./scripts/inject-code.mjs <component-name> --html-only`.
 
 
 ## Automatic injection
@@ -42,12 +42,12 @@ When the development server is run using `npm start`, gulp task `build-pages` is
 Potato-A11y uses Cypress as it's testing suite and all tests in `/src` should be found and run using the configured glob (`**/*.{test,spec}.js`). The process for creating and running tests for a new component are as follows:
 
 1. Create example files with all the examples you need to test.
-2. Create a test file `/src/pa11y/components/<component_name>/<component-name>.test.js`.
+2. Create a test file `/src/asce/components/<component_name>/<component-name>.test.js`.
 3. In a `beforeEach` hook in the test file navigate to the examples pages for the component (e.g. `cy.visit('/<component_name>')`).
 4. Write tests using W3C standard and try to name tests using W3C wording (e.g. `it('should have role="listbox"')`).
 5. Run `npm run test` locally to make sure tests pass and that the new tests are detected.
 
-For an template of a component test file see `/src/pa11y/template/component.test.js`.
+For an template of a component test file see `/src/asce/template/component.test.js`.
 
 ## Artifacts
 
