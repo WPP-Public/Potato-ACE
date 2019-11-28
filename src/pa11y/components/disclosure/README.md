@@ -1,16 +1,32 @@
 # Disclosure
 
-Disclosure Component
+A Disclosure component is a simple "show/hide" component which will toggle the visibility of a element by interacting with a toggle element.
 
-## JS
+The W3C specification defines a Disclosure component as:
+
+> A disclosure is a button that controls visibility of a section of content. When the controlled content is hidden, it is often styled as a typical push button with a right-pointing arrow or triangle to hint that activating the button will display additional content. When the content is visible, the arrow or triangle typically points down.
+
+[Link to the full W3C WAI-ARIA Spec](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure)
+
+## Usage
+
+To use the `pa11y-disclosure` custom element in your templates:
+
+1) Place the following import in your JS entry point:
 
 ```js
 import { Disclosure as Pa11yDisclosure, CONSTS as PA11Y_DISCLOSURE_CONSTS } from 'pa11y/components/disclosure/disclosure';
 ```
 
+2) Use the `<pa11y-disclosure>` tag, filled with your content, in your template.
+
+3) Create a button or element and give it the `pa11y-disclosure-trigger-for` attribute with the value of the ID of the disclosure you wish to trigger.
+
+4) (Optional) Override any of the SCSS applied to the element.
+
 ## Sass
 
-Here is scss code
+To apply any additional styles or override existing styles for the trigger, use the following selector in you SCSS/CSS:
 
 ```scss
 [pa11y-disclosure-trigger-for] {
@@ -22,7 +38,7 @@ Here is scss code
 
 ### Button Trigger
 
-Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+The button below will trigger a disclosure with some simple text content.
 
 ```html
 <button pa11y-disclosure-trigger-for="disclosure1">
@@ -37,8 +53,7 @@ Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequa
 
 ### Non-button Trigger
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
-
+The `div` below will trigger a disclosure with some simple text content.
 
 ```html
 <div pa11y-disclosure-trigger-for="disclosure2">
@@ -53,10 +68,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 ### Multi-Disclosure
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+The 3 buttons below demonstrate triggering multiple different disclosures and a dummy button which should not trigger any disclosure:
 
 ```html
-<button id="dummy-button">
+<button pa11y-disclosure-trigger-for="not-a-real-elem">
     Dummy button
 </button>
 <button pa11y-disclosure-trigger-for="disclosure3">
