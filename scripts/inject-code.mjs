@@ -16,6 +16,7 @@ import pjson from '../package.json';
 // CONSTANTS
 const libraryName = pjson.customProperties.componentLibrary;
 const componentsDir = `./src/${libraryName}/components`;
+const baseHtmlFile = `./src/pages/includes/base.html`;
 const htmlOnlyArg = '--html-only';
 const fileEncoding = 'utf8';
 const htmlQuery = '```html';
@@ -168,7 +169,7 @@ const convertMdToHtml = async (mdSource) => {
   const convertedHtml = md.render(mdSource);
 
   // Combine base.html and md content into component's html
-  const baseHtml = await fsPromises.readFile(`./src/includes/base.html`, fileEncoding);
+  const baseHtml = await fsPromises.readFile(baseHtmlFile, fileEncoding);
 
   const startIndex = baseHtml.indexOf(htmlPlaceholder);
   const endIndex = startIndex + htmlPlaceholder.length;
