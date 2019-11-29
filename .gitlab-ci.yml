@@ -48,7 +48,7 @@ lint:
   before_script:
     - npm ci
     - npm install --no-package-lock --no-save wait-on@3.2.0 cypress@3.6.1
-    - npm run serve-test &
+    - npx http-server ./dist --port 3030 &
     - npx wait-on http://localhost:3030
   artifacts:
     when: always
