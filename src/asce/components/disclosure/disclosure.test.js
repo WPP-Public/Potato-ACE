@@ -42,6 +42,21 @@ context('Disclosure', () => {
             });
         });
 
+        it('should trigger disclosure when non-button clicked', () => {
+            // Get the trigger and disclosure
+            cy.get(`div[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get('@trigger').then((trigger) => {
+                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+                cy.get(`#${disclosureId}`).as('disclosure');
+                // Check disclosure is hidden before
+                cy.get('@disclosure').should('have.attr', 'style', 'display: none;');
+                // Click the trigger
+                cy.get('@trigger').wait(150).click();
+                // Check disclosure is now visible and trigger has `aria-expanded` set to true
+                cy.get('@disclosure').should('not.have.attr', 'style', 'display: none;');
+            });
+        });
+
         // TODO: Work out how to trigger button with enter/space
         // it('should trigger disclosure when enter is pressed', () => {
         //     // Get the trigger and disclosure
