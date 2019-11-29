@@ -26,15 +26,11 @@ export class Disclosure extends HTMLElement {
     // SET DOM DATA
     // Hide the disclosure
     this.style.display = 'none';
-    // Set aria-controls attribute and role="button" for none button triggers
+    // Set aria-controls attribute and role="button" for triggers
     this.toggleElems.forEach(toggle => {
       toggle.setAttribute('aria-controls', this.id);
-
-      // If a non-button element is used as a trigger
-      if (toggle.tagName !== 'BUTTON') {
-        toggle.setAttribute('role', 'button');
-        toggle.setAttribute('tabindex', '0');
-      }
+      toggle.setAttribute('role', 'button');
+      toggle.setAttribute('tabindex', '0');
     });
 
     // BIND 'THIS'
