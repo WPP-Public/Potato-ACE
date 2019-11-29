@@ -1,4 +1,4 @@
-import { Disclosure } from '../asce/components/disclosure/disclosure.js';
+import { Disclosure } from '../asce/components/disclosure/disclosure.js'; // eslint-disable-line
 
 document.addEventListener('DOMContentLoaded', () => {
   console.log('DOM content loaded');
