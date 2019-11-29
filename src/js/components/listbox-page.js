@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Listbox, CONSTS as LISTBOX_CONSTS } from '../asce/components/listbox/listbox.js';
+import { Listbox, CONSTS as LISTBOX_CONSTS } from '../../asce/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Testing listbox dynamic
@@ -29,5 +29,4 @@ document.addEventListener('DOMContentLoaded', () => {
         )
       );
     });
-
 });

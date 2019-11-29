@@ -1,43 +1,53 @@
 /* IMPORTS */
 import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
+import { autoID } from '../../common/common.js';
 
 
 /* CONSTANTS */
-// Constants to be exported and used in other modules
 const BASE_CONST = `${libraryName}-listbox`;
-const instanceCount = 0;
+const searchTimeoutTime = 200;
 
-
+// Constants to be exported and used in other modules
 export const CONSTS = {
   LISTBOX: BASE_CONST,
   LIST: `${BASE_CONST}-list`,
   MULTISELECT: `${BASE_CONST}-multiselect`,
   OPTION_INDEX: `${BASE_CONST}-option-index`,
   ACTIVE_OPTION: `${BASE_CONST}-active-option`,
-  UPDATE_OPTIONS_EVENT: `${libraryName}UpdateListboxOtions`,
+  UPDATE_OPTIONS_EVENT: `${libraryName}UpdateListboxOptions`,
 };
+
+
+/* INITIALISATION CODE */
+// Auto-generate ID if element doesn't have one
+autoID(BASE_CONST);
 
 
 /* CLASS */
 export class Listbox extends HTMLElement {
-  /* CONSTRUCTOR */
   constructor() {
     super();
 
-    /* CLASS INSTANCE CONSTANTS */
+    // Class instance constants
     this.options = null;
     this.activeOptionIndex = null;
     this.lastSelectedOptionIndex = null;
     this.allSelected = false;
+    this.query = '';
+    this.searchTimeout = null;
 
-    /* GET DOM ELEMENTS */
+    // Get DOM elements
     this.list = this.querySelector('ul');
+    // Create <ul> if none given
+    if (!this.list) {
+      this.appendChild(document.createElement('ul'));
+      this.list = this.querySelector('ul');
+    }
 
-    /* GET DOM DATA */
-    this.id = this.id || `${CONSTS.LISTBOX}-${instanceCount}`;
+    // Get DOM data
     this.multiselectable = this.hasAttribute(CONSTS.MULTISELECT);
 
-    /* BIND 'THIS' TO CLASS METHODS */
+    // Bind this to class methods
     this.initialiseList = this.initialiseList.bind(this);
     this.makeOptionActive = this.makeOptionActive.bind(this);
     this.makeOptionSelected = this.makeOptionSelected.bind(this);
@@ -49,10 +59,13 @@ export class Listbox extends HTMLElement {
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
+    this.findInList = this.findInList.bind(this);
   }
 
+
+  /* CLASS METHODS */
   connectedCallback() {
-    /* ATTACH EVENT LISTENERS */
+    // Attach event listeners
     this.list.addEventListener('focus', this.focusHandler, { passive: true });
     this.list.addEventListener('blur', this.focusHandler, { passive: true });
     this.list.addEventListener('keydown', this.keydownHandler);
@@ -71,19 +84,18 @@ export class Listbox extends HTMLElement {
       this.list.setAttribute('tabindex', '0');
     }
 
-    /* INITIALISATION CODE */
+    // Initialisation code
     this.initialiseList();
   }
 
-  /* CLASS METHODS */
+
   /*
     Update the listbox by recalculating the indices and setting the first option as active.
     Should be run if the list ID or options are dynamically changed to update indices.
   */
   initialiseList() {
-    // Get all child <li> elements or children with [role="option"]
-    this.options = this.list.querySelectorAll('li') ||
-      this.querySelectorAll('role="option"');
+    // Get all child <li> elements
+    this.options = this.list.querySelectorAll('li');
 
     if (this.options.length === 0) {
       return;
@@ -295,8 +307,6 @@ export class Listbox extends HTMLElement {
     if (keyPressed === KEYS.A.CODE ||
         keyPressed === KEYS.A.KEY) {
       if (this.multiselectable) {
-        // @mstrutt: not using early return here as the 'A' key will be used in the "type-ahead",
-        // search function to be added at the end of this handler
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
           this.options.forEach(option => {
@@ -307,8 +317,10 @@ export class Listbox extends HTMLElement {
       }
     }
 
-    // "type-ahead" search function goes here. It takes keyPressed and finds the nearest option starting with that key
-    // this.search(keyPressed);
+    // "type-ahead" search functionality
+    clearTimeout(this.searchTimeout);
+    this.query+=e.key;
+    this.searchTimeout = setTimeout(this.findInList, searchTimeoutTime);
   }
 
 
@@ -375,6 +387,30 @@ export class Listbox extends HTMLElement {
   }
 
 
+  /*
+    Finds options starting with given keyPressed wrapping around
+  */
+  findInList() {
+    let i = this.activeOptionIndex + 1;
+
+    do {
+      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
+        this.makeOptionActive(i);
+        break;
+      }
+
+      if (i === this.options.length - 1) {
+        i = 0;
+      } else {
+        i++;
+      }
+    } while (i !== this.activeOptionIndex);
+
+    this.query = '';
+  }
+
+
+
   /* CUSTOM EVENT HANDLERS */
   /*
     Custom event handler for updating list options
@@ -382,7 +418,7 @@ export class Listbox extends HTMLElement {
     the listbox options and indices
   */
   updateOptionsHandler(e) {
-  // Checks if id in event matches class instance then updates options
+    // Checks if id in event matches class instance then updates options
     if (e.detail.id === this.id) {
       this.activeOptionIndex = null;
       this.initialiseList();

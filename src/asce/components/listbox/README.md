@@ -48,7 +48,7 @@ $asce-listbox-active-outline-color: 2px dotted #000 !default;
 Single-select listbox.
 
 ```html
-<asce-listbox id="listbox">
+<asce-listbox>
   <ul>
     <li>Iron Man</li>
     <li>Nick Fury</li>
@@ -72,9 +72,7 @@ Single-select listbox.
 Multi-select listbox.
 
 ```html
-<asce-listbox
-    id="multi-selectable-listbox"
-    asce-listbox-multiselect>
+<asce-listbox asce-listbox-multiselect>
   <ul>
     <li>Iron Man</li>
     <li>Hulk</li>
@@ -168,7 +166,5 @@ document.getElementById('<listbox-id>')
 <button id="dynamic-listbox-btn">
   Populate listbox options
 </button>
-<asce-listbox id="dynamic-listbox">
-  <ul></ul>
-</asce-listbox>
+<asce-listbox id="dynamic-listbox"></asce-listbox>
 ```
