@@ -6,7 +6,9 @@ const BASE_CONST = 'asce-disclosure';
 export const CONSTS = {
   ELEM: `${BASE_CONST}`,
   TRIGGER: `${BASE_CONST}-trigger-for`,
-  TOGGLE_EVENT: `a11yToggleDisclosure`,
+  TOGGLE_EVENT: `${BASE_CONST}-toggle`,
+  OPENED_EVENT: `${BASE_CONST}-opened`,
+  CLOSED_EVENT: `${BASE_CONST}-closed`
 };
 
 
@@ -81,14 +83,19 @@ export class Disclosure extends HTMLElement {
 
 
   toggleDisclosure(trigger) {
-    // Check the
-    // Toggle content visibility
+    // Toggle content visibility and dispatch event
     if (this.contentVisible) {
       this.style.display = 'none';
       trigger.setAttribute('aria-expanded', 'false');
+      document.dispatchEvent(new CustomEvent(CONSTS.CLOSED_EVENT, { detail: {
+        'id': this.id
+      }}));
     } else {
       this.style.display = '';
       trigger.setAttribute('aria-expanded', 'true');
+      document.dispatchEvent(new CustomEvent(CONSTS.OPENED_EVENT, { detail: {
+        'id': this.id
+      }}));
     }
     this.contentVisible = !this.contentVisible;
   }
