@@ -1,26 +1,28 @@
 /* IMPORTS */
 import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
-import { autoID } from '../../common/common.js';
+import { autoID, keyPressedMatches } from '../../common/common.js';
 
 
 /* CONSTANTS */
-const BASE_CONST = `${libraryName}-listbox`;
+// Constants to be exported and used in other modules
+export const NAME = `${libraryName}-listbox`;
 const searchTimeoutTime = 200;
 
-// Constants to be exported and used in other modules
-export const CONSTS = {
-  LISTBOX: BASE_CONST,
-  LIST: `${BASE_CONST}-list`,
-  MULTISELECT: `${BASE_CONST}-multiselect`,
-  OPTION_INDEX: `${BASE_CONST}-option-index`,
-  ACTIVE_OPTION: `${BASE_CONST}-active-option`,
-  UPDATE_OPTIONS_EVENT: `${libraryName}UpdateListboxOptions`,
+export const ATTRS = {
+  LIST: `${NAME}-list`,
+  MULTISELECT: `${NAME}-multiselect`,
+  OPTION_INDEX: `${NAME}-option-index`,
+  ACTIVE_OPTION: `${NAME}-active-option`,
+};
+
+export const EVENTS = {
+  UPDATE_OPTIONS: `${libraryName}UpdateListboxOtions`,
 };
 
 
 /* INITIALISATION CODE */
-// Auto-generate ID if element doesn't have one
-autoID(BASE_CONST);
+// Auto-generate IDs for elements that don't have one
+autoID(NAME);
 
 
 /* CLASS */
@@ -29,7 +31,7 @@ export class Listbox extends HTMLElement {
     super();
 
     // Class instance constants
-    this.options = null;
+    this.options = [];
     this.activeOptionIndex = null;
     this.lastSelectedOptionIndex = null;
     this.allSelected = false;
@@ -45,7 +47,7 @@ export class Listbox extends HTMLElement {
     }
 
     // Get DOM data
-    this.multiselectable = this.hasAttribute(CONSTS.MULTISELECT);
+    this.multiselectable = this.hasAttribute(ATTRS.MULTISELECT);
 
     // Bind this to class methods
     this.initialiseList = this.initialiseList.bind(this);
@@ -70,10 +72,10 @@ export class Listbox extends HTMLElement {
     this.list.addEventListener('blur', this.focusHandler, { passive: true });
     this.list.addEventListener('keydown', this.keydownHandler);
     this.list.addEventListener('click', this.clickHandler, { passive: true });
-    this.addEventListener(`${CONSTS.UPDATE_OPTIONS_EVENT}`, this.updateOptionsHandler, { passive: true });
+    this.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, { passive: true });
 
     // Set list attrs
-    this.list.setAttribute(CONSTS.LIST, '');
+    this.list.setAttribute(ATTRS.LIST, '');
     this.list.setAttribute('role', 'listbox');
 
     if (this.multiselectable) {
@@ -95,7 +97,7 @@ export class Listbox extends HTMLElement {
   */
   initialiseList() {
     // Get all child <li> elements
-    this.options = this.list.querySelectorAll('li');
+    this.options = [...this.list.querySelectorAll('li')];
 
     if (this.options.length === 0) {
       return;
@@ -105,14 +107,13 @@ export class Listbox extends HTMLElement {
     this.options.forEach((option, i) => {
       option.setAttribute('role', 'option');
       option.setAttribute('aria-selected', 'false');
-      option.setAttribute(`${CONSTS.OPTION_INDEX}`, i);
+      option.setAttribute(ATTRS.OPTION_INDEX, i);
       // If no ID given create an ID from parent ID and index
       option.id = option.id || `${this.id}-option${i + 1}`;
     });
 
     // If single-select list set first option to active
     if (!this.multiselectable) {
-      this.lastSelectedOptionIndex = 0;
       this.makeOptionSelected(0);
       this.scrollOptionIntoView(0);
     }
@@ -120,16 +121,18 @@ export class Listbox extends HTMLElement {
 
 
   /*
-    Make option at given index active by adding attribute CONSTS.ACTIVE_OPTION
-    and setting the listbox list's [aria-activedescendant] to the ID of the selected option
+    Make option at given index active by adding attribute ATTRS.ACTIVE_OPTION
+    and setting the listbox list's [aria-activedescendant] to the ID of the selected option.
+    An "active" option is one currently has keyboard focus. There can be only one active option at any given time.
+    For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
   */
   makeOptionActive(index) {
     // Deactivate previously active option
-    this.options[this.activeOptionIndex].removeAttribute(`${CONSTS.ACTIVE_OPTION}`);
+    this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
 
     // Activate new option
     const optionToMakeActive = this.options[index];
-    optionToMakeActive.setAttribute(`${CONSTS.ACTIVE_OPTION}`, '');
+    optionToMakeActive.setAttribute(ATTRS.ACTIVE_OPTION, '');
     this.list.setAttribute('aria-activedescendant', optionToMakeActive.id);
     this.activeOptionIndex = index;
 
@@ -141,7 +144,9 @@ export class Listbox extends HTMLElement {
 
 
   /*
-    Make option at given index selected by adding attribute [${CONSTS.ACTIVE_OPTION}]
+    Make option at given index selected by adding attribute [${ATTRS.ACTIVE_OPTION}].
+    An "active" option is one that is selected. For multi-select listboxes there could be multiple "active" options.
+    For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
   */
   makeOptionSelected(index) {
     // If single select list and an item is currently selected
@@ -177,7 +182,7 @@ export class Listbox extends HTMLElement {
     }
 
     // If list blurred
-    this.options[this.activeOptionIndex].removeAttribute(`${CONSTS.ACTIVE_OPTION}`);
+    this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
     this.list.removeAttribute('aria-activedescendant');
   }
 
@@ -186,14 +191,14 @@ export class Listbox extends HTMLElement {
     Handle clicks on listbox options by setting clicked option to selected
   */
   clickHandler(e) {
-    const optionClicked = e.target.closest(`[${CONSTS.OPTION_INDEX}]`);
+    const optionClicked = e.target.closest(`[${ATTRS.OPTION_INDEX}]`);
     if (!optionClicked) {
       return;
     }
 
     // Get index of clicked option
     const clickedOptionIndex = parseInt(
-      optionClicked.getAttribute(`${CONSTS.OPTION_INDEX}`),
+      optionClicked.getAttribute(ATTRS.OPTION_INDEX),
       10
     );
 
@@ -218,9 +223,7 @@ export class Listbox extends HTMLElement {
   */
   toggleOptionState(index) {
     const option = this.options[index];
-    const newSelectedState = (option.getAttribute('aria-selected') === 'true')
-      ? false
-      : true;
+    const newSelectedState = option.getAttribute('aria-selected') !== 'true';
     option.setAttribute('aria-selected', newSelectedState);
     this.lastSelectedOptionIndex = newSelectedState ? index : null;
   }
@@ -232,15 +235,9 @@ export class Listbox extends HTMLElement {
   keydownHandler(e) {
     const keyPressed = e.key || e.which || e.keyCode;
 
-    if (keyPressed === KEYS.UP.CODE ||
-        keyPressed === KEYS.UP.KEY ||
-        keyPressed === KEYS.DOWN.CODE ||
-        keyPressed === KEYS.DOWN.KEY) {
+    if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
       e.preventDefault();
-      const direction =
-        keyPressed === KEYS.UP.CODE || keyPressed === KEYS.UP.KEY
-        ? 'prev'
-        : 'next';
+      const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
 
       const newActiveItemIndex = this.updateActiveOptionIndex(direction);
       this.makeOptionActive(newActiveItemIndex);
@@ -253,15 +250,12 @@ export class Listbox extends HTMLElement {
       return;
     }
 
-    if (keyPressed === KEYS.HOME.CODE ||
-        keyPressed === KEYS.HOME.KEY) {
+    if (keyPressedMatches(keyPressed, KEYS.HOME)) {
       e.preventDefault();
 
       // If Ctrl + Shift + Home select active option and all options up until first
       if (this.multiselectable && (e.ctrlKey || e.metaKey) &&  e.shiftKey) {
-        for (let i = this.activeOptionIndex; i >=0; i--) {
-          this.options[i].setAttribute('aria-selected', 'true');
-        }
+        this.makeOptionRangeSelected(0, this.activeOptionIndex);
       }
 
       this.makeOptionActive(0);
@@ -269,15 +263,12 @@ export class Listbox extends HTMLElement {
       return;
     }
 
-    if (keyPressed === KEYS.END.CODE ||
-        keyPressed === KEYS.END.KEY) {
+    if (keyPressedMatches(keyPressed, KEYS.END)) {
       e.preventDefault();
 
       // If Ctrl + Shift + End select active option and all options down until last
       if (this.multiselectable && (e.ctrlKey || e.metaKey) &&  e.shiftKey) {
-        for (let i = this.activeOptionIndex; i < this.options.length; i++) {
-          this.options[i].setAttribute('aria-selected', 'true');
-        }
+        this.makeOptionRangeSelected(this.activeOptionIndex, this.options.length);
       }
 
       this.makeOptionActive(this.options.length - 1);
@@ -286,8 +277,7 @@ export class Listbox extends HTMLElement {
     }
 
     // If space bar pressed on a multiselect listbox option, set it to selected
-    if (keyPressed === KEYS.SPACE.CODE ||
-        keyPressed === KEYS.SPACE.KEY) {
+    if (keyPressedMatches(keyPressed, KEYS.SPACE)) {
       if (!this.multiselectable) {
         return;
       }
@@ -304,8 +294,7 @@ export class Listbox extends HTMLElement {
     }
 
     // Select or deselect all with 'Ctrl + A'
-    if (keyPressed === KEYS.A.CODE ||
-        keyPressed === KEYS.A.KEY) {
+    if (keyPressedMatches(keyPressed, KEYS.A)) {
       if (this.multiselectable) {
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
@@ -329,25 +318,23 @@ export class Listbox extends HTMLElement {
     and wraps around if you are at the top or bottom
   */
   updateActiveOptionIndex(direction) {
-    let newIndex = null;
-
-    if (direction === 'prev') {
-      // If at first option wrap around to last option
-      if (this.activeOptionIndex === 0) {
-        newIndex = this.options.length - 1;
-      } else {
-        newIndex = this.activeOptionIndex - 1;
-      }
-      return newIndex;
-    }
-
-    // If at last option wrap around to first option
-    if (this.activeOptionIndex === this.options.length - 1) {
+    let newIndex = this.activeOptionIndex + direction;
+    if (newIndex < 0) {
+      newIndex = this.options.length - 1;
+    } else if (newIndex === this.options.length) {
       newIndex = 0;
-    } else {
-      newIndex = this.activeOptionIndex + 1;
     }
     return newIndex;
+  }
+
+
+  /*
+    Make a range of options selected
+  */
+  makeOptionRangeSelected(startIndex, endIndex) {
+    for (let i = startIndex; i < endIndex; i++) {
+      this.options[i].setAttribute('aria-selected', 'true');
+    }
   }
 
 
@@ -414,7 +401,7 @@ export class Listbox extends HTMLElement {
   /* CUSTOM EVENT HANDLERS */
   /*
     Custom event handler for updating list options
-    Run when the CONSTS.UPDATE_OPTIONS_EVENT event is fired and updates
+    Run when the EVENTS.UPDATE_OPTIONS event is fired and updates
     the listbox options and indices
   */
   updateOptionsHandler(e) {
@@ -426,4 +413,4 @@ export class Listbox extends HTMLElement {
   }
 }
 
-customElements.define(BASE_CONST, Listbox);
+customElements.define(NAME, Listbox);

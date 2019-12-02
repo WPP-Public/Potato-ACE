@@ -1,3 +1,5 @@
+/* Common constants that can be used by all components */
+
 export const libraryName = 'asce';
 
 export const KEYBOARD_KEYS = {
