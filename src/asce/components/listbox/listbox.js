@@ -27,7 +27,7 @@ export class Listbox extends HTMLElement {
     super();
 
     /* CLASS INSTANCE CONSTANTS */
-    this.options = null;
+    this.options = [];
     this.activeOptionIndex = null;
     this.lastSelectedOptionIndex = null;
     this.allSelected = false;
