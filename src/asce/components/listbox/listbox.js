@@ -4,16 +4,16 @@ import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
 
 /* CONSTANTS */
 // Constants to be exported and used in other modules
-const BASE_CONST = `${libraryName}-listbox`;
+const COMP_NAME = `${libraryName}-listbox`;
 const instanceCount = 0;
 
 
 export const CONSTS = {
-  LISTBOX: BASE_CONST,
-  LIST: `${BASE_CONST}-list`,
-  MULTISELECT: `${BASE_CONST}-multiselect`,
-  OPTION_INDEX: `${BASE_CONST}-option-index`,
-  ACTIVE_OPTION: `${BASE_CONST}-active-option`,
+  LISTBOX: COMP_NAME,
+  LIST: `${COMP_NAME}-list`,
+  MULTISELECT: `${COMP_NAME}-multiselect`,
+  OPTION_INDEX: `${COMP_NAME}-option-index`,
+  ACTIVE_OPTION: `${COMP_NAME}-active-option`,
   UPDATE_OPTIONS_EVENT: `${libraryName}UpdateListboxOtions`,
 };
 
@@ -390,4 +390,4 @@ export class Listbox extends HTMLElement {
   }
 }
 
-customElements.define(BASE_CONST, Listbox);
+customElements.define(COMP_NAME, Listbox);
