@@ -310,6 +310,7 @@ export class Listbox extends HTMLElement {
     return newIndex;
   }
 
+
   /*
     Make a range of options selected
   */
