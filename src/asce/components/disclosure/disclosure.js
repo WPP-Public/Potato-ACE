@@ -81,7 +81,7 @@ export class Disclosure extends HTMLElement {
     if (!triggerClicked) {
       return;
     }
-
+    // if enter or space is pressed then toggle the disclosure
     const keyPressed = e.key || e.which || e.keyCode;
     if (keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
       this.toggleDisclosure(e.target);
@@ -109,6 +109,7 @@ export class Disclosure extends HTMLElement {
   }
 
   showDisclosure() {
+    // Set the disclosure to not be hidden, update trigger to be expanded and dispatch opened event
     this.setAttribute('aria-hidden', 'false');
     this.triggers.forEach(elem => elem.setAttribute('aria-expanded', 'true'));
     this.dispatchEvent(new CustomEvent(EVENTS['OPENED_EVENT'], { detail: {
@@ -117,6 +118,7 @@ export class Disclosure extends HTMLElement {
   }
 
   hideDisclosure() {
+    // Set the disclosure to be hidden, update trigger to not be expanded and dispatch closed event
     this.setAttribute('aria-hidden', 'true');
     this.triggers.forEach(elem => elem.setAttribute('aria-expanded', 'false'));
     this.dispatchEvent(new CustomEvent(EVENTS['CLOSED_EVENT'], { detail: {
@@ -134,6 +136,7 @@ export class Disclosure extends HTMLElement {
   }
 
   getTriggers(id) {
+    // Get all the triggers for this disclosure
     return document.querySelectorAll(`[${ATTRS['TRIGGER']}=${id}]`);
   }
 }
