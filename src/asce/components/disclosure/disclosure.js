@@ -1,74 +1,76 @@
-import { KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
+/* IMPORTS */
+import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
+import { keyPressedMatches } from '../../common/common.js';
 
+/* CONSTANTS */
+export const NAME = `${libraryName}-disclosure`;
 
-// CONSTANTS
-const BASE_CONST = 'asce-disclosure';
-export const CONSTS = {
-  ELEM: `${BASE_CONST}`,
-  TRIGGER: `${BASE_CONST}-trigger-for`,
-  TOGGLE_EVENT: `${BASE_CONST}-toggle`,
-  OPENED_EVENT: `${BASE_CONST}-opened`,
-  CLOSED_EVENT: `${BASE_CONST}-closed`
+export const ATTRS = {
+  TRIGGER: `${NAME}-trigger-for`
 };
 
+export const EVENTS = {
+  TOGGLE: `${NAME}-toggle`,
+  OPENED: `${NAME}-opened`,
+  CLOSED: `${NAME}-closed`
+};
 
-// CLASS
+/* CLASS */
 export class Disclosure extends HTMLElement {
+  /* CONSTRUCTOR */
   constructor() {
     super();
-    // DEFINE CONSTANTS
+
+    /* CLASS INSTANCE CONSTANTS */
     this.contentVisible = false;
 
-    // GET DOM ELEMENTS
-    // Get the elements which toggle this disclosure
-    this.toggleElems = document.querySelectorAll(`[${CONSTS.TRIGGER}=${this.id}]`);
+    /* GET DOM ELEMENTS */
+    this.triggers = document.querySelectorAll(`[${ATTRS['TRIGGER']}=${this.id}]`);
 
-    // GET DOM DATA
+    /* BIND 'THIS' TO CLASS METHODS */
+    this.toggleDisclosure = this.toggleDisclosure.bind(this);
+    this.toggleEventHandler = this.toggleEventHandler.bind(this);
+    this.windowClickHandler = this.windowClickHandler.bind(this);
+    this.windowKeyDownHandler = this.windowKeyDownHandler.bind(this);
+  }
 
-    // SET DOM DATA
-    // Hide the disclosure
-    this.style.display = 'none';
-    // Set aria-controls attribute and role="button" for triggers
-    this.toggleElems.forEach(toggle => {
+  /* CLASS METHODS */
+  connectedCallback() {
+    /* ATTACH EVENT LISTENERS */
+    window.addEventListener('click', this.windowClickHandler, { passive: true });
+    window.addEventListener('keydown', this.windowKeyDownHandler, { passive: true });
+    window.addEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, { passive: true });
+
+    // Set disclosure attrs
+    this.setAttribute('aria-hidden', 'true');
+
+    // Set trigger attrs
+    this.triggers.forEach(toggle => {
       toggle.setAttribute('aria-controls', this.id);
       toggle.setAttribute('role', 'button');
       toggle.setAttribute('tabindex', '0');
     });
-
-    // BIND 'THIS'
-    this.windowClickHandler = this.windowClickHandler.bind(this);
-    this.toggleDisclosure = this.toggleDisclosure.bind(this);
-    this.windowKeydownHandler = this.windowKeydownHandler.bind(this);
-    this.toggleEventHandler = this.toggleEventHandler.bind(this);
-
-    // EVENT LISTENERS
-    window.addEventListener('click', this.windowClickHandler);
-    window.addEventListener('keydown', this.windowKeydownHandler);
-    window.addEventListener(CONSTS.TOGGLE_EVENT, this.toggleEventHandler);
   }
 
-  // Show or hide the disclosure content when a trigger is clicked
   windowClickHandler(e) {
-    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.id}]`);
+    // Check that the trigger clicked is linked to this disclosure instance
+    const triggerClicked = e.target.closest(`[${ATTRS['TRIGGER']}=${this.id}]`);
     if (triggerClicked) {
-      window.dispatchEvent(new CustomEvent(CONSTS.TOGGLE_EVENT, { detail: {
+      window.dispatchEvent(new CustomEvent(EVENTS['TOGGLE'], { detail: {
         'id': this.id,
         'trigger': triggerClicked
        }}));
     }
   }
 
-  windowKeydownHandler(e) {
-    const triggerClicked = e.target.closest(`[${CONSTS.TRIGGER}=${this.id}]`);
+  windowKeyDownHandler(e) {
+    const triggerClicked = e.target.closest(`[${ATTRS['TRIGGER']}=${this.id}]`);
     if (!triggerClicked || triggerClicked.tagName === 'BUTTON') {
       return;
     }
 
     const keyPressed = e.key || e.which || e.keyCode;
-    if (keyPressed === KEYS.ENTER.CODE ||
-        keyPressed === KEYS.ENTER.KEY ||
-        keyPressed === KEYS.SPACE.CODE ||
-        keyPressed === KEYS.SPACE.KEY) {
+    if (keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
       this.toggleDisclosure(e.target);
     }
   }
@@ -81,19 +83,18 @@ export class Disclosure extends HTMLElement {
     this.toggleDisclosure(e.detail['trigger']);
   }
 
-
   toggleDisclosure(trigger) {
-    // Toggle content visibility and dispatch event
+    // Toggle visibility and aria attributes
     if (this.contentVisible) {
-      this.style.display = 'none';
+      this.setAttribute('aria-hidden', 'true');
       trigger.setAttribute('aria-expanded', 'false');
-      document.dispatchEvent(new CustomEvent(CONSTS.CLOSED_EVENT, { detail: {
+      document.dispatchEvent(new CustomEvent(EVENTS['CLOSED_EVENT'], { detail: {
         'id': this.id
       }}));
     } else {
-      this.style.display = '';
+      this.setAttribute('aria-hidden', 'false');
       trigger.setAttribute('aria-expanded', 'true');
-      document.dispatchEvent(new CustomEvent(CONSTS.OPENED_EVENT, { detail: {
+      document.dispatchEvent(new CustomEvent(EVENTS['OPENED_EVENT'], { detail: {
         'id': this.id
       }}));
     }
@@ -101,4 +102,4 @@ export class Disclosure extends HTMLElement {
   }
 }
 
-customElements.define(BASE_CONST, Disclosure);
+customElements.define(NAME, Disclosure);
