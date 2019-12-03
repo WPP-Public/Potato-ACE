@@ -13,7 +13,8 @@ export const ATTRS = {
 export const EVENTS = {
   TOGGLE: `${NAME}-toggle`,
   OPENED: `${NAME}-opened`,
-  CLOSED: `${NAME}-closed`
+  CLOSED: `${NAME}-closed`,
+  UPDATE_TRIGGERS: `${NAME}-update-triggers`
 };
 
 /* CLASS */
@@ -21,11 +22,6 @@ export class Disclosure extends HTMLElement {
   /* CONSTRUCTOR */
   constructor() {
     super();
-
-    /* CLASS INSTANCE CONSTANTS */
-
-    /* GET DOM ELEMENTS */
-    this.triggers = document.querySelectorAll(`[${ATTRS['TRIGGER']}=${this.id}]`);
 
     /* BIND 'THIS' TO CLASS METHODS */
     this.isShown = this.isShown.bind(this);
@@ -35,6 +31,7 @@ export class Disclosure extends HTMLElement {
     this.toggleEventHandler = this.toggleEventHandler.bind(this);
     this.windowClickHandler = this.windowClickHandler.bind(this);
     this.windowKeyDownHandler = this.windowKeyDownHandler.bind(this);
+    this.updateTriggersHandler = this.updateTriggersHandler.bind(this);
   }
 
   /* CLASS METHODS */
@@ -43,6 +40,10 @@ export class Disclosure extends HTMLElement {
     window.addEventListener('click', this.windowClickHandler, { passive: true });
     window.addEventListener('keydown', this.windowKeyDownHandler, { passive: true });
     window.addEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, { passive: true });
+    window.addEventListener(EVENTS['UPDATE_TRIGGERS'], this.updateTriggersHandler, { passive: true });
+
+    // Get triggers
+    this.triggers = this.getTriggers(this.id);
 
     // Set disclosure attrs
     const expandedTriggers = Array.from(this.triggers).filter(elem => elem.getAttribute('aria-expanded') === 'true');
@@ -95,6 +96,14 @@ export class Disclosure extends HTMLElement {
     this.toggleDisclosure(e.detail['trigger']);
   }
 
+  updateTriggersHandler(e) {
+    // Check the event is for this instance
+    if (e.detail['id'] !== this.id) {
+      return;
+    }
+    this.triggers = this.getTriggers(this.id);
+  }
+
   isShown() {
     return this.getAttribute('aria-hidden') === 'false';
   }
@@ -122,6 +131,10 @@ export class Disclosure extends HTMLElement {
     } else {
       this.showDisclosure();
     }
+  }
+
+  getTriggers(id) {
+    return document.querySelectorAll(`[${ATTRS['TRIGGER']}=${id}]`);
   }
 }
 
