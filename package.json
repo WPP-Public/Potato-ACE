@@ -22,6 +22,7 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
+    "@webcomponents/webcomponentsjs": "^2.4.0",
     "browser-sync": "^2.26.7",
     "cypress": "3.6.1",
     "eslint": "6.6.0",
