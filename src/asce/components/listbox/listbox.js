@@ -380,18 +380,18 @@ export class Listbox extends HTMLElement {
     Finds options starting with given keyPressed wrapping around
   */
   findInList() {
-    let i = this.activeOptionIndex + 1;
+    let i = this.activeOptionIndex;
 
     do {
-      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
-        this.makeOptionActive(i);
-        break;
-      }
-
       if (i === this.options.length - 1) {
         i = 0;
       } else {
         i++;
+      }
+
+      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
+        this.makeOptionActive(i);
+        break;
       }
     } while (i !== this.activeOptionIndex);
 
