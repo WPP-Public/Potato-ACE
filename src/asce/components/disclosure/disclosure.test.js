@@ -183,4 +183,10 @@ context('Disclosure', () => {
             cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
         });
     });
+
+    it.skip('should emit the asce-disclosure-opened event when shown', () => {});
+
+    it.skip('should emit the asce-disclosure-closed event when hidden', () => {});
+
+    it.skip('should update trigger list when asce-disclosure-update-triggers event is dispatched', () => {});
 });
