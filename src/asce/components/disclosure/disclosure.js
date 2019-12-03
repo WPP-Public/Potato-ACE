@@ -9,6 +9,7 @@ export const ATTRS = {
   TRIGGER: `${NAME}-trigger-for`
 };
 
+// TODO: Consider adding extra events for hooking animations into.
 export const EVENTS = {
   TOGGLE: `${NAME}-toggle`,
   OPENED: `${NAME}-opened`,
@@ -22,12 +23,14 @@ export class Disclosure extends HTMLElement {
     super();
 
     /* CLASS INSTANCE CONSTANTS */
-    this.contentVisible = false;
 
     /* GET DOM ELEMENTS */
     this.triggers = document.querySelectorAll(`[${ATTRS['TRIGGER']}=${this.id}]`);
 
     /* BIND 'THIS' TO CLASS METHODS */
+    this.isShown = this.isShown.bind(this);
+    this.showDisclosure = this.showDisclosure.bind(this);
+    this.hideDisclosure = this.hideDisclosure.bind(this);
     this.toggleDisclosure = this.toggleDisclosure.bind(this);
     this.toggleEventHandler = this.toggleEventHandler.bind(this);
     this.windowClickHandler = this.windowClickHandler.bind(this);
@@ -42,13 +45,21 @@ export class Disclosure extends HTMLElement {
     window.addEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, { passive: true });
 
     // Set disclosure attrs
-    this.setAttribute('aria-hidden', 'true');
+    const expandedTriggers = Array.from(this.triggers).filter(elem => elem.getAttribute('aria-expanded') === 'true');
+    if (expandedTriggers.length) {
+      this.setAttribute('aria-hidden', 'false');
+    } else {
+      this.setAttribute('aria-hidden', 'true');
+    }
 
+    // TODO: Add support for multiple triggers (setting aria-expanded on all triggers)
     // Set trigger attrs
     this.triggers.forEach(toggle => {
       toggle.setAttribute('aria-controls', this.id);
-      toggle.setAttribute('role', 'button');
-      toggle.setAttribute('tabindex', '0');
+      if (toggle.tagName !== 'BUTTON') {
+        toggle.setAttribute('role', 'button');
+        toggle.setAttribute('tabindex', '0');
+      }
     });
   }
 
@@ -64,8 +75,9 @@ export class Disclosure extends HTMLElement {
   }
 
   windowKeyDownHandler(e) {
+    // Check that the trigger focused is linked to this disclosure instance
     const triggerClicked = e.target.closest(`[${ATTRS['TRIGGER']}=${this.id}]`);
-    if (!triggerClicked || triggerClicked.tagName === 'BUTTON') {
+    if (!triggerClicked) {
       return;
     }
 
@@ -83,22 +95,33 @@ export class Disclosure extends HTMLElement {
     this.toggleDisclosure(e.detail['trigger']);
   }
 
-  toggleDisclosure(trigger) {
+  isShown() {
+    return this.getAttribute('aria-hidden') === 'false';
+  }
+
+  showDisclosure() {
+    this.setAttribute('aria-hidden', 'false');
+    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', 'true'));
+    this.dispatchEvent(new CustomEvent(EVENTS['OPENED_EVENT'], { detail: {
+      'id': this.id
+    }}));
+  }
+
+  hideDisclosure() {
+    this.setAttribute('aria-hidden', 'true');
+    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', 'false'));
+    this.dispatchEvent(new CustomEvent(EVENTS['CLOSED_EVENT'], { detail: {
+      'id': this.id
+    }}));
+  }
+
+  toggleDisclosure() {
     // Toggle visibility and aria attributes
-    if (this.contentVisible) {
-      this.setAttribute('aria-hidden', 'true');
-      trigger.setAttribute('aria-expanded', 'false');
-      document.dispatchEvent(new CustomEvent(EVENTS['CLOSED_EVENT'], { detail: {
-        'id': this.id
-      }}));
+    if (this.isShown()) {
+      this.hideDisclosure();
     } else {
-      this.setAttribute('aria-hidden', 'false');
-      trigger.setAttribute('aria-expanded', 'true');
-      document.dispatchEvent(new CustomEvent(EVENTS['OPENED_EVENT'], { detail: {
-        'id': this.id
-      }}));
+      this.showDisclosure();
     }
-    this.contentVisible = !this.contentVisible;
   }
 }
 
