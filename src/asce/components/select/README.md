@@ -10,13 +10,34 @@ import { Select } from 'asce/components/select/select.js';
 ```
 
 
+```scss
+/* COMPONENT VARIABLES */
+$asce-select-z-index: 1;
+$asce-select-list-background: #fff;
+$asce-select-list-height: 100px;
+
+/* COMPONENT STYLES */
+asce-select {
+  position: relative;
+}
+
+[asce-select-list] {
+  background: $asce-select-list-background;
+  left: 0;
+  position: absolute;
+  top: 100%;
+  white-space: nowrap;
+  z-index: $asce-select-z-index;
+}
+```
+
+
 ## Examples
 
 ### Select Drop-down
 
 ```html
 <asce-select id="select">
-  <label>Select label:</label>
   <button></button>
   <ul>
     <li>Select an option</li>
@@ -32,6 +53,65 @@ import { Select } from 'asce/components/select/select.js';
     <li>Black Panther</li>
     <li>Doctor Strange</li>
     <li>Captain Marvel</li>
+  </ul>
+</asce-select>
+```
+
+### Select Drop-down with images
+
+```html
+<asce-select id="listbox-with-images">
+  <button></button>
+  <ul>
+    <li>Select an option</li>
+    <li>
+       <img src="/img/logo.svg">
+       Iron Man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Nick Fury
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Hulk
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Black Widow
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Thor
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Captain America
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Scarlet Witch
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Ant-Man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Spider-man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Black Panther
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Doctor Strange
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Captain Marvel
+    </li>
   </ul>
 </asce-select>
 ```

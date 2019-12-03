@@ -118,7 +118,7 @@ const injectSass = async (componentName, mdFileContent) => {
   const sassFileContents = await fsPromises.readFile(sassFilePath, fileEncoding);
 
   // Inject sassFileContents into mdFileContent between "```scss" and "```"
-  const queryIndex = mdFileContent.indexOf(sassQuery);
+  const queryIndex = mdFileContent.lastIndexOf(sassQuery);
   const startIndex = queryIndex + sassQuery.length + 1;
   const endIndex = mdFileContent.indexOf(endQuery, startIndex);
   console.log(magenta, `>> Injecting _${componentName}.scss code into README.md`);
