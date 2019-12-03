@@ -29,6 +29,10 @@ import { Disclosure as asceDisclosure, CONSTS as asce_DISCLOSURE_CONSTS } from '
 To apply any additional styles or override existing styles for the trigger, use the following selector in you SCSS/CSS:
 
 ```scss
+asce-disclosure[aria-hidden='true'] {
+  display: none;
+}
+
 [asce-disclosure-trigger-for] {
   cursor: pointer;
 }
