@@ -47,7 +47,7 @@ export class Listbox extends HTMLElement {
     this.clickHandler = this.clickHandler.bind(this);
     this.toggleOptionState = this.toggleOptionState.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
-    this.updateActiveOptionIndex = this.updateActiveOptionIndex.bind(this);
+    this.updateActiveOption = this.updateActiveOption.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
@@ -226,10 +226,7 @@ export class Listbox extends HTMLElement {
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
       e.preventDefault();
       const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
-
-      const newActiveItemIndex = this.updateActiveOptionIndex(direction);
-      this.makeOptionActive(newActiveItemIndex);
-      this.scrollOptionIntoView(this.activeOptionIndex);
+      this.updateActiveOption(direction);
 
       if (this.multiselectable && e.shiftKey) {
         this.toggleOptionState(this.activeOptionIndex);
@@ -300,14 +297,15 @@ export class Listbox extends HTMLElement {
     Calculate and return index to move to based on the direction
     and wraps around if you are at the top or bottom
   */
-  updateActiveOptionIndex(direction) {
+  updateActiveOption(direction) {
     let newIndex = this.activeOptionIndex + direction;
     if (newIndex < 0) {
       newIndex = this.options.length - 1;
     } else if (newIndex === this.options.length) {
       newIndex = 0;
     }
-    return newIndex;
+    this.makeOptionActive(newIndex);
+    this.scrollOptionIntoView(this.activeOptionIndex);
   }
 
 
