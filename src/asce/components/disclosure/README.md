@@ -43,11 +43,21 @@ asce-disclosure {
 }
 ```
 
+## Events
+
+`asce-disclosure-toggle` - Can be called or listened to, triggers the disclosure to be shown or hidden.
+
+`asce-disclosure-opened` - Not to be triggered, emitted when the disclosure is shown.
+
+`asce-disclosure-closed` - Not to be triggered, emitted after the disclosure is hidden.
+
+`asce-disclosure-update-triggers` - Can be called or listened to, triggers an update to get all triggers which control this disclosure (for use when triggers are added dynamically).
+
 ## Examples
 
 ### Button Trigger
 
-The button below will trigger a disclosure with some simple text content.
+The preferred way to trigger a disclosure is by using a button with the `asce-disclosure-trigger-for` attribuet set to the ID of the disclosure:
 
 ```html
 <button asce-disclosure-trigger-for="disclosure1">
@@ -62,7 +72,7 @@ The button below will trigger a disclosure with some simple text content.
 
 ### Non-button Trigger
 
-The `div` below will trigger a disclosure with some simple text content.
+Other elements, such as `div`s can also be used to trigger disclosures but this is not recommended:
 
 ```html
 <div asce-disclosure-trigger-for="disclosure2">
@@ -77,7 +87,7 @@ The `div` below will trigger a disclosure with some simple text content.
 
 ### Multi-Disclosure
 
-The 3 buttons below demonstrate triggering multiple different disclosures and a dummy button which should not trigger any disclosure:
+The 2 buttons below demonstrate triggering multiple different disclosures by specifying the ID of the disclosure to trigger:
 
 ```html
 <button asce-disclosure-trigger-for="disclosure3">
@@ -100,7 +110,7 @@ The 3 buttons below demonstrate triggering multiple different disclosures and a 
 
 ### Initially Expanded Disclosure
 
-By adding the `aria-expanded='true'` attribute to the trigger element the disclosure will be expanded initially.
+By adding the `aria-expanded='true'` attribute to the trigger element the disclosure will be expanded initially:
 
 ```html
 <button asce-disclosure-trigger-for="disclosure5" aria-expanded="true">
@@ -123,6 +133,8 @@ By adding the `aria-expanded='true'` attribute to the trigger element the disclo
 
 ### Multiple Triggers
 
+Multiple triggers can be used to trigger the same disclosure by assigning the same ID to them:
+
 ```html
 <button asce-disclosure-trigger-for="disclosure7">
     Toggle Disclosure 1
@@ -136,3 +148,5 @@ By adding the `aria-expanded='true'` attribute to the trigger element the disclo
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
 </asce-disclosure>
 ```
+
+<!-- TODO: Add in example of dynamically adding triggers. -->
