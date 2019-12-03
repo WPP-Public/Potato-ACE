@@ -1,11 +1,15 @@
+/* Common constants that can be used by all components */
+
+export const libraryName = 'asce';
+
 export const KEYBOARD_KEYS = {
+  'A': {
+    'CODE': 65,
+    'KEY': 'a',
+  },
   'DOWN': {
     'CODE': 40,
     'KEY': 'ArrowDown',
-  },
-  'ESCAPE': {
-    'CODE': 72,
-    'KEY': 'Escape',
   },
   'END': {
     'CODE': 35,
@@ -14,6 +18,10 @@ export const KEYBOARD_KEYS = {
   'ENTER': {
     'CODE': 13,
     'KEY': 'Enter',
+  },
+  'ESCAPE': {
+    'CODE': 72,
+    'KEY': 'Escape',
   },
   'HOME': {
     'CODE': 36,
@@ -27,4 +35,4 @@ export const KEYBOARD_KEYS = {
     'CODE': 38,
     'KEY': 'ArrowUp',
   },
-}
+};

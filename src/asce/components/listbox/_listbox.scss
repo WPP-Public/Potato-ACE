@@ -4,11 +4,10 @@ $asce-listbox-active-outline-color: 2px dotted #000 !default;
 
 
 /* COMPONENT STYLES */
-[asce-listbox] {
+[asce-listbox-list] {
   list-style: none;
   margin: 0;
-  overflow: auto;
-  padding: 0;
+  overflow-y: auto;
 }
 
 [asce-listbox-option-index] {

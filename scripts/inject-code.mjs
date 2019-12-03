@@ -16,6 +16,7 @@ import pjson from '../package.json';
 // CONSTANTS
 const libraryName = pjson.customProperties.componentLibrary;
 const componentsDir = `./src/${libraryName}/components`;
+const baseHtmlFile = `./src/pages/includes/base.html`;
 const htmlOnlyArg = '--html-only';
 const fileEncoding = 'utf8';
 const htmlQuery = '```html';
@@ -23,7 +24,7 @@ const sassQuery = '```scss';
 const endQuery = '```';
 const examplesDirName = 'examples';
 const exampleBlockClass = 'example-block';
-const htmlPlaceholder = '[[content]]';
+const htmlContentPlaceholder = '[[content]]';
 
 // Color codes for console.logs
 const magenta = '\x1b[35m%s\x1b[0m';
@@ -84,7 +85,7 @@ const injectComponentCode = async (componentName, htmlOnly=false) => {
   writeContentToFile(mdContentForMd, mdFilePath);
 
   // Convert content for HTML page to HTML and save
-  const convertedHtmlContent = await convertMdToHtml(mdContentForHtml);
+  const convertedHtmlContent = await convertMdToHtml(mdContentForHtml, componentName);
 
   const dirExists = await fsPromises.stat(`${htmlDirPath}`)
     .catch(() => {
@@ -162,16 +163,30 @@ const injectHtml = async (componentName, mdFileContent) => {
 
 
 // CONVERT MARKDOWN TO HTML AND SAVE TO HTML FILE
-const convertMdToHtml = async (mdSource) => {
+const convertMdToHtml = async (mdSource, componentName) => {
   console.log(magenta, `>> Converting markdown to html`);
   const convertedHtml = md.render(mdSource);
 
   // Combine base.html and md content into component's html
-  const baseHtml = await fsPromises.readFile(`./src/includes/base.html`, fileEncoding);
+  const baseHtml = await fsPromises.readFile(baseHtmlFile, fileEncoding);
+  let startIndex = baseHtml.indexOf(htmlContentPlaceholder);
+  let endIndex = startIndex + htmlContentPlaceholder.length;
+  let htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
 
-  const startIndex = baseHtml.indexOf(htmlPlaceholder);
-  const endIndex = startIndex + htmlPlaceholder.length;
-  const htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
+  // If <component>-page.js exists, inject into script tag into html file
+  const scriptExists = await fsPromises.stat(`./src/js/components/${componentName}-page.js`)
+    .catch(() => {
+      console.log(magenta, `>> ${componentName}-page.js file doesn't exist`);
+    });
+
+  if (!scriptExists) {
+    return htmlContent;
+  }
+
+  startIndex = htmlContent.indexOf(`</body>`);
+  const scriptTag = `<script src="/js/components/${componentName}-page.js" type="module"></script>\n`;
+  htmlContent = replaceContentBetweenIndices(htmlContent, scriptTag, startIndex, startIndex);
+
   return htmlContent;
 };
 
