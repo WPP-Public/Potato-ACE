@@ -6,7 +6,6 @@ import { autoID, keyPressedMatches } from '../../common/functions.js';
 /* CONSTANTS */
 // Constants to be exported and used in other modules
 export const NAME = `${libraryName}-listbox`;
-const searchTimeoutTime = 200;
 
 export const ATTRS = {
   LIST: `${NAME}-list`,
@@ -18,6 +17,9 @@ export const ATTRS = {
 export const EVENTS = {
   UPDATE_OPTIONS: `${libraryName}UpdateListboxOtions`,
 };
+
+// Other constants
+const searchTimeoutTime = 200;
 
 
 /* INITIALISATION CODE */
