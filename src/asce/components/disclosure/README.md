@@ -29,9 +29,14 @@ import { Disclosure as asceDisclosure, CONSTS as asce_DISCLOSURE_CONSTS } from '
 To apply any additional styles or override existing styles for the trigger, use the following selector in you SCSS/CSS:
 
 ```scss
-asce-disclosure[aria-hidden='true'] {
-  display: none;
+asce-disclosure {
+  display: block;
+
+  &[aria-hidden='true'] {
+    display: none;
+  }
 }
+
 
 [asce-disclosure-trigger-for] {
   cursor: pointer;
@@ -75,9 +80,6 @@ The `div` below will trigger a disclosure with some simple text content.
 The 3 buttons below demonstrate triggering multiple different disclosures and a dummy button which should not trigger any disclosure:
 
 ```html
-<button asce-disclosure-trigger-for="not-a-real-elem">
-    Dummy button
-</button>
 <button asce-disclosure-trigger-for="disclosure3">
     Toggle Disclosure 1
 </button>
@@ -93,5 +95,44 @@ The 3 buttons below demonstrate triggering multiple different disclosures and a 
 <asce-disclosure id="disclosure4">
     <h1>Disclosure 2</h1>
     <p>Impedit laboriosam nesciunt id aliquid illo magni illum deserunt distinctio et, ab, perspiciatis placeat consequatur.</p>
+</asce-disclosure>
+```
+
+### Initially Expanded Disclosure
+
+By adding the `aria-expanded='true'` attribute to the trigger element the disclosure will be expanded initially.
+
+```html
+<button asce-disclosure-trigger-for="disclosure5" aria-expanded="true">
+    Toggle Disclosure 1
+</button>
+<button asce-disclosure-trigger-for="disclosure6" aria-expanded="false">
+    Toggle Disclosure 2
+</button>
+
+<asce-disclosure id="disclosure5">
+    <h1>Disclosure 1</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
+</asce-disclosure>
+
+<asce-disclosure id="disclosure6">
+    <h1>Disclosure 2</h1>
+    <p>Impedit laboriosam nesciunt id aliquid illo magni illum deserunt distinctio et, ab, perspiciatis placeat consequatur.</p>
+</asce-disclosure>
+```
+
+### Multiple Triggers
+
+```html
+<button asce-disclosure-trigger-for="disclosure7">
+    Toggle Disclosure 1
+</button>
+<button asce-disclosure-trigger-for="disclosure7">
+    Also Toggle Disclosure 1
+</button>
+
+<asce-disclosure id="disclosure7">
+    <h1>Disclosure 1</h1>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
 </asce-disclosure>
 ```
