@@ -24,7 +24,6 @@ export class Select extends Listbox {
     /* GET DOM ELEMENTS */
     this.trigger = this.querySelector('button');
     this.list = this.querySelector('ul');
-    this.label = this.querySelector('label');
 
     /* GET DOM DATA */
 
@@ -47,23 +46,12 @@ export class Select extends Listbox {
 
 
     /* SET INITIAL STATES */
-    // Set label attrs
-    let triggerLabel = this.trigger.id;
-    if (this.label) {
-      this.label.id = this.label.id || `${this.id}-label`;
-      triggerLabel = `${this.label.id} ${triggerLabel}`;
-    }
-
     // Set trigger attrs
     this.trigger.id = this.trigger.id || `${this.id}-trigger`;
     this.trigger.setAttribute(ATTRS.TRIGGER, '');
 
     if (!this.getAttribute('aria-haspopup')) {
       this.trigger.setAttribute('aria-haspopup', 'listbox');
-    }
-
-    if (!this.getAttribute('aria-labelledby')) {
-      this.trigger.setAttribute('aria-labelledby', triggerLabel);
     }
 
     // Set list attrs
@@ -126,6 +114,7 @@ export class Select extends Listbox {
     Show dropdown list
   */
   showList() {
+    this.trigger.setAttribute('aria-expanded', 'true');
     this.list.style.display = null;
     this.list.focus();
   }
@@ -141,6 +130,7 @@ export class Select extends Listbox {
     }
 
     this.list.style.display = 'none';
+    this.trigger.removeAttribute('aria-expanded');
   }
 }
 
