@@ -138,10 +138,12 @@ export class Listbox extends HTMLElement {
     this.list.setAttribute('aria-activedescendant', optionToMakeActive.id);
     this.activeOptionIndex = index;
 
-    // If single-select list set first option to selected
+    // If single-select list make option selected
     if (!this.multiselectable) {
       this.makeOptionSelected(index);
     }
+
+    this.scrollOptionIntoView(this.activeOptionIndex);
   }
 
 
@@ -179,7 +181,6 @@ export class Listbox extends HTMLElement {
         this.activeOptionIndex = 0;
       }
       this.makeOptionActive(this.activeOptionIndex);
-      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
@@ -243,7 +244,6 @@ export class Listbox extends HTMLElement {
 
       const newActiveItemIndex = this.updateActiveOptionIndex(direction);
       this.makeOptionActive(newActiveItemIndex);
-      this.scrollOptionIntoView(this.activeOptionIndex);
 
       if (this.multiselectable && e.shiftKey) {
         this.toggleOptionState(this.activeOptionIndex);
@@ -261,7 +261,6 @@ export class Listbox extends HTMLElement {
       }
 
       this.makeOptionActive(0);
-      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
@@ -274,7 +273,6 @@ export class Listbox extends HTMLElement {
       }
 
       this.makeOptionActive(this.options.length - 1);
-      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
