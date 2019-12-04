@@ -1,5 +1,7 @@
 context('Disclosure', () => {
     const pkgName = Cypress.env('pkg_name');
+    const disclosureTag = `${pkgName}-disclosure`;
+    const triggerAttr = `${disclosureTag}-trigger-for`;
 
     beforeEach(() => {
         // Navigate to the docs page
@@ -9,15 +11,15 @@ context('Disclosure', () => {
     /* CHECK DOCS PAGE IS CORRECT BEFORE TESTING EXAMPLES */
     describe('Docs Page', () => {
         it('should have at least one button trigger', () => {
-            cy.get(`button[${pkgName}-disclosure-trigger-for]`).should('have.length.greaterThan', 0);
+            cy.get(`button[${triggerAttr}]`).should('have.length.greaterThan', 0);
         });
 
         it('should have at least one non-button trigger', () => {
-            cy.get(`:not(button)[${pkgName}-disclosure-trigger-for]`).should('have.length.greaterThan', 0);
+            cy.get(`:not(button)[${triggerAttr}]`).should('have.length.greaterThan', 0);
         });
 
         it('should have at least one disclosure', () => {
-            cy.get(`${pkgName}-disclosure`).should('have.length.greaterThan', 0);
+            cy.get(`${disclosureTag}`).should('have.length.greaterThan', 0);
         });
     });
 
@@ -25,17 +27,17 @@ context('Disclosure', () => {
     describe('WAI-ARIA Spec', () => {
         it('should be hidden on page load', () => {
             // Check only the disclosures which have trigger which don't expand by default.
-            cy.get(`[${pkgName}-disclosure-trigger-for]:not([aria-expanded='true'])`).each(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+            cy.get(`[${triggerAttr}]:not([aria-expanded='true'])`).each(trigger => {
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure').should('have.attr', 'aria-hidden', 'true');
             });
         });
 
         it('should trigger disclosure when button trigger clicked', () => {
             // Get the trigger and disclosure
-            cy.get(`[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
             cy.get('@trigger').then(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure');
                 // Check disclosure is hidden before
                 cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
@@ -48,9 +50,9 @@ context('Disclosure', () => {
 
         it('should trigger disclosure when div trigger clicked', () => {
             // Get the trigger and disclosure
-            cy.get(`div[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get(`div[${triggerAttr}]`).first().as('trigger');
             cy.get('@trigger').then(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure');
                 // Check disclosure is hidden before
                 cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
@@ -63,9 +65,9 @@ context('Disclosure', () => {
 
         it('should trigger disclosure when enter is pressed', () => {
             // Get the trigger and disclosure
-            cy.get(`[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
             cy.get('@trigger').then(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure');
                 // Check disclosure is hidden before
                 cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
@@ -82,9 +84,9 @@ context('Disclosure', () => {
 
         it('should trigger disclosure when space is pressed', () => {
             // Get the trigger and disclosure
-            cy.get(`[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
             cy.get('@trigger').then(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure');
                 // Check disclosure is hidden before
                 cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
@@ -100,8 +102,8 @@ context('Disclosure', () => {
         });
 
         it('should be initially expanded if trigger has aria-expanded set to true', () => {
-            cy.get(`[${pkgName}-disclosure-trigger-for][aria-expanded='true']`).then(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+            cy.get(`[${triggerAttr}][aria-expanded='true']`).then(trigger => {
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure');
                 // Check disclosure is visible and trigger has `aria-expanded` set to true
                 cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
@@ -109,8 +111,8 @@ context('Disclosure', () => {
         });
 
         it('should not be initially expanded if trigger has aria-expanded set to false', () => {
-            cy.get(`[${pkgName}-disclosure-trigger-for][aria-expanded='false']`).then(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+            cy.get(`[${triggerAttr}][aria-expanded='false']`).then(trigger => {
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure');
                 // Check disclosure is hidden
                 cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
@@ -118,25 +120,25 @@ context('Disclosure', () => {
         });
 
         it('triggers should have role of button', () => {
-            cy.get(`:not(button)[${pkgName}-disclosure-trigger-for]`).should('have.attr', 'role', 'button');
+            cy.get(`:not(button)[${triggerAttr}]`).should('have.attr', 'role', 'button');
         });
 
         it('triggers which are not buttons should have a tabindex of 0', () => {
-            cy.get(`div[${pkgName}-disclosure-trigger-for]`).should('have.attr', 'tabindex', '0');
+            cy.get(`div[${triggerAttr}]`).should('have.attr', 'tabindex', '0');
         });
 
         it('trigger should have aria-controls set to id of disclosure', () => {
             // Get the trigger and disclosure
-            cy.get(`[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
             cy.get('@trigger').then(trigger => {
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get('@trigger').should('have.attr', 'aria-controls', disclosureId);
             });
         });
 
         it('trigger should have aria-expanded set to true when disclosure visible', () => {
             // Get the trigger and disclosure
-            cy.get(`[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
             cy.get('@trigger').should('not.have.attr', 'aria-expanded');
             cy.get('@trigger').click();
             cy.get('@trigger').should('have.attr', 'aria-expanded', 'true');
@@ -144,14 +146,14 @@ context('Disclosure', () => {
 
         it('trigger should only open assigned disclosure', () => {
             // Get all closed disclosures
-            cy.get(`${pkgName}-disclosure[aria-hidden='true']`).as('closedDisclosures');
+            cy.get(`${disclosureTag}[aria-hidden='true']`).as('closedDisclosures');
             // Get trigger
-            cy.get(`[${pkgName}-disclosure-trigger-for]`).first().as('trigger');
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
             cy.get('@trigger').then(trigger => {
                 // Click Trigger
                 trigger.click();
                 // Get disclosure and check it is visible.
-                const disclosureId = trigger.attr(`${pkgName}-disclosure-trigger-for`);
+                const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure');
                 cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
                 // Check all other disclosures are closed
@@ -170,13 +172,13 @@ context('Disclosure', () => {
         // TODO: Test other custom events (using spies?)
         it('should toggle disclosure when toggle event is emitted', () => {
             // Get disclosure
-            cy.get(`${pkgName}-disclosure`).first().as('disclosure');
+            cy.get(`${disclosureTag}`).first().as('disclosure');
             // Check disclosure is hidden
             cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
             // Dispatch toggle event
             cy.get('@disclosure').then(disclosure => {
                 cy.window().then(window => {
-                    window.dispatchEvent(new CustomEvent(`${pkgName}-disclosure-toggle`, { detail: { id: disclosure[0].id } }));
+                    window.dispatchEvent(new CustomEvent(`${disclosureTag}-toggle`, { detail: { id: disclosure[0].id } }));
                 });
             });
             // Check disclosure is visible
