@@ -12,8 +12,15 @@ context('Listbox', () => {
         cy.visit(`/${componentName}`);
     });
 
+    /* CHECK DOCS PAGE IS CORRECT BEFORE TESTING EXAMPLES */
+    describe('Docs Page', () => {
+        it('should have at least one example', () => {
+            cy.get(`${listboxTag}`).should('have.length.greaterThan', 0);
+        });
+    });
+
     /* TEST EXAMPLES KEYBAORD INTERACTION */
-    describe.only('Keyboard Interaction', () => {
+    describe('Keyboard Interaction', () => {
          it('on initial focus single-select listbox focuses first option', () => {
             cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().within(listbox => {
                 listbox.focus();
@@ -306,6 +313,23 @@ context('Listbox', () => {
                     }
                 }
             });
+        });
+    });
+
+    /* MISC */
+    describe('Misc. Tests', () => {
+        it('should be able to dynamically populate listbox with options', () => {
+            // Get the list box and check it has no options
+            cy.get('#dynamic-listbox').as('listbox').find('li').should('have.length', 0);
+            // Click the button to populate listbox
+            cy.get('#dynamic-listbox-btn').click();
+            // Check the list box has options
+            cy.get('@listbox').find('li').should('not.have.length', 0);
+            // Check that the listbox has the correct role
+            cy.get('@listbox').find(`[${listboxListAttr}]`).should('have.attr', 'role', 'listbox');
+            // Check that the first option is selected and that they all have the correct role
+            cy.get('@listbox').find(`[${listboxListAttr}]>li[aria-selected="true"]`).should('have.length', 1);
+            cy.get('@listbox').find(`[${listboxListAttr}]>li`).should('have.attr', 'role', 'option');
         });
     });
 });
