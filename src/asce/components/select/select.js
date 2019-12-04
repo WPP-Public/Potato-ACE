@@ -1,7 +1,7 @@
 /* IMPORTS */
 import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
 import { Listbox, ATTRS as LISTBOX_ATTRS } from '../listbox/listbox.js';
-import { keyPressedMatches } from '../../common/common.js';
+import { handleOverflow, keyPressedMatches } from '../../common/common.js';
 
 
 /* CONSTANTS */
@@ -77,6 +77,7 @@ export class Select extends Listbox {
 
     if (triggerClicked) {
       this.showList();
+      handleOverflow(this.list);
       this.list.focus();
       return;
     }
