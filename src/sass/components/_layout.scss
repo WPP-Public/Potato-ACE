@@ -1,0 +1,21 @@
+// .asce-page {
+//   margin-top: $header-height;
+// }
+
+// .asce-sidebar {
+//   background: $color-violet-martinique;
+//   bottom: 0;
+//   color: #fff;
+//   left: 0;
+//   padding: 24px;
+//   position: fixed;
+//   top: $header-height;
+//   width: 300px;
+// }
+
+.asce-main {
+  // margin-left: 300px;
+  margin: $header-height auto 0;
+  max-width: $page-max-width;
+  padding: 32px;
+}

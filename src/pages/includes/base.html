@@ -2,14 +2,85 @@
 <html lang="en">
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" type="image/png" href="/img/favicon.png"/>
   <link rel="stylesheet" type="text/css" href="/css/prism.css">
   <link rel="stylesheet" type="text/css" href="/css/styles.css">
-  <link rel="shortcut icon" type="image/png" href="/img/logo.png"/>
-  <title>Potato Accessible Components</title>
+  <title>Accessible, Stylable Custom Elements</title>
 </head>
 <body>
 
-[[content]]
+<header class="asce-header">
+  <div class="asce-header__inner">
+    <div class="asce-header__inner-left">
+      <a
+          class="asce-header__logo-container asce-header__logo-container--brand"
+          href="/">
+        <img
+            alt="potato logo"
+            class="asce-header__logo"
+            src="/img/logo.svg">
+        <span>ASCE</span>
+      </a>
+    </div>
+
+    <div class="asce-header__inner-right">
+      <nav class="asce-nav">
+        <ul>
+          <li>
+            <a
+                aria-label="Link to W3 aria practices page"
+                target="_blank"
+                href="https://www.w3.org/TR/wai-aria-practices-1.1">
+              <img
+                  alt="potato logo"
+                  class="asce-header__logo"
+                  width="32px"
+                  src="/img/a11y-logo-white.svg">
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+
+  </div>
+</header>
+
+<div class="asce-page">
+  <!-- <aside class="asce-sidebar">
+    <div>
+      <img src="/img/logo.svg" alt="potato logo">
+      <h1>ASCE</h1>
+      <ul class="asce-toc">
+        <li>
+          <a href="/">
+            <h2>
+              Introduction
+            </h2>
+          </a>
+        </li>
+        <li>
+          <a href="/">
+            <h3>
+              Installation and Usage
+            </h3>
+          </a>
+        </li>
+        <li>
+          <a href="/">
+            <h2>
+              Introduction
+            </h2>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside> -->
+  <main class="asce-main">
+    [[content]]
+  </main>
+</div>
+
 
 <script src="/js/prism.min.js"></script>
 </body>

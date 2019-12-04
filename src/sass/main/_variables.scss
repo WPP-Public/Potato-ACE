@@ -1,0 +1,29 @@
+/* COLORS */
+$color-blue-dark-cerulean: #0f687f;
+$color-violet-blackcurrant: #20122e;
+$color-violet-martinique: #41354d;
+
+
+/* SIZES */
+$page-max-width: 1024px;
+$border-radius: 4px;
+$header-height: 50px;
+$header-z-index: 100;
+
+
+
+/* BREAKPOINTS */
+$breakpoints: (
+  tablet: 600px,
+  desktop: 1024px,
+  wide: 1440px
+);
+
+
+/* VERTICAL SPACINGS */
+$vertical-spacings: (
+  s: (mobile: 10px, tablet: 20px, desktop: 30px),
+  m: (mobile: 40px, tablet: 50px, desktop: 60px),
+  l: (mobile: 60px, tablet: 80px, desktop: 120px)
+);
+

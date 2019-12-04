@@ -23,7 +23,7 @@ const htmlQuery = '```html';
 const sassQuery = '```scss';
 const endQuery = '```';
 const examplesDirName = 'examples';
-const exampleBlockClass = 'example-block';
+const exampleBlockClass = `${libraryName}-example-block`;
 const htmlContentPlaceholder = '[[content]]';
 
 // Color codes for console.logs

@@ -1,0 +1,29 @@
+/* PRISM OVERRRIDES */
+pre[class*="language-"] {
+  background: $color-violet-blackcurrant;
+}
+
+.code-toolbar {
+  font-size: 1.4rem;
+  margin: 16px 0 32px;
+  position: relative;
+
+  pre {
+    padding-bottom: 30px;
+    padding-top: 30px;
+  }
+}
+
+.toolbar-item {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+
+  button {
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    padding: 3px 5px;
+  }
+}

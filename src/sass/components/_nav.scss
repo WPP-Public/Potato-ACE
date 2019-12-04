@@ -1,0 +1,17 @@
+.asce-nav {
+  ul {
+    display: flex;
+    height: 100%;
+  }
+
+  li {
+    margin-left: 10px;
+
+    a {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      padding: 0 10px;
+    }
+  }
+}

@@ -1,19 +1,20 @@
 //USER SPECIFIC CSS
 // COMMON
-@import 'common/variables';
-@import 'common/mixins';
-@import 'common/utils';
-@import 'common/reset';
+@import 'main/variables';
+@import 'main/mixins';
+@import 'main/utils';
+@import 'main/base';
+@import 'main/prism-overrides';
 
-//COMPONENTS
+// COMPONENTS
+@import './components/all';
+
+
+// ASCE COMPONENTS
 @import 'asce-variable-overrides';
 @import '../asce/components/listbox/listbox';
 @import '../asce/components/disclosure/disclosure';
 @import '../asce/components/test-component/test-component';
 
-// COMPONENT OVERRIDES
-@import './components/all';
-
-// PAGES
-@import './pages';
-
+// ASCE COMPONENT OVERRIDES
+@import './pages/all';
