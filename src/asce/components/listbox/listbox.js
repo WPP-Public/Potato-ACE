@@ -15,7 +15,7 @@ export const ATTRS = {
 };
 
 export const EVENTS = {
-  UPDATE_OPTIONS: `${libraryName}UpdateListboxOtions`,
+  UPDATE_OPTIONS: `${NAME}-update-options`,
 };
 
 // Other constants

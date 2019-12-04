@@ -34,8 +34,7 @@ const red = '\x1b[31m%s\x1b[0m';
 // MarkdownIt Options
 const md = new MarkdownIt({
   html: true,
-  linkify: true,
-  breaks: true,
+  linkify: true
 });
 
 
