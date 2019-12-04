@@ -12,31 +12,61 @@ context('Listbox', () => {
     });
 
     /* TEST EXAMPLES KEYBAORD INTERACTION */
-    describe('Keyboard Interaction', () => {});
+    describe('Keyboard Interaction', () => {
+         it('on initial focus single-select listbox focuses first option', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().within(listbox => {
+                listbox.focus();
+                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
+            });
+        });
+
+         it('on re-focus single-select listbox focuses the selected option', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().as('listbox').focus();
+            // Select the third option
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])>li`).eq(3).click();
+            // Unfocus listbox
+            cy.get('body').focus();
+            // Re-focus listbox
+            cy.get(`@listbox`).first().within(listbox => {
+                // Focus listbox
+                listbox.focus();
+                // Observe 3rd option is selected
+                cy.get('li').eq(3).should('have.attr', 'aria-selected', 'true');
+            });
+        });
+
+        it('single-select listbox should select next option when down arrow is pressed', () => {});
+
+        it('single-select listbox should select first option when down arrow is pressed on last option', () => {});
+
+        it('single-select listbox should select previous option when up arrow is pressed', () => {});
+
+        it('single-select listbox should select last option when up arrow is pressed on first option', () => {});
+    });
 
     /* TEST EXAMPLES AGAINST WAI-ARIA SPEC */
     describe('WAI-ARIA Spec', () => {
-        it(`${listboxListAttr} should have the role listbox`, () => {
+         it('elements with ${listboxListAttr} attribute should have the role listbox', () => {
             cy.get(`[${listboxListAttr}]`).should('have.attr', 'role', 'listbox');
         });
 
-        it(`${componentName} options should have the role option`, () => {
+         it('listbox options should have the role option', () => {
             cy.get(`[${listboxListAttr}]>li`).should('have.attr', 'role', 'option');
         });
 
-        it(`Single-select ${componentName} should have first option selected by default`, () => {
+         it('single-select listbox should have first option selected by default', () => {
             cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])>li`).first().should('have.attr', 'aria-selected', 'true');
         });
 
-        it(`Multi-select ${componentName} should have no options selected by default`, () => {
+         it('multi-select listbox should have no options selected by default', () => {
             cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]>li`).should('not.have.attr', 'aria-selected', 'true');
         });
 
-        it(`Multi-select ${componentName} should have aria-multiselectable set to true`, () => {
+         it('multi-select listbox should have aria-multiselectable set to true', () => {
             cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]>li`).should('not.have.attr', 'aria-multiselectable', 'true');
         });
 
-        it(`Selected option in single-select ${componentName} should have aria-selected set to true`, () => {
+         it('selected option in single-select listbox should have aria-selected set to true', () => {
             cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().within(listbox => {
                 // Get random option
                 const numOptions = listbox.children().length;
@@ -49,22 +79,14 @@ context('Listbox', () => {
 
         });
 
-        it(`Options in multi-select ${componentName} should have aria-selected set correctly`, () => {
+         it('Options in multi-select listbox should have aria-selected set correctly', () => {
             cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().within(listbox => {
                 const numOptions = listbox.children().length;
-                // Select a random amount of options to select (between 1 and number of options)
-                const numSelected = Math.round(Math.random() * (numOptions - 1));
-                // Select random options and store indexes in array
-                let selectedIdxs = [];
-                for (let i = 0; i < numSelected; i++) {
-                    // Add random index
-                    selectedIdxs.push(Math.round(Math.random() * (numOptions - 1)));
-                }
-                console.log(selectedIdxs);
+                let selectedIdxs = [2, 3, 5, 7];
                 // Focus listbox
                 listbox.focus();
                 // For each index select that option
-                for (let i = 0; i < numSelected; i++) {
+                for (let i = 0; i < selectedIdxs.length; i++) {
                     cy.get(`[${optionIndexAttr}="${selectedIdxs[i]}"]`).click();
                 }
                 // Check selected elements have aria-selected true and non-selected have set to false
@@ -76,7 +98,6 @@ context('Listbox', () => {
                     }
                 }
             });
-
         });
     });
 });
