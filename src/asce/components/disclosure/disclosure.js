@@ -25,13 +25,12 @@ export class Disclosure extends HTMLElement {
 
     /* BIND 'THIS' TO CLASS METHODS */
     this.isShown = this.isShown.bind(this);
-    this.showDisclosure = this.showDisclosure.bind(this);
-    this.hideDisclosure = this.hideDisclosure.bind(this);
     this.toggleDisclosure = this.toggleDisclosure.bind(this);
     this.toggleEventHandler = this.toggleEventHandler.bind(this);
     this.windowClickHandler = this.windowClickHandler.bind(this);
     this.windowKeyDownHandler = this.windowKeyDownHandler.bind(this);
     this.updateTriggersHandler = this.updateTriggersHandler.bind(this);
+    this.setDisclosureVisibility = this.setDisclosureVisibility.bind(this);
   }
 
   /* CLASS METHODS */
@@ -108,31 +107,17 @@ export class Disclosure extends HTMLElement {
     return this.getAttribute('aria-hidden') === 'false';
   }
 
-  showDisclosure() {
-    // Set the disclosure to not be hidden, update trigger to be expanded and dispatch opened event
-    this.setAttribute('aria-hidden', 'false');
-    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', 'true'));
-    this.dispatchEvent(new CustomEvent(EVENTS['OPENED_EVENT'], { detail: {
-      'id': this.id
-    }}));
-  }
-
-  hideDisclosure() {
-    // Set the disclosure to be hidden, update trigger to not be expanded and dispatch closed event
-    this.setAttribute('aria-hidden', 'true');
-    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', 'false'));
-    this.dispatchEvent(new CustomEvent(EVENTS['CLOSED_EVENT'], { detail: {
+  setDisclosureVisibility(visible) {
+    this.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', visible ? 'true' : 'false'));
+    this.dispatchEvent(new CustomEvent(visible ? EVENTS['OPENED'] : EVENTS['CLOSED'], { detail: {
       'id': this.id
     }}));
   }
 
   toggleDisclosure() {
     // Toggle visibility and aria attributes
-    if (this.isShown()) {
-      this.hideDisclosure();
-    } else {
-      this.showDisclosure();
-    }
+    this.setDisclosureVisibility(!this.isShown());
   }
 
   getTriggers(id) {
