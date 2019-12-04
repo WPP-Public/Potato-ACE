@@ -5,6 +5,7 @@ context('Listbox', () => {
     const listboxListAttr = `${listboxTag}-list`;
     const multiSelectAttr = `${listboxTag}-multiselect`;
     const optionIndexAttr = `${listboxTag}-option-index`;
+    const activeOptionAttr = `${listboxTag}-active-option`;
 
     beforeEach(() => {
         // Navigate to the docs page
@@ -35,13 +36,85 @@ context('Listbox', () => {
             });
         });
 
-        it('single-select listbox should select next option when down arrow is pressed', () => {});
+        it('single-select listbox should select next option when down arrow is pressed', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().focus().type('{downarrow}')
+                .within(() => {
+                    // Check the second option is selected
+                    cy.get('li').eq(1).should('have.attr', 'aria-selected', 'true');
+                });
+        });
 
-        it('single-select listbox should select first option when down arrow is pressed on last option', () => {});
+        it('single-select listbox should select first option when down arrow is pressed on last option', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().as('listbox');
+            cy.get('@listbox').focus().within(() => {
+                // Select last option
+                cy.get('li').last().click();
+            });
+            cy.get('@listbox').type('{downarrow}').within(() => {
+                // Check the first option is selected
+                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
+            });
+        });
 
-        it('single-select listbox should select previous option when up arrow is pressed', () => {});
+        it('single-select listbox should select previous option when up arrow is pressed', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().as('listbox');
+            cy.get('@listbox').focus().within(() => {
+                // Select second option
+                cy.get('li').eq(1).click();
+            });
+            cy.get('@listbox').type('{uparrow}').within(() => {
+                // Check the first option is selected
+                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
+            });
+        });
 
-        it('single-select listbox should select last option when up arrow is pressed on first option', () => {});
+        it('single-select listbox should select last option when up arrow is pressed on first option', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().as('listbox');
+            cy.get('@listbox').focus().within(() => {
+                // Select first option
+                cy.get('li').first().click();
+            });
+            cy.get('@listbox').type('{uparrow}').within(() => {
+                // Check the last option is selected
+                cy.get('li').last().should('have.attr', 'aria-selected', 'true');
+            });
+        });
+
+        it('single-select listbox should select first option when home key is pressed', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().as('listbox');
+            cy.get('@listbox').focus().within(() => {
+                // Select last option
+                cy.get('li').last().click();
+            });
+            cy.get('@listbox').type('{home}').within(() => {
+                // Check the first option is selected
+                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
+            });
+        });
+
+        it('single-select listbox should select last option when end key is pressed', () => {
+            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().as('listbox');
+            cy.get('@listbox').focus().within(() => {
+                // Select first option
+                cy.get('li').first().click();
+            });
+            cy.get('@listbox').type('{end}').within(() => {
+                // Check the last option is selected
+                cy.get('li').last().should('have.attr', 'aria-selected', 'true');
+            });
+        });
+
+        it('multi-select listbox should focus next option when down arrow is pressed', () => {});
+
+        it('multi-select listbox should focus first option when down arrow is pressed on last option', () => {});
+
+        it('multi-select listbox should focus previous option when up arrow is pressed', () => {});
+
+        it('multi-select listbox should focus last option when up arrow is pressed on first option', () => {});
+
+        it('multi-select listbox should focus first option when home key is pressed', () => {});
+
+        it('multi-select listbox should focus last option when end key is pressed', () => {});
     });
 
     /* TEST EXAMPLES AGAINST WAI-ARIA SPEC */
