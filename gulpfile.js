@@ -114,9 +114,9 @@ gulp.task('img', () => {
 
 
 gulp.task('js', () => {
-  return gulp.src(`./${dirs.src}/js/**/*.js`)
+  return gulp.src(`./${dirs.src}/{js,${componentLibrary}}/**/*.js`)
     .pipe(terser())
-    .pipe(gulp.dest(`./${dirs.dest}/js/`));
+    .pipe(gulp.dest(`./${dirs.dest}/`));
 });
 
 
