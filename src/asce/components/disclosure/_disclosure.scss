@@ -1,0 +1,12 @@
+asce-disclosure {
+  display: block;
+
+  &[aria-hidden='true'] {
+    display: none;
+  }
+}
+
+
+[asce-disclosure-trigger-for] {
+  cursor: pointer;
+}
