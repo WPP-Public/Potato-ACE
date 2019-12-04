@@ -1,5 +1,8 @@
 {
-    "baseUrl": "http://localhost:3000",
+    "baseUrl": "http://localhost:3030",
     "integrationFolder": "src",
-    "testFiles": "**/*.{test,spec}.js"
+    "testFiles": "**/*.{test,spec}.js",
+    "env": {
+        "pkg_name": "asce"
+    }
 }
