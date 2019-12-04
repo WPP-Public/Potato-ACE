@@ -35,8 +35,7 @@ const yellow = '\x1b[33m%s\x1b[0m';
 // MarkdownIt Options
 const md = new MarkdownIt({
   html: true,
-  linkify: true,
-  breaks: true,
+  linkify: true
 });
 
 
