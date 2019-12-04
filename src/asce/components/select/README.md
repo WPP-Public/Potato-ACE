@@ -12,9 +12,9 @@ import { Select } from 'asce/components/select/select.js';
 
 ```scss
 /* COMPONENT VARIABLES */
-$asce-select-z-index: 1;
 $asce-select-list-background: #fff;
 $asce-select-list-height: 100px;
+$asce-select-list-z-index: 10;
 
 /* COMPONENT STYLES */
 asce-select {
@@ -27,7 +27,11 @@ asce-select {
   position: absolute;
   top: 100%;
   white-space: nowrap;
-  z-index: $asce-select-z-index;
+  z-index: $asce-select-list-z-index;
+}
+
+[asce-select-list-hidden] {
+  display: none;
 }
 ```
 

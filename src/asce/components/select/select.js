@@ -8,8 +8,9 @@ import { keyPressedMatches } from '../../common/common.js';
 export const NAME = `${libraryName}-select`;
 
 export const ATTRS = {
-  LIST: `${NAME}-list`,
   TRIGGER: `${NAME}-trigger`,
+  LIST: `${NAME}-list`,
+  LIST_HIDDEN: `${NAME}-list-hidden`,
 };
 
 
@@ -68,7 +69,7 @@ export class Select extends Listbox {
   */
   selectClickHandler(e) {
     const optionClicked = e.target.closest(`[${LISTBOX_ATTRS.OPTION_INDEX}]`);
-    const triggerClicked = e.target.closest(`[${ATTRS.TRIGGER}]`);
+    const triggerClicked = e.target.closest(`[${ATTRS.TRIGGER}]`) === this.trigger;
 
     if (!optionClicked && !triggerClicked) {
       return;
@@ -76,6 +77,7 @@ export class Select extends Listbox {
 
     if (triggerClicked) {
       this.showList();
+      this.list.focus();
       return;
     }
 
@@ -97,6 +99,7 @@ export class Select extends Listbox {
     const keyPressed = e.key || e.which || e.keyCode;
     if (keydownOnTrigger && keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
       this.showList();
+      this.list.focus();
       Listbox.prototype.keydownHandler.call(this, e);
       return;
     }
@@ -111,27 +114,27 @@ export class Select extends Listbox {
 
 
   /*
-    Show dropdown list
-  */
-  showList() {
-    this.trigger.setAttribute('aria-expanded', 'true');
-    this.list.style.display = null;
-    this.list.focus();
-  }
-
-
-  /*
     Hide dropdown list and update trigger text
   */
   hideList() {
-    const activeOption = this.list.querySelector(`[aria-selected="true"]`);
+    const activeOption = this.list.querySelector('[aria-selected="true"]');
     if (activeOption !== null) {
       this.trigger.textContent = activeOption.textContent;
     }
 
-    this.list.style.display = 'none';
     this.trigger.removeAttribute('aria-expanded');
+    this.list.setAttribute(ATTRS.LIST_HIDDEN, '');
+  }
+
+
+  /*
+    Show dropdown list
+  */
+  showList() {
+    this.trigger.setAttribute('aria-expanded', 'true');
+    this.list.removeAttribute(ATTRS.LIST_HIDDEN);
   }
 }
+
 
 customElements.define(NAME, Select);
