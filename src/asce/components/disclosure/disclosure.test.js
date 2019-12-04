@@ -1,6 +1,7 @@
 context('Disclosure', () => {
+    const componentName = 'disclosure';
     const pkgName = Cypress.env('pkg_name');
-    const disclosureTag = `${pkgName}-disclosure`;
+    const disclosureTag = `${pkgName}-${componentName}`;
     const triggerAttr = `${disclosureTag}-trigger-for`;
 
     beforeEach(() => {
@@ -20,6 +21,47 @@ context('Disclosure', () => {
 
         it('should have at least one disclosure', () => {
             cy.get(`${disclosureTag}`).should('have.length.greaterThan', 0);
+        });
+    });
+
+    /* TEST EXAMPLES KEYBAORD INTERACTION */
+    describe('Keyboard Interaction', () => {
+        it('should trigger disclosure when enter is pressed', () => {
+            // Get the trigger and disclosure
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
+            cy.get('@trigger').then(trigger => {
+                const disclosureId = trigger.attr(`${triggerAttr}`);
+                cy.get(`#${disclosureId}`).as('disclosure');
+                // Check disclosure is hidden before
+                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
+                // Focus the trigger and press enter
+                cy.get('@trigger').focus().trigger('keydown', { keyCode: 13, which: 13 });
+                // Check disclosure is now visible and trigger has `aria-expanded` set to true
+                cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
+                // Focus the trigger and press enter
+                cy.get('@trigger').focus().trigger('keydown', { keyCode: 13, which: 13 });
+                // Check disclosure is hidden before
+                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
+            });
+        });
+
+        it('should trigger disclosure when space is pressed', () => {
+            // Get the trigger and disclosure
+            cy.get(`[${triggerAttr}]`).first().as('trigger');
+            cy.get('@trigger').then(trigger => {
+                const disclosureId = trigger.attr(`${triggerAttr}`);
+                cy.get(`#${disclosureId}`).as('disclosure');
+                // Check disclosure is hidden before
+                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
+                // Focus the trigger and press enter
+                cy.get('@trigger').focus().trigger('keydown', { keyCode: 32, which: 32 });
+                // Check disclosure is now visible and trigger has `aria-expanded` set to true
+                cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
+                // Focus the trigger and press enter
+                cy.get('@trigger').focus().trigger('keydown', { keyCode: 32, which: 32 });
+                // Check disclosure is hidden before
+                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
+            });
         });
     });
 
@@ -60,44 +102,6 @@ context('Disclosure', () => {
                 cy.get('@trigger').click();
                 // Check disclosure is now visible and has `aria-hidden` set to false
                 cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
-            });
-        });
-
-        it('should trigger disclosure when enter is pressed', () => {
-            // Get the trigger and disclosure
-            cy.get(`[${triggerAttr}]`).first().as('trigger');
-            cy.get('@trigger').then(trigger => {
-                const disclosureId = trigger.attr(`${triggerAttr}`);
-                cy.get(`#${disclosureId}`).as('disclosure');
-                // Check disclosure is hidden before
-                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
-                // Focus the trigger and press enter
-                cy.get('@trigger').focus().trigger('keydown', { keyCode: 13, which: 13 });
-                // Check disclosure is now visible and trigger has `aria-expanded` set to true
-                cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
-                // Focus the trigger and press enter
-                cy.get('@trigger').focus().trigger('keydown', { keyCode: 13, which: 13 });
-                // Check disclosure is hidden before
-                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
-            });
-        });
-
-        it('should trigger disclosure when space is pressed', () => {
-            // Get the trigger and disclosure
-            cy.get(`[${triggerAttr}]`).first().as('trigger');
-            cy.get('@trigger').then(trigger => {
-                const disclosureId = trigger.attr(`${triggerAttr}`);
-                cy.get(`#${disclosureId}`).as('disclosure');
-                // Check disclosure is hidden before
-                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
-                // Focus the trigger and press enter
-                cy.get('@trigger').focus().trigger('keydown', { keyCode: 32, which: 32 });
-                // Check disclosure is now visible and trigger has `aria-expanded` set to true
-                cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
-                // Focus the trigger and press enter
-                cy.get('@trigger').focus().trigger('keydown', { keyCode: 32, which: 32 });
-                // Check disclosure is hidden before
-                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
             });
         });
 
