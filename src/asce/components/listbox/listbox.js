@@ -22,11 +22,6 @@ export const EVENTS = {
 const searchTimeoutTime = 200;
 
 
-/* INITIALISATION CODE */
-// Auto-generate IDs for elements that don't have one
-autoID(NAME);
-
-
 /* CLASS */
 export class Listbox extends HTMLElement {
   constructor() {
@@ -430,4 +425,10 @@ export class Listbox extends HTMLElement {
   }
 }
 
-customElements.define(NAME, Listbox);
+
+/* INITIALISATION CODE */
+document.addEventListener('DOMContentLoaded', () => {
+  // Auto-generate IDs for elements that don't have one
+  autoID(NAME);
+  customElements.define(NAME, Listbox);
+});
