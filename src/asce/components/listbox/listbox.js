@@ -64,6 +64,7 @@ export class Listbox extends HTMLElement {
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
     this.findInList = this.findInList.bind(this);
+    this.clearListSearch = this.clearListSearch.bind(this);
   }
 
 
@@ -304,12 +305,14 @@ export class Listbox extends HTMLElement {
           this.allSelected = !this.allSelected;
         }
       }
+      // @Ahmed, should this return here? Otherwise Ctrl+A would add an 'a' to the search query
     }
 
     // "type-ahead" search functionality
     clearTimeout(this.searchTimeout);
     this.query+=e.key;
-    this.searchTimeout = setTimeout(this.findInList, searchTimeoutTime);
+    this.findInList();
+    this.searchTimeout = setTimeout(this.clearListSearch, searchTimeoutTime);
   }
 
 
@@ -379,20 +382,34 @@ export class Listbox extends HTMLElement {
   */
   findInList() {
     let i = this.activeOptionIndex;
+    let maxIndex = this.options.length - 1;
 
-    do {
-      if (i === this.options.length - 1) {
-        i = 0;
-      } else {
+    if (this.query.length === 1) {
+      // If it's the first letter of a new search, we start searching _after_ the currently selected option
         i++;
       }
 
+    let startingIndex = i;
+
+    do {
       if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
         this.makeOptionActive(i);
         break;
       }
-    } while (i !== this.activeOptionIndex);
+      
+      i++;
+      // If i has gone past the end, loop back around to the start of the list
+      if (i > maxIndex) {
+        i = 0;
+      }
+    } while (i !== startingIndex); // Terminates if every option has been checked
+  }
 
+
+  /* 
+    Clears the search query
+  */
+  clearListSearch() {
     this.query = '';
   }
 
