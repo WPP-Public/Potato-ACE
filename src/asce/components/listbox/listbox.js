@@ -4,7 +4,7 @@ import { autoID, keyPressedMatches } from '../../common/functions.js';
 
 
 /* CONSTANTS */
-// Constants to be exported and used in other modules
+// Exported constants
 export const NAME = `${libraryName}-listbox`;
 
 export const ATTRS = {
@@ -19,7 +19,7 @@ export const EVENTS = {
 };
 
 // Other constants
-const searchTimeoutTime = 200;
+const searchTimeoutTime = 500;
 
 
 /* CLASS */
@@ -298,6 +298,7 @@ export class Listbox extends HTMLElement {
             option.setAttribute('aria-selected', !this.allSelected);
           });
           this.allSelected = !this.allSelected;
+          return;
         }
       }
       // @Ahmed, should this return here? Otherwise Ctrl+A would add an 'a' to the search query
@@ -305,7 +306,7 @@ export class Listbox extends HTMLElement {
 
     // "type-ahead" search functionality
     clearTimeout(this.searchTimeout);
-    this.query+=e.key;
+    this.query+=e.key.toLowerCase();
     this.findInList();
     this.searchTimeout = setTimeout(this.clearListSearch, searchTimeoutTime);
   }
@@ -387,27 +388,27 @@ export class Listbox extends HTMLElement {
     let startingIndex = i;
 
     do {
-      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
-        this.makeOptionActive(i);
-        break;
-      }
-      
-      i++;
       // If i has gone past the end, loop back around to the start of the list
       if (i > maxIndex) {
         i = 0;
       }
+
+      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
+        this.makeOptionActive(i);
+        break;
+      }
+
+      i++;
     } while (i !== startingIndex); // Terminates if every option has been checked
   }
 
 
-  /* 
+  /*
     Clears the search query
   */
   clearListSearch() {
     this.query = '';
   }
-
 
 
   /* CUSTOM EVENT HANDLERS */
