@@ -2,6 +2,13 @@
 
 export const libraryName = 'asce';
 
+
+export const ASCE_CONSTANTS = {
+  FLOAT_ABOVE: `${libraryName}-u-float-above`,
+  FLOAT_LEFT: `${libraryName}-u-float-left`,
+};
+
+
 export const KEYBOARD_KEYS = {
   'A': {
     'CODE': 65,

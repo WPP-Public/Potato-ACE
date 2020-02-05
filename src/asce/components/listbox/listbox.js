@@ -368,6 +368,16 @@ export class Listbox extends HTMLElement {
       this.initialiseList();
     }
   }
+
+
+  disconnectedCallback() {
+    /* ATTACH EVENT LISTENERS */
+    this.list.removeEventListener('focus', this.focusHandler, { passive: true });
+    this.list.removeEventListener('blur', this.focusHandler, { passive: true });
+    this.list.removeEventListener('keydown', this.keydownHandler);
+    this.list.removeEventListener('click', this.clickHandler, { passive: true });
+    this.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, { passive: true });
+  }
 }
 
 customElements.define(NAME, Listbox);

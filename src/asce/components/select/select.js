@@ -123,7 +123,7 @@ export class Select extends Listbox {
       this.trigger.textContent = activeOption.textContent;
     }
 
-    this.trigger.removeAttribute('aria-expanded');
+    this.trigger.setAttribute('aria-expanded', 'false');
     this.list.setAttribute(ATTRS.LIST_HIDDEN, '');
   }
 
@@ -134,6 +134,16 @@ export class Select extends Listbox {
   showList() {
     this.trigger.setAttribute('aria-expanded', 'true');
     this.list.removeAttribute(ATTRS.LIST_HIDDEN);
+  }
+
+
+  disconnectedCallback() {
+    /* DETACH EVENT LISTENERS */
+    window.removeEventListener('click', this.selectClickHandler, { passive: true });
+    this.removeEventListener('keydown', this.selectKeydownHandler);
+    this.list.removeEventListener('blur', this.hideList, { passive: true });
+
+    Listbox.prototype.disconnectedCallback.call(this);
   }
 }
 
