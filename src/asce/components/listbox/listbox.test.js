@@ -1,15 +1,18 @@
+import {
+    NAME as listboxTag,
+    ATTRS as listboxAttrs,
+    EVENTS as listboxEvents
+} from './listbox';
+
 context('Listbox', () => {
-    const componentName = 'listbox';
-    const pkgName = Cypress.env('pkg_name');
-    const listboxTag = `${pkgName}-${componentName}`;
-    const listboxListAttr = `${listboxTag}-list`;
-    const multiSelectAttr = `${listboxTag}-multiselect`;
-    const optionIndexAttr = `${listboxTag}-option-index`;
-    const activeOptionAttr = `${listboxTag}-active-option`;
+    const listboxListAttr = listboxAttrs['LIST'];
+    const multiSelectAttr = listboxAttrs['MULTISELECT'];
+    const optionIndexAttr = listboxAttrs['OPTION_INDEX'];
+    const activeOptionAttr = listboxAttrs['ACTIVE_OPTION'];
 
     beforeEach(() => {
         // Navigate to the docs page
-        cy.visit(`/${componentName}`);
+        cy.visit(`/listbox`);
     });
 
     /* CHECK DOCS PAGE IS CORRECT BEFORE TESTING EXAMPLES */
@@ -111,8 +114,9 @@ context('Listbox', () => {
             cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().type(' ')
                 .within(() => {
                     // Check the second option is selected
-                    cy.get('li').first().should('have.attr', activeOptionAttr);
-                    cy.get('li').first().should('have.attr', 'aria-selected', 'true');
+                    cy.get('li').first().as('first');
+                    cy.get('@first').should('have.attr', activeOptionAttr);
+                    cy.get('@first').should('have.attr', 'aria-selected', 'true');
                 });
         });
 
@@ -186,9 +190,14 @@ context('Listbox', () => {
                 cy.get('li').first().click();
                 // Type shift + up arrow
                 cy.wrap(listbox).type('{shift}{downarrow}');
+                // Check the first option is focused or selected
+                cy.get('li').first().as('first');
+                cy.get('@first').should('not.have.attr', activeOptionAttr);
+                cy.get('@first').should('have.attr', 'aria-selected', 'true');
                 // Check the second option is focused and selected
-                cy.get('li').eq(1).should('have.attr', activeOptionAttr);
-                cy.get('li').eq(1).should('have.attr', 'aria-selected', 'true');
+                cy.get('li').eq(1).as('second');
+                cy.get('@second').should('have.attr', activeOptionAttr);
+                cy.get('@second').should('have.attr', 'aria-selected', 'true');
             });
         });
 
@@ -199,8 +208,9 @@ context('Listbox', () => {
                 // Type shift + up arrow
                 cy.wrap(listbox).type('{shift}{uparrow}');
                 // Check the first option is focused and selected
-                cy.get('li').first().should('have.attr', activeOptionAttr);
-                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
+                cy.get('li').first().as('first');
+                cy.get('@first').should('have.attr', activeOptionAttr);
+                cy.get('@first').should('have.attr', 'aria-selected', 'true');
             });
         });
 
@@ -215,8 +225,9 @@ context('Listbox', () => {
                 // Check the first, second, and third option is focused and selected
                 cy.get('li').first().should('have.attr', 'aria-selected', 'true');
                 cy.get('li').eq(1).should('have.attr', 'aria-selected', 'true');
-                cy.get('li').eq(2).should('have.attr', activeOptionAttr);
-                cy.get('li').eq(2).should('have.attr', 'aria-selected', 'true');
+                cy.get('li').eq(2).as('third');
+                cy.get('@third').should('have.attr', activeOptionAttr);
+                cy.get('@third').should('have.attr', 'aria-selected', 'true');
             });
         });
 
@@ -227,8 +238,9 @@ context('Listbox', () => {
                 // Type shift + home arrow
                 cy.wrap(listbox).type('{ctrl}{shift}{home}');
                 // Check the first, second, and third option is focused and selected
-                cy.get('li').first().should('have.attr', activeOptionAttr);
-                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
+                cy.get('li').first().as('first');
+                cy.get('@first').should('have.attr', activeOptionAttr);
+                cy.get('@first').should('have.attr', 'aria-selected', 'true');
                 cy.get('li').eq(1).should('have.attr', 'aria-selected', 'true');
                 cy.get('li').eq(2).should('have.attr', 'aria-selected', 'true');
             });
@@ -241,8 +253,9 @@ context('Listbox', () => {
                 // Type shift + home arrow
                 cy.wrap(listbox).type('{ctrl}{shift}{end}');
                 // Check the first, second, and third option is focused and selected
-                cy.get('li').last().should('have.attr', activeOptionAttr);
-                cy.get('li').last().should('have.attr', 'aria-selected', 'true');
+                cy.get('li').last().as('last');
+                cy.get('@last').should('have.attr', activeOptionAttr);
+                cy.get('@last').should('have.attr', 'aria-selected', 'true');
                 cy.get('li').eq(10).should('have.attr', 'aria-selected', 'true');
                 cy.get('li').eq(9).should('have.attr', 'aria-selected', 'true');
             });
