@@ -301,7 +301,6 @@ export class Listbox extends HTMLElement {
           return;
         }
       }
-      // @Ahmed, should this return here? Otherwise Ctrl+A would add an 'a' to the search query
     }
 
     // "type-ahead" search functionality
