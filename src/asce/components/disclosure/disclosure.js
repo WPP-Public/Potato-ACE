@@ -1,6 +1,6 @@
 /* IMPORTS */
 import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
-import { keyPressedMatches } from '../../common/common.js';
+import { keyPressedMatches } from '../../common/functions.js';
 
 /* CONSTANTS */
 export const NAME = `${libraryName}-disclosure`;
