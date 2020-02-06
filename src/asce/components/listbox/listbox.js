@@ -382,8 +382,8 @@ export class Listbox extends HTMLElement {
 
     if (this.query.length === 1) {
       // If it's the first letter of a new search, we start searching _after_ the currently selected option
-        i++;
-      }
+      i++;
+    }
 
     let startingIndex = i;
 
