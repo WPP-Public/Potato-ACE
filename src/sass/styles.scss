@@ -5,15 +5,14 @@
 @import 'common/utils';
 @import 'common/reset';
 
+
 //COMPONENTS
 @import 'asce-variable-overrides';
 @import '../asce/components/listbox/listbox';
 @import '../asce/components/disclosure/disclosure';
 @import '../asce/components/test-component/test-component';
 
-// COMPONENT OVERRIDES
-@import './components/all';
 
-// PAGES
-@import './pages';
-
+// PAGE STYLES
+@import './pages/all';
+@import './base';
