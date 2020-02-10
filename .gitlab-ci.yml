@@ -60,9 +60,21 @@ lint:
 
 test-chrome:
   extends: .e2e
-  image: cypress/browsers:node12.13.0-chrome78-ff70
+  image: cypress/browsers:node12.8.1-chrome78-ff70
   script:
     - npm run test --browser chrome
+
+test-firefox:
+  extends: .e2e
+  image: cypress/browsers:node12.8.1-chrome78-ff70
+  script:
+    - npm run test --browser firefox
+
+test-edge:
+  extends: .e2e
+  image: cypress/browsers:node12.8.1-chrome78-ff70
+  script:
+    - npm run test --browser edge
 
 test-electron:
   extends: .e2e
