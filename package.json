@@ -11,8 +11,7 @@
     "lint:js": "eslint \"src/js/**/*.js\"",
     "lint:scss": "stylelint \"src/sass/**/*.scss\"",
     "start": "gulp",
-    "start:test": "npx http-server ./dist --port 3030 -c-1",
-    "test": "cypress run --config video=false"
+    "start:test": "npx http-server ./dist --port 3030 -c-1"
   },
   "repository": {
     "type": "git",
@@ -24,7 +23,7 @@
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.4.0",
     "browser-sync": "^2.26.7",
-    "cypress": "3.6.1",
+    "cypress": "4.0.1",
     "eslint": "6.6.0",
     "eslint-plugin-cypress": "2.7.0",
     "gulp": "^4.0.2",
