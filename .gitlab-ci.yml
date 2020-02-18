@@ -87,7 +87,7 @@ deploy:
   stage: deploy
   dependencies:
     - build
-  needs: [lint, test-chrome, test-firefox, test-electron]
+  needs: [build, lint, test-chrome, test-firefox, test-electron]
   script:
     - npm ci
     - npm i -g firebase-tools
