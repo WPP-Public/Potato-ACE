@@ -69,7 +69,9 @@ test-firefox:
   script:
     - npm run test -- --browser firefox
 
-test-edge:
+# TODO: Edge is not available on Linux yet - switch to Windows runner on
+# GitLab CI and test Edge there.
+.test-edge:
   extends: .e2e
   image: cypress/browsers:node12.8.1-chrome78-ff70
   script:
