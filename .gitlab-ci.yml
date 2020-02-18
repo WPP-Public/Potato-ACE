@@ -88,6 +88,8 @@ deploy:
   dependencies:
     - build
   needs: [build, lint, test-chrome, test-firefox, test-electron]
+  only:
+    - master
   script:
     - npm ci
     - npm i -g firebase-tools
