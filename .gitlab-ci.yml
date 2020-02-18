@@ -85,9 +85,9 @@ test-electron:
 deploy:
   interruptible: true
   stage: deploy
-  needs: [lint, test-chrome, test-electron]
-  only:
-    - master
+  dependencies:
+    - build
+  needs: [lint, test-chrome, test-firefox, test-electron]
   script:
     - npm ci
     - npm i -g firebase-tools
