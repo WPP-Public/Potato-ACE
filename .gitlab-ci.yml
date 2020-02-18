@@ -85,7 +85,9 @@ test-electron:
 deploy:
   interruptible: true
   stage: deploy
-  needs: [lint, test-chrome, test-electron]
+  dependencies:
+    - build
+  needs: [build, lint, test-chrome, test-firefox, test-electron]
   only:
     - master
   script:
