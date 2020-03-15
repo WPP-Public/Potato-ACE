@@ -1,9 +1,9 @@
 /* IMPORTS */
-import {libraryName, KEYBOARD_KEYS as KEYS} from '../../common/constants.js';
+import {NAME, KEYS} from '../../common/constants.js';
 import {keyPressedMatches} from '../../common/functions.js';
 
 /* CONSTANTS */
-export const NAME = `${libraryName}-disclosure`;
+export const NAME = `${NAME}-disclosure`;
 
 export const ATTRS = {
   TRIGGER: `${NAME}-trigger-for`
