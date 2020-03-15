@@ -36,8 +36,8 @@ export class Listbox extends HTMLElement {
     this.searchTimeout = null;
 
     // Get DOM elements
-    this.list = this.querySelector('ul');
-    // Create <ul> if none given
+    this.list = this.querySelector('ul') || this.querySelector('ol') ;
+    // Create <ul> if neither <ul> or a <ol> is present
     if (!this.list) {
       this.appendChild(document.createElement('ul'));
       this.list = this.querySelector('ul');
