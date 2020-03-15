@@ -28,6 +28,7 @@ asce-select {
   left: 0;
   position: absolute;
   top: 100%;
+  white-space: nowrap;
   z-index: $asce-select-list-z-index;
 }
 

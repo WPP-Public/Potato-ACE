@@ -4,7 +4,6 @@ import {Listbox, ATTRS as LISTBOX_ATTRS} from '../listbox/listbox.js';
 import {handleOverflow, keyPressedMatches} from '../../common/functions.js';
 
 
-
 /* EXPORTED CONSTANTS */
 export const SELECT = `${NAME}-select`;
 
@@ -16,21 +15,16 @@ export const ATTRS = {
 };
 
 
+
 /* CLASS */
 export class Select extends Listbox {
-  /* CONSTRUCTOR */
   constructor() {
     super();
 
     /* CLASS INSTANCE CONSTANTS */
 
-    /* GET DOM ELEMENTS */
-    this.trigger = this.querySelector('button');
-    this.list = this.querySelector('ul');
 
-    /* GET DOM DATA */
-
-    /* BIND 'THIS' TO CLASS METHODS */
+    /* CLASS METHOD BINDINGS */
     this.selectClickHandler = this.selectClickHandler.bind(this);
     this.selectKeydownHandler = this.selectKeydownHandler.bind(this);
     this.showList = this.showList.bind(this);
@@ -40,26 +34,36 @@ export class Select extends Listbox {
 
   /* CLASS METHODS */
   connectedCallback() {
-    Listbox.prototype.connectedCallback.call(this);
+    super.connectedCallback.call(this);
 
-    /* ATTACH EVENT LISTENERS */
-    window.addEventListener('click', this.selectClickHandler, { passive: true });
-    this.addEventListener('keydown', this.selectKeydownHandler);
-    this.list.addEventListener('blur', this.hideList, { passive: true });
+    /* GET DOM ELEMENTS */
+    this.triggerEl = this.querySelector('button');
+    this.listEl = this.querySelector('ul') || this.querySelector('ol');
 
 
-    /* SET INITIAL STATES */
+    /* GET DOM DATA */
+
+
+
+    /* SET DOM DATA */
     // Set trigger attrs
-    this.trigger.id = this.trigger.id || `${this.id}-trigger`;
-    this.trigger.setAttribute(ATTRS.TRIGGER, '');
+    this.triggerEl.id = this.triggerEl.id || `${this.id}-trigger`;
+    this.triggerEl.setAttribute(ATTRS.TRIGGER, '');
 
     if (!this.getAttribute('aria-haspopup')) {
-      this.trigger.setAttribute('aria-haspopup', 'listbox');
+      this.triggerEl.setAttribute('aria-haspopup', 'listbox');
     }
 
     // Set list attrs
-    this.list.setAttribute(ATTRS.LIST, '');
-    this.list.setAttribute('tabindex', '-1');
+    this.listEl.setAttribute(ATTRS.LIST, '');
+    this.listEl.setAttribute('tabindex', '-1');
+
+
+    /* ATTACH EVENT LISTENERS */
+    window.addEventListener('click', this.selectClickHandler, {passive: true});
+    this.addEventListener('keydown', this.selectKeydownHandler);
+    this.listEl.addEventListener('blur', this.hideList, {passive: true});
+
 
     /* INITIALISATION CODE */
     this.hideList();
@@ -71,7 +75,7 @@ export class Select extends Listbox {
   */
   selectClickHandler(e) {
     const optionClicked = e.target.closest(`[${LISTBOX_ATTRS.OPTION_INDEX}]`);
-    const triggerClicked = e.target.closest(`[${ATTRS.TRIGGER}]`) === this.trigger;
+    const triggerClicked = e.target.closest(`[${ATTRS.TRIGGER}]`) === this.triggerEl;
 
     if (!optionClicked && !triggerClicked) {
       return;
@@ -79,8 +83,7 @@ export class Select extends Listbox {
 
     if (triggerClicked) {
       this.showList();
-      handleOverflow(this.list);
-      this.list.focus();
+      this.listEl.focus();
       return;
     }
 
@@ -89,7 +92,7 @@ export class Select extends Listbox {
 
 
   /*
-    Handle keystrokes
+    Handle keystrokes on select
   */
   selectKeydownHandler(e) {
     const keydownOnTrigger = e.target.closest(`[${ATTRS.TRIGGER}]`);
@@ -101,16 +104,16 @@ export class Select extends Listbox {
 
     const keyPressed = e.key || e.which || e.keyCode;
     if (keydownOnTrigger && keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
+      e.preventDefault();
       this.showList();
-      this.list.focus();
-      Listbox.prototype.keydownHandler.call(this, e);
+      this.listEl.focus();
       return;
     }
 
     if (keydownOnList && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.ESCAPE])) {
       e.preventDefault();
       this.hideList();
-      this.trigger.focus();
+      this.triggerEl.focus();
       return;
     }
   }
@@ -120,13 +123,13 @@ export class Select extends Listbox {
     Hide dropdown list and update trigger text
   */
   hideList() {
-    const activeOption = this.list.querySelector('[aria-selected="true"]');
+    const activeOption = this.listEl.querySelector('[aria-selected="true"]');
     if (activeOption !== null) {
-      this.trigger.textContent = activeOption.textContent;
+      this.triggerEl.textContent = activeOption.textContent;
     }
 
-    this.trigger.setAttribute('aria-expanded', 'false');
-    this.list.setAttribute(ATTRS.LIST_HIDDEN, '');
+    this.triggerEl.setAttribute('aria-expanded', 'false');
+    this.listEl.setAttribute(ATTRS.LIST_HIDDEN, '');
   }
 
 
@@ -134,8 +137,9 @@ export class Select extends Listbox {
     Show dropdown list
   */
   showList() {
-    this.trigger.setAttribute('aria-expanded', 'true');
-    this.list.removeAttribute(ATTRS.LIST_HIDDEN);
+    this.triggerEl.setAttribute('aria-expanded', 'true');
+    this.listEl.removeAttribute(ATTRS.LIST_HIDDEN);
+    handleOverflow(this.listEl);
   }
 
 
@@ -143,9 +147,9 @@ export class Select extends Listbox {
     /* DETACH EVENT LISTENERS */
     window.removeEventListener('click', this.selectClickHandler, { passive: true });
     this.removeEventListener('keydown', this.selectKeydownHandler);
-    this.list.removeEventListener('blur', this.hideList, { passive: true });
+    this.listEl.removeEventListener('blur', this.hideList, { passive: true });
 
-    Listbox.prototype.disconnectedCallback.call(this);
+    super.disconnectedCallback.call(this);
   }
 }
 
