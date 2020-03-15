@@ -20,10 +20,5 @@
 
 
 // USER STYLES
-// User ASCE component overrides
-@import './components/all';
-
-
-// Other User Styles
-@import './pages/all';
 @import './base';
+@import './pages/all';
