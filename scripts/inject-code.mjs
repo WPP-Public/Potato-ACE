@@ -14,8 +14,8 @@ import pjson from '../package.json';
 
 
 // CONSTANTS
-const libraryName = pjson.customProperties.componentLibrary;
-const componentsDir = `./src/${libraryName}/components`;
+const NAME = pjson.customProperties.componentLibrary;
+const componentsDir = `./src/${NAME}/components`;
 const baseHtmlFile = `./src/pages/includes/base.html`;
 const htmlOnlyArg = '--html-only';
 const fileEncoding = 'utf8';

@@ -1,11 +1,11 @@
 /* IMPORTS */
-import {libraryName, KEYBOARD_KEYS as KEYS} from '../../common/constants.js';
+import {NAME, KEYS} from '../../common/constants.js';
 import {autoID, keyPressedMatches} from '../../common/functions.js';
 
 
 /* CONSTANTS */
 // Exported constants
-export const NAME = `${libraryName}-listbox`;
+export const NAME = `${NAME}-listbox`;
 
 export const ATTRS = {
   LIST: `${NAME}-list`,
@@ -299,6 +299,10 @@ export class Listbox extends HTMLElement {
           return;
         }
       }
+    }
+
+    if (e.key.length > 1) {
+      return;
     }
 
     // "type-ahead" search functionality

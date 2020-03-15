@@ -1,16 +1,18 @@
 /* IMPORTS */
-import {libraryName, KEYBOARD_KEYS as KEYS} from '../../common/constants.js';
+import {NAME, KEYS} from '../../common/constants.js';
 import {Listbox, ATTRS as LISTBOX_ATTRS} from '../listbox/listbox.js';
 import {handleOverflow, keyPressedMatches} from '../../common/functions.js';
 
 
-/* CONSTANTS */
-export const NAME = `${libraryName}-select`;
+
+/* EXPORTED CONSTANTS */
+export const SELECT = `${NAME}-select`;
+
 
 export const ATTRS = {
-  TRIGGER: `${NAME}-trigger`,
-  LIST: `${NAME}-list`,
-  LIST_HIDDEN: `${NAME}-list-hidden`,
+  LIST: `${SELECT}-list`,
+  LIST_HIDDEN: `${SELECT}-list-hidden`,
+  TRIGGER: `${SELECT}-trigger`,
 };
 
 
@@ -148,4 +150,4 @@ export class Select extends Listbox {
 }
 
 
-customElements.define(NAME, Select);
+customElements.define(SELECT, Select);

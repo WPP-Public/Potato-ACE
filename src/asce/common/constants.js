@@ -1,15 +1,15 @@
 /* CONSTANTS AVAILABLE TO ALL COMPONENTS */
 
-export const libraryName = 'asce';
+export const NAME = 'asce';
 
 
 export const UTIL_ATTRS = {
-  FLOAT_ABOVE: `${libraryName}-u-float-above`,
-  FLOAT_LEFT: `${libraryName}-u-float-left`,
+  FLOAT_ABOVE: `${NAME}-u-float-above`,
+  FLOAT_LEFT: `${NAME}-u-float-left`,
 };
 
 
-export const KEYBOARD_KEYS = {
+export const KEYS = {
   'A': {
     'CODE': 65,
     'KEY': 'a',
