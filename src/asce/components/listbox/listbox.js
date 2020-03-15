@@ -303,6 +303,11 @@ export class Listbox extends HTMLElement {
       }
     }
 
+    // Ignore non-alphanumeric keys
+    if (e.key.length > 1) {
+      return;
+    }
+
     // "type-ahead" search functionality
     clearTimeout(this.searchTimeout);
     this.query+=e.key.toLowerCase();
