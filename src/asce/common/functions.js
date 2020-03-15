@@ -1,5 +1,5 @@
 /* FUNCTIONS THAT CAN BE USED BY ANY COMPONENT */
-import {ASCE_CONSTANTS} from './constants.js';
+import {UTIL_ATTRS} from './constants.js';
 
 
 /*
@@ -29,18 +29,18 @@ export const keyPressedMatches = (keyPressed, keysToMatch) => {
   Util attributes are in `./_utils.scss`
 */
 export const handleOverflow = (elem) => {
-  elem.removeAttribute(ASCE_CONSTANTS.FLOAT_LEFT);
-  elem.removeAttribute(ASCE_CONSTANTS.FLOAT_ABOVE);
+  elem.removeAttribute(UTIL_ATTRS.FLOAT_LEFT);
+  elem.removeAttribute(UTIL_ATTRS.FLOAT_ABOVE);
   const bounding = elem.getBoundingClientRect();
   const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
 
   if (bounding.bottom > viewportHeight && bounding.height < viewportHeight) {
-    elem.setAttribute(ASCE_CONSTANTS.FLOAT_ABOVE, '');
+    elem.setAttribute(UTIL_ATTRS.FLOAT_ABOVE, '');
   }
 
   if (bounding.right >
     (window.innerWidth || document.documentElement.clientWidth)
   ) {
-    elem.setAttribute(ASCE_CONSTANTS.FLOAT_LEFT, '');
+    elem.setAttribute(UTIL_ATTRS.FLOAT_LEFT, '');
   }
 };

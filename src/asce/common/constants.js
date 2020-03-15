@@ -1,9 +1,9 @@
-/* Common constants that can be used by all components */
+/* CONSTANTS AVAILABLE TO ALL COMPONENTS */
 
 export const libraryName = 'asce';
 
 
-export const ASCE_CONSTANTS = {
+export const UTIL_ATTRS = {
   FLOAT_ABOVE: `${libraryName}-u-float-above`,
   FLOAT_LEFT: `${libraryName}-u-float-left`,
 };
