@@ -23,8 +23,6 @@ $asce-listbox-active-outline-color: 2px dotted #000 !default;
 
 /* COMPONENT STYLES */
 [asce-listbox-list] {
-  list-style: none;
-  margin: 0;
   overflow-y: auto;
 }
 
@@ -67,6 +65,26 @@ Single-select listbox.
 </asce-listbox>
 ```
 
+Listbox using an `<ol>` element
+
+```html
+<asce-listbox>
+  <ol style="list-style-position: inside;">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Black Widow</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Spider-man</li>
+    <li>Black Panther</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ol>
+</asce-listbox>
+```
 
 ### Multi-select
 
