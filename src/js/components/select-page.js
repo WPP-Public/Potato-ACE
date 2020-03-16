@@ -1,1 +1,1 @@
-import { Select } from '../../asce/components/select/select.js';
+import {Select} from '../../asce/components/select/select.js';

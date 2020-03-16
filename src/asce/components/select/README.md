@@ -26,6 +26,7 @@ asce-select {
   background: $asce-select-list-background;
   height: $asce-select-list-height;
   left: 0;
+  margin: 0;
   position: absolute;
   top: 100%;
   white-space: nowrap;
@@ -43,7 +44,7 @@ asce-select {
 ### Select Drop-down
 
 ```html
-<asce-select id="select">
+<asce-select>
   <button></button>
   <ul>
     <li>Select an option</li>

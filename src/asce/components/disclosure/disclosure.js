@@ -1,21 +1,24 @@
 /* IMPORTS */
 import {NAME, KEYS} from '../../common/constants.js';
-import {keyPressedMatches} from '../../common/functions.js';
+import {autoID, keyPressedMatches} from '../../common/functions.js';
+
 
 /* CONSTANTS */
-export const NAME = `${NAME}-disclosure`;
+export const DISCLOSURE = `${NAME}-disclosure`;
 
 export const ATTRS = {
-  TRIGGER: `${NAME}-trigger-for`
+  TRIGGER: `${DISCLOSURE}-trigger-for`
 };
 
 // TODO: Consider adding extra events for hooking animations into.
 export const EVENTS = {
-  TOGGLE: `${NAME}-toggle`,
-  OPENED: `${NAME}-opened`,
-  CLOSED: `${NAME}-closed`,
-  UPDATE_TRIGGERS: `${NAME}-update-triggers`
+  TOGGLE: `${DISCLOSURE}-toggle`,
+  OPENED: `${DISCLOSURE}-opened`,
+  CLOSED: `${DISCLOSURE}-closed`,
+  UPDATE_TRIGGERS: `${DISCLOSURE}-update-triggers`
 };
+
+
 
 /* CLASS */
 export class Disclosure extends HTMLElement {
@@ -23,24 +26,23 @@ export class Disclosure extends HTMLElement {
   constructor() {
     super();
 
-    /* BIND 'THIS' TO CLASS METHODS */
+    /* CLASS CONSTANTS */
+
+
+    /* CLASS METHOD BINDINGS */
     this.isShown = this.isShown.bind(this);
+    this.setDisclosureVisibility = this.setDisclosureVisibility.bind(this);
     this.toggleDisclosure = this.toggleDisclosure.bind(this);
     this.toggleEventHandler = this.toggleEventHandler.bind(this);
+    this.updateTriggersHandler = this.updateTriggersHandler.bind(this);
     this.windowClickHandler = this.windowClickHandler.bind(this);
     this.windowKeyDownHandler = this.windowKeyDownHandler.bind(this);
-    this.updateTriggersHandler = this.updateTriggersHandler.bind(this);
-    this.setDisclosureVisibility = this.setDisclosureVisibility.bind(this);
   }
+
 
   /* CLASS METHODS */
   connectedCallback() {
-    /* ATTACH EVENT LISTENERS */
-    window.addEventListener('click', this.windowClickHandler, { passive: true });
-    window.addEventListener('keydown', this.windowKeyDownHandler, { passive: true });
-    window.addEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, { passive: true });
-    window.addEventListener(EVENTS['UPDATE_TRIGGERS'], this.updateTriggersHandler, { passive: true });
-
+    /* GET DOM ELEMENTS */
     // Get triggers
     this.triggers = this.getTriggers(this.id);
 
@@ -61,25 +63,44 @@ export class Disclosure extends HTMLElement {
         toggle.setAttribute('tabindex', '0');
       }
     });
+
+
+    /* ADD EVENT LISTENERS */
+    window.addEventListener('click', this.windowClickHandler, {passive: true});
+    window.addEventListener('keydown', this.windowKeyDownHandler, {passive: true});
+    window.addEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, {passive: true});
+    window.addEventListener(EVENTS['UPDATE_TRIGGERS'], this.updateTriggersHandler, {passive: true});
   }
 
+
+  /*
+    Handle clicks on triggers
+  */
   windowClickHandler(e) {
     // Check that the trigger clicked is linked to this disclosure instance
     const triggerClicked = e.target.closest(`[${ATTRS['TRIGGER']}=${this.id}]`);
-    if (triggerClicked) {
-      window.dispatchEvent(new CustomEvent(EVENTS['TOGGLE'], { detail: {
+    if (!triggerClicked) {
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent(EVENTS['TOGGLE'], {
+      detail: {
         'id': this.id,
         'trigger': triggerClicked
-       }}));
-    }
+    }}));
   }
 
+
+  /*
+    Handle keypresses on triggers
+  */
   windowKeyDownHandler(e) {
     // Check that the trigger focused is linked to this disclosure instance
     const triggerClicked = e.target.closest(`[${ATTRS['TRIGGER']}=${this.id}]`);
     if (!triggerClicked) {
       return;
     }
+
     // if enter or space is pressed then toggle the disclosure
     const keyPressed = e.key || e.which || e.keyCode;
     if (keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
@@ -87,14 +108,23 @@ export class Disclosure extends HTMLElement {
     }
   }
 
+
+  /*
+    Handle when trigger event is dispatched
+  */
   toggleEventHandler(e) {
     // Check the event is for this instance
     if (e.detail['id'] !== this.id) {
       return;
     }
+
     this.toggleDisclosure(e.detail['trigger']);
   }
 
+
+  /*
+    Handle keypresses on triggers
+  */
   updateTriggersHandler(e) {
     // Check the event is for this instance
     if (e.detail['id'] !== this.id) {
@@ -103,27 +133,58 @@ export class Disclosure extends HTMLElement {
     this.triggers = this.getTriggers(this.id);
   }
 
+
+  /*
+    Determine if disclosure is visible or not
+  */
   isShown() {
     return this.getAttribute('aria-hidden') === 'false';
   }
 
+
+  /*
+    Show disclosure
+  */
   setDisclosureVisibility(visible) {
     this.setAttribute('aria-hidden', visible ? 'false' : 'true');
     this.triggers.forEach(elem => elem.setAttribute('aria-expanded', visible ? 'true' : 'false'));
-    this.dispatchEvent(new CustomEvent(visible ? EVENTS['OPENED'] : EVENTS['CLOSED'], { detail: {
+    this.dispatchEvent(new CustomEvent(visible ? EVENTS['OPENED'] : EVENTS['CLOSED'], {detail: {
       'id': this.id
     }}));
   }
 
+
+  /*
+    Toggle disclosure
+  */
   toggleDisclosure() {
     // Toggle visibility and aria attributes
     this.setDisclosureVisibility(!this.isShown());
   }
 
+
+  /*
+    Get all triggers
+  */
   getTriggers(id) {
     // Get all the triggers for this disclosure
     return document.querySelectorAll(`[${ATTRS['TRIGGER']}=${id}]`);
   }
+
+
+  disconnectedCallback() {
+    /* REMOVE EVENT LISTENERS */
+    window.removeEventListener('click', this.windowClickHandler, {passive: true});
+    window.removeEventListener('keydown', this.windowKeyDownHandler, {passive: true});
+    window.removeEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, {passive: true});
+    window.removeEventListener(EVENTS['UPDATE_TRIGGERS'], this.updateTriggersHandler, {passive: true});
+  }
 }
 
-customElements.define(NAME, Disclosure);
+
+
+/* INITIALISE AND REGISTER CUSTOM ELEMENT */
+document.addEventListener('DOMContentLoaded', () => {
+  autoID(DISCLOSURE);
+  customElements.define(DISCLOSURE, Disclosure);
+});
