@@ -301,6 +301,7 @@ export class Listbox extends HTMLElement {
       }
     }
 
+    // Ignore non-alphanumeric keys
     if (e.key.length > 1) {
       return;
     }

@@ -6,10 +6,16 @@ import {UTIL_ATTRS} from './constants.js';
   Automatically assign IDs to components that do not have them
 */
 export const autoID = (component) => {
+  let i = 0;
   document.querySelectorAll(component)
-    .forEach((elem, i) => {
-      elem.id = elem.id || `${component}-${i+1}`;
-    });
+    .forEach((elem) => {
+      if (elem.id) {
+        return;
+     }
+
+      i++;
+      elem.id = `${component}-${i}`;
+   });
 };
 
 
