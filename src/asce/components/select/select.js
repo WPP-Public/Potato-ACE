@@ -1,17 +1,20 @@
 /* IMPORTS */
 import {NAME, KEYS} from '../../common/constants.js';
 import {Listbox, ATTRS as LISTBOX_ATTRS} from '../listbox/listbox.js';
-import {handleOverflow, keyPressedMatches} from '../../common/functions.js';
+import {autoID, handleOverflow, keyPressedMatches} from '../../common/functions.js';
 
 
-/* EXPORTED CONSTANTS */
+/* CONSTANTS */
 export const SELECT = `${NAME}-select`;
-
 
 export const ATTRS = {
   LIST: `${SELECT}-list`,
   LIST_HIDDEN: `${SELECT}-list-hidden`,
   TRIGGER: `${SELECT}-trigger`,
+};
+
+export const EVENTS = {
+  OPTION_SELECTED: `${SELECT}-option-selected`,
 };
 
 
@@ -21,15 +24,16 @@ export class Select extends Listbox {
   constructor() {
     super();
 
-    /* CLASS INSTANCE CONSTANTS */
+    /* CLASS CONSTANTS */
 
 
     /* CLASS METHOD BINDINGS */
+    this.dispatchOptionSelectedEvent = this.dispatchOptionSelectedEvent.bind(this);
+    this.hideList = this.hideList.bind(this);
     this.selectClickHandler = this.selectClickHandler.bind(this);
     this.selectKeydownHandler = this.selectKeydownHandler.bind(this);
     this.showList = this.showList.bind(this);
-    this.hideList = this.hideList.bind(this);
-  }
+ }
 
 
   /* CLASS METHODS */
@@ -44,7 +48,6 @@ export class Select extends Listbox {
     /* GET DOM DATA */
 
 
-
     /* SET DOM DATA */
     // Set trigger attrs
     this.triggerEl.id = this.triggerEl.id || `${this.id}-trigger`;
@@ -52,22 +55,22 @@ export class Select extends Listbox {
 
     if (!this.getAttribute('aria-haspopup')) {
       this.triggerEl.setAttribute('aria-haspopup', 'listbox');
-    }
+   }
 
     // Set list attrs
     this.listEl.setAttribute(ATTRS.LIST, '');
     this.listEl.setAttribute('tabindex', '-1');
 
 
-    /* ATTACH EVENT LISTENERS */
+    /* ADD EVENT LISTENERS */
     window.addEventListener('click', this.selectClickHandler, {passive: true});
     this.addEventListener('keydown', this.selectKeydownHandler);
     this.listEl.addEventListener('blur', this.hideList, {passive: true});
 
 
-    /* INITIALISATION CODE */
+    /* INITIALISATION */
     this.hideList();
-  }
+ }
 
 
   /*
@@ -79,16 +82,17 @@ export class Select extends Listbox {
 
     if (!optionClicked && !triggerClicked) {
       return;
-    }
+   }
 
     if (triggerClicked) {
       this.showList();
       this.listEl.focus();
       return;
-    }
+   }
 
+    this.dispatchOptionSelectedEvent();
     this.hideList();
-  }
+ }
 
 
   /*
@@ -100,7 +104,7 @@ export class Select extends Listbox {
 
     if (!keydownOnTrigger && !keydownOnList) {
       return;
-    }
+   }
 
     const keyPressed = e.key || e.which || e.keyCode;
     if (keydownOnTrigger && keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
@@ -108,15 +112,16 @@ export class Select extends Listbox {
       this.showList();
       this.listEl.focus();
       return;
-    }
+   }
 
     if (keydownOnList && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.ESCAPE])) {
       e.preventDefault();
       this.hideList();
       this.triggerEl.focus();
+      this.dispatchOptionSelectedEvent();
       return;
-    }
-  }
+   }
+ }
 
 
   /*
@@ -126,11 +131,11 @@ export class Select extends Listbox {
     const activeOption = this.listEl.querySelector('[aria-selected="true"]');
     if (activeOption !== null) {
       this.triggerEl.textContent = activeOption.textContent;
-    }
+   }
 
     this.triggerEl.setAttribute('aria-expanded', 'false');
     this.listEl.setAttribute(ATTRS.LIST_HIDDEN, '');
-  }
+ }
 
 
   /*
@@ -140,18 +145,41 @@ export class Select extends Listbox {
     this.triggerEl.setAttribute('aria-expanded', 'true');
     this.listEl.removeAttribute(ATTRS.LIST_HIDDEN);
     handleOverflow(this.listEl);
+ }
+
+
+  /*
+    Show dropdown list
+  */
+  dispatchOptionSelectedEvent() {
+    const optionSelected = this.listEl.querySelector('[aria-selected="true"]');
+
+    this.dispatchEvent(
+      new CustomEvent(EVENTS.OPTION_SELECTED, {
+        detail: {
+          selectId: this.id,
+          optionIndex: optionSelected.getAttribute(LISTBOX_ATTRS.OPTION_INDEX),
+          optionId: optionSelected.id,
+        }
+      })
+    );
   }
 
 
   disconnectedCallback() {
-    /* DETACH EVENT LISTENERS */
-    window.removeEventListener('click', this.selectClickHandler, { passive: true });
+    /* REMOVE EVENT LISTENERS */
+    window.removeEventListener('click', this.selectClickHandler, {passive: true});
     this.removeEventListener('keydown', this.selectKeydownHandler);
-    this.listEl.removeEventListener('blur', this.hideList, { passive: true });
+    this.listEl.removeEventListener('blur', this.hideList, {passive: true});
 
     super.disconnectedCallback.call(this);
-  }
+ }
 }
 
 
-customElements.define(SELECT, Select);
+
+/* INITIALISE AND REGISTER CUSTOM ELEMENT */
+document.addEventListener('DOMContentLoaded', () => {
+  autoID(SELECT);
+  customElements.define(SELECT, Select);
+});
