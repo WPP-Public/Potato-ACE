@@ -38,7 +38,7 @@ export class Select extends Listbox {
 
   /* CLASS METHODS */
   connectedCallback() {
-    super.connectedCallback.call(this);
+    super.connectedCallback();
 
     /* GET DOM ELEMENTS */
     this.triggerEl = this.querySelector('button');
@@ -172,7 +172,7 @@ export class Select extends Listbox {
     this.removeEventListener('keydown', this.selectKeydownHandler);
     this.listEl.removeEventListener('blur', this.hideList, {passive: true});
 
-    super.disconnectedCallback.call(this);
+    super.disconnectedCallback();
  }
 }
 
