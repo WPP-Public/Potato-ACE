@@ -6,13 +6,19 @@
 @import 'common/reset';
 
 
-//COMPONENTS
+// ASCE STYLES
+// Variable overrides
 @import 'asce-variable-overrides';
-@import '../asce/components/listbox/listbox';
+
+// Components
 @import '../asce/components/disclosure/disclosure';
-@import '../asce/components/test-component/test-component';
+@import '../asce/components/listbox/listbox';
+@import '../asce/components/select/select';
+
+// Utils
+@import '../asce/common/all';
 
 
-// PAGE STYLES
-@import './pages/all';
+// USER STYLES
 @import './base';
+@import './pages/all';
