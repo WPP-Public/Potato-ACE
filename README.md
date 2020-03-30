@@ -28,7 +28,12 @@ The code in `scripts/inject-code.mjs` injects the SASS and examples HTML code fo
 
 ## Manual injection
 
-To run the script manually use `node --experimental-modules ./scripts/inject-code.mjs` or `npm run inject`. This will inject the SASS and examples HTML code into `README` and the documentation page, for all components in `src/asce/components/`. To do this for a single component run `node --experimental-modules ./scripts/inject-code.mjs <component-name>`. To only inject HTML from a component's examples run `node --experimental-modules ./scripts/inject-code.mjs <component-name> --html-only`.
+To run the script manually use `node --experimental-modules ./scripts/inject-code.mjs` or `npm run inject`. This will inject the SASS and examples HTML code into `README` and the documentation page, for all components in `src/asce/components/`.
+
+To do this for a single component run `node --experimental-modules ./scripts/inject-code.mjs <component-name>` or `npm run inject -- <component-name>`.
+
+To only inject HTML from a component's examples run `node --experimental-modules ./scripts/inject-code.mjs <component-name> --html-only`  or  `npm run inject -- <component-name> --html-only`.
+
 
 
 ## Automatic injection
