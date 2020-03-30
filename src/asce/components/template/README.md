@@ -32,6 +32,13 @@ To apply any additional styles or override existing styles for the trigger, use 
 
 <!-- STYLES WILL BE INJECTED AUTOMATICALLY FROM _template.scss -->
 ```scss
+// TODO: Change 'template' to component name
+asce-template {
+  // Keep SCSS as minimal as possible, remove any styling added by default.
+  // Make sure if any styles are added they are obvious and so will prompt the user
+  // to override.
+  // Try to target the attribute or tag for any styles.
+}
 ```
 
 ## Events

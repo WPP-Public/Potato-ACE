@@ -3,7 +3,7 @@ import {
     NAME as templateTag,
     ATTRS as templateAttrs,
     EVENTS as templateEvents
-} from './TEMPLATE';
+} from './template';
 
 // TODO: Change 'Template' to component name
 context('Template', () => {
