@@ -1,12 +1,11 @@
 /* IMPORTS */
 import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
-import { keyPressedMatches } from '../../common/common.js';
+import { autoID, keyPressedMatches } from '../../common/functions.js';
 
 
 /* CONSTANTS */
-// Constants to be exported and used in other modules
+// Exported constants
 export const NAME = `${libraryName}-listbox`;
-const instanceCount = 0;
 
 export const ATTRS = {
   LIST: `${NAME}-list`,
@@ -19,27 +18,35 @@ export const EVENTS = {
   UPDATE_OPTIONS: `${NAME}-update-options`,
 };
 
+// Other constants
+const searchTimeoutTime = 500;
+
 
 /* CLASS */
 export class Listbox extends HTMLElement {
-  /* CONSTRUCTOR */
   constructor() {
     super();
 
-    /* CLASS INSTANCE CONSTANTS */
+    // Class instance constants
     this.options = [];
     this.activeOptionIndex = null;
     this.lastSelectedOptionIndex = null;
     this.allSelected = false;
+    this.query = '';
+    this.searchTimeout = null;
 
-    /* GET DOM ELEMENTS */
+    // Get DOM elements
     this.list = this.querySelector('ul');
+    // Create <ul> if none given
+    if (!this.list) {
+      this.appendChild(document.createElement('ul'));
+      this.list = this.querySelector('ul');
+    }
 
-    /* GET DOM DATA */
-    this.id = this.id || `${NAME}-${instanceCount}`;
+    // Get DOM data
     this.multiselectable = this.hasAttribute(ATTRS.MULTISELECT);
 
-    /* BIND 'THIS' TO CLASS METHODS */
+    // Bind this to class methods
     this.initialiseList = this.initialiseList.bind(this);
     this.makeOptionActive = this.makeOptionActive.bind(this);
     this.makeOptionSelected = this.makeOptionSelected.bind(this);
@@ -51,11 +58,14 @@ export class Listbox extends HTMLElement {
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
+    this.findInList = this.findInList.bind(this);
+    this.clearListSearch = this.clearListSearch.bind(this);
   }
+
 
   /* CLASS METHODS */
   connectedCallback() {
-    /* ATTACH EVENT LISTENERS */
+    // Attach event listeners
     this.list.addEventListener('focus', this.focusHandler, { passive: true });
     this.list.addEventListener('blur', this.focusHandler, { passive: true });
     this.list.addEventListener('keydown', this.keydownHandler);
@@ -124,10 +134,12 @@ export class Listbox extends HTMLElement {
     this.list.setAttribute('aria-activedescendant', optionToMakeActive.id);
     this.activeOptionIndex = index;
 
-    // If single-select list set first option to selected
+    // If single-select list make option selected
     if (!this.multiselectable) {
       this.makeOptionSelected(index);
     }
+
+    this.scrollOptionIntoView(this.activeOptionIndex);
   }
 
 
@@ -165,7 +177,6 @@ export class Listbox extends HTMLElement {
         this.activeOptionIndex = 0;
       }
       this.makeOptionActive(this.activeOptionIndex);
-      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
@@ -229,7 +240,6 @@ export class Listbox extends HTMLElement {
 
       const newActiveItemIndex = this.updateActiveOptionIndex(direction);
       this.makeOptionActive(newActiveItemIndex);
-      this.scrollOptionIntoView(this.activeOptionIndex);
 
       if (this.multiselectable && e.shiftKey) {
         this.toggleOptionState(this.activeOptionIndex);
@@ -247,7 +257,6 @@ export class Listbox extends HTMLElement {
       }
 
       this.makeOptionActive(0);
-      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
@@ -260,7 +269,6 @@ export class Listbox extends HTMLElement {
       }
 
       this.makeOptionActive(this.options.length - 1);
-      this.scrollOptionIntoView(this.activeOptionIndex);
       return;
     }
 
@@ -290,9 +298,16 @@ export class Listbox extends HTMLElement {
             option.setAttribute('aria-selected', !this.allSelected);
           });
           this.allSelected = !this.allSelected;
+          return;
         }
       }
     }
+
+    // "type-ahead" search functionality
+    clearTimeout(this.searchTimeout);
+    this.query+=e.key.toLowerCase();
+    this.findInList();
+    this.searchTimeout = setTimeout(this.clearListSearch, searchTimeoutTime);
   }
 
 
@@ -357,6 +372,44 @@ export class Listbox extends HTMLElement {
   }
 
 
+  /*
+    Finds options starting with given keyPressed wrapping around
+  */
+  findInList() {
+    let i = this.activeOptionIndex;
+    let maxIndex = this.options.length - 1;
+
+    if (this.query.length === 1) {
+      // If it's the first letter of a new search, we start searching _after_ the currently selected option
+      i++;
+    }
+
+    let startingIndex = i;
+
+    do {
+      // If i has gone past the end, loop back around to the start of the list
+      if (i > maxIndex) {
+        i = 0;
+      }
+
+      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
+        this.makeOptionActive(i);
+        break;
+      }
+
+      i++;
+    } while (i !== startingIndex); // Terminates if every option has been checked
+  }
+
+
+  /*
+    Clears the search query
+  */
+  clearListSearch() {
+    this.query = '';
+  }
+
+
   /* CUSTOM EVENT HANDLERS */
   /*
     Custom event handler for updating list options
@@ -364,7 +417,7 @@ export class Listbox extends HTMLElement {
     the listbox options and indices
   */
   updateOptionsHandler(e) {
-  // Checks if id in event matches class instance then updates options
+    // Checks if id in event matches class instance then updates options
     if (e.detail.id === this.id) {
       this.activeOptionIndex = null;
       this.initialiseList();
@@ -372,4 +425,10 @@ export class Listbox extends HTMLElement {
   }
 }
 
-customElements.define(NAME, Listbox);
+
+/* INITIALISATION CODE */
+document.addEventListener('DOMContentLoaded', () => {
+  // Auto-generate IDs for elements that don't have one
+  autoID(NAME);
+  customElements.define(NAME, Listbox);
+});
