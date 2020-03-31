@@ -17,16 +17,16 @@ context('Disclosure', () => {
 
     /* CHECK DOCS PAGE IS CORRECT BEFORE TESTING EXAMPLES */
     describe('Docs Page', () => {
-        it('should have at least one button trigger', () => {
-            cy.get(`button[${triggerAttr}]`).should('have.length.greaterThan', 0);
+        it('should have 7 button triggers', () => {
+            cy.get(`button[${triggerAttr}]`).should('have.length', 7);
         });
 
-        it('should have at least one non-button trigger', () => {
-            cy.get(`:not(button)[${triggerAttr}]`).should('have.length.greaterThan', 0);
+        it('should have one non-button trigger', () => {
+            cy.get(`:not(button)[${triggerAttr}]`).should('have.length', 1);
         });
 
-        it('should have at least one disclosure', () => {
-            cy.get(`${disclosureTag}`).should('have.length.greaterThan', 0);
+        it('should have 7 disclosures', () => {
+            cy.get(`${disclosureTag}`).should('have.length', 7);
         });
     });
 
@@ -42,7 +42,7 @@ context('Disclosure', () => {
                 cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
                 // Focus the trigger and press enter
                 cy.get('@trigger').focus().trigger('keydown', enterKey);
-                // Check disclosure is now visible and trigger has `aria-expanded` set to true
+                // Check disclosure is now visible and trigger has `aria-expanded` set to false
                 cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
                 // Focus the trigger and press enter
                 cy.get('@trigger').focus().trigger('keydown', enterKey);
@@ -61,7 +61,7 @@ context('Disclosure', () => {
                 cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
                 // Focus the trigger and press space
                 cy.get('@trigger').focus().trigger('keydown', spaceKey);
-                // Check disclosure is now visible and trigger has `aria-expanded` set to true
+                // Check disclosure is now visible and trigger has `aria-expanded` set to false
                 cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
                 // Focus the trigger and press space
                 cy.get('@trigger').focus().trigger('keydown', spaceKey);
@@ -78,6 +78,15 @@ context('Disclosure', () => {
             cy.get(`[${triggerAttr}]:not([aria-expanded='true'])`).each(trigger => {
                 const disclosureId = trigger.attr(`${triggerAttr}`);
                 cy.get(`#${disclosureId}`).as('disclosure').should('have.attr', 'aria-hidden', 'true');
+            });
+        });
+
+        it('should be initially expanded if trigger has aria-expanded set to true', () => {
+            cy.get(`[${triggerAttr}][aria-expanded='true']`).then(trigger => {
+                const disclosureId = trigger.attr(`${triggerAttr}`);
+                cy.get(`#${disclosureId}`).as('disclosure');
+                // Check disclosure is visible and trigger has `aria-expanded` set to true
+                cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
             });
         });
 
@@ -108,24 +117,6 @@ context('Disclosure', () => {
                 cy.get('@trigger').click();
                 // Check disclosure is now visible and has `aria-hidden` set to false
                 cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
-            });
-        });
-
-        it('should be initially expanded if trigger has aria-expanded set to true', () => {
-            cy.get(`[${triggerAttr}][aria-expanded='true']`).then(trigger => {
-                const disclosureId = trigger.attr(`${triggerAttr}`);
-                cy.get(`#${disclosureId}`).as('disclosure');
-                // Check disclosure is visible and trigger has `aria-expanded` set to true
-                cy.get('@disclosure').should('be.visible').and('have.attr', 'aria-hidden', 'false');
-            });
-        });
-
-        it('should not be initially expanded if trigger has aria-expanded set to false', () => {
-            cy.get(`[${triggerAttr}][aria-expanded='false']`).then(trigger => {
-                const disclosureId = trigger.attr(`${triggerAttr}`);
-                cy.get(`#${disclosureId}`).as('disclosure');
-                // Check disclosure is hidden
-                cy.get('@disclosure').should('not.be.visible').and('have.attr', 'aria-hidden', 'true');
             });
         });
 
