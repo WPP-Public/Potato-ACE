@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { Listbox, EVENTS as LISTBOX_EVENTS } from '../../asce/components/listbox/listbox.js';
+import {Listbox, EVENTS as LISTBOX_EVENTS} from '../../asce/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Testing listbox dynamic
@@ -24,8 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       listbox.dispatchEvent(
         new CustomEvent(
-          `${LISTBOX_EVENTS.UPDATE_OPTIONS}`,
-          { detail: { id: selectId } },
+          LISTBOX_EVENTS.UPDATE_OPTIONS,
+          {detail: {id: selectId}},
         )
       );
     });
