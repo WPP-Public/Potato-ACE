@@ -1,5 +1,5 @@
 import {
-    NAME as listboxTag,
+    LISTBOX as listboxTag,
     ATTRS as listboxAttrs,
     EVENTS as listboxEvents
 } from './listbox';
