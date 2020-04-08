@@ -1,24 +1,23 @@
 /* IMPORTS */
-import { libraryName, KEYBOARD_KEYS as KEYS } from '../../common/constants.js';
-import { autoID, keyPressedMatches } from '../../common/functions.js';
+import {NAME, KEYS} from '../../common/constants.js';
+import {autoID, keyPressedMatches} from '../../common/functions.js';
 
 
 /* CONSTANTS */
-// Exported constants
-export const NAME = `${libraryName}-listbox`;
+export const LISTBOX = `${NAME}-listbox`;
 
 export const ATTRS = {
-  LIST: `${NAME}-list`,
-  MULTISELECT: `${NAME}-multiselect`,
-  OPTION_INDEX: `${NAME}-option-index`,
-  ACTIVE_OPTION: `${NAME}-active-option`,
+  LIST: `${LISTBOX}-list`,
+  MULTISELECT: `${LISTBOX}-multiselect`,
+  OPTION_INDEX: `${LISTBOX}-option-index`,
+  ACTIVE_OPTION: `${LISTBOX}-active-option`,
 };
 
 export const EVENTS = {
-  UPDATE_OPTIONS: `${NAME}-update-options`,
+  UPDATE_OPTIONS: `${LISTBOX}-update-options`,
 };
 
-// Other constants
+
 const searchTimeoutTime = 500;
 
 
@@ -27,7 +26,7 @@ export class Listbox extends HTMLElement {
   constructor() {
     super();
 
-    // Class instance constants
+    /* CLASS CONSTANTS */
     this.options = [];
     this.activeOptionIndex = null;
     this.lastSelectedOptionIndex = null;
@@ -35,56 +34,61 @@ export class Listbox extends HTMLElement {
     this.query = '';
     this.searchTimeout = null;
 
-    // Get DOM elements
-    this.list = this.querySelector('ul');
-    // Create <ul> if none given
-    if (!this.list) {
-      this.appendChild(document.createElement('ul'));
-      this.list = this.querySelector('ul');
-    }
 
-    // Get DOM data
-    this.multiselectable = this.hasAttribute(ATTRS.MULTISELECT);
-
-    // Bind this to class methods
+    /* CLASS METHOD BINDINGS */
+    this.clearListSearch = this.clearListSearch.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
+    this.findInList = this.findInList.bind(this);
+    this.focusHandler = this.focusHandler.bind(this);
     this.initialiseList = this.initialiseList.bind(this);
+    this.keydownHandler = this.keydownHandler.bind(this);
     this.makeOptionActive = this.makeOptionActive.bind(this);
     this.makeOptionSelected = this.makeOptionSelected.bind(this);
-    this.focusHandler = this.focusHandler.bind(this);
-    this.clickHandler = this.clickHandler.bind(this);
-    this.toggleOptionState = this.toggleOptionState.bind(this);
-    this.keydownHandler = this.keydownHandler.bind(this);
-    this.updateActiveOptionIndex = this.updateActiveOptionIndex.bind(this);
     this.scrollOptionIntoView = this.scrollOptionIntoView.bind(this);
     this.selectContiguousOptions = this.selectContiguousOptions.bind(this);
+    this.toggleOptionState = this.toggleOptionState.bind(this);
+    this.updateActiveOption = this.updateActiveOption.bind(this);
     this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
-    this.findInList = this.findInList.bind(this);
-    this.clearListSearch = this.clearListSearch.bind(this);
   }
 
 
   /* CLASS METHODS */
   connectedCallback() {
-    // Attach event listeners
-    this.list.addEventListener('focus', this.focusHandler, { passive: true });
-    this.list.addEventListener('blur', this.focusHandler, { passive: true });
-    this.list.addEventListener('keydown', this.keydownHandler);
-    this.list.addEventListener('click', this.clickHandler, { passive: true });
-    this.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, { passive: true });
+    /* GET DOM ELEMENTS */
+    this.listEl = this.querySelector('ul') || this.querySelector('ol');
+    // Create <ul> if neither <ul> nor <ol> present
+    if (!this.listEl) {
+      this.appendChild(document.createElement('ul'));
+      this.listEl = this.querySelector('ul');
+    }
 
-    // Set list attrs
-    this.list.setAttribute(ATTRS.LIST, '');
-    this.list.setAttribute('role', 'listbox');
+
+    /* GET DOM DATA */
+    this.multiselectable = this.hasAttribute(ATTRS.MULTISELECT);
+
+
+    /* SET DOM DATA */
+    this.listEl.setAttribute(ATTRS.LIST, '');
+    this.listEl.setAttribute('role', 'listbox');
 
     if (this.multiselectable) {
-      this.list.setAttribute('aria-multiselectable', 'true');
+      this.listEl.setAttribute('aria-multiselectable', 'true');
     }
 
-    if (!this.list.getAttribute('tabindex')) {
-      this.list.setAttribute('tabindex', '0');
+    if (!this.listEl.getAttribute('tabindex')) {
+      this.listEl.setAttribute('tabindex', '0');
     }
 
-    // Initialisation code
+
+    /* ADD EVENT LISTENERS */
+    this.listEl.addEventListener('focus', this.focusHandler, {passive: true});
+    this.listEl.addEventListener('blur', this.focusHandler, {passive: true});
+    this.listEl.addEventListener('keydown', this.keydownHandler);
+    this.listEl.addEventListener('click', this.clickHandler, {passive: true});
+    this.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+
+
+    /* INITIALISATION */
     this.initialiseList();
   }
 
@@ -95,7 +99,7 @@ export class Listbox extends HTMLElement {
   */
   initialiseList() {
     // Get all child <li> elements
-    this.options = [...this.list.querySelectorAll('li')];
+    this.options = [...this.listEl.querySelectorAll('li')];
 
     if (this.options.length === 0) {
       return;
@@ -107,7 +111,7 @@ export class Listbox extends HTMLElement {
       option.setAttribute('aria-selected', 'false');
       option.setAttribute(ATTRS.OPTION_INDEX, i);
       // If no ID given create an ID from parent ID and index
-      option.id = option.id || `${this.id}-option${i + 1}`;
+      option.id = option.id || `${this.id}-option-${i + 1}`;
     });
 
     // If single-select list set first option to active
@@ -131,7 +135,7 @@ export class Listbox extends HTMLElement {
     // Activate new option
     const optionToMakeActive = this.options[index];
     optionToMakeActive.setAttribute(ATTRS.ACTIVE_OPTION, '');
-    this.list.setAttribute('aria-activedescendant', optionToMakeActive.id);
+    this.listEl.setAttribute('aria-activedescendant', optionToMakeActive.id);
     this.activeOptionIndex = index;
 
     // If single-select list make option selected
@@ -182,7 +186,7 @@ export class Listbox extends HTMLElement {
 
     // If list blurred
     this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
-    this.list.removeAttribute('aria-activedescendant');
+    this.listEl.removeAttribute('aria-activedescendant');
   }
 
 
@@ -237,9 +241,7 @@ export class Listbox extends HTMLElement {
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
       e.preventDefault();
       const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
-
-      const newActiveItemIndex = this.updateActiveOptionIndex(direction);
-      this.makeOptionActive(newActiveItemIndex);
+      this.updateActiveOption(direction);
 
       if (this.multiselectable && e.shiftKey) {
         this.toggleOptionState(this.activeOptionIndex);
@@ -303,6 +305,11 @@ export class Listbox extends HTMLElement {
       }
     }
 
+    // Ignore non-alphanumeric keys
+    if (e.key.length > 1) {
+      return;
+    }
+
     // "type-ahead" search functionality
     clearTimeout(this.searchTimeout);
     this.query+=e.key.toLowerCase();
@@ -315,14 +322,15 @@ export class Listbox extends HTMLElement {
     Calculate and return index to move to based on the direction
     and wraps around if you are at the top or bottom
   */
-  updateActiveOptionIndex(direction) {
+  updateActiveOption(direction) {
     let newIndex = this.activeOptionIndex + direction;
     if (newIndex < 0) {
       newIndex = this.options.length - 1;
     } else if (newIndex === this.options.length) {
       newIndex = 0;
     }
-    return newIndex;
+    this.makeOptionActive(newIndex);
+    this.scrollOptionIntoView(this.activeOptionIndex);
   }
 
 
@@ -423,12 +431,22 @@ export class Listbox extends HTMLElement {
       this.initialiseList();
     }
   }
+
+
+  disconnectedCallback() {
+    /* REMOVE EVENT LISTENERS */
+    this.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+    this.listEl.removeEventListener('focus', this.focusHandler, {passive: true});
+    this.listEl.removeEventListener('blur', this.focusHandler, {passive: true});
+    this.listEl.removeEventListener('keydown', this.keydownHandler);
+    this.listEl.removeEventListener('click', this.clickHandler, {passive: true});
+  }
 }
 
 
-/* INITIALISATION CODE */
+
+/* INITIALISE AND REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-  // Auto-generate IDs for elements that don't have one
-  autoID(NAME);
-  customElements.define(NAME, Listbox);
+  autoID(LISTBOX);
+  customElements.define(LISTBOX, Listbox);
 });

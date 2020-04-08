@@ -1,6 +1,6 @@
 const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
-const { exec } = require('child_process');
+const {exec} = require('child_process');
 const gulp = require('gulp');
 const minify = require('gulp-clean-css');
 const pjson = require('./package.json');
@@ -102,13 +102,13 @@ gulp.task('clean', async () => {
 
 
 gulp.task('html', () => {
-  return gulp.src(`./${dirs.src}/pages/**/*.html`, { base: `./${dirs.src}/pages` })
+  return gulp.src(`./${dirs.src}/pages/**/*.html`, {base: `./${dirs.src}/pages`})
     .pipe(gulp.dest(`./${dirs.dest}/`));
 });
 
 
 gulp.task('img', () => {
-  return gulp.src(`./${dirs.src}/img/**/*`, { base: `./${dirs.src}/` })
+  return gulp.src(`./${dirs.src}/img/**/*`, {base: `./${dirs.src}/`})
     .pipe(gulp.dest(`./${dirs.dest}/`));
 });
 

@@ -14,8 +14,8 @@ import pjson from '../package.json';
 
 
 // CONSTANTS
-const libraryName = pjson.customProperties.componentLibrary;
-const componentsDir = `./src/${libraryName}/components`;
+const NAME = pjson.customProperties.componentLibrary;
+const componentsDir = `./src/${NAME}/components`;
 const baseHtmlFile = `./src/pages/includes/base.html`;
 const htmlOnlyArg = '--html-only';
 const fileEncoding = 'utf8';
@@ -30,6 +30,7 @@ const htmlContentPlaceholder = '[[content]]';
 const magenta = '\x1b[35m%s\x1b[0m';
 const green = '\x1b[32m%s\x1b[0m';
 const red = '\x1b[31m%s\x1b[0m';
+const yellow = '\x1b[33m%s\x1b[0m';
 
 // MarkdownIt Options
 const md = new MarkdownIt({
@@ -103,10 +104,20 @@ const injectComponentCode = async (componentName, htmlOnly=false) => {
 // INJECT SASS INTO CONTENT FOR GIVEN COMPONENT
 const injectSass = async (componentName, mdFileContent) => {
   const sassFilePath = `${componentsDir}/${componentName}/_${componentName}.scss`;
+
+  const sassFileExists = await fsPromises.stat(sassFilePath)
+    .catch(() => {
+      console.log(yellow, `>> _${componentName}.scss file doesn't exist`);
+    });
+
+  if (!sassFileExists) {
+    return mdFileContent;
+  }
+
   const sassFileContents = await fsPromises.readFile(sassFilePath, fileEncoding);
 
   // Inject sassFileContents into mdFileContent between "```scss" and "```"
-  const queryIndex = mdFileContent.indexOf(sassQuery);
+  const queryIndex = mdFileContent.lastIndexOf(sassQuery);
   const startIndex = queryIndex + sassQuery.length + 1;
   const endIndex = mdFileContent.indexOf(endQuery, startIndex);
   console.log(magenta, `>> Injecting _${componentName}.scss code into README.md`);

@@ -1,0 +1,25 @@
+/* COMPONENT VARIABLES */
+$asce-select-list-background: #fff !default;
+$asce-select-list-height: auto !default;
+$asce-select-list-z-index: 1 !default;
+
+
+/* COMPONENT STYLES */
+asce-select {
+  position: relative;
+}
+
+[asce-select-list] {
+  background: $asce-select-list-background;
+  height: $asce-select-list-height;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  top: 100%;
+  white-space: nowrap;
+  z-index: $asce-select-list-z-index;
+}
+
+[asce-select-list-hidden] {
+  display: none;
+}

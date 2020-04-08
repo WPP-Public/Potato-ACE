@@ -1,8 +1,15 @@
-/* Common constants that can be used by all components */
+/* CONSTANTS AVAILABLE TO ALL COMPONENTS */
 
-export const libraryName = 'asce';
+export const NAME = 'asce';
 
-export const KEYBOARD_KEYS = {
+
+export const UTIL_ATTRS = {
+  FLOAT_ABOVE: `${NAME}-u-float-above`,
+  FLOAT_LEFT: `${NAME}-u-float-left`,
+};
+
+
+export const KEYS = {
   'A': {
     'CODE': 65,
     'KEY': 'a',
