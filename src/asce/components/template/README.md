@@ -1,57 +1,60 @@
-<!-- TODO: Change 'Template' to component name -->
+<!-- TODO: Replace 'Template' with actual value -->
 # Template
 
-<!-- SIMPLIFIED W3C DEFINITION -->
+<!-- DESCRIBE COMPONENT AND ITS FUNCTIONALITY -->
 
-<!-- DEFINITION OF THE COMPONENT FROM THE W3C WEBSITE -->
+<!-- TODO: Replace '<w3c-component-name>' with actual value -->
+[W3C WAI-ARIA Spec](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>)
 
-<!-- LINK TO FULL W3C WAI-ARIA SPEC -->
 
 ## Usage
 
-<!-- TODO: Replace 'template' with component name -->
-To use the `asce-template` custom element in your templates:
-
-1) Place the following import in your JS entry point:
-
-<!-- TODO: Replace 'template' with component name -->
+Import the component module into your JS entry point:
+<!-- TODO: Replace 'Template' and 'template' with actual values -->
 ```js
-import { Template as asceTemplate, CONSTS as asce_TEMPLATE_CONSTS } from 'asce/components/template/template';
+import { Template } from 'asce/components/template/template';
 ```
+The component attributes are also exported as `ATTRS` so can be imported if required using `import { Template, ATTRS } from ...`. To avoid name clashes you can import using `as`, for example `import { Template as aceTemplate, ATTRS as ACE_TEMPLATE_ATTRS } from ...`. 
 
-<!-- TODO: Replace 'template' with component name -->
-2) Use the `<asce-template>` tag, filled with your content, in your template.
 
-<!-- ADD IN ANY ADDITIONAL STEPS E.G. TRIGGER COMPONENTS -->
+<!-- TODO: Replace 'template' with actual value -->
+Use the `<asce-template></asce-template>` tag in your template.
 
-4) (Optional) Override any of the SCSS applied to the element.
 
-## Sass
+## SASS
+<!-- TODO: Replace 'Template' with actual value -->
+The following CSS is applied to Template components:
 
-To apply any additional styles or override existing styles for the trigger, use the following selector in you SCSS/CSS:
-
-<!-- STYLES WILL BE INJECTED AUTOMATICALLY FROM _template.scss -->
 ```scss
-// TODO: Change 'template' to component name
-asce-template {
-  // Keep SCSS as minimal as possible, remove any styling added by default.
-  // Make sure if any styles are added they are obvious and so will prompt the user
-  // to override.
-  // Try to target the attribute or tag for any styles.
-}
 ```
+
 
 ## Events
 
-<!-- DOCUMENT CUSTOM EVENTS AND WHAT THEY SHOULD BE USED FOR -->
+Template uses the following custom events, the names of which are exported as properties of an `EVENTS` object so they can be used when dispatching or listen to these events.
+
+
+<!-- TODO: Replace 'Event name' with more descriptive name -->
+### Event name
+
+<!-- TODO: Replace 'template-event-name' with actual value -->
+`asce-template-event-name`
+
+<!-- DESCRIBE EVENT -->
+
+The event `detail` property is composed as follows:
+<!-- TODO: Add event detail object to code block -->
+```js
+{
+  // 'id': // ID of template
+}
+```
 
 ## Examples
 
-<!-- TODO: Change 'Example' to more descriptive name -->
+<!-- TODO: Replace 'Example' with more descriptive name -->
 ### Example
 
 <!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
-
-<!-- EXAMPLES WILL BE INJECTED AUTOMATICALLY IN ORDER FROM examples FOLDER -->
 ```html
 ```
