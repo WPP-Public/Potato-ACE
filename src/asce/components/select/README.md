@@ -11,13 +11,13 @@ import { Select } from 'asce/components/select/select.js';
 
 
 ```scss
-/* COMPONENT VARIABLES */
+/* VARIABLES */
 $asce-select-list-background: #fff !default;
 $asce-select-list-height: auto !default;
 $asce-select-list-z-index: 1 !default;
 
 
-/* COMPONENT STYLES */
+/* STYLES */
 asce-select {
   position: relative;
 }

@@ -440,11 +440,11 @@ export class Listbox extends HTMLElement {
   /* DISCONNECTED CALLBACK */
   disconnectedCallback() {
     /* REMOVE EVENT LISTENERS */
-    this.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
     this.listEl.removeEventListener('focus', this.focusHandler, {passive: true});
     this.listEl.removeEventListener('blur', this.focusHandler, {passive: true});
     this.listEl.removeEventListener('keydown', this.keydownHandler);
     this.listEl.removeEventListener('click', this.clickHandler, {passive: true});
+    this.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
   }
 }
 

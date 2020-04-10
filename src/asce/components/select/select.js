@@ -64,8 +64,8 @@ export class Select extends Listbox {
 
 
     /* ADD EVENT LISTENERS */
-    this.addEventListener('keydown', this.selectKeydownHandler);
     this.listEl.addEventListener('blur', this.hideList, {passive: true});
+    this.addEventListener('keydown', this.selectKeydownHandler);
     window.addEventListener('click', this.selectClickHandler, {passive: true});
 
 
@@ -169,9 +169,9 @@ export class Select extends Listbox {
 
   disconnectedCallback() {
     /* REMOVE EVENT LISTENERS */
-    window.removeEventListener('click', this.selectClickHandler, {passive: true});
-    this.removeEventListener('keydown', this.selectKeydownHandler);
     this.listEl.removeEventListener('blur', this.hideList, {passive: true});
+    this.removeEventListener('keydown', this.selectKeydownHandler);
+    window.removeEventListener('click', this.selectClickHandler, {passive: true});
 
     super.disconnectedCallback();
   }

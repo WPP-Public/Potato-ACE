@@ -24,11 +24,11 @@ export const COMPONENT = `${NAME}-component`; // TODO: Replace 'COMPONENT' and '
 // };
 
 
-// Add any other exported constants here, using all caps and underscores, e.g.
+// Add any other exported constants here, using all caps and underscores:
 // export const CONSTANT_NAME = 'constantName';
 
 
-// Add any other constants here, using all caps and underscores, e.g.
+// Add any other constants here, using all caps and underscores:
 // const CONSTANT_NAME = 'constantName';
 
 
@@ -42,7 +42,7 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
 
 
     /* CLASS METHOD BINDINGS */
-    // Bind 'this' to class methods using '.bind(this)', e.g.:
+    // Bind 'this' to class methods using '.bind(this)':
     // this.customEventListener = this.customEventListener.bind(this);
   }
 
@@ -50,7 +50,7 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
   /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
-    // Add suffix `El` to the names of class constants containing elements, e.g.
+    // Add suffix `El` to the names of class constants containing elements:
     // this.someEl = this.querySelector(`[${ATTRS.ATTR_NAME}]`);
 
 
@@ -62,7 +62,7 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
     // this.setAttribute(ATTRS.ATTR_NAME, 'some-value');
 
 
-    /* ATTACH EVENT LISTENERS */
+    /* ADD EVENT LISTENERS */
     // Use passive event listeners when possible. Please don't use anonymous functions
 
 
@@ -77,10 +77,12 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
 
 
   // OTHER CLASS METHODS
-  // Sort class methods in alphabetical order with two blank lines in between each pair
+  // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback
+  // Use two blank lines between method
   // customEventListener(e) {
   //   Check if event has a 'detail' property and the id doesn't match the class instance id
-  //   if (!e.detail || (e.detail.id !== this.id)) {
+  //   const detail = e['detail'];
+  //   if (!detail || (detail['id'] !== this.id)) {
   //     return;
   //   }
   // }
