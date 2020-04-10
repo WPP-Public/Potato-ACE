@@ -1,4 +1,5 @@
-// Keep all block comments (/* */), but remove comments starting with '//'
+// Keep block comments (/* */) for sections used
+// Remove all comments starting with '//'
 // Use two blank lines between each section with block comment headings
 /* IMPORTS */
 import {NAME} from '../../common/constants.js';
@@ -46,21 +47,19 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
   }
 
 
+  /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
     // Add suffix `El` to the names of class constants containing elements, e.g.
     // this.someEl = this.querySelector(`[${ATTRS.ATTR_NAME}]`);
 
 
-
     /* GET DOM DATA */
     // this.someData = this.getAttribute(ATTRS.ATTR_NAME);
 
 
-
     /* SET DOM DATA */
     // this.setAttribute(ATTRS.ATTR_NAME, 'some-value');
-
 
 
     /* ATTACH EVENT LISTENERS */
@@ -77,7 +76,7 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
   }
 
 
-  /* CLASS METHODS */
+  // OTHER CLASS METHODS
   // Sort class methods in alphabetical order with two blank lines in between each pair
   // customEventListener(e) {
   //   Check if event has a 'detail' property and the id doesn't match the class instance id
@@ -93,7 +92,7 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
 }
 
 
-/* DEFINE CUSTOM ELEMENT */
+/* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
   // Use autoID to automatically increment the IDs of class instances
   autoID(COMPONENT); // TODO: Change COMPONENT to actual name

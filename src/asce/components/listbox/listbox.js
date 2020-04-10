@@ -29,6 +29,7 @@ export class Listbox extends HTMLElement {
   constructor() {
     super();
 
+
     /* CLASS CONSTANTS */
     this.options = [];
     this.activeOptionIndex = null;
@@ -55,6 +56,7 @@ export class Listbox extends HTMLElement {
   }
 
 
+  /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
     this.listEl = this.querySelector('ul') || this.querySelector('ol');
@@ -95,7 +97,6 @@ export class Listbox extends HTMLElement {
   }
 
 
-  /* CLASS METHODS */
   /*
     Clears the search query
   */
@@ -448,7 +449,7 @@ export class Listbox extends HTMLElement {
 }
 
 
-/* INITIALISE AND REGISTER CUSTOM ELEMENT */
+/* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
   autoID(LISTBOX);
   customElements.define(LISTBOX, Listbox);
