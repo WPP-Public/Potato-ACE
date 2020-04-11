@@ -78,9 +78,13 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
 
   // OTHER CLASS METHODS
   // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback
-  // Use two blank lines between method
-  // customEventListener(e) {
-  //   Check if event has a 'detail' property and the id doesn't match the class instance id
+  // For each method, first add a block comment that describes the method
+  // Use two blank lines between methods
+  // /*
+  //   Custom event handler
+  // */
+  // customEventHandler(e) {
+  //   // Check if event has a 'detail' property and if detail has an id that matches this class instance id
   //   const detail = e['detail'];
   //   if (!detail || (detail['id'] !== this.id)) {
   //     return;
@@ -89,7 +93,7 @@ export class Component extends HTMLElement { // TODO: Change 'Component' to actu
 
 
   disconnectedCallback() {
-    // Remove event listeners
+    /* REMOVE EVENT LISTENERS */
   }
 }
 

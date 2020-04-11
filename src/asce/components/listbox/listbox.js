@@ -89,7 +89,7 @@ export class Listbox extends HTMLElement {
     this.listEl.addEventListener('blur', this.focusHandler, {passive: true});
     this.listEl.addEventListener('keydown', this.keydownHandler);
     this.listEl.addEventListener('click', this.clickHandler, {passive: true});
-    this.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
 
 
     /* INITIALISATION */
@@ -444,7 +444,7 @@ export class Listbox extends HTMLElement {
     this.listEl.removeEventListener('blur', this.focusHandler, {passive: true});
     this.listEl.removeEventListener('keydown', this.keydownHandler);
     this.listEl.removeEventListener('click', this.clickHandler, {passive: true});
-    this.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
   }
 }
 
