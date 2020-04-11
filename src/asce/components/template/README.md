@@ -1,7 +1,7 @@
 <!-- TODO: Replace 'Template' with actual value -->
 # Template
 
-<!-- DESCRIBE COMPONENT AND ITS FUNCTIONALITY -->
+<!-- DESCRIBE COMPONENT AND ITS FUNCTIONALITY HERE -->
 
 <!-- TODO: Replace '<w3c-component-name>' with actual value -->
 [W3C WAI-ARIA Spec](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>)
@@ -12,13 +12,14 @@
 Import the component module into your JS entry point:
 <!-- TODO: Replace 'Template' and 'template' with actual values -->
 ```js
-import { Template } from 'asce/components/template/template';
+import Template from '@potato/asce/components/template/template';
 ```
-The component attributes are also exported as `ATTRS` so can be imported if required using `import { Template, ATTRS } from ...`. To avoid name clashes you can import using `as`, for example `import { Template as aceTemplate, ATTRS as ACE_TEMPLATE_ATTRS } from ...`. 
 
+<!-- TODO: Replace 'Template', 'TEMPLATE' and 'template' with actual values -->
+The names of the component HTML attributes are also exported as properties of an object named `ATTRS`, so that they may be imported using `import Template, {ATTRS} from ...`. To avoid name clashes you can import using `as`, e.g. `import Template as aceTemplate, {ATTRS as ACE_TEMPLATE_ATTRS} from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-template></asce-template>` tag on the page.
 
-<!-- TODO: Replace 'template' with actual value -->
-Use the `<asce-template></asce-template>` tag in your template.
+<!-- ADD ANY OTHER USAGE INSTRUCTIONS HERE -->
+
 
 
 ## SASS
@@ -31,22 +32,25 @@ The following CSS is applied to Template components:
 
 ## Events
 
-Template uses the following custom events, the names of which are exported as properties of an `EVENTS` object so they can be used when dispatching or listen to these events.
+<!-- TODO: Replace 'Template' with actual value -->
+Template uses the following custom events, the names of which are properties of an exported object named `EVENTS`, similar to `ATTRS`. These event names can therefore be imported into other modules and used to listen to or dispatch events.
 
 
-<!-- TODO: Replace 'Event name' with more descriptive name -->
-### Event name
+<!-- TODO: Replace 'Event' with a descriptive name -->
+### Event event
 
 <!-- TODO: Replace 'template-event-name' with actual value -->
 `asce-template-event-name`
 
-<!-- DESCRIBE EVENT -->
+<!-- DESCRIBE EVENT HERE -->
+
 
 The event `detail` property is composed as follows:
-<!-- TODO: Add event detail object to code block -->
+<!-- TODO: Replace 'propName' and 'propDescription' with appropriate values. Repeat for all properties and nested properties -->
 ```js
 {
-  // 'id': // ID of template
+  'id': // ID of template
+  'propName': // propDescription
 }
 ```
 
@@ -55,6 +59,7 @@ The event `detail` property is composed as follows:
 <!-- TODO: Replace 'Example' with more descriptive name -->
 ### Example
 
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
+<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY HERE -->
+
 ```html
 ```

@@ -25,7 +25,7 @@ const searchTimeoutTime = 500;
 
 
 /* CLASS */
-export class Listbox extends HTMLElement {
+export default class Listbox extends HTMLElement {
   constructor() {
     super();
 

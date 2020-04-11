@@ -33,7 +33,7 @@ export const COMPONENT = `${NAME}-component`; // TODO: Replace 'COMPONENT' and '
 
 
 /* CLASS */
-export class Component extends HTMLElement { // TODO: Change 'Component' to actual value
+export default class Component extends HTMLElement { // TODO: Change 'Component' to actual value
   constructor() {
     super();
 

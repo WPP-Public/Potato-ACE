@@ -23,7 +23,7 @@ export const EVENTS = {
 
 
 /* CLASS */
-export class Disclosure extends HTMLElement {
+export default class Disclosure extends HTMLElement {
   /* CONSTRUCTOR */
   constructor() {
     super();

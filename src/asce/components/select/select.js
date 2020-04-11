@@ -1,6 +1,6 @@
 /* IMPORTS */
 import {NAME, KEYS} from '../../common/constants.js';
-import {Listbox, ATTRS as LISTBOX_ATTRS} from '../listbox/listbox.js';
+import Listbox, {ATTRS as LISTBOX_ATTRS} from '../listbox/listbox.js';
 import {autoID, handleOverflow, keyPressedMatches} from '../../common/functions.js';
 
 
@@ -22,7 +22,7 @@ export const EVENTS = {
 
 
 /* CLASS */
-export class Select extends Listbox {
+export default class Select extends Listbox {
   constructor() {
     super();
 
