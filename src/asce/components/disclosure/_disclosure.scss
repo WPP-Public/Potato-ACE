@@ -1,6 +1,4 @@
 /* STYLES */
-asce-disclosure {
-  &[aria-hidden='true'] {
-    display: none;
-  }
+[asce-disclosure-visible="false"] {
+  display: none;
 }

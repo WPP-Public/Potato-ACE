@@ -89,8 +89,14 @@ To trigger a disclosure use a button with the `asce-disclosure-trigger-for` attr
 Example of dynamically added trigger
 
 ```html
-<button id="dynamic-disclosure-btn">
+<button id="custom-event-toggle-btn">
   Toggle disclosure using custom event
+</button>
+<button id="custom-event-show-btn">
+  Show disclosure using custom event
+</button>
+<button id="custom-event-hide-btn">
+  Hide disclosure using custom event
 </button>
 
 <asce-disclosure id="custom-event-triggered-disclosure">

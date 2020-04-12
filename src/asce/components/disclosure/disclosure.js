@@ -3,13 +3,15 @@ import {NAME} from '../../common/constants.js';
 import {autoID} from '../../common/functions.js';
 
 
-/* CONSTANTS */
 export const DISCLOSURE = `${NAME}-disclosure`;
 
+
+/* CONSTANTS */
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
   VISIBLE: `${DISCLOSURE}-visible`,
 };
+
 
 // TODO: Consider adding extra events for hooking animations into.
 export const EVENTS = {
@@ -64,17 +66,19 @@ export default class Disclosure extends HTMLElement {
   /*
     Handle keypresses on triggers
   */
-  toggleDisclosure() {
-    const visible = (this.getAttribute(ATTRS.VISIBLE) == 'true');
+  toggleDisclosure(showDisclosure = null) {
+    if (showDisclosure === null) {
+      showDisclosure = (this.getAttribute(ATTRS.VISIBLE) == 'false');
+    }
 
-    this.setAttribute(ATTRS.VISIBLE, !visible);
-    this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', !visible));
+    this.setAttribute(ATTRS.VISIBLE, showDisclosure);
+    this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure));
 
     window.dispatchEvent(new CustomEvent(EVENTS.TOGGLED,
       {
         'detail': {
           'id': this.id,
-          'visible': !visible,
+          'visible': showDisclosure,
         }
       }
     ));
@@ -90,7 +94,7 @@ export default class Disclosure extends HTMLElement {
       return;
     }
 
-    this.toggleDisclosure();
+    this.toggleDisclosure(detail['showDisclosure']);
   }
 
 
@@ -114,7 +118,6 @@ export default class Disclosure extends HTMLElement {
     window.removeEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
   }
 }
-
 
 
 /* INITIALISE AND REGISTER CUSTOM ELEMENT */
