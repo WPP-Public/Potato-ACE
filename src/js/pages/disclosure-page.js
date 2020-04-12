@@ -13,25 +13,25 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
+    let eventType = EVENTS.TOGGLE;
+
     if (customEventShowBtnClicked) {
-      showDisclosure = true;
+      eventType = EVENTS.SHOW;
     }
 
     if (customEventHideBtnClicked) {
-      showDisclosure = false;
+      eventType = EVENTS.HIDE;
     }
 
     window.dispatchEvent(
       new CustomEvent(
-        EVENTS.TOGGLE,
+        eventType,
         {
           'detail': {
             'id': 'custom-event-triggered-disclosure',
-            'showDisclosure': showDisclosure,
           }
         },
       )
     );
   });
-
 });

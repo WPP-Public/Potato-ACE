@@ -8,15 +8,17 @@
 
 
 ## Usage
+<!-- TODO: Replace 'Template', 'TEMPLATE' and 'template' with actual values int this section -->
 
 Import the component module into your JS entry point:
-<!-- TODO: Replace 'Template' and 'template' with actual values -->
 ```js
 import Template from '@potato/asce/components/template/template';
 ```
 
-<!-- TODO: Replace 'Template', 'TEMPLATE' and 'template' with actual values -->
-The names of the component HTML attributes are also exported as properties of an object named `ATTRS`, so that they may be imported using `import Template, {ATTRS} from ...`. To avoid name clashes you can import using `as`, e.g. `import Template as aceTemplate, {ATTRS as ACE_TEMPLATE_ATTRS} from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-template></asce-template>` tag on the page.
+<!-- TODO: If exporting attributes include the following, commented out paragraph -->
+<!-- The names of the component HTML attributes are also exported as properties of an object named `ATTRS`, so that they may be imported using `import Template, {ATTRS} from ...`. -->
+
+To avoid name clashes you can import using `as`, e.g. `import Template as aceTemplate, {ATTRS as ACE_TEMPLATE_ATTRS} from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-template></asce-template>` tag on the page.
 
 <!-- ADD ANY OTHER USAGE INSTRUCTIONS HERE -->
 

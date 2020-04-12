@@ -10,13 +10,16 @@ export const DISCLOSURE = `${NAME}-disclosure`;
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
   VISIBLE: `${DISCLOSURE}-visible`,
+  SHOW: `${DISCLOSURE}-show`,
+  HIDE: `${DISCLOSURE}-hide`,
 };
 
 
-// TODO: Consider adding extra events for hooking animations into.
 export const EVENTS = {
+  HIDE: `${DISCLOSURE}-hide`,
+  SHOW: `${DISCLOSURE}-show`,
   TOGGLE: `${DISCLOSURE}-toggle`,
-  TOGGLED: `${DISCLOSURE}-toggled`,
+  CHANGED: `${DISCLOSURE}-changed`,
 };
 
 
@@ -28,12 +31,12 @@ export default class Disclosure extends HTMLElement {
     super();
 
     /* CLASS CONSTANTS */
-    this.disclosureTriggerSelector = `[${ATTRS.TRIGGER}=${this.id}]`;
+    this.triggerSelector = `[${ATTRS.TRIGGER}=${this.id}]`;
 
 
     /* CLASS METHOD BINDINGS */
-    this.toggleDisclosure = this.toggleDisclosure.bind(this);
-    this.toggleEventHandler = this.toggleEventHandler.bind(this);
+    this.setDisclosure = this.setDisclosure.bind(this);
+    this.customEventsHandler = this.customEventsHandler.bind(this);
     this.windowClickHandler = this.windowClickHandler.bind(this);
   }
 
@@ -41,7 +44,7 @@ export default class Disclosure extends HTMLElement {
   /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
-    this.triggerEls = document.querySelectorAll(this.disclosureTriggerSelector);
+    this.triggerEls = document.querySelectorAll(this.triggerSelector);
 
 
     /* GET DOM DATA */
@@ -59,26 +62,39 @@ export default class Disclosure extends HTMLElement {
 
     /* ADD EVENT LISTENERS */
     window.addEventListener('click', this.windowClickHandler, {passive: true});
-    window.addEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
+    window.addEventListener(EVENTS.HIDE, this.customEventsHandler, {passive: true});
+    window.addEventListener(EVENTS.SHOW, this.customEventsHandler, {passive: true});
+    window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler, {passive: true});
   }
 
 
   /*
-    Handle keypresses on triggers
+    Show, hide or toggle the visibility of the disclosure
   */
-  toggleDisclosure(showDisclosure = null) {
-    if (showDisclosure === null) {
-      showDisclosure = (this.getAttribute(ATTRS.VISIBLE) == 'false');
+  setDisclosure(showDisclosure) {
+    const currentlyShown = this.getAttribute(ATTRS.VISIBLE) === 'true';
+
+    if (showDisclosure && currentlyShown) {
+      return;
     }
 
+    if ((showDisclosure === false) && !currentlyShown) {
+      return;
+    }
+
+    // if showDisclosure not defined toggle state
+    if (showDisclosure === null || showDisclosure === undefined) {
+      showDisclosure = !currentlyShown;
+    }
     this.setAttribute(ATTRS.VISIBLE, showDisclosure);
     this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure));
 
-    window.dispatchEvent(new CustomEvent(EVENTS.TOGGLED,
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.CHANGED,
       {
         'detail': {
           'id': this.id,
-          'visible': showDisclosure,
+          'shown': showDisclosure,
         }
       }
     ));
@@ -86,35 +102,53 @@ export default class Disclosure extends HTMLElement {
 
 
   /*
-    Toggle event handler
+    Handles custom events
   */
-  toggleEventHandler(e) {
+  customEventsHandler(e) {
     const detail = e['detail'];
-    if (!detail || (detail['id'] !== this.id)) {
+    if (!detail || (detail['id'] !== this.id) || !e.type) {
       return;
     }
 
-    this.toggleDisclosure(detail['showDisclosure']);
+    let showDisclosure = null;
+    if (e.type === EVENTS.SHOW) {
+      showDisclosure = true;
+    }
+    if (e.type === EVENTS.HIDE) {
+      showDisclosure = false;
+    }
+
+    this.setDisclosure(showDisclosure);
   }
 
 
   /*
-    Determine if disclosure is visible or not
+    Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
   */
   windowClickHandler(e) {
     // Check that the trigger clicked is linked to this disclosure instance
-    const triggerClicked = e.target.closest(this.disclosureTriggerSelector);
+    const triggerClicked = e.target.closest(this.triggerSelector);
     if (!triggerClicked) {
       return;
     }
 
-    this.toggleDisclosure();
+    let showDisclosure = null;
+    if (triggerClicked.hasAttribute(ATTRS.SHOW)) {
+      showDisclosure = true;
+    }
+    if (triggerClicked.hasAttribute(ATTRS.HIDE)) {
+      showDisclosure = false;
+    }
+
+    this.setDisclosure(showDisclosure);
   }
 
 
   disconnectedCallback() {
     /* REMOVE EVENT LISTENERS */
     window.removeEventListener('click', this.windowClickHandler, {passive: true});
+    window.removeEventListener(EVENTS.HIDE, this.toggleEventHandler, {passive: true});
+    window.removeEventListener(EVENTS.SHOW, this.toggleEventHandler, {passive: true});
     window.removeEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
   }
 }
