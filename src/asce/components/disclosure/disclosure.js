@@ -3,15 +3,12 @@ import {NAME, KEYS} from '../../common/constants.js';
 import {autoID, keyPressedMatches} from '../../common/functions.js';
 
 
-/* COMPONENT NAME */
+/* CONSTANTS */
 export const DISCLOSURE = `${NAME}-disclosure`;
 
-
-/* CONSTANTS */
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`
 };
-
 
 // TODO: Consider adding extra events for hooking animations into.
 export const EVENTS = {
@@ -22,12 +19,12 @@ export const EVENTS = {
 };
 
 
+
 /* CLASS */
 export default class Disclosure extends HTMLElement {
   /* CONSTRUCTOR */
   constructor() {
     super();
-
 
     /* CLASS CONSTANTS */
 
@@ -49,8 +46,6 @@ export default class Disclosure extends HTMLElement {
     // Get triggers
     this.triggers = this.getTriggers(this.id);
 
-
-    /* SET DOM DATA */
     // Set disclosure attrs
     const expandedTriggers = Array.from(this.triggers).filter(elem => elem.getAttribute('aria-expanded') === 'true');
     if (expandedTriggers.length) {
@@ -75,70 +70,6 @@ export default class Disclosure extends HTMLElement {
     window.addEventListener('keydown', this.windowKeyDownHandler, {passive: true});
     window.addEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, {passive: true});
     window.addEventListener(EVENTS['UPDATE_TRIGGERS'], this.updateTriggersHandler, {passive: true});
-  }
-
-
-  /*
-    Get all triggers
-  */
-  getTriggers(id) {
-    // Get all the triggers for this disclosure
-    return document.querySelectorAll(`[${ATTRS['TRIGGER']}=${id}]`);
-  }
-
-
-  /*
-    Determine if disclosure is visible or not
-  */
-  isShown() {
-    return this.getAttribute('aria-hidden') === 'false';
-  }
-
-
-  /*
-    Show disclosure
-  */
-  setDisclosureVisibility(visible) {
-    this.setAttribute('aria-hidden', !visible);
-    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', visible));
-    this.dispatchEvent(new CustomEvent(visible ? EVENTS['OPENED'] : EVENTS['CLOSED'], {detail: {
-      'id': this.id
-    }}));
-  }
-
-
-  /*
-    Toggle disclosure
-  */
-  toggleDisclosure() {
-    // Toggle visibility and aria attributes
-    this.setDisclosureVisibility(!this.isShown());
-  }
-
-
-  /*
-    Handle when trigger event is dispatched
-  */
-  toggleEventHandler(e) {
-    // Check the event is for this instance
-    if (e.detail['id'] !== this.id) {
-      return;
-    }
-
-    this.toggleDisclosure(e.detail['trigger']);
-  }
-
-
-  /*
-    Handle keypresses on triggers
-  */
-  updateTriggersHandler(e) {
-    const detail = e['detail'];
-    if (!detail || (detail['id'] !== this.id)) {
-      return;
-    }
-
-    this.triggers = this.getTriggers(this.id);
   }
 
 
@@ -178,6 +109,69 @@ export default class Disclosure extends HTMLElement {
   }
 
 
+  /*
+    Handle when trigger event is dispatched
+  */
+  toggleEventHandler(e) {
+    // Check the event is for this instance
+    if (e.detail['id'] !== this.id) {
+      return;
+    }
+
+    this.toggleDisclosure(e.detail['trigger']);
+  }
+
+
+  /*
+    Handle keypresses on triggers
+  */
+  updateTriggersHandler(e) {
+    // Check the event is for this instance
+    if (e.detail['id'] !== this.id) {
+      return;
+    }
+    this.triggers = this.getTriggers(this.id);
+  }
+
+
+  /*
+    Determine if disclosure is visible or not
+  */
+  isShown() {
+    return this.getAttribute('aria-hidden') === 'false';
+  }
+
+
+  /*
+    Show disclosure
+  */
+  setDisclosureVisibility(visible) {
+    this.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', visible ? 'true' : 'false'));
+    this.dispatchEvent(new CustomEvent(visible ? EVENTS['OPENED'] : EVENTS['CLOSED'], {detail: {
+      'id': this.id
+    }}));
+  }
+
+
+  /*
+    Toggle disclosure
+  */
+  toggleDisclosure() {
+    // Toggle visibility and aria attributes
+    this.setDisclosureVisibility(!this.isShown());
+  }
+
+
+  /*
+    Get all triggers
+  */
+  getTriggers(id) {
+    // Get all the triggers for this disclosure
+    return document.querySelectorAll(`[${ATTRS['TRIGGER']}=${id}]`);
+  }
+
+
   disconnectedCallback() {
     /* REMOVE EVENT LISTENERS */
     window.removeEventListener('click', this.windowClickHandler, {passive: true});
@@ -188,7 +182,8 @@ export default class Disclosure extends HTMLElement {
 }
 
 
-/* REGISTER CUSTOM ELEMENT */
+
+/* INITIALISE AND REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
   autoID(DISCLOSURE);
   customElements.define(DISCLOSURE, Disclosure);
