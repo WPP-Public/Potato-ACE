@@ -16,12 +16,12 @@ import { Listbox, EVENTS as LISTBOX_EVENTS } from 'asce/components/listbox/listb
 Here is scss code
 
 ```scss
-/* COMPONENT VARIABLES */
+/* VARIABLES */
 $asce-listbox-selected-bg-color: #ccc !default;
 $asce-listbox-active-outline-color: 2px dotted #000 !default;
 
 
-/* COMPONENT STYLES */
+/* STYLES */
 [asce-listbox-list] {
   overflow-y: auto;
 }
