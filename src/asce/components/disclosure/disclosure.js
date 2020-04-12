@@ -1,21 +1,20 @@
 /* IMPORTS */
-import {NAME, KEYS} from '../../common/constants.js';
-import {autoID, keyPressedMatches} from '../../common/functions.js';
+import {NAME} from '../../common/constants.js';
+import {autoID} from '../../common/functions.js';
 
 
 /* CONSTANTS */
 export const DISCLOSURE = `${NAME}-disclosure`;
 
 export const ATTRS = {
-  TRIGGER: `${DISCLOSURE}-trigger-for`
+  TRIGGER: `${DISCLOSURE}-trigger-for`,
+  VISIBLE: `${DISCLOSURE}-visible`,
 };
 
 // TODO: Consider adding extra events for hooking animations into.
 export const EVENTS = {
   TOGGLE: `${DISCLOSURE}-toggle`,
-  OPENED: `${DISCLOSURE}-opened`,
-  CLOSED: `${DISCLOSURE}-closed`,
-  UPDATE_TRIGGERS: `${DISCLOSURE}-update-triggers`
+  TOGGLED: `${DISCLOSURE}-toggled`,
 };
 
 
@@ -27,157 +26,92 @@ export default class Disclosure extends HTMLElement {
     super();
 
     /* CLASS CONSTANTS */
+    this.disclosureTriggerSelector = `[${ATTRS.TRIGGER}=${this.id}]`;
 
 
     /* CLASS METHOD BINDINGS */
-    this.isShown = this.isShown.bind(this);
-    this.setDisclosureVisibility = this.setDisclosureVisibility.bind(this);
     this.toggleDisclosure = this.toggleDisclosure.bind(this);
     this.toggleEventHandler = this.toggleEventHandler.bind(this);
-    this.updateTriggersHandler = this.updateTriggersHandler.bind(this);
     this.windowClickHandler = this.windowClickHandler.bind(this);
-    this.windowKeyDownHandler = this.windowKeyDownHandler.bind(this);
   }
 
 
   /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
-    // Get triggers
-    this.triggers = this.getTriggers(this.id);
+    this.triggerEls = document.querySelectorAll(this.disclosureTriggerSelector);
 
-    // Set disclosure attrs
-    const expandedTriggers = Array.from(this.triggers).filter(elem => elem.getAttribute('aria-expanded') === 'true');
-    if (expandedTriggers.length) {
-      this.setAttribute('aria-hidden', 'false');
-    } else {
-      this.setAttribute('aria-hidden', 'true');
-    }
 
-    // TODO: Add support for multiple triggers (setting aria-expanded on all triggers)
-    // Set trigger attrs
-    this.triggers.forEach(toggle => {
-      toggle.setAttribute('aria-controls', this.id);
-      if (toggle.tagName !== 'BUTTON') {
-        toggle.setAttribute('role', 'button');
-        toggle.setAttribute('tabindex', '0');
-      }
+    /* GET DOM DATA */
+    const visible = this.hasAttribute(ATTRS.VISIBLE);
+
+
+    /* SET DOM DATA */
+    this.setAttribute(ATTRS.VISIBLE, visible);
+
+    this.triggerEls.forEach((triggerEl) => {
+      triggerEl.setAttribute('aria-controls', this.id);
+      triggerEl.setAttribute('aria-expanded', visible);
     });
 
 
     /* ADD EVENT LISTENERS */
     window.addEventListener('click', this.windowClickHandler, {passive: true});
-    window.addEventListener('keydown', this.windowKeyDownHandler, {passive: true});
-    window.addEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, {passive: true});
-    window.addEventListener(EVENTS['UPDATE_TRIGGERS'], this.updateTriggersHandler, {passive: true});
-  }
-
-
-  /*
-    Handle clicks on triggers
-  */
-  windowClickHandler(e) {
-    // Check that the trigger clicked is linked to this disclosure instance
-    const triggerClicked = e.target.closest(`[${ATTRS['TRIGGER']}=${this.id}]`);
-    if (!triggerClicked) {
-      return;
-    }
-
-    window.dispatchEvent(new CustomEvent(EVENTS['TOGGLE'], {
-      detail: {
-        'id': this.id,
-        'trigger': triggerClicked
-    }}));
+    window.addEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
   }
 
 
   /*
     Handle keypresses on triggers
   */
-  windowKeyDownHandler(e) {
-    // Check that the trigger focused is linked to this disclosure instance
-    const triggerClicked = e.target.closest(`[${ATTRS['TRIGGER']}=${this.id}]`);
-    if (!triggerClicked) {
-      return;
-    }
+  toggleDisclosure() {
+    const visible = (this.getAttribute(ATTRS.VISIBLE) == 'true');
 
-    // if enter or space is pressed then toggle the disclosure
-    const keyPressed = e.key || e.which || e.keyCode;
-    if (keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
-      this.toggleDisclosure(e.target);
-    }
+    this.setAttribute(ATTRS.VISIBLE, !visible);
+    this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', !visible));
+
+    window.dispatchEvent(new CustomEvent(EVENTS.TOGGLED,
+      {
+        'detail': {
+          'id': this.id,
+          'visible': !visible,
+        }
+      }
+    ));
   }
 
 
   /*
-    Handle when trigger event is dispatched
+    Toggle event handler
   */
   toggleEventHandler(e) {
-    // Check the event is for this instance
-    if (e.detail['id'] !== this.id) {
+    const detail = e['detail'];
+    if (!detail || (detail['id'] !== this.id)) {
       return;
     }
 
-    this.toggleDisclosure(e.detail['trigger']);
-  }
-
-
-  /*
-    Handle keypresses on triggers
-  */
-  updateTriggersHandler(e) {
-    // Check the event is for this instance
-    if (e.detail['id'] !== this.id) {
-      return;
-    }
-    this.triggers = this.getTriggers(this.id);
+    this.toggleDisclosure();
   }
 
 
   /*
     Determine if disclosure is visible or not
   */
-  isShown() {
-    return this.getAttribute('aria-hidden') === 'false';
-  }
+  windowClickHandler(e) {
+    // Check that the trigger clicked is linked to this disclosure instance
+    const triggerClicked = e.target.closest(this.disclosureTriggerSelector);
+    if (!triggerClicked) {
+      return;
+    }
 
-
-  /*
-    Show disclosure
-  */
-  setDisclosureVisibility(visible) {
-    this.setAttribute('aria-hidden', visible ? 'false' : 'true');
-    this.triggers.forEach(elem => elem.setAttribute('aria-expanded', visible ? 'true' : 'false'));
-    this.dispatchEvent(new CustomEvent(visible ? EVENTS['OPENED'] : EVENTS['CLOSED'], {detail: {
-      'id': this.id
-    }}));
-  }
-
-
-  /*
-    Toggle disclosure
-  */
-  toggleDisclosure() {
-    // Toggle visibility and aria attributes
-    this.setDisclosureVisibility(!this.isShown());
-  }
-
-
-  /*
-    Get all triggers
-  */
-  getTriggers(id) {
-    // Get all the triggers for this disclosure
-    return document.querySelectorAll(`[${ATTRS['TRIGGER']}=${id}]`);
+    this.toggleDisclosure();
   }
 
 
   disconnectedCallback() {
     /* REMOVE EVENT LISTENERS */
     window.removeEventListener('click', this.windowClickHandler, {passive: true});
-    window.removeEventListener('keydown', this.windowKeyDownHandler, {passive: true});
-    window.removeEventListener(EVENTS['TOGGLE'], this.toggleEventHandler, {passive: true});
-    window.removeEventListener(EVENTS['UPDATE_TRIGGERS'], this.updateTriggersHandler, {passive: true});
+    window.removeEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
   }
 }
 
