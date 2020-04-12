@@ -1,0 +1,17 @@
+// Keep styles to minimum and make sure styles added are obvious, prompting users to override them
+
+/* VARIABLES */
+// Define SASS variables here using `!default` so users can override these
+// $asce-component-var: value !default;
+
+
+/* STYLES */
+// Apply styles in a way that they can be overridden by a user with a single class selector
+// Use the following guidelines to achieve this:
+// 1. Don't use classes for selectors, instead only use the component tag or it's attributes
+// 2. Don't nest selectors nor use multi-property selectors e.g. asce-component [asce-component-attr]
+// asce-component {
+// }
+
+// [asce-component-attr] {
+// }

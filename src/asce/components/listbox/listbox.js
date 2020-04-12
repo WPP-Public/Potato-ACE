@@ -3,15 +3,18 @@ import {NAME, KEYS} from '../../common/constants.js';
 import {autoID, keyPressedMatches} from '../../common/functions.js';
 
 
-/* CONSTANTS */
+/* COMPONENT NAME */
 export const LISTBOX = `${NAME}-listbox`;
 
+
+/* CONSTANTS */
 export const ATTRS = {
   LIST: `${LISTBOX}-list`,
   MULTISELECT: `${LISTBOX}-multiselect`,
   OPTION_INDEX: `${LISTBOX}-option-index`,
   ACTIVE_OPTION: `${LISTBOX}-active-option`,
 };
+
 
 export const EVENTS = {
   UPDATE_OPTIONS: `${LISTBOX}-update-options`,
@@ -22,9 +25,10 @@ const searchTimeoutTime = 500;
 
 
 /* CLASS */
-export class Listbox extends HTMLElement {
+export default class Listbox extends HTMLElement {
   constructor() {
     super();
+
 
     /* CLASS CONSTANTS */
     this.options = [];
@@ -85,7 +89,7 @@ export class Listbox extends HTMLElement {
     this.listEl.addEventListener('blur', this.focusHandler, {passive: true});
     this.listEl.addEventListener('keydown', this.keydownHandler);
     this.listEl.addEventListener('click', this.clickHandler, {passive: true});
-    this.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
 
 
     /* INITIALISATION */
@@ -94,99 +98,10 @@ export class Listbox extends HTMLElement {
 
 
   /*
-    Update the listbox by recalculating the indices and setting the first option as active.
-    Should be run if the list ID or options are dynamically changed to update indices.
+    Clears the search query
   */
-  initialiseList() {
-    // Get all child <li> elements
-    this.options = [...this.listEl.querySelectorAll('li')];
-
-    if (this.options.length === 0) {
-      return;
-    }
-
-    // Set option attributes and IDs
-    this.options.forEach((option, i) => {
-      option.setAttribute('role', 'option');
-      option.setAttribute('aria-selected', 'false');
-      option.setAttribute(ATTRS.OPTION_INDEX, i);
-      // If no ID given create an ID from parent ID and index
-      option.id = option.id || `${this.id}-option-${i + 1}`;
-    });
-
-    // If single-select list set first option to active
-    if (!this.multiselectable) {
-      this.makeOptionSelected(0);
-      this.scrollOptionIntoView(0);
-    }
-  }
-
-
-  /*
-    Make option at given index active by adding attribute ATTRS.ACTIVE_OPTION
-    and setting the listbox list's [aria-activedescendant] to the ID of the selected option.
-    An "active" option is one currently has keyboard focus. There can be only one active option at any given time.
-    For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
-  */
-  makeOptionActive(index) {
-    // Deactivate previously active option
-    this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
-
-    // Activate new option
-    const optionToMakeActive = this.options[index];
-    optionToMakeActive.setAttribute(ATTRS.ACTIVE_OPTION, '');
-    this.listEl.setAttribute('aria-activedescendant', optionToMakeActive.id);
-    this.activeOptionIndex = index;
-
-    // If single-select list make option selected
-    if (!this.multiselectable) {
-      this.makeOptionSelected(index);
-    }
-
-    this.scrollOptionIntoView(this.activeOptionIndex);
-  }
-
-
-  /*
-    Make option at given index selected by adding attribute [${ATTRS.ACTIVE_OPTION}].
-    An "active" option is one that is selected. For multi-select listboxes there could be multiple "active" options.
-    For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
-  */
-  makeOptionSelected(index) {
-    // If single select list and an item is currently selected
-    if (!this.multiselectable && (this.lastSelectedOptionIndex !== null)) {
-      this.options[this.lastSelectedOptionIndex]
-        .setAttribute('aria-selected', 'false');
-    }
-
-    this.options[index].setAttribute('aria-selected', 'true');
-    this.lastSelectedOptionIndex = index;
-  }
-
-
-  /*
-    Handle focus and blur events on the listbox.
-    On focus: set first option or last active option as active
-    On blur: unset active option
-  */
-  focusHandler(e) {
-    if (this.options.length === 0) {
-      return;
-    }
-
-    // If list focussed
-    if (e.type === 'focus') {
-      // set first option as active
-      if (this.activeOptionIndex === null) {
-        this.activeOptionIndex = 0;
-      }
-      this.makeOptionActive(this.activeOptionIndex);
-      return;
-    }
-
-    // If list blurred
-    this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
-    this.listEl.removeAttribute('aria-activedescendant');
+  clearListSearch() {
+    this.query = '';
   }
 
 
@@ -222,13 +137,87 @@ export class Listbox extends HTMLElement {
 
 
   /*
-    Toggle the selected state of the option at given index
+    Finds options starting with given keyPressed wrapping around
   */
-  toggleOptionState(index) {
-    const option = this.options[index];
-    const newSelectedState = option.getAttribute('aria-selected') !== 'true';
-    option.setAttribute('aria-selected', newSelectedState);
-    this.lastSelectedOptionIndex = newSelectedState ? index : null;
+  findInList() {
+    let i = this.activeOptionIndex;
+    let maxIndex = this.options.length - 1;
+
+    if (this.query.length === 1) {
+      // If it's the first letter of a new search, we start searching _after_ the currently selected option
+      i++;
+    }
+
+    let startingIndex = i;
+
+    do {
+      // If i has gone past the end, loop back around to the start of the list
+      if (i > maxIndex) {
+        i = 0;
+      }
+
+      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
+        this.makeOptionActive(i);
+        break;
+      }
+
+      i++;
+    } while (i !== startingIndex); // Terminates if every option has been checked
+  }
+
+
+  /*
+    Handle focus and blur events on the listbox.
+    On focus: set first option or last active option as active
+    On blur: unset active option
+  */
+  focusHandler(e) {
+    if (this.options.length === 0) {
+      return;
+    }
+
+    // If list focussed
+    if (e.type === 'focus') {
+      // set first option as active
+      if (this.activeOptionIndex === null) {
+        this.activeOptionIndex = 0;
+      }
+      this.makeOptionActive(this.activeOptionIndex);
+      return;
+    }
+
+    // If list blurred
+    this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
+    this.listEl.removeAttribute('aria-activedescendant');
+  }
+
+
+  /*
+    Update the listbox by recalculating the indices and setting the first option as active.
+    Should be run if the list ID or options are dynamically changed to update indices.
+  */
+  initialiseList() {
+    // Get all child <li> elements
+    this.options = [...this.listEl.querySelectorAll('li')];
+
+    if (this.options.length === 0) {
+      return;
+    }
+
+    // Set option attributes and IDs
+    this.options.forEach((option, i) => {
+      option.setAttribute('role', 'option');
+      option.setAttribute('aria-selected', 'false');
+      option.setAttribute(ATTRS.OPTION_INDEX, i);
+      // If no ID given create an ID from parent ID and index
+      option.id = option.id || `${this.id}-option-${i + 1}`;
+    });
+
+    // If single-select list set first option to active
+    if (!this.multiselectable) {
+      this.makeOptionSelected(0);
+      this.scrollOptionIntoView(0);
+    }
   }
 
 
@@ -319,17 +308,26 @@ export class Listbox extends HTMLElement {
 
 
   /*
-    Calculate and return index to move to based on the direction
-    and wraps around if you are at the top or bottom
+    Make option at given index active by adding attribute ATTRS.ACTIVE_OPTION
+    and setting the listbox list's [aria-activedescendant] to the ID of the selected option.
+    An "active" option is one currently has keyboard focus. There can be only one active option at any given time.
+    For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
   */
-  updateActiveOption(direction) {
-    let newIndex = this.activeOptionIndex + direction;
-    if (newIndex < 0) {
-      newIndex = this.options.length - 1;
-    } else if (newIndex === this.options.length) {
-      newIndex = 0;
+  makeOptionActive(index) {
+    // Deactivate previously active option
+    this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
+
+    // Activate new option
+    const optionToMakeActive = this.options[index];
+    optionToMakeActive.setAttribute(ATTRS.ACTIVE_OPTION, '');
+    this.listEl.setAttribute('aria-activedescendant', optionToMakeActive.id);
+    this.activeOptionIndex = index;
+
+    // If single-select list make option selected
+    if (!this.multiselectable) {
+      this.makeOptionSelected(index);
     }
-    this.makeOptionActive(newIndex);
+
     this.scrollOptionIntoView(this.activeOptionIndex);
   }
 
@@ -341,6 +339,23 @@ export class Listbox extends HTMLElement {
     for (let i = startIndex; i < endIndex; i++) {
       this.options[i].setAttribute('aria-selected', 'true');
     }
+  }
+
+
+  /*
+    Make option at given index selected by adding attribute [${ATTRS.ACTIVE_OPTION}].
+    An "active" option is one that is selected. For multi-select listboxes there could be multiple "active" options.
+    For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
+  */
+  makeOptionSelected(index) {
+    // If single select list and an item is currently selected
+    if (!this.multiselectable && (this.lastSelectedOptionIndex !== null)) {
+      this.options[this.lastSelectedOptionIndex]
+        .setAttribute('aria-selected', 'false');
+    }
+
+    this.options[index].setAttribute('aria-selected', 'true');
+    this.lastSelectedOptionIndex = index;
   }
 
 
@@ -381,71 +396,60 @@ export class Listbox extends HTMLElement {
 
 
   /*
-    Finds options starting with given keyPressed wrapping around
+    Toggle the selected state of the option at given index
   */
-  findInList() {
-    let i = this.activeOptionIndex;
-    let maxIndex = this.options.length - 1;
-
-    if (this.query.length === 1) {
-      // If it's the first letter of a new search, we start searching _after_ the currently selected option
-      i++;
-    }
-
-    let startingIndex = i;
-
-    do {
-      // If i has gone past the end, loop back around to the start of the list
-      if (i > maxIndex) {
-        i = 0;
-      }
-
-      if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
-        this.makeOptionActive(i);
-        break;
-      }
-
-      i++;
-    } while (i !== startingIndex); // Terminates if every option has been checked
+  toggleOptionState(index) {
+    const option = this.options[index];
+    const newSelectedState = option.getAttribute('aria-selected') !== 'true';
+    option.setAttribute('aria-selected', newSelectedState);
+    this.lastSelectedOptionIndex = newSelectedState ? index : null;
   }
 
 
   /*
-    Clears the search query
+    Calculate and return index to move to based on the direction
+    and wraps around if you are at the top or bottom
   */
-  clearListSearch() {
-    this.query = '';
+  updateActiveOption(direction) {
+    let newIndex = this.activeOptionIndex + direction;
+    if (newIndex < 0) {
+      newIndex = this.options.length - 1;
+    } else if (newIndex === this.options.length) {
+      newIndex = 0;
+    }
+    this.makeOptionActive(newIndex);
+    this.scrollOptionIntoView(this.activeOptionIndex);
   }
 
 
-  /* CUSTOM EVENT HANDLERS */
   /*
     Custom event handler for updating list options
     Run when the EVENTS.UPDATE_OPTIONS event is fired and updates
     the listbox options and indices
   */
   updateOptionsHandler(e) {
-    // Checks if id in event matches class instance then updates options
-    if (e.detail.id === this.id) {
-      this.activeOptionIndex = null;
-      this.initialiseList();
+    if (!e.detail || (e.detail.id !== this.id)) {
+      return;
     }
+
+    this.activeOptionIndex = null;
+    this.initialiseList();
   }
 
 
+  /* DISCONNECTED CALLBACK */
   disconnectedCallback() {
     /* REMOVE EVENT LISTENERS */
-    this.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
     this.listEl.removeEventListener('focus', this.focusHandler, {passive: true});
     this.listEl.removeEventListener('blur', this.focusHandler, {passive: true});
     this.listEl.removeEventListener('keydown', this.keydownHandler);
     this.listEl.removeEventListener('click', this.clickHandler, {passive: true});
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
   }
 }
 
 
-
-/* INITIALISE AND REGISTER CUSTOM ELEMENT */
+/* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
   autoID(LISTBOX);
   customElements.define(LISTBOX, Listbox);

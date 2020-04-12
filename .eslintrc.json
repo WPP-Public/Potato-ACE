@@ -1,35 +1,37 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
-    },
-    "extends": [
-        "eslint:recommended",
-        "plugin:cypress/recommended"
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:cypress/recommended"
+  ],
+  "plugins": [
+    "cypress"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "rules": {
+    "semi": [
+      "error",
+      "always"
     ],
-    "plugins": [
-        "cypress"
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 3
+      }
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "rules": {
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-multiple-empty-lines": [
-            "error",
-            { "max":  3 }
-        ],
-        "no-unused-vars": [
-            "warn"
-        ]
-    }
+    "no-unused-vars": [
+      "warn"
+    ]
+  }
 }
