@@ -3,6 +3,6 @@
   "integrationFolder": "src",
   "testFiles": "**/*.{test,spec}.js",
   "env": {
-    "pkg_name": "asce"
+    "lib_name": "asce"
   }
 }

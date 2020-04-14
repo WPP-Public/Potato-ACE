@@ -9,9 +9,9 @@ export const DISCLOSURE = `${NAME}-disclosure`;
 /* CONSTANTS */
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
+  TRIGGER_SHOW: `${DISCLOSURE}-trigger-show`,
+  TRIGGER_HIDE: `${DISCLOSURE}-trigger-hide`,
   VISIBLE: `${DISCLOSURE}-visible`,
-  SHOW: `${DISCLOSURE}-show-trigger`,
-  HIDE: `${DISCLOSURE}-hide-trigger`,
 };
 
 
@@ -133,10 +133,10 @@ export default class Disclosure extends HTMLElement {
     }
 
     let showDisclosure = null;
-    if (triggerClicked.hasAttribute(ATTRS.SHOW)) {
+    if (triggerClicked.hasAttribute(ATTRS.TRIGGER_SHOW)) {
       showDisclosure = true;
     }
-    if (triggerClicked.hasAttribute(ATTRS.HIDE)) {
+    if (triggerClicked.hasAttribute(ATTRS.TRIGGER_HIDE)) {
       showDisclosure = false;
     }
 
