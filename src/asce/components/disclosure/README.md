@@ -114,17 +114,17 @@ Example of disclosure controlled through custom events. The buttons in the examp
 
 ```html
 <button id="custom-event-hide-btn">
-  Disclosure hide custom event
+  Hide disclosure using custom event
 </button>
 <button id="custom-event-show-btn">
-  Disclosure show custom event
+  Show disclosure using custom event
 </button>
 <button id="custom-event-toggle-btn">
-  Disclosure toggle custom event
+  Toggle disclosure using custom event
 </button>
 
 <asce-disclosure id="custom-event-triggered-disclosure">
   <h1>Disclosure</h1>
-  <p>Disclosure controlled using custom events.</p>
+  <p>Disclosure toggled using custom events.</p>
 </asce-disclosure>
 ```
