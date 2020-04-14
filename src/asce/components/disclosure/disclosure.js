@@ -10,16 +10,16 @@ export const DISCLOSURE = `${NAME}-disclosure`;
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
   VISIBLE: `${DISCLOSURE}-visible`,
-  SHOW: `${DISCLOSURE}-show`,
-  HIDE: `${DISCLOSURE}-hide`,
+  SHOW: `${DISCLOSURE}-show-trigger`,
+  HIDE: `${DISCLOSURE}-hide-trigger`,
 };
 
 
 export const EVENTS = {
+  CHANGED: `${DISCLOSURE}-changed`,
   HIDE: `${DISCLOSURE}-hide`,
   SHOW: `${DISCLOSURE}-show`,
   TOGGLE: `${DISCLOSURE}-toggle`,
-  CHANGED: `${DISCLOSURE}-changed`,
 };
 
 
@@ -94,7 +94,7 @@ export default class Disclosure extends HTMLElement {
       {
         'detail': {
           'id': this.id,
-          'shown': showDisclosure,
+          'visible': showDisclosure,
         }
       }
     ));
