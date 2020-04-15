@@ -153,7 +153,7 @@ export default class Select extends Listbox {
 
     this.activeOptionIndex = this.activeOptionIndex || 0;
     this.keydownHandler(e);
-    this.updateTriggerText(e);
+    this.updateTriggerText();
   }
 
 
