@@ -41,7 +41,6 @@ export default class Disclosure extends HTMLElement {
   }
 
 
-  /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
     this.triggerEls = document.querySelectorAll(this.triggerSelector);
@@ -65,6 +64,36 @@ export default class Disclosure extends HTMLElement {
     window.addEventListener(EVENTS.HIDE, this.customEventsHandler, {passive: true});
     window.addEventListener(EVENTS.SHOW, this.customEventsHandler, {passive: true});
     window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler, {passive: true});
+  }
+
+
+  disconnectedCallback() {
+    /* REMOVE EVENT LISTENERS */
+    window.removeEventListener('click', this.windowClickHandler, {passive: true});
+    window.removeEventListener(EVENTS.HIDE, this.toggleEventHandler, {passive: true});
+    window.removeEventListener(EVENTS.SHOW, this.toggleEventHandler, {passive: true});
+    window.removeEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
+  }
+
+
+  /*
+    Handles custom events
+  */
+  customEventsHandler(e) {
+    const detail = e['detail'];
+    if (!detail || (detail['id'] !== this.id) || !e.type) {
+      return;
+    }
+
+    let showDisclosure = null;
+    if (e.type === EVENTS.SHOW) {
+      showDisclosure = true;
+    }
+    if (e.type === EVENTS.HIDE) {
+      showDisclosure = false;
+    }
+
+    this.setDisclosure(showDisclosure);
   }
 
 
@@ -102,27 +131,6 @@ export default class Disclosure extends HTMLElement {
 
 
   /*
-    Handles custom events
-  */
-  customEventsHandler(e) {
-    const detail = e['detail'];
-    if (!detail || (detail['id'] !== this.id) || !e.type) {
-      return;
-    }
-
-    let showDisclosure = null;
-    if (e.type === EVENTS.SHOW) {
-      showDisclosure = true;
-    }
-    if (e.type === EVENTS.HIDE) {
-      showDisclosure = false;
-    }
-
-    this.setDisclosure(showDisclosure);
-  }
-
-
-  /*
     Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
   */
   windowClickHandler(e) {
@@ -141,15 +149,6 @@ export default class Disclosure extends HTMLElement {
     }
 
     this.setDisclosure(showDisclosure);
-  }
-
-
-  disconnectedCallback() {
-    /* REMOVE EVENT LISTENERS */
-    window.removeEventListener('click', this.windowClickHandler, {passive: true});
-    window.removeEventListener(EVENTS.HIDE, this.toggleEventHandler, {passive: true});
-    window.removeEventListener(EVENTS.SHOW, this.toggleEventHandler, {passive: true});
-    window.removeEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
   }
 }
 

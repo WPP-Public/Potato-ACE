@@ -47,7 +47,6 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
   }
 
 
-  /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
     // Add suffix `El` to the names of class constants containing elements:
@@ -79,6 +78,11 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
   }
 
 
+  disconnectedCallback() {
+    /* REMOVE EVENT LISTENERS */
+  }
+
+
   // OTHER CLASS METHODS
   // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback
   // For each method, first add a block comment that describes the method
@@ -93,11 +97,6 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
   //     return;
   //   }
   // }
-
-
-  disconnectedCallback() {
-    /* REMOVE EVENT LISTENERS */
-  }
 }
 
 
