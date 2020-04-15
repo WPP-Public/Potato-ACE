@@ -26,7 +26,6 @@ export default class Select extends Listbox {
   constructor() {
     super();
 
-
     /* CLASS CONSTANTS */
 
 
@@ -36,6 +35,7 @@ export default class Select extends Listbox {
     this.selectClickHandler = this.selectClickHandler.bind(this);
     this.selectKeydownHandler = this.selectKeydownHandler.bind(this);
     this.showList = this.showList.bind(this);
+    this.updateTriggerText = this.updateTriggerText.bind(this);
   }
 
 
@@ -75,6 +75,34 @@ export default class Select extends Listbox {
 
 
   /*
+    Show dropdown list
+  */
+  dispatchOptionSelectedEvent() {
+    const optionSelected = this.listEl.querySelector('[aria-selected="true"]');
+
+    this.dispatchEvent(
+      new CustomEvent(EVENTS.OPTION_SELECTED, {
+        detail: {
+          selectId: this.id,
+          optionIndex: optionSelected.getAttribute(LISTBOX_ATTRS.OPTION_INDEX),
+          optionId: optionSelected.id,
+        }
+      })
+    );
+  }
+
+
+  /*
+    Hide dropdown list and update trigger text
+  */
+  hideList() {
+    this.updateTriggerText();
+    this.listEl.setAttribute(ATTRS.LIST_HIDDEN, '');
+    this.triggerEl.setAttribute('aria-expanded', 'false');
+  }
+
+
+  /*
     Handle clicks on trigger and on listbox options
   */
   selectClickHandler(e) {
@@ -105,37 +133,27 @@ export default class Select extends Listbox {
 
     if (!keydownOnTrigger && !keydownOnList) {
       return;
-   }
+    }
 
     const keyPressed = e.key || e.which || e.keyCode;
-    if (keydownOnTrigger && keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
-      e.preventDefault();
-      this.showList();
-      this.listEl.focus();
-      return;
-   }
-
     if (keydownOnList && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.ESCAPE])) {
       e.preventDefault();
       this.hideList();
       this.triggerEl.focus();
       this.dispatchOptionSelectedEvent();
       return;
-   }
-  }
+    }
 
+    if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
+      e.preventDefault();
+      this.showList();
+      this.listEl.focus();
+      return;
+    }
 
-  /*
-    Hide dropdown list and update trigger text
-  */
-  hideList() {
-    const activeOption = this.listEl.querySelector('[aria-selected="true"]');
-    if (activeOption !== null) {
-      this.triggerEl.textContent = activeOption.textContent;
-   }
-
-    this.listEl.setAttribute(ATTRS.LIST_HIDDEN, '');
-    this.triggerEl.setAttribute('aria-expanded', 'false');
+    this.activeOptionIndex = this.activeOptionIndex || 0;
+    this.keydownHandler(e);
+    this.updateTriggerText(e);
   }
 
 
@@ -152,18 +170,11 @@ export default class Select extends Listbox {
   /*
     Show dropdown list
   */
-  dispatchOptionSelectedEvent() {
-    const optionSelected = this.listEl.querySelector('[aria-selected="true"]');
-
-    this.dispatchEvent(
-      new CustomEvent(EVENTS.OPTION_SELECTED, {
-        detail: {
-          selectId: this.id,
-          optionIndex: optionSelected.getAttribute(LISTBOX_ATTRS.OPTION_INDEX),
-          optionId: optionSelected.id,
-        }
-      })
-    );
+  updateTriggerText() {
+    const activeOption = this.listEl.querySelector('[aria-selected="true"]');
+    if (activeOption !== null) {
+      this.triggerEl.textContent = activeOption.textContent;
+    }
   }
 
 
