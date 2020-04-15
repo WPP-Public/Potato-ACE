@@ -56,7 +56,6 @@ export default class Listbox extends HTMLElement {
   }
 
 
-  /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
     this.listEl = this.querySelector('ul') || this.querySelector('ol');
@@ -94,6 +93,16 @@ export default class Listbox extends HTMLElement {
 
     /* INITIALISATION */
     this.initialiseList();
+  }
+
+
+  disconnectedCallback() {
+    /* REMOVE EVENT LISTENERS */
+    this.listEl.removeEventListener('focus', this.focusHandler, {passive: true});
+    this.listEl.removeEventListener('blur', this.focusHandler, {passive: true});
+    this.listEl.removeEventListener('keydown', this.keydownHandler);
+    this.listEl.removeEventListener('click', this.clickHandler, {passive: true});
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
   }
 
 
@@ -239,7 +248,7 @@ export default class Listbox extends HTMLElement {
 
       // If Ctrl + Shift + Home select active option and all options up until first
       if (this.multiselectable && (e.ctrlKey || e.metaKey) &&  e.shiftKey) {
-        this.makeOptionRangeSelected(0, this.activeOptionIndex);
+        this.makeOptionRangeSelected(0, this.activeOptionIndex + 1);
       }
 
       this.makeOptionActive(0);
@@ -260,11 +269,11 @@ export default class Listbox extends HTMLElement {
 
     // If space bar pressed on a multiselect listbox option, set it to selected
     if (keyPressedMatches(keyPressed, KEYS.SPACE)) {
+      e.preventDefault();
+
       if (!this.multiselectable) {
         return;
       }
-
-      e.preventDefault();
 
       if (e.shiftKey) {
         this.selectContiguousOptions();
@@ -423,23 +432,13 @@ export default class Listbox extends HTMLElement {
     the listbox options and indices
   */
   updateOptionsHandler(e) {
-    if (!e.detail || (e.detail.id !== this.id)) {
+    const detail = e['detail'];
+    if (!detail || (detail['id'] !== this.id)) {
       return;
     }
 
     this.activeOptionIndex = null;
     this.initialiseList();
-  }
-
-
-  /* DISCONNECTED CALLBACK */
-  disconnectedCallback() {
-    /* REMOVE EVENT LISTENERS */
-    this.listEl.removeEventListener('focus', this.focusHandler, {passive: true});
-    this.listEl.removeEventListener('blur', this.focusHandler, {passive: true});
-    this.listEl.removeEventListener('keydown', this.keydownHandler);
-    this.listEl.removeEventListener('click', this.clickHandler, {passive: true});
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
   }
 }
 
