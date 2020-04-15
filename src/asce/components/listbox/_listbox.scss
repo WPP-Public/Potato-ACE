@@ -1,10 +1,11 @@
 /* VARIABLES */
-$asce-listbox-selected-bg-color: #ccc !default;
-$asce-listbox-active-outline-color: 2px dotted #000 !default;
+$asce-listbox-active-option-outline: 2px dotted #000 !default;
+$asce-listbox-selected-option-bg-color: #ccc !default;
 
 
 /* STYLES */
 [asce-listbox-list] {
+  list-style-position: inside;
   overflow-y: auto;
 }
 
@@ -12,10 +13,10 @@ $asce-listbox-active-outline-color: 2px dotted #000 !default;
   user-select: none;
 
   &[aria-selected="true"] {
-    background: $asce-listbox-selected-bg-color;
+    background: $asce-listbox-selected-option-bg-color;
   }
 }
 
 [asce-listbox-active-option] {
-  outline: $asce-listbox-active-outline-color;
+  outline: $asce-listbox-active-option-outline;
 }
