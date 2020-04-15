@@ -16,7 +16,7 @@ import Template from '@potato/asce/components/template/template';
 ```
 
 <!-- TODO: If no ATTRS are exported then remove first paragraph -->
-The names of the component HTML attributes are exported as properties of an object `ATTRS` so they may be imported. To avoid name clashes you can import using `as`, e.g. `import Template as aceTemplate from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-template></asce-template>` tag on the page.
+The names of the component HTML attributes are exported as properties of an object `ATTRS` so they may be imported. To avoid name clashes you can import using `as`, e.g. `import Template as aceTemplate from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-template></asce-template>` tag on the page. It will also automatically assign IDs in the format `asce-template-(n)` to any instances that do not have an ID, where `(n)` is the instance count.
 
 <!-- ADD ANY OTHER USAGE INSTRUCTIONS HERE -->
 

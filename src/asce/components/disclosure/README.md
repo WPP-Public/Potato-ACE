@@ -12,7 +12,7 @@ Import the component module into your JS entry point:
 import Disclosure from '@potato/asce/components/disclosure/disclosure';
 ```
 
-The names of the component HTML attributes are exported as properties of an object `ATTRS` so they may be imported. To avoid name clashes you can import using `as`, e.g. `import Disclosure as asceDisclosure from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-disclosure></asce-disclosure>` tag.
+The names of the component HTML attributes are exported as properties of an object `ATTRS` so they may be imported. To avoid name clashes you can import using `as`, e.g. `import Disclosure as asceDisclosure from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-disclosure></asce-disclosure>` tag.  It will also automatically assign IDs in the format `asce-template-(n)` to any instances that do not have an ID, where `(n)` is the instance count.
 
 You must add an ID to each disclosure tag for the component to work. Disclosures are hidden by default but can be initially shown by adding the attribute `asce-disclosure-visible="true"` to it.
 
