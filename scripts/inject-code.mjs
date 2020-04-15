@@ -185,7 +185,7 @@ const convertMdToHtml = async (mdSource, componentName) => {
   let htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
 
   // If <component>-page.js exists, inject into script tag into html file
-  const scriptExists = await fsPromises.stat(`./src/js/components/${componentName}-page.js`)
+  const scriptExists = await fsPromises.stat(`./src/js/pages/${componentName}-page.js`)
     .catch(() => {
       console.log(magenta, `>> ${componentName}-page.js file doesn't exist`);
     });
@@ -195,7 +195,7 @@ const convertMdToHtml = async (mdSource, componentName) => {
   }
 
   startIndex = htmlContent.indexOf(`</body>`);
-  const scriptTag = `<script src="/js/components/${componentName}-page.js" type="module"></script>\n`;
+  const scriptTag = `<script src="/js/pages/${componentName}-page.js" type="module"></script>\n`;
   htmlContent = replaceContentBetweenIndices(htmlContent, scriptTag, startIndex, startIndex);
 
   return htmlContent;

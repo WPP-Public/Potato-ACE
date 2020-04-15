@@ -1,14 +1,13 @@
 /* eslint-disable no-unused-vars */
-import {Listbox, EVENTS as LISTBOX_EVENTS} from '../../asce/components/listbox/listbox.js';
+import Listbox, {EVENTS} from '../../asce/components/listbox/listbox.js';
+
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Testing listbox dynamic
   document.getElementById('dynamic-listbox-btn')
     .addEventListener('click', () => {
       const selectId = 'dynamic-listbox';
-      const listbox = document.getElementById(selectId);
-      const list = listbox.querySelector('ul');
-      list.innerHTML = `
+      const listboxListEl = document.querySelector(`#${selectId} ul`);
+      listboxListEl.innerHTML = `
         <li>Iron Man</li>
         <li>Nick Fury</li>
         <li>Hulk</li>
@@ -22,10 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Doctor Strange</li>
         <li>Captain Marvel</li>`;
 
-      listbox.dispatchEvent(
+      window.dispatchEvent(
         new CustomEvent(
-          LISTBOX_EVENTS.UPDATE_OPTIONS,
-          {detail: {id: selectId}},
+          EVENTS.UPDATE_OPTIONS,
+          {
+            'detail': {
+              'id': selectId,
+            }
+          },
         )
       );
     });
