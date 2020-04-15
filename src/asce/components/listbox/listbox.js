@@ -145,23 +145,18 @@ export default class Listbox extends HTMLElement {
 
     if (this.query.length === 1) {
       // If it's the first letter of a new search, we start searching _after_ the currently selected option
-      i++;
+      i = (i === maxIndex) ? 0 : i + 1;
     }
 
     let startingIndex = i;
 
     do {
-      // If i has gone past the end, loop back around to the start of the list
-      if (i > maxIndex) {
-        i = 0;
-      }
-
       if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
         this.makeOptionActive(i);
         break;
       }
 
-      i++;
+      i = (i === maxIndex) ? 0 : i + 1;
     } while (i !== startingIndex); // Terminates if every option has been checked
   }
 
