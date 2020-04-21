@@ -78,12 +78,7 @@ Listbox uses the following custom event whose name of is a property of an export
 
 `asce-listbox-update-options`
 
-This event should be dispatched if a listbox's options are altered, e.g. an option is added, or the page loads without a list and one is later added dynamically. The event `detail` property is contains just the ID of the listbox to be updated:
-```js
-{
-  'id': // ID of listbox
-}
-```
+This event should be dispatched if a listbox's options are altered, e.g. an option is added, or the page loads without a list and one is later added dynamically. The event `detail` property should contain a single property `id` that contains the ID of the listbox to be updated.
 
 
 ## Examples
@@ -93,18 +88,18 @@ This event should be dispatched if a listbox's options are altered, e.g. an opti
 Simple single-select listbox using `<ul>` element.
 
 ```html
-<asce-listbox>
+<asce-listbox id="single-select-listbox">
   <ul>
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
-    <li>Black Widow</li>
     <li>Thor</li>
     <li>Captain America</li>
+    <li>Black Widow</li>
     <li>Scarlet Witch</li>
     <li>Ant-Man</li>
-    <li>Spider-man</li>
     <li>Black Panther</li>
+    <li>Spider-man</li>
     <li>Doctor Strange</li>
     <li>Captain Marvel</li>
   </ul>
@@ -119,13 +114,13 @@ Simple single-select listbox using `<ol>` element.
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
-    <li>Black Widow</li>
     <li>Thor</li>
     <li>Captain America</li>
+    <li>Black Widow</li>
     <li>Scarlet Witch</li>
     <li>Ant-Man</li>
-    <li>Spider-man</li>
     <li>Black Panther</li>
+    <li>Spider-man</li>
     <li>Doctor Strange</li>
     <li>Captain Marvel</li>
   </ol>
@@ -137,20 +132,20 @@ Simple single-select listbox using `<ol>` element.
 Multi-select listbox.
 
 ```html
-<asce-listbox asce-listbox-multiselect>
+<asce-listbox asce-listbox-multiselect id="multi-select-listbox">
   <ul>
     <li>Iron Man</li>
+    <li>Nick Fury</li>
     <li>Hulk</li>
-    <li>Captain America</li>
-    <li>Scarlet Witch</li>
-    <li>Black Panther</li>
-    <li>Black Widow</li>
-    <li>Ant-Man</li>
     <li>Thor</li>
-    <li>Captain Marvel</li>
-    <li>Dr Strange</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
     <li>Spider-man</li>
-    <li>War Machine</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
   </ul>
 </asce-listbox>
 ```
@@ -176,15 +171,15 @@ Listbox with options that have images.
     </li>
     <li>
        <img src="/img/logo.svg">
-       Black Widow
-    </li>
-    <li>
-       <img src="/img/logo.svg">
        Thor
     </li>
     <li>
        <img src="/img/logo.svg">
        Captain America
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Black Widow
     </li>
     <li>
        <img src="/img/logo.svg">
@@ -196,11 +191,11 @@ Listbox with options that have images.
     </li>
     <li>
        <img src="/img/logo.svg">
-       Spider-man
+       Black Panther
     </li>
     <li>
        <img src="/img/logo.svg">
-       Black Panther
+       Spider-man
     </li>
     <li>
        <img src="/img/logo.svg">

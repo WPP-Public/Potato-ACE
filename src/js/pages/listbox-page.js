@@ -12,9 +12,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Iron Man</li>
         <li>Nick Fury</li>
         <li>Hulk</li>
-        <li>Black Widow</li>
         <li>Thor</li>
-        <li>Captain America</li>`;
+        <li>Captain America</li>
+        <li>Black Widow</li>`;
     });
 
   document.getElementById('add-option')

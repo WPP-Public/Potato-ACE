@@ -21,7 +21,7 @@ export const EVENTS = {
 };
 
 
-const searchTimeoutTime = 500;
+export const searchTimeoutTime = 500;
 
 
 /* CLASS */
