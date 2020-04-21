@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('add-option')
     .addEventListener('click', () => {
       const newOption = document.createElement('li');
+      newOption.id = 'new-option';
       newOption.textContent = 'New Option';
       listboxListEl.appendChild(newOption);
     });
