@@ -1,8 +1,27 @@
-<button asce-disclosure-trigger-for="disclosure1">
-    Toggle Disclosure
+<button asce-disclosure-trigger-for="disclosure-1">
+  Disclosure 1 Toggle 1
+</button>
+<button asce-disclosure-trigger-for="disclosure-1">
+  Disclosure 1 Toggle 2
+</button>
+<br>
+<button asce-disclosure-trigger-for="disclosure-2">
+  Disclosure 2 Toggle
+</button>
+<button asce-disclosure-trigger-for="disclosure-2" asce-disclosure-trigger-show>
+  Disclosure 2 Show
+</button>
+<button asce-disclosure-trigger-for="disclosure-2" asce-disclosure-trigger-hide>
+  Disclosure 2 Hide
 </button>
 
-<asce-disclosure id="disclosure1">
-    <h1>Disclosure</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
+
+<asce-disclosure id="disclosure-1">
+  <h1>Disclosure 1</h1>
+  <p>Initially hidden diclosure.</p>
+</asce-disclosure>
+
+<asce-disclosure id="disclosure-2" asce-disclosure-visible="true">
+  <h1>Disclosure 2</h1>
+  <p>Initially visible diclosure.</p>
 </asce-disclosure>

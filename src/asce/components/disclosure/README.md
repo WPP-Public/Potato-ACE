@@ -1,152 +1,130 @@
 # Disclosure
 
-A Disclosure component is a simple "show/hide" component which will toggle the visibility of a element by interacting with a toggle element.
+A disclosure component is one whose visibility can be changed using one or more trigger elements.
 
-The W3C specification defines a Disclosure component as:
+[W3C WAI-ARIA Spec](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure)
 
-> A disclosure is a button that controls visibility of a section of content. When the controlled content is hidden, it is often styled as a typical push button with a right-pointing arrow or triangle to hint that activating the button will display additional content. When the content is visible, the arrow or triangle typically points down.
-
-[Link to the full W3C WAI-ARIA Spec](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure)
 
 ## Usage
 
-To use the `asce-disclosure` custom element in your templates:
-
-1) Place the following import in your JS entry point:
-
+Import the component module into your JS entry point:
 ```js
-import { Disclosure as asceDisclosure, CONSTS as asce_DISCLOSURE_CONSTS } from 'asce/components/disclosure/disclosure';
+import Disclosure from '@potato/asce/components/disclosure/disclosure';
 ```
 
-2) Use the `<asce-disclosure>` tag, filled with your content, in your template.
+The names of the component HTML attributes are exported as properties of an object `ATTRS` so they may be imported. To avoid name clashes you can import using `as`, e.g. `import Disclosure as asceDisclosure from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-disclosure></asce-disclosure>` tag.  It will also automatically assign IDs in the format `asce-template-(n)` to any instances that do not have an ID, where `(n)` is the instance count.
 
-3) Create a button or element and give it the `asce-disclosure-trigger-for` attribute with the value of the ID of the disclosure you wish to trigger.
+You must add an ID to each disclosure tag for the component to work. Disclosures are hidden by default but can be initially shown by adding the attribute `asce-disclosure-visible="true"` to it.
 
-4) (Optional) Override any of the SCSS applied to the element.
+Add the attribute `asce-disclosure-trigger-for=<disclosure-id>` to each triggering element, replacing `<disclosure-id>` with the ID of the disclosure to be triggered. Only use "clickable" elements like buttons or anchor tags for triggers. Triggers will by default toggle the visibiility of the disclosure, but the `asce-disclosure-show-trigger` or `asce-disclosure-hide-trigger` attributes can be added to the trigger to ensure it only shows or hides its disclosure respectively.
 
-## Sass
 
-To apply any additional styles or override existing styles for the trigger, use the following selector in you SCSS/CSS:
+## SASS
+
+The following CSS is applied to discloure components:
 
 ```scss
-asce-disclosure {
-  display: block;
-
-  &[aria-hidden='true'] {
-    display: none;
-  }
-}
-
-
-[asce-disclosure-trigger-for] {
-  cursor: pointer;
+/* STYLES */
+[asce-disclosure-visible="false"] {
+  display: none;
 }
 ```
 
 ## Events
 
-`asce-disclosure-toggle` - Can be called or listened to, triggers the disclosure to be shown or hidden.
+Disclosure uses the following custom events, the names of which are exported as properties of an `EVENTS` object so they can be used when dispatching or listen to the following events.
 
-`asce-disclosure-opened` - Not to be triggered, emitted when the disclosure is shown.
+```js
+export const EVENTS = {
+  CHANGED: `asce-disclosure-changed`,
+  HIDE: `asce-disclosure-hide`,
+  SHOW: `asce-disclosure-show`,
+  TOGGLE: `asce-disclosure-toggle`,
+};
+```
 
-`asce-disclosure-closed` - Not to be triggered, emitted after the disclosure is hidden.
 
-`asce-disclosure-update-triggers` - Can be called or listened to, triggers an update to get all triggers which control this disclosure (for use when triggers are added dynamically).
+### Changed
+
+`asce-disclosure-changed`
+
+This event is dispatched when disclosure visibility is changed.
+
+The event `detail` property is composed as follows:
+```js
+{
+  'id': // ID of disclosure
+  'visible': // Whether the disclosure is currently visible or not (boolean)
+}
+```
+
+### Hide, Show and Toggle
+
+`asce-disclosure-hide`, `asce-disclosure-show` & `asce-disclosure-toggle`
+
+The disclosure component listens for these event and then hides, shows or toggles itself respectively. These events should be dispatched on *window* and contain a `detail` property composed as follows:
+```js
+{
+  'id': // ID of disclosure
+}
+```
+
+
 
 ## Examples
 
-### Button Trigger
+### Button triggered disclosures
 
-The preferred way to trigger a disclosure is by using a button with the `asce-disclosure-trigger-for` attribuet set to the ID of the disclosure:
+Disclosures can be triggered with multiple triggers and there can be multiple disclosures on the same page. Disclosure 1 is initially hidden, which is the default behaviour, whereas Disclosure 2 is initially visible as it has the attribute `asce-disclosure-visible="true"`:
 
 ```html
-<button asce-disclosure-trigger-for="disclosure1">
-    Toggle Disclosure
+<button asce-disclosure-trigger-for="disclosure-1">
+  Disclosure 1 Toggle 1
+</button>
+<button asce-disclosure-trigger-for="disclosure-1">
+  Disclosure 1 Toggle 2
+</button>
+<br>
+<button asce-disclosure-trigger-for="disclosure-2">
+  Disclosure 2 Toggle
+</button>
+<button asce-disclosure-trigger-for="disclosure-2" asce-disclosure-trigger-show>
+  Disclosure 2 Show
+</button>
+<button asce-disclosure-trigger-for="disclosure-2" asce-disclosure-trigger-hide>
+  Disclosure 2 Hide
 </button>
 
-<asce-disclosure id="disclosure1">
-    <h1>Disclosure</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
+
+<asce-disclosure id="disclosure-1">
+  <h1>Disclosure 1</h1>
+  <p>Initially hidden diclosure.</p>
+</asce-disclosure>
+
+<asce-disclosure id="disclosure-2" asce-disclosure-visible="true">
+  <h1>Disclosure 2</h1>
+  <p>Initially visible diclosure.</p>
 </asce-disclosure>
 ```
 
-### Non-button Trigger
 
-Other elements, such as `div`s can also be used to trigger disclosures but this is not recommended:
+### Custom event triggered disclosure
 
-```html
-<div asce-disclosure-trigger-for="disclosure2">
-    Toggle Disclosure
-</div>
-
-<asce-disclosure id="disclosure2">
-    <h1>Disclosure</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
-</asce-disclosure>
-```
-
-### Multi-Disclosure
-
-The 2 buttons below demonstrate triggering multiple different disclosures by specifying the ID of the disclosure to trigger:
+Example of disclosure controlled through custom events. The buttons in the example are not trigger buttons and instead dispatch the disclosure component's custom events.
 
 ```html
-<button asce-disclosure-trigger-for="disclosure3">
-    Toggle Disclosure 1
+<button id="custom-event-hide-btn">
+  Hide disclosure using custom event
 </button>
-<button asce-disclosure-trigger-for="disclosure4">
-    Toggle Disclosure 2
+<button id="custom-event-show-btn">
+  Show disclosure using custom event
+</button>
+<button id="custom-event-toggle-btn">
+  Toggle disclosure using custom event
 </button>
 
-<asce-disclosure id="disclosure3">
-    <h1>Disclosure 1</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
-</asce-disclosure>
-
-<asce-disclosure id="disclosure4">
-    <h1>Disclosure 2</h1>
-    <p>Impedit laboriosam nesciunt id aliquid illo magni illum deserunt distinctio et, ab, perspiciatis placeat consequatur.</p>
+<asce-disclosure id="custom-event-triggered-disclosure">
+  <h1>Disclosure</h1>
+  <p>Disclosure toggled using custom events.</p>
 </asce-disclosure>
 ```
-
-### Initially Expanded Disclosure
-
-By adding the `aria-expanded='true'` attribute to the trigger element the disclosure will be expanded initially:
-
-```html
-<button asce-disclosure-trigger-for="disclosure5" aria-expanded="true">
-    Toggle Disclosure 1
-</button>
-<button asce-disclosure-trigger-for="disclosure6" aria-expanded="false">
-    Toggle Disclosure 2
-</button>
-
-<asce-disclosure id="disclosure5">
-    <h1>Disclosure 1</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
-</asce-disclosure>
-
-<asce-disclosure id="disclosure6">
-    <h1>Disclosure 2</h1>
-    <p>Impedit laboriosam nesciunt id aliquid illo magni illum deserunt distinctio et, ab, perspiciatis placeat consequatur.</p>
-</asce-disclosure>
-```
-
-### Multiple Triggers
-
-Multiple triggers can be used to trigger the same disclosure by assigning the same ID to them:
-
-```html
-<button asce-disclosure-trigger-for="disclosure7">
-    Toggle Disclosure 1
-</button>
-<button asce-disclosure-trigger-for="disclosure7">
-    Also Toggle Disclosure 1
-</button>
-
-<asce-disclosure id="disclosure7">
-    <h1>Disclosure 1</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius consequuntur provident quos placeat id.</p>
-</asce-disclosure>
-```
-
-<!-- TODO: Add in example of dynamically adding triggers. -->
