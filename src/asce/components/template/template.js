@@ -47,7 +47,6 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
   }
 
 
-  /* CLASS METHODS */
   connectedCallback() {
     /* GET DOM ELEMENTS */
     // Add suffix `El` to the names of class constants containing elements:
@@ -67,12 +66,20 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
 
 
     /* INITIALISATION */
+    // Add any initialisation code here
+
+    // NOTE:
     // Dispatch custom events on 'window' to make it easier for components to listen for them
     // When firing custom events include class instance ID in the 'detail' property
     // window.dispatchEvent(new CustomEvent(EVENTS.EVENT_NAME, {
     //   detail: {
     //     'id': this.id,
     // }}));
+  }
+
+
+  disconnectedCallback() {
+    /* REMOVE EVENT LISTENERS */
   }
 
 
@@ -90,11 +97,6 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
   //     return;
   //   }
   // }
-
-
-  disconnectedCallback() {
-    /* REMOVE EVENT LISTENERS */
-  }
 }
 
 
