@@ -700,25 +700,26 @@ describe('Listbox', () => {
     });
 
 
-    it('Select first option that starts with typed character when character typed twice with delay', () => {
+    it('Select second option that starts with typed character when character typed twice with delay', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('b', {delay: searchTimeoutTime})
         .type('b')
-        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-10`);
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-9`);
     });
 
 
     it('Type ahead loops around when character typed twice with delay', () => {
       cy.get('@singleSelectListboxList')
         .focus()
-        .type('{downarrow}')
-        .type('{downarrow}')
-        .type('{downarrow}')
-        .type('{downarrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
         .type('b', {delay: searchTimeoutTime})
         .type('b')
-        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-4`);
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-6`);
     });
   });
 
