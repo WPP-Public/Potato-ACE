@@ -10,7 +10,6 @@ const IDS = {
 };
 
 
-
 describe('Listbox', () => {
   before(() => {
     cy.visit(`/listbox`);
@@ -19,11 +18,10 @@ describe('Listbox', () => {
 
   beforeEach(() => {
     // Get single-select listbox elements
-    cy.get(`#${IDS.SINGLE_SELECT_LB}`).as('singleSelectListbox');
-    cy.get('@singleSelectListbox')
+    cy.get(`#${IDS.SINGLE_SELECT_LB}`)
+      .as('singleSelectListbox')
       .find('ul')
-      .as('singleSelectListboxList');
-    cy.get('@singleSelectListbox')
+      .as('singleSelectListboxList')
       .find('li')
       .as('singleSelectListboxOptions');
 
@@ -766,7 +764,7 @@ describe('Listbox', () => {
     });
 
 
-    it('Listbox with dynamically added option re-intiialises correctly', () => {
+    it('Listbox with dynamically added option re-intialises correctly', () => {
       cy.get('@populateListboxBtn').click();
       cy.get('@updateOptionListboxBtn').click();
       cy.get('@addOptionBtn').click();
@@ -789,7 +787,6 @@ describe('Listbox', () => {
       // Check listbox options attributes
       cy.get('@dynamicListboxOptions').each((listboxOption, index) => {
         cy.get(listboxOption).should('have.attr', ATTRS.OPTION_INDEX, index.toString());
-        cy.get(listboxOption).should('have.attr', 'id', `${IDS.DYNAMIC_LB}-option-${(index + 1).toString()}`);
         cy.get(listboxOption).should('have.attr', 'role', 'option');
         cy.get(listboxOption).should('not.have.attr', ATTRS.ACTIVE_OPTION);
 
