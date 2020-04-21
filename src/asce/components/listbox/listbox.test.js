@@ -673,7 +673,7 @@ describe('Listbox', () => {
         .focus()
         .type('s')
         .type('p')
-        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-9`);
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-10`);
     });
 
 
@@ -696,7 +696,7 @@ describe('Listbox', () => {
         .focus()
         .type('c')
         .type('c')
-        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-6`);
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-5`);
     });
 
 
