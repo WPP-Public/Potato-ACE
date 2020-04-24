@@ -155,7 +155,7 @@ Multi-select listbox.
 Listbox with options that have images.
 
 ```html
-<asce-listbox id="listbox-with-images">
+<asce-listbox class="ace-listbox-with-images">
   <ul>
     <li>
        <img src="/img/logo.svg">
@@ -219,10 +219,7 @@ The listbox in this example is initially empty and can be populated with options
   Populate listbox list
 </button>
 <button id="add-option">
-  Add option
-</button>
-<button id="update-options">
-  Dispatch update options event
+  Add option to list
 </button>
 <asce-listbox id="dynamic-listbox"></asce-listbox>
 ```

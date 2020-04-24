@@ -319,7 +319,9 @@ export default class Listbox extends HTMLElement {
   */
   makeOptionActive(index) {
     // Deactivate previously active option
-    this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
+    if (this.activeOptionIndex !== null || this.activeOptionIndex !== undefined) {
+      this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
+    }
 
     // Activate new option
     const optionToMakeActive = this.options[index];

@@ -6,6 +6,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const listboxId = 'dynamic-listbox';
   const listboxListEl = document.querySelector(`#${listboxId} ul`);
 
+  const updateOptions = () => {
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.UPDATE_OPTIONS,
+      {
+        'detail': {
+          'id': listboxId,
+        }
+      },
+    ));
+  };
+
   document.getElementById('populate-listbox')
     .addEventListener('click', () => {
       listboxListEl.innerHTML = `
@@ -15,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <li>Thor</li>
         <li>Captain America</li>
         <li>Black Widow</li>`;
+
+        updateOptions();
     });
 
   document.getElementById('add-option')
@@ -23,19 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
       newOption.id = 'new-option';
       newOption.textContent = 'New Option';
       listboxListEl.appendChild(newOption);
-    });
-
-  document.getElementById('update-options')
-    .addEventListener('click', () => {
-      window.dispatchEvent(
-        new CustomEvent(
-          EVENTS.UPDATE_OPTIONS,
-          {
-            'detail': {
-              'id': listboxId,
-            }
-          },
-        )
-      );
+      updateOptions();
     });
 });

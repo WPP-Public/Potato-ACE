@@ -4,7 +4,6 @@ const IDS = {
   ADD_OPTION_BTN: 'add-option',
   DYNAMIC_LB: 'dynamic-listbox',
   POPULATE_LB_BTN: 'populate-listbox',
-  UPDATE_OPTIONS_BTN: 'update-options',
   SINGLE_SELECT_LB: `single-select-listbox`,
   MULTI_SELECT_LB: 'multi-select-listbox',
 };
@@ -34,6 +33,10 @@ describe('Listbox', () => {
     cy.get('@multiSelectListboxList')
       .find('li')
       .as('multiSelectListboxOptions');
+
+    cy.get(`#${IDS.DYNAMIC_LB}`).as('dynamicListbox');
+    cy.get(`#${IDS.ADD_OPTION_BTN}`).as('addOptionBtn');
+    cy.get(`#${IDS.POPULATE_LB_BTN}`).as('populateListboxBtn');
   });
 
 
@@ -43,6 +46,12 @@ describe('Listbox', () => {
         cy.get(listbox).should('have.attr', 'id');
       });
     });
+
+
+    it('Listbox should add a <ul> if neither a <ul> nor a <ol> is not present', () => {
+      cy.get('@dynamicListbox').find('ul').should('have.length', 1);
+    });
+
 
     it('Single-select listboxes should initialise with correct attributes', () => {
       // Check listbox attributes
@@ -722,27 +731,21 @@ describe('Listbox', () => {
   });
 
 
-  describe('Dynamically added options', () => {
+  describe('Dynamic select', () => {
     beforeEach(() => {
       cy.reload();
-      cy.get(`#${IDS.DYNAMIC_LB}`).as('dynamicListbox');
-      cy.get(`#${IDS.POPULATE_LB_BTN}`).as('populateListboxBtn');
-      cy.get(`#${IDS.ADD_OPTION_BTN}`).as('addOptionBtn');
-      cy.get(`#${IDS.UPDATE_OPTIONS_BTN}`).as('updateOptionListboxBtn');
+    cy.get('@populateListboxBtn')
+      .click();
+    cy.get('@dynamicListbox')
+      .find('ul')
+      .as('dynamicListboxList');
+    cy.get('@dynamicListbox')
+      .find('li')
+      .as('dynamicListboxOptions');
     });
 
 
     it('Listbox with dynamically added options intiialises correctly', () => {
-      cy.get('@populateListboxBtn').click();
-      cy.get('@updateOptionListboxBtn').click();
-
-      cy.get('@dynamicListbox')
-        .find('ul')
-        .as('dynamicListboxList');
-      cy.get('@dynamicListbox')
-        .find('li')
-        .as('dynamicListboxOptions');
-
       // Check listbox lists attributes
       cy.get('@dynamicListboxList').should('have.attr', ATTRS.LIST);
       cy.get('@dynamicListboxList').should('have.attr', 'role', 'listbox');
@@ -764,36 +767,17 @@ describe('Listbox', () => {
     });
 
 
-    it('Listbox with dynamically added option re-intialises correctly', () => {
-      cy.get('@populateListboxBtn').click();
-      cy.get('@updateOptionListboxBtn').click();
+    it('Listbox with dynamically added single option intialises option correctly', () => {
       cy.get('@addOptionBtn').click();
-      cy.get('@updateOptionListboxBtn').click();
-
       cy.get('@dynamicListbox')
-        .find('ul')
-        .as('dynamicListboxList');
-      cy.get('@dynamicListbox')
-        .find('li')
-        .as('dynamicListboxOptions');
-
-      // Check listbox lists attributes
-      cy.get('@dynamicListboxList').should('have.attr', ATTRS.LIST);
-      cy.get('@dynamicListboxList').should('have.attr', 'role', 'listbox');
-      cy.get('@dynamicListboxList').should('have.attr', 'tabindex', '0');
-      cy.get('@dynamicListboxList').should('not.have.attr', 'aria-activedescendant');
-      cy.get('@dynamicListboxList').should('not.have.attr', 'aria-multiselectable');
+        .find('li:last-of-type')
+        .as('newOption');
 
       // Check listbox options attributes
-      cy.get('@dynamicListboxOptions').each((listboxOption, index) => {
-        cy.get(listboxOption).should('have.attr', ATTRS.OPTION_INDEX, index.toString());
-        cy.get(listboxOption).should('have.attr', 'role', 'option');
-        cy.get(listboxOption).should('not.have.attr', ATTRS.ACTIVE_OPTION);
-
-        // All listbox options except the first of a single-select listbox should have aria-selected false
-        const ariaSelected = (index === 0) ? 'true' : 'false';
-        cy.get(listboxOption).should('have.attr', 'aria-selected', ariaSelected);
-      });
+      cy.get('@newOption').should('have.attr', ATTRS.OPTION_INDEX);
+      cy.get('@newOption').should('not.have.attr', ATTRS.ACTIVE_OPTION);
+      cy.get('@newOption').should('have.attr', 'role', 'option');
+      cy.get('@newOption').should('have.attr', 'aria-selected', 'false');
     });
   });
 });
