@@ -58,3 +58,14 @@ ol {
   padding: 16px;
 }
 
+.list-with-images {
+  li {
+    align-items: center;
+    display: flex;
+
+    img {
+      margin: 5px;
+      width: 40px;
+    }
+  }
+}
