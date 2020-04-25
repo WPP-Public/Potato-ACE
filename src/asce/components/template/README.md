@@ -27,35 +27,29 @@ After `DOMContentLoaded` is fired, Template automatically instantiates an instan
 
 
 ## SASS
-Template has the following CSS applied to it, each declaration of which can overridden by a single class selector.
+
+The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.
 
 ```scss
 ```
 
 
 ## Events
+<!-- TODO: If only one event used remove plural -->
+<!-- TODO: Remove or keep 'dispatched' and 'listened for' as appropriate -->
+Template uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
 
-Template uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened to.
 
-
-<!-- TODO: Replace 'Event' with a descriptive name -->
-### Event
+<!-- TODO: Replace 'Event name' with a descriptive name -->
+### Event name
 
 <!-- TODO: Replace 'template-event-name' with actual value -->
 `asce-template-event-name`
 
 <!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
 
+<!-- DESCRIBE EACH PROPERTY OF THE 'detail' OBJECT -->
 
-<!-- TODO: Replace 'propName' and 'propDescription' with appropriate values. Repeat for all properties and nested properties -->
-The event `detail` property is composed as follows:
-
-```js
-{
-  'id': // ID of template
-  'propName': // propDescription
-}
-```
 
 
 ## Examples
