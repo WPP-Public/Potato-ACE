@@ -2,8 +2,8 @@ import {LISTBOX as LB, ATTRS, searchTimeoutTime} from './listbox';
 
 const IDS = {
   ADD_OPTION_BTN: 'add-option',
+  REMOVE_OPTION_BTN: 'remove-option',
   DYNAMIC_LB: 'dynamic-listbox',
-  POPULATE_LB_BTN: 'populate-listbox',
   SINGLE_SELECT_LB: `single-select-listbox`,
   MULTI_SELECT_LB: 'multi-select-listbox',
 };
@@ -36,7 +36,7 @@ describe('Listbox', () => {
 
     cy.get(`#${IDS.DYNAMIC_LB}`).as('dynamicListbox');
     cy.get(`#${IDS.ADD_OPTION_BTN}`).as('addOptionBtn');
-    cy.get(`#${IDS.POPULATE_LB_BTN}`).as('populateListboxBtn');
+    cy.get(`#${IDS.REMOVE_OPTION_BTN}`).as('removeOptionBtn');
   });
 
 
@@ -439,7 +439,7 @@ describe('Listbox', () => {
     });
 
 
-    it('Keyboard keys should select options in multi-select listbox corectly', () => {
+    it('Keyboard keys should select options in multi-select listbox correctly', () => {
       /*
         Expected state from w3.org (https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox):
 
@@ -734,18 +734,22 @@ describe('Listbox', () => {
   describe('Dynamic select', () => {
     beforeEach(() => {
       cy.reload();
-    cy.get('@populateListboxBtn')
-      .click();
-    cy.get('@dynamicListbox')
-      .find('ul')
-      .as('dynamicListboxList');
-    cy.get('@dynamicListbox')
-      .find('li')
-      .as('dynamicListboxOptions');
     });
 
 
-    it('Listbox with dynamically added options intiialises correctly', () => {
+    it('Listbox with dynamically added option should intiialise correctly', () => {
+      cy.get('@addOptionBtn')
+        .click()
+        .click()
+        .click();
+
+      cy.get('@dynamicListbox')
+        .find('ul')
+        .as('dynamicListboxList');
+      cy.get('@dynamicListbox')
+        .find('li')
+        .as('dynamicListboxOptions');
+
       // Check listbox lists attributes
       cy.get('@dynamicListboxList').should('have.attr', ATTRS.LIST);
       cy.get('@dynamicListboxList').should('have.attr', 'role', 'listbox');
@@ -767,17 +771,24 @@ describe('Listbox', () => {
     });
 
 
-    it('Listbox with dynamically added single option intialises option correctly', () => {
+    it('Listbox with dynamically removed option should re-intialise correctly', () => {
       cy.get('@addOptionBtn').click();
-      cy.get('@dynamicListbox')
-        .find('li:last-of-type')
-        .as('newOption');
+      cy.get('@addOptionBtn').click();
+      cy.get('@removeOptionBtn').click();
 
-      // Check listbox options attributes
-      cy.get('@newOption').should('have.attr', ATTRS.OPTION_INDEX);
-      cy.get('@newOption').should('not.have.attr', ATTRS.ACTIVE_OPTION);
-      cy.get('@newOption').should('have.attr', 'role', 'option');
-      cy.get('@newOption').should('have.attr', 'aria-selected', 'false');
+      cy.get('@dynamicListbox')
+        .find('li')
+        .as('dynamicListboxOptions');
+
+      cy.get('@dynamicListboxOptions').each((listboxOption, index) => {
+        cy.get(listboxOption).should('have.attr', ATTRS.OPTION_INDEX, index.toString());
+        cy.get(listboxOption).should('have.attr', 'role', 'option');
+        cy.get(listboxOption).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+
+        // All listbox options except the first of a single-select listbox should have aria-selected false
+        const ariaSelected = (index === 0) ? 'true' : 'false';
+        cy.get(listboxOption).should('have.attr', 'aria-selected', ariaSelected);
+      });
     });
   });
 });
