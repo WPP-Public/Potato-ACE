@@ -17,25 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
     ));
   };
 
-  document.getElementById('populate-listbox')
-    .addEventListener('click', () => {
-      listboxListEl.innerHTML = `
-        <li>Iron Man</li>
-        <li>Nick Fury</li>
-        <li>Hulk</li>
-        <li>Thor</li>
-        <li>Captain America</li>
-        <li>Black Widow</li>`;
-
-        updateOptions();
-    });
-
   document.getElementById('add-option')
     .addEventListener('click', () => {
-      const newOption = document.createElement('li');
-      newOption.id = 'new-option';
-      newOption.textContent = 'New Option';
-      listboxListEl.appendChild(newOption);
+      listboxListEl.innerHTML += '<li>Iron Man</li>';
+      updateOptions();
+    });
+
+  document.getElementById('remove-option')
+    .addEventListener('click', () => {
+      const fistOptionEl = listboxListEl.querySelector('li');
+      if (!fistOptionEl) {
+        return;
+      }
+      listboxListEl.removeChild(fistOptionEl);
       updateOptions();
     });
 });

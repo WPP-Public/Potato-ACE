@@ -1,30 +1,33 @@
-<!-- TODO: Replace 'Template' with actual value -->
+<!-- TODO: Replace 'Template', 'TEMPLATE' and 'template' with actual values -->
 # Template
 
 <!-- DESCRIBE COMPONENT AND ITS FUNCTIONALITY HERE -->
 
-<!-- TODO: Replace '<w3c-component-name>' with actual value -->
-[W3C WAI-ARIA Spec](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>)
+<!-- TODO: Replace '<w3c-component-name>' -->
+Template conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>).
 
 
-## Usage
-<!-- TODO: Replace 'Template', 'TEMPLATE' and 'template' with actual values int this section -->
+## Import and instantiation
 
-Import the component module into your JS entry point:
+Import the Template class:
 ```js
 import Template from '@potato/asce/components/template/template';
 ```
+To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`.
+<!-- TODO: If no ATTRS are exported then remove following sentence -->
+The attribute names used by the class are also exported as properties of `ATTRS`.
 
-<!-- TODO: If no ATTRS are exported then remove first paragraph -->
-The names of the component HTML attributes are exported as properties of an object `ATTRS` so they may be imported. To avoid name clashes you can import using `as`, e.g. `import Template as aceTemplate from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-template></asce-template>` tag on the page. It will also automatically assign IDs in the format `asce-template-(n)` to any instances that do not have an ID, where `(n)` is the instance count.
+After `DOMContentLoaded` is fired, Template automatically instantiates an instance of itself within each `<asce-template></asce-template>` and adds IDs in the format `asce-template-(n)` to any instances without one, where `(n)` is the instance count.
 
-<!-- ADD ANY OTHER USAGE INSTRUCTIONS HERE -->
+
+## Usage
+
+<!-- ADD USAGE AND INTERACTION INSTRUCTIONS HERE -->
 
 
 
 ## SASS
-<!-- TODO: Replace 'Template' with actual value -->
-The following CSS is applied to Template components:
+Template has the following CSS applied to it, each declaration of which can overridden by a single class selector.
 
 ```scss
 ```
@@ -32,21 +35,21 @@ The following CSS is applied to Template components:
 
 ## Events
 
-<!-- TODO: Replace 'Template' with actual value -->
-Template uses the following custom events, the names of which are properties of an exported object named `EVENTS`, similar to `ATTRS`. These event names can therefore be imported into other modules and used to listen to or dispatch events.
+Template uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened to.
 
 
 <!-- TODO: Replace 'Event' with a descriptive name -->
-### Event event
+### Event
 
 <!-- TODO: Replace 'template-event-name' with actual value -->
 `asce-template-event-name`
 
-<!-- DESCRIBE EVENT HERE -->
+<!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
 
 
-The event `detail` property is composed as follows:
 <!-- TODO: Replace 'propName' and 'propDescription' with appropriate values. Repeat for all properties and nested properties -->
+The event `detail` property is composed as follows:
+
 ```js
 {
   'id': // ID of template
@@ -54,7 +57,11 @@ The event `detail` property is composed as follows:
 }
 ```
 
+
 ## Examples
+
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as ASCE components may alter their HTML when they initialise.
+
 
 <!-- TODO: Replace 'Example' with more descriptive name -->
 ### Example

@@ -6,12 +6,9 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
 /* STYLES */
 [asce-listbox-list] {
   list-style-position: inside;
-  overflow-y: auto;
 }
 
 [asce-listbox-option-index] {
-  user-select: none;
-
   &[aria-selected="true"] {
     background: $asce-listbox-selected-option-bg-color;
   }
