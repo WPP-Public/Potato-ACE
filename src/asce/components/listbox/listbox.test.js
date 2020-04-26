@@ -2,10 +2,10 @@ import {LISTBOX as LB, ATTRS, searchTimeoutTime} from './listbox';
 
 const IDS = {
   ADD_OPTION_BTN: 'add-option',
-  REMOVE_OPTION_BTN: 'remove-option',
   DYNAMIC_LB: 'dynamic-listbox',
-  SINGLE_SELECT_LB: `single-select-listbox`,
   MULTI_SELECT_LB: 'multi-select-listbox',
+  REMOVE_OPTION_BTN: 'remove-option',
+  SINGLE_SELECT_LB: `single-select-listbox`,
 };
 
 
@@ -35,8 +35,6 @@ describe('Listbox', () => {
       .as('multiSelectListboxOptions');
 
     cy.get(`#${IDS.DYNAMIC_LB}`).as('dynamicListbox');
-    cy.get(`#${IDS.ADD_OPTION_BTN}`).as('addOptionBtn');
-    cy.get(`#${IDS.REMOVE_OPTION_BTN}`).as('removeOptionBtn');
   });
 
 
@@ -731,21 +729,25 @@ describe('Listbox', () => {
   });
 
 
-  describe('Dynamic select', () => {
+  describe('Listbox with dynamic options', () => {
     beforeEach(() => {
       cy.reload();
+
+      cy.get(`#${IDS.ADD_OPTION_BTN}`).as('addOptionBtn');
+      cy.get(`#${IDS.REMOVE_OPTION_BTN}`).as('removeOptionBtn');
+
+      cy.get('@dynamicListbox')
+        .find('ul')
+        .as('dynamicListboxList');
     });
 
 
-    it('Listbox with dynamically added option should intiialise correctly', () => {
+    it('Listbox with dynamically added options should intiialise correctly', () => {
       cy.get('@addOptionBtn')
         .click()
         .click()
         .click();
 
-      cy.get('@dynamicListbox')
-        .find('ul')
-        .as('dynamicListboxList');
       cy.get('@dynamicListbox')
         .find('li')
         .as('dynamicListboxOptions');
@@ -772,8 +774,9 @@ describe('Listbox', () => {
 
 
     it('Listbox with dynamically removed option should re-intialise correctly', () => {
-      cy.get('@addOptionBtn').click();
-      cy.get('@addOptionBtn').click();
+      cy.get('@addOptionBtn')
+        .click()
+        .click();
       cy.get('@removeOptionBtn').click();
 
       cy.get('@dynamicListbox')

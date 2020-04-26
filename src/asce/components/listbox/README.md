@@ -74,7 +74,7 @@ Listbox uses the following custom event, the name of which is exported as a prop
 
 `asce-listbox-update-options`
 
-This event should be dispatched when a Listbox's options are altered, e.g. one or more options are added or deleted. The event `detail` property should contain a single property `id` with the ID of the Listbox updated.
+This event should be dispatched when a Listbox's options are altered, e.g. when options are added or deleted. The event `detail` property should contain the Listbox ID `id`.
 
 
 ## Examples
@@ -180,7 +180,7 @@ A Listbox with options containing images.
 
 ### Listbox with dynamic options
 
-In this example the Listbox instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can also be removed using the **Remove option**. Both these buttons dispatch the `asce-listbox-update-options` event which updates the Listtbox. The extra JavaScript code to acheive this is also included below.
+In this example the Listbox instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can also be removed using the **Remove option**. Both these buttons dispatch the `asce-listbox-update-options` event that updates the Listbox. The extra JavaScript code to achieve this is also included below.
 
 ```html
 <button id="add-option">
@@ -213,7 +213,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('remove-option').addEventListener('click', () => {
     const fistOptionEl = listboxListEl.querySelector('li');
-    if (!fistOptionEl) { return; }
+    if (!fistOptionEl) {
+      return;
+    }
     listboxListEl.removeChild(fistOptionEl);
     updateOptions();
   });
