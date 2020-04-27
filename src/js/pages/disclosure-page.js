@@ -4,9 +4,9 @@ import Disclosure, {EVENTS} from '../../asce/components/disclosure/disclosure.js
 
 document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {
-    const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
-    const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
     const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
+    const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
+    const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
     let showDisclosure = null;
 
     if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
@@ -23,15 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
       eventType = EVENTS.HIDE;
     }
 
-    window.dispatchEvent(
-      new CustomEvent(
-        eventType,
-        {
-          'detail': {
-            'id': 'custom-event-triggered-disclosure',
-          }
-        },
-      )
-    );
+    window.dispatchEvent(new CustomEvent(
+      eventType,
+      {
+        'detail': {
+          'id': 'custom-event-triggered-disclosure',
+        }
+      },
+    ));
   });
 });

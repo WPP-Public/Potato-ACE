@@ -67,6 +67,12 @@ const injectAllComponentsCode = async () => {
 
 // INJECT CODE FOR GIVEN COMPONENT
 const injectComponentCode = async (componentName, htmlOnly=false) => {
+
+  // Ignore the template component
+  if (componentName === 'template') {
+    return;
+  }
+
   const componentDir = `${componentsDir}/${componentName}`;
   const mdFilePath = `${componentDir}/README.md`;
   const htmlDirPath = `./src/pages/${componentName}`;
