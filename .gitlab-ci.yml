@@ -61,13 +61,13 @@ test-chrome:
   extends: .e2e
   image: cypress/browsers:node12.8.1-chrome78-ff70
   script:
-    - npm run test -- --browser chrome
+    - npm run test:cli -- --browser chrome
 
 test-firefox:
   extends: .e2e
   image: cypress/browsers:node12.8.1-chrome78-ff70
   script:
-    - npm run test -- --browser firefox
+    - npm run test:cli -- --browser firefox
 
 # TODO: Edge is not available on Linux yet - switch to Windows runner on
 # GitLab CI and test Edge there.
@@ -75,12 +75,12 @@ test-firefox:
   extends: .e2e
   image: cypress/browsers:node12.8.1-chrome78-ff70
   script:
-    - npm run test -- --browser edge
+    - npm run test:cli -- --browser edge
 
 test-electron:
   extends: .e2e
   script:
-    - npm run test
+    - npm run test:cli
 
 deploy:
   interruptible: true
