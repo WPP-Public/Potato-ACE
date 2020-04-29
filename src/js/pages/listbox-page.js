@@ -3,6 +3,7 @@ import Listbox, {EVENTS} from '../../asce/components/listbox/listbox.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
+  window.scrollTo(0, 0);
   const listboxId = 'dynamic-listbox';
   const listboxListEl = document.querySelector(`#${listboxId} ul`);
 
