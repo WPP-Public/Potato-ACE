@@ -5,15 +5,15 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
-    "cypress:open": "cypress open",
     "inject": "node --experimental-modules ./scripts/inject-code.mjs",
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/js/**/*.js\"",
     "lint:scss": "stylelint \"src/sass/**/*.scss\"",
     "start": "gulp",
     "start:test": "npx http-server ./dist --port 3030 -c-1",
-    "test": "cypress run --config video=false",
-    "pipeline": "npm run build && npm run lint && npm run test -- --browser chrome && npm run test -- --browser firefox && npm run test"
+    "test": "gulp serve-build & cypress open",
+    "test:cli": "cypress run --config video=false",
+    "pipeline": "npm run build && npm run lint && npm run test:cli -- --browser chrome && npm run test:cli -- --browser firefox && npm run test:cli"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.4.3",
     "browser-sync": "^2.26.7",
-    "cypress": "^4.4.1",
+    "cypress": "^4.5.0",
     "eslint": "^6.8.0",
     "eslint-plugin-cypress": "^2.10.3",
     "gulp": "^4.0.2",
