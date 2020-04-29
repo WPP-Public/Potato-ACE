@@ -79,7 +79,7 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 <button asce-disclosure-trigger-for="disclosure-1">
   Disclosure 1 Toggle 2
 </button>
-<br>
+<br><br>
 <button asce-disclosure-trigger-for="disclosure-2">
   Disclosure 2 Toggle
 </button>
@@ -90,15 +90,18 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
   Disclosure 2 Hide
 </button>
 
+<br><br>
 
 <asce-disclosure id="disclosure-1">
-  <h1>Disclosure 1</h1>
-  <p>Initially hidden diclosure.</p>
+  <div>
+    Disclosure 1 - Initially hidden diclosure.
+  </div>
 </asce-disclosure>
 
 <asce-disclosure id="disclosure-2" asce-disclosure-visible="true">
-  <h1>Disclosure 2</h1>
-  <p>Initially visible diclosure.</p>
+  <div>
+    Disclosure 2 - Initially visible diclosure.
+  </div>
 </asce-disclosure>
 ```
 
