@@ -70,23 +70,26 @@ gulp.task('serve', () => {
   gulp.watch(`./${dirs.src}/pages/**/*.html`)
     .on('change', browserSync.reload);
 
-  // Watch component SASS files and rebuild md and HTML page on change
-  gulp.watch(`./${dirs.comps}/**/*.scss`)
+
+  // Watch changes to component
+  // Rebuild HTML page and reload browser when ACE component README or SASS changed
+  gulp.watch([`./${dirs.comps}/**/*/README.md`, `./${dirs.comps}/**/*.scss`])
     .on('change', (path) => {
       const pathFragments = path.split('/');
       const componentName = pathFragments[pathFragments.length - 2];
-      console.log(`${componentName} scss changed`);
+      console.log(`${componentName} updated`);
       exec(`${injectCodeCmd} -- ${componentName}`).stdout.pipe(process.stdout);
     });
 
-  // Watch component example HTML files and rebuild md and HTML page on change
+
+  // Rebuild HTML page and reload browser when ACE component example HTML changed
   gulp.watch(`./${dirs.comps}/**/examples/*.html`)
     .on('change', (path) => {
       const pathFragments = path.split('/');
       const exampleName = pathFragments[pathFragments.length - 1];
       const componentName = pathFragments[pathFragments.length - 3];
       console.log(`${componentName} ${exampleName} changed`);
-      exec(`${injectCodeCmd} -- ${componentName} --html-only`).stdout.pipe(process.stdout);
+      exec(`${injectCodeCmd} -- ${componentName}`).stdout.pipe(process.stdout);
     });
 });
 
