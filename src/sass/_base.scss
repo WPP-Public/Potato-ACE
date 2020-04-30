@@ -65,9 +65,10 @@ button {
 // Inline Code
 code {
   :not(pre) > & {
-    background: $code-background-color;
+    background: map-get($pot-mauve, 7);
     border-radius: $border-radius;
     color: map-get($pot-grey, 1);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
     font-size: 1.2rem;
     padding: 2px 4px;
   }
