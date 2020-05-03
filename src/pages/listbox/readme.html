@@ -1,0 +1,264 @@
+<h1>Listbox</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p><a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">W3C Spec</a></p>
+<h2>Usage</h2>
+<pre><code class="language-js">import { Listbox, EVENTS as LISTBOX_EVENTS } from 'asce/components/listbox/listbox.js';
+</code></pre>
+<h2>Sass</h2>
+<p>Here is scss code</p>
+<pre><code class="language-scss">/* VARIABLES */
+$asce-listbox-selected-bg-color: #ccc !default;
+$asce-listbox-active-outline-color: 2px dotted #000 !default;
+
+
+/* STYLES */
+[asce-listbox-list] {
+  overflow-y: auto;
+}
+
+[asce-listbox-option-index] {
+  user-select: none;
+
+  &amp;[aria-selected=&quot;true&quot;] {
+    background: $asce-listbox-selected-bg-color;
+  }
+}
+
+[asce-listbox-active-option] {
+  outline: $asce-listbox-active-outline-color;
+}
+</code></pre>
+<h2>Examples</h2>
+<h3>Single-select</h3>
+<p>Single-select listbox.</p>
+<div class="example-block"><asce-listbox>
+  <ul>
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Black Widow</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Spider-man</li>
+    <li>Black Panther</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
+</asce-listbox>
+</div>
+<pre><code class="language-html">&lt;asce-listbox&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/asce-listbox&gt;
+</code></pre>
+<p>Listbox using an <code>&lt;ol&gt;</code> element</p>
+<div class="example-block"><asce-listbox>
+  <ol style="list-style-position: inside;">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Black Widow</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Spider-man</li>
+    <li>Black Panther</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ol>
+</asce-listbox>
+</div>
+<pre><code class="language-html">&lt;asce-listbox&gt;
+  &lt;ol style=&quot;list-style-position: inside;&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/asce-listbox&gt;
+</code></pre>
+<h3>Multi-select</h3>
+<p>Multi-select listbox.</p>
+<div class="example-block"><asce-listbox asce-listbox-multiselect>
+  <ul>
+    <li>Iron Man</li>
+    <li>Hulk</li>
+    <li>Captain America</li>
+    <li>Scarlet Witch</li>
+    <li>Black Panther</li>
+    <li>Black Widow</li>
+    <li>Ant-Man</li>
+    <li>Thor</li>
+    <li>Captain Marvel</li>
+    <li>Dr Strange</li>
+    <li>Spider-man</li>
+    <li>War Machine</li>
+  </ul>
+</asce-listbox>
+</div>
+<pre><code class="language-html">&lt;asce-listbox asce-listbox-multiselect&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+    &lt;li&gt;Dr Strange&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;War Machine&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/asce-listbox&gt;
+</code></pre>
+<h3>Listbox with images</h3>
+<p>Listbox with images.</p>
+<div class="example-block"><asce-listbox id="listbox-with-images">
+  <ul>
+    <li>
+       <img src="/img/logo.svg">
+       Iron Man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Nick Fury
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Hulk
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Black Widow
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Thor
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Captain America
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Scarlet Witch
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Ant-Man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Spider-man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Black Panther
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Doctor Strange
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Captain Marvel
+    </li>
+  </ul>
+</asce-listbox>
+</div>
+<pre><code class="language-html">&lt;asce-listbox id=&quot;listbox-with-images&quot;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Iron Man
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Nick Fury
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Hulk
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Black Widow
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Thor
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Captain America
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Scarlet Witch
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Ant-Man
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Spider-man
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Black Panther
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Doctor Strange
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Captain Marvel
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/asce-listbox&gt;
+</code></pre>
+<h3>Dynamically populated listbox</h3>
+<p>Example of multi-select listbox.</p>
+<pre><code class="language-js">document.getElementById('&lt;listbox-id&gt;')
+  .dispatchEvent(new CustomEvent(
+    `${ASCE_LISTBOX_CONSTS.UPDATE_OPTIONS_EVENT}`,
+    { detail: { id: '&lt;listbox-id&gt;' } },
+  ));
+</code></pre>
+<div class="example-block"><button id="dynamic-listbox-btn">
+  Populate listbox options
+</button>
+<asce-listbox id="dynamic-listbox"></asce-listbox>
+</div>
+<pre><code class="language-html">&lt;button id=&quot;dynamic-listbox-btn&quot;&gt;
+  Populate listbox options
+&lt;/button&gt;
+&lt;asce-listbox id=&quot;dynamic-listbox&quot;&gt;&lt;/asce-listbox&gt;
+</code></pre>
