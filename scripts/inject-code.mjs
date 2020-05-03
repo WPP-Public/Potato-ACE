@@ -8,7 +8,7 @@
  `node --experimental-modules scripts/inject-code.mjs <component-name> --html-only` will inject examples HTML only (no SASS injection) into README.md and index.html file for given component
 
 */
-import { promises as fsPromises } from 'fs';
+import {promises as fsPromises} from 'fs';
 import MarkdownIt from 'markdown-it';
 import pjson from '../package.json';
 
@@ -16,7 +16,7 @@ import pjson from '../package.json';
 // CONSTANTS
 const NAME = pjson.customProperties.componentLibrary;
 const componentsDir = `./src/${NAME}/components`;
-const baseHtmlFile = `./src/pages/includes/base.html`;
+const pagesDir = './src/pages';
 const htmlOnlyArg = '--html-only';
 const fileEncoding = 'utf8';
 const htmlQuery = '```html';
@@ -24,7 +24,6 @@ const sassQuery = '```scss';
 const endQuery = '```';
 const examplesDirName = 'examples';
 const exampleBlockClass = 'example-block';
-const htmlContentPlaceholder = '[[content]]';
 
 // Color codes for console.logs
 const magenta = '\x1b[35m%s\x1b[0m';
@@ -54,11 +53,10 @@ const writeContentToFile = async (content, filePath) => {
 };
 
 
-
 // INJECT SASS AND HTML FOR ALL COMPONENTS
 const injectAllComponentsCode = async () => {
   // For all component directories in componentsDir
-  const items = await fsPromises.readdir(componentsDir, { withFileTypes: true });
+  const items = await fsPromises.readdir(componentsDir, {withFileTypes: true});
   const promises = items.filter(item => item.isDirectory())
     .map(directory => injectComponentCode(directory.name));
   return Promise.all(promises);
@@ -69,8 +67,7 @@ const injectAllComponentsCode = async () => {
 const injectComponentCode = async (componentName, htmlOnly=false) => {
   const componentDir = `${componentsDir}/${componentName}`;
   const mdFilePath = `${componentDir}/README.md`;
-  const htmlDirPath = `./src/pages/${componentName}`;
-  const htmlFilePath = `${htmlDirPath}/index.html`;
+  const componentPageDir = `${pagesDir}/${componentName}`;
 
   // Read md file
   let mdFileContent = await fsPromises.readFile(mdFilePath, fileEncoding);
@@ -80,24 +77,40 @@ const injectComponentCode = async (componentName, htmlOnly=false) => {
   }
 
   // Get content for md and HTML page
-  const { mdContentForMd, mdContentForHtml } = await injectHtml(componentName, mdFileContent);
+  const {mdContentForMd, mdContentForHtml} = await injectHtml(componentName, mdFileContent);
 
   // Save new md content to README.md
   writeContentToFile(mdContentForMd, mdFilePath);
 
-  // Convert content for HTML page to HTML and save
-  const convertedHtmlContent = await convertMdToHtml(mdContentForHtml, componentName);
-
-  const dirExists = await fsPromises.stat(`${htmlDirPath}`)
+  // Create component directory in `pages/` if it doesn't exist
+  const dirExists = await fsPromises.stat(`${componentPageDir}`)
     .catch(() => {
-      console.log(magenta, `>> Creating ${htmlDirPath}`);
+      console.log(magenta, `>> Creating ${componentPageDir}`);
     });
-
   if (!dirExists) {
-    await fsPromises.mkdir(htmlDirPath, { recursive: true });
+    await fsPromises.mkdir(componentPageDir, {recursive: true});
   }
 
-  writeContentToFile(convertedHtmlContent, htmlFilePath);
+  // Convert md content for HTML page to HTML and save
+  console.log(magenta, `>> Converting markdown to html`);
+  const convertedHtmlContent = md.render(mdContentForHtml);
+  console.log(magenta, `>> Writing converted HTML to file`);
+  writeContentToFile(convertedHtmlContent, `${componentPageDir}/readme.html`);
+
+  // If component page has a script file then add script to `script.pug`
+  const scriptFileExists = await fsPromises.stat(`./src/js/pages/${componentName}-page.js`);
+  const scriptPugFileExists = await fsPromises.stat(`${componentPageDir}/script.pug`).catch(() => {});
+  if (scriptFileExists && !scriptPugFileExists) {
+    console.log(magenta, `>> Adding page script tag to script.pug`);
+    writeContentToFile(`script(src='/js/pages/${componentName}-page.js' type='module')`, `${componentPageDir}/script.pug`);
+  }
+
+  // Copy index-template.pug to component directory as `index.pug`
+  const docPagePugFileExists = await fsPromises.stat(`${componentPageDir}/component-page.pug`).catch(() => {});
+  if (!docPagePugFileExists) {
+    console.log(magenta, `>> Copying index-template to component directory`);
+    fsPromises.copyFile(`${pagesDir}/includes/component-page.pug`, `${componentPageDir}/index.pug`);
+  }
 };
 
 
@@ -169,38 +182,8 @@ const injectHtml = async (componentName, mdFileContent) => {
   }
 
   // Return the source contents for README.md and component's HTML page
-  return { mdContentForMd, mdContentForHtml };
+  return {mdContentForMd, mdContentForHtml};
 };
-
-
-// CONVERT MARKDOWN TO HTML AND SAVE TO HTML FILE
-const convertMdToHtml = async (mdSource, componentName) => {
-  console.log(magenta, `>> Converting markdown to html`);
-  const convertedHtml = md.render(mdSource);
-
-  // Combine base.html and md content into component's html
-  const baseHtml = await fsPromises.readFile(baseHtmlFile, fileEncoding);
-  let startIndex = baseHtml.indexOf(htmlContentPlaceholder);
-  let endIndex = startIndex + htmlContentPlaceholder.length;
-  let htmlContent = replaceContentBetweenIndices(baseHtml, convertedHtml, startIndex, endIndex);
-
-  // If <component>-page.js exists, inject into script tag into html file
-  const scriptExists = await fsPromises.stat(`./src/js/pages/${componentName}-page.js`)
-    .catch(() => {
-      console.log(magenta, `>> ${componentName}-page.js file doesn't exist`);
-    });
-
-  if (!scriptExists) {
-    return htmlContent;
-  }
-
-  startIndex = htmlContent.indexOf(`</body>`);
-  const scriptTag = `<script src="/js/pages/${componentName}-page.js" type="module"></script>\n`;
-  htmlContent = replaceContentBetweenIndices(htmlContent, scriptTag, startIndex, startIndex);
-
-  return htmlContent;
-};
-
 
 
 (async () => {
