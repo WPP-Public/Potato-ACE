@@ -13,15 +13,27 @@ cache:
     - node_modules/
 
 
-Install Deps:
+.install_deps:
   stage: prepare
   script:
     - npm ci
+
+
+# Only install deps if package.json or package-lock.json changed
+Prep:
+  extends: .install_deps
   only:
-    - test
     changes:
       - package.json
       - package-lock.json
+
+
+# Install deps if changes made to master branch
+Delployment Prep:
+  extends: .install_deps
+  only:
+    - test
+
 
 Build:
   interruptible: true
