@@ -1,348 +1,797 @@
-import {
-    LISTBOX as listboxTag,
-    ATTRS as listboxAttrs,
-    EVENTS as listboxEvents
-} from './listbox';
+import {LISTBOX as LB, ATTRS, searchTimeoutTime} from './listbox';
 
-context('Listbox', () => {
-    const listboxListAttr = listboxAttrs['LIST'];
-    const multiSelectAttr = listboxAttrs['MULTISELECT'];
-    const optionIndexAttr = listboxAttrs['OPTION_INDEX'];
-    const activeOptionAttr = listboxAttrs['ACTIVE_OPTION'];
+const IDS = {
+  ADD_OPTION_BTN: 'add-option',
+  DYNAMIC_LB: 'dynamic-listbox',
+  MULTI_SELECT_LB: 'multi-select-listbox',
+  REMOVE_OPTION_BTN: 'remove-option',
+  SINGLE_SELECT_LB: `single-select-listbox`,
+};
 
+
+describe('Listbox', () => {
+  before(() => {
+    cy.visit(`/listbox`);
+  });
+
+
+  beforeEach(() => {
+    // Get single-select listbox elements
+    cy.get(`#${IDS.SINGLE_SELECT_LB}`)
+      .as('singleSelectListbox')
+      .find('ul')
+      .as('singleSelectListboxList')
+      .find('li')
+      .as('singleSelectListboxOptions');
+
+
+    // Get multi-select listbox elements
+    cy.get(`#${IDS.MULTI_SELECT_LB}`).as('multiSelectListbox');
+    cy.get('@multiSelectListbox')
+      .children()
+      .as('multiSelectListboxList');
+    cy.get('@multiSelectListboxList')
+      .find('li')
+      .as('multiSelectListboxOptions');
+
+    cy.get(`#${IDS.DYNAMIC_LB}`).as('dynamicListbox');
+  });
+
+
+  describe('Initialisation', () => {
+    it('All listboxes should have IDs', () => {
+      cy.get(`${LB}:not(#${IDS.DYNAMIC_LB})`).each(listbox => {
+        cy.get(listbox).should('have.attr', 'id');
+      });
+    });
+
+
+    it('Listbox should add a <ul> if neither a <ul> nor a <ol> is not present', () => {
+      cy.get('@dynamicListbox').find('ul').should('have.length', 1);
+    });
+
+
+    it('Single-select listboxes should initialise with correct attributes', () => {
+      // Check listbox attributes
+      cy.get('@singleSelectListbox').should('not.have.attr', ATTRS.MULTISELECT);
+
+      // Check listbox lists attributes
+      cy.get('@singleSelectListboxList').should('have.attr', ATTRS.LIST);
+      cy.get('@singleSelectListboxList').should('have.attr', 'role', 'listbox');
+      cy.get('@singleSelectListboxList').should('have.attr', 'tabindex', '0');
+      cy.get('@singleSelectListboxList').should('not.have.attr', 'aria-activedescendant');
+      cy.get('@singleSelectListboxList').should('not.have.attr', 'aria-multiselectable');
+
+      // Check listbox options attributes
+      cy.get('@singleSelectListboxOptions').each((listboxOption, index) => {
+        cy.get(listboxOption).should('have.attr', ATTRS.OPTION_INDEX, index.toString());
+        cy.get(listboxOption).should('have.attr', 'id', `${IDS.SINGLE_SELECT_LB}-option-${(index + 1).toString()}`);
+        cy.get(listboxOption).should('have.attr', 'role', 'option');
+        cy.get(listboxOption).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+
+        // All listbox options except the first of a single-select listbox should have aria-selected false
+        const ariaSelected = (index === 0) ? 'true' : 'false';
+        cy.get(listboxOption).should('have.attr', 'aria-selected', ariaSelected);
+      });
+    });
+
+
+    it('Multi-select listboxes should initialise with correct attributes', () => {
+      // Check listbox attributes
+      cy.get('@multiSelectListbox').should('have.attr', ATTRS.MULTISELECT);
+
+      // Check listbox lists attributes
+      cy.get('@multiSelectListboxList').should('have.attr', ATTRS.LIST);
+      cy.get('@multiSelectListboxList').should('have.attr', 'role', 'listbox');
+      cy.get('@multiSelectListboxList').should('have.attr', 'tabindex', '0');
+      cy.get('@multiSelectListboxList').should('have.attr', 'aria-multiselectable');
+      cy.get('@multiSelectListboxList').should('not.have.attr', 'aria-activedescendant');
+
+      // Check listbox options attributes
+      cy.get('@multiSelectListboxOptions').each((listboxOption, index) => {
+        cy.get(listboxOption).should('have.attr', ATTRS.OPTION_INDEX, index.toString());
+        cy.get(listboxOption).should('have.attr', 'aria-selected', 'false');
+        cy.get(listboxOption).should('have.attr', 'id', `${IDS.MULTI_SELECT_LB}-option-${(index + 1).toString()}`);
+        cy.get(listboxOption).should('have.attr', 'role', 'option');
+        cy.get(listboxOption).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+      });
+    });
+
+
+    it('Single-select listbox should set first option as active on initial focus and remove it on blur', () => {
+      // Focus on listbox list
+      cy.get('@singleSelectListboxList').focus();
+
+      // Check that aria-activedescendant is set
+      cy.get('@singleSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-1`);
+
+      // Check that asce-listbox-active-option is set on first option
+      cy.get('@singleSelectListboxOptions')
+        .first()
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+
+      // Remove focus from listbox list
+      cy.get('@singleSelectListboxList').blur();
+
+      // Check that aria-activedescendant is removed
+      cy.get('@singleSelectListboxList').should('not.have.attr', 'aria-activedescendant');
+
+      // Check that asce-listbox-active-option is removed
+      cy.get('@singleSelectListboxOptions')
+        .first()
+        .should('not.have.attr', ATTRS.ACTIVE_OPTION);
+    });
+
+
+    it('Multi-select listbox should set first option as active on initial focus and remove it on blur', () => {
+      // Focus on listbox list
+      cy.get('@multiSelectListboxList').focus();
+
+      // Check that aria-activedescendant is set
+      cy.get('@multiSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-1`);
+
+      // Check that asce-listbox-active-option is set on first option
+      cy.get('@multiSelectListboxOptions')
+        .first()
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+
+      // Remove focus from listbox list
+      cy.get('@multiSelectListboxList').blur();
+
+      // Check that aria-activedescendant is removed
+      cy.get('@multiSelectListboxList').should('not.have.attr', 'aria-activedescendant');
+
+      // Check that asce-listbox-active-option is removed
+      cy.get('@multiSelectListboxOptions')
+        .first()
+        .should('not.have.attr', ATTRS.ACTIVE_OPTION);
+    });
+  });
+
+
+  describe('Mouse selection', () => {
     beforeEach(() => {
-        // Navigate to the docs page
-        cy.visit(`/listbox`);
+      cy.reload();
     });
 
-    /* CHECK DOCS PAGE IS CORRECT BEFORE TESTING EXAMPLES */
-    describe('Docs Page', () => {
-        it('should have at least one example', () => {
-            cy.get(`${listboxTag}`).should('have.length.greaterThan', 0);
-        });
+
+    it('Single-select listbox should only allow selection of a single option at a time', () => {
+      cy.get('@singleSelectListboxList').focus();
+
+      cy.get('@singleSelectListboxOptions')
+        .eq(3)
+        .click();
+
+      cy.get('@singleSelectListboxOptions')
+        .eq(1)
+        .click();
+
+      cy.get('@singleSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-2`);
+
+      cy.get('@singleSelectListboxOptions').each((option, index) => {
+        if (index === 1) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      cy.get('@singleSelectListboxList').blur();
+      cy.get('@singleSelectListboxList').should('not.have.attr', 'aria-activedescendant');
+
+      cy.get('@singleSelectListboxOptions').each((option, index) => {
+        cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        if (index === 1) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      cy.get('@singleSelectListboxList').focus();
+      cy.get('@singleSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-2`);
+
+      cy.get('@singleSelectListboxOptions').each((option, index) => {
+        if (index === 1) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
     });
 
-    /* TEST EXAMPLES KEYBAORD INTERACTION */
-    describe('Keyboard Interaction', () => {
-         it('on initial focus single-select listbox focuses first option', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().within(listbox => {
-                listbox.focus();
-                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
-            });
-        });
 
-         it('on re-focus single-select listbox focuses the selected option', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().as('listbox').focus();
-            // Select the third option
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])>li`).eq(3).click();
-            // Unfocus listbox
-            cy.get('body').focus();
-            // Re-focus listbox
-            cy.get(`@listbox`).first().within(listbox => {
-                // Focus listbox
-                listbox.focus();
-                // Observe 3rd option is selected
-                cy.get('li').eq(3).should('have.attr', 'aria-selected', 'true');
-            });
-        });
+    it('Multi-select listbox should allow selection of multiple options and de-selection', () => {
+      cy.get('@multiSelectListboxList').focus();
 
-        it('single-select listbox should select next option when down arrow is pressed', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().focus().type('{downarrow}')
-                .within(() => {
-                    // Check the second option is selected
-                    cy.get('li').eq(1).should('have.attr', 'aria-selected', 'true');
-                });
-        });
+      // Click on 3rd option
+      cy.get('@multiSelectListboxOptions')
+        .eq(2)
+        .click();
 
-        it('single-select listbox should select first option when down arrow is pressed on last option', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().focus().within(listbox => {
-                // Select last option
-                cy.get('li').last().click();
-                // Type down arrow
-                cy.wrap(listbox).type('{downarrow}');
-                // Check the first option is selected
-                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
-            });
-        });
+      // Click on 8th option
+      cy.get('@multiSelectListboxOptions')
+        .eq(7)
+        .click();
 
-        it('single-select listbox should select previous option when up arrow is pressed', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().focus().within(listbox => {
-                // Select second option
-                cy.get('li').eq(1).click();
-                // Type up arrow
-                cy.wrap(listbox).type('{uparrow}');
-                // Check the first option is selected
-                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
-            });
-        });
+      // Check listbox list's aria-activedescendant is 8th option
+      cy.get('@multiSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-8`);
 
-        it('single-select listbox should select last option when up arrow is pressed on first option', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().focus().within(listbox => {
-                // Select first option
-                cy.get('li').first().click();
-                // Type up arrow
-                cy.wrap(listbox).type('{uparrow}');
-                // Check the last option is selected
-                cy.get('li').last().should('have.attr', 'aria-selected', 'true');
-            });
-        });
+      // Check 3rd and 8th options are selected and 8th option is active option
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 2 || index === 7) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+        if (index === 7) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
 
-        it('single-select listbox should select first option when home key is pressed', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().focus().within(listbox => {
-                // Select last option
-                cy.get('li').last().click();
-                // Type home key
-                cy.wrap(listbox).type('{home}');
-                // Check the first option is selected
-                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
-            });
-        });
+      // Remove focus and check listbox list has no aria-activedescendant
+      cy.get('@multiSelectListboxList').blur();
+      cy.get('@multiSelectListboxList').should('not.have.attr', 'aria-activedescendant');
 
-        it('single-select listbox should select last option when end key is pressed', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().focus().within(listbox => {
-                // Select first option
-                cy.get('li').first().click();
-                // Type end key
-                cy.wrap(listbox).type('{end}');
-                // Check the last option is selected
-                cy.get('li').last().should('have.attr', 'aria-selected', 'true');
-            });
-        });
+      // Check 3rd and 8th options are selected and 8th option there is no active option
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        if (index === 2 || index === 7) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
 
-        it('multi-select listbox should select focused option when space is pressed', () => {
-            // Focus first option and press down arrow
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().type(' ')
-                .within(() => {
-                    // Check the second option is selected
-                    cy.get('li').first().as('first');
-                    cy.get('@first').should('have.attr', activeOptionAttr);
-                    cy.get('@first').should('have.attr', 'aria-selected', 'true');
-                });
-        });
+      // Refocus and check listbox list's aria-activedescendant is 8th option
+      cy.get('@multiSelectListboxList').focus();
+      cy.get('@multiSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-8`);
 
-        it('multi-select listbox should focus next option when down arrow is pressed', () => {
-            // Focus first option and press down arrow
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().type('{downarrow}')
-                .within(() => {
-                    // Check the second option is selected
-                    cy.get('li').eq(1).should('have.attr', activeOptionAttr);
-                });
-        });
+      // Check 3rd and 8th options are selected and 8th option is active option
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 2 || index === 7) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+        if (index === 7) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
 
-        it('multi-select listbox should focus first option when down arrow is pressed on last option', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus last option
-                cy.get('li').last().click();
-                // Type down arrow
-                cy.wrap(listbox).type('{downarrow}');
-                // Check the first option is focused
-                cy.get('li').first().should('have.attr', activeOptionAttr);
-            });
-        });
+      // Deselect options
+      cy.get('@multiSelectListboxOptions')
+        .eq(2)
+        .click();
 
-        it('multi-select listbox should focus previous option when up arrow is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus second option
-                cy.get('li').eq(1).click();
-                // Type up arrow
-                cy.wrap(listbox).type('{uparrow}');
-                // Check the first option is focused
-                cy.get('li').first().should('have.attr', activeOptionAttr);
-            });
-        });
+      // Check listbox list's aria-activedescendant is now 3rd option
+      cy.get('@multiSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-3`);
 
-        it('multi-select listbox should focus last option when up arrow is pressed on first option', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus first option
-                cy.get('li').first().click();
-                // Type up arrow
-                cy.wrap(listbox).type('{uparrow}');
-                // Check the last option is focused
-                cy.get('li').last().should('have.attr', activeOptionAttr);
-            });
-        });
-
-        it('multi-select listbox should focus first option when home key is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus second option
-                cy.get('li').eq(1).click();
-                // Type home key
-                cy.wrap(listbox).type('{home}');
-                // Check the first option is focused
-                cy.get('li').first().should('have.attr', activeOptionAttr);
-            });
-        });
-
-        it('multi-select listbox should focus last option when end key is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus first option
-                cy.get('li').first().click();
-                // Type end key
-                cy.wrap(listbox).type('{end}');
-                // Check the last option is focused
-                cy.get('li').last().should('have.attr', activeOptionAttr);
-            });
-        });
-
-        it('multi-select listbox should focus and select next option when shift + down arrow is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().within(listbox => {
-                // Focus first option
-                cy.get('li').first().click();
-                // Type shift + up arrow
-                cy.wrap(listbox).type('{shift}{downarrow}');
-                // Check the first option is focused or selected
-                cy.get('li').first().as('first');
-                cy.get('@first').should('not.have.attr', activeOptionAttr);
-                cy.get('@first').should('have.attr', 'aria-selected', 'true');
-                // Check the second option is focused and selected
-                cy.get('li').eq(1).as('second');
-                cy.get('@second').should('have.attr', activeOptionAttr);
-                cy.get('@second').should('have.attr', 'aria-selected', 'true');
-            });
-        });
-
-        it('multi-select listbox should focus and select previous option when shift + up arrow is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus second option
-                cy.get('li').eq(1).click();
-                // Type shift + up arrow
-                cy.wrap(listbox).type('{shift}{uparrow}');
-                // Check the first option is focused and selected
-                cy.get('li').first().as('first');
-                cy.get('@first').should('have.attr', activeOptionAttr);
-                cy.get('@first').should('have.attr', 'aria-selected', 'true');
-            });
-        });
-
-        it('multi-select listbox should select all options between focus and last selected when shift + space is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus and select first option
-                cy.get('li').first().click();
-                // Focus 3rd option
-                cy.get('li').eq(2);
-                // Type shift + space arrow
-                cy.wrap(listbox).type('{downarrow}{downarrow}{shift} ');
-                // Check the first, second, and third option is focused and selected
-                cy.get('li').first().should('have.attr', 'aria-selected', 'true');
-                cy.get('li').eq(1).should('have.attr', 'aria-selected', 'true');
-                cy.get('li').eq(2).as('third');
-                cy.get('@third').should('have.attr', activeOptionAttr);
-                cy.get('@third').should('have.attr', 'aria-selected', 'true');
-            });
-        });
-
-        it('multi-select listbox should select all options between focus and first when ctrl + shift + home is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus and select third option
-                cy.get('li').eq(2).click();
-                // Type shift + home arrow
-                cy.wrap(listbox).type('{ctrl}{shift}{home}');
-                // Check the first, second, and third option is focused and selected
-                cy.get('li').first().as('first');
-                cy.get('@first').should('have.attr', activeOptionAttr);
-                cy.get('@first').should('have.attr', 'aria-selected', 'true');
-                cy.get('li').eq(1).should('have.attr', 'aria-selected', 'true');
-                cy.get('li').eq(2).should('have.attr', 'aria-selected', 'true');
-            });
-        });
-
-        it('multi-select listbox should select all options between focus and last when ctrl + shift + end is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Focus and select third from last option
-                cy.get('li').eq(9).click();
-                // Type shift + home arrow
-                cy.wrap(listbox).type('{ctrl}{shift}{end}');
-                // Check the first, second, and third option is focused and selected
-                cy.get('li').last().as('last');
-                cy.get('@last').should('have.attr', activeOptionAttr);
-                cy.get('@last').should('have.attr', 'aria-selected', 'true');
-                cy.get('li').eq(10).should('have.attr', 'aria-selected', 'true');
-                cy.get('li').eq(9).should('have.attr', 'aria-selected', 'true');
-            });
-        });
-
-        it('multi-select listbox should select all options when Ctrl + A is pressed', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().focus().within(listbox => {
-                // Type Ctrl + A arrow
-                cy.wrap(listbox).type('{ctrl}a');
-                // Check the first, second, and third option is focused and selected
-                cy.get('li').first().should('have.attr', activeOptionAttr);
-                cy.get('li').should('have.attr', 'aria-selected', 'true');
-            });
-        });
+      // Check 3rd option is active option and only 8th option is selected
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 7) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+        if (index === 2) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
     });
 
-    /* TEST EXAMPLES AGAINST WAI-ARIA SPEC */
-    describe('WAI-ARIA Spec', () => {
-         it('elements with ${listboxListAttr} attribute should have the role listbox', () => {
-            cy.get(`[${listboxListAttr}]`).should('have.attr', 'role', 'listbox');
-        });
 
-         it('listbox options should have the role option', () => {
-            cy.get(`[${listboxListAttr}]>li`).should('have.attr', 'role', 'option');
-        });
+    it('Multi-select listbox should allow selection of range using shift key', () => {
+      cy.get('@multiSelectListboxList').focus();
 
-         it('single-select listbox should have first option selected by default', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])>li`).first().should('have.attr', 'aria-selected', 'true');
-        });
+      cy.get('@multiSelectListboxOptions')
+        .eq(4)
+        .click();
 
-         it('multi-select listbox should have no options selected by default', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]>li`).should('not.have.attr', 'aria-selected', 'true');
-        });
+      cy.get('body')
+        .type('{shift}', { release: false })
+        .get('@multiSelectListboxOptions')
+        .eq(1)
+        .click();
 
-         it('multi-select listbox should have aria-multiselectable set to true', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]>li`).should('not.have.attr', 'aria-multiselectable', 'true');
-        });
+      // Check listbox list's aria-activedescendant is 2nd option
+      cy.get('@multiSelectListboxList').should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-2`);
 
-         it('selected option in single-select listbox should have aria-selected set to true', () => {
-            cy.get(`[${listboxListAttr}]:not([${multiSelectAttr}])`).first().within(listbox => {
-                // Get random option
-                const numOptions = listbox.children().length;
-                const randomIdx = Math.round(Math.random() * (numOptions - 1));
-                // Focus listbox
-                listbox.focus();
-                // Click option and check aria-selected is true
-                cy.get('li').eq(randomIdx).click().should('have.attr', 'aria-selected', 'true');
-            });
+      // Check all options between 2nd and 5th inclusive are selected and that 2nd option is active
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index > 0 && index < 5) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+        if (index === 1) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
+    });
+  });
 
-        });
 
-         it('Options in multi-select listbox should have aria-selected set correctly', () => {
-            cy.get(`[${multiSelectAttr}]>[${listboxListAttr}]`).first().within(listbox => {
-                const numOptions = listbox.children().length;
-                let selectedIdxs = [2, 3, 5, 7];
-                // Focus listbox
-                listbox.focus();
-                // For each index select that option
-                for (let i = 0; i < selectedIdxs.length; i++) {
-                    cy.get(`[${optionIndexAttr}="${selectedIdxs[i]}"]`).click();
-                }
-                // Check selected elements have aria-selected true and non-selected have set to false
-                for (let i = 0; i < numOptions; i++) {
-                    if (selectedIdxs.includes(i)) {
-                        cy.get(`[${optionIndexAttr}="${i}"]`).should('have.attr', 'aria-selected', 'true');
-                    } else {
-                        cy.get(`[${optionIndexAttr}="${i}"]`).should('have.attr', 'aria-selected', 'false');
-                    }
-                }
-            });
-        });
+  describe('Keyboard interaction', () => {
+    beforeEach(() => {
+      cy.reload();
     });
 
-    /* MISC */
-    describe('Misc. Tests', () => {
-        it('should be able to dynamically populate listbox with options', () => {
-            // Get the list box and check it has no options
-            cy.get('#dynamic-listbox').as('listbox').find('li').should('have.length', 0);
-            // Click the button to populate listbox
-            cy.get('#dynamic-listbox-btn').click();
-            // Check the list box has options
-            cy.get('@listbox').find('li').should('not.have.length', 0);
-            // Check that the listbox has the correct role
-            cy.get('@listbox').find(`[${listboxListAttr}]`).should('have.attr', 'role', 'listbox');
-            // Check that the first option is selected and that they all have the correct role
-            cy.get('@listbox').find(`[${listboxListAttr}]>li[aria-selected="true"]`).should('have.length', 1);
-            cy.get('@listbox').find(`[${listboxListAttr}]>li`).should('have.attr', 'role', 'option');
-        });
+
+    it('UP & DOWN should change active & selected option for single-select listbox correctly', () => {
+      // Test Up key
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('{uparrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-12`);
+
+      // Check that only one option is active and that active option is selected
+      cy.get('@singleSelectListboxOptions').each((option, index) => {
+        if (index === 11) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      cy.get('@singleSelectListboxList')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-10`);
+      cy.get('@singleSelectListboxOptions')
+        .eq(9)
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+
+
+      // Test Down key
+      cy.get('@singleSelectListboxList')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-1`);
+      cy.get('@singleSelectListboxOptions')
+        .first()
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+
+      cy.get('@singleSelectListboxList')
+        .type('{downarrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-2`);
+      cy.get('@singleSelectListboxOptions')
+        .eq(1)
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
     });
+
+
+    it('UP & DOWN should change active option correctly for multi-select listbox', () => {
+      // Test UP
+      cy.get('@multiSelectListboxList')
+        .focus()
+        .type('{uparrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-12`);
+
+      // Check that only one option is active and that selected option has not changed
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        cy.get(option).should('have.attr', 'aria-selected', 'false');
+
+        if (index === 11) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
+
+      // Test multiple UP presses
+      cy.get('@multiSelectListboxList')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-9`);
+      cy.get('@multiSelectListboxOptions')
+        .eq(8)
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+
+
+      // Test multiple DOWN presses
+      cy.get('@multiSelectListboxList')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-2`);
+      cy.get('@multiSelectListboxOptions')
+        .eq(1)
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+
+
+      // Test DOWN
+      cy.get('@multiSelectListboxList')
+        .type('{downarrow}')
+        .should('have.attr', 'aria-activedescendant', `${IDS.MULTI_SELECT_LB}-option-3`);
+      cy.get('@multiSelectListboxOptions')
+        .eq(2)
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+
+      // Check that only one option is active and that selected option has not changed
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        cy.get(option).should('have.attr', 'aria-selected', 'false');
+
+        if (index === 2) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
+    });
+
+
+    it('Keyboard keys should select options in multi-select listbox correctly', () => {
+      /*
+        Expected state from w3.org (https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox):
+
+        Space: changes the selection state of the focused option.
+        Shift + Space (Optional): Selects contiguous items from the most recently selected item to the focused item.
+        Shift + Down Arrow (Optional): Moves focus to and toggles the selected state of the next option.
+        Shift + Up Arrow (Optional): Moves focus to and toggles the selected state of the previous option.
+        Control + A (Optional): Selects all options in the list. Optionally, if all options are selected, it may also unselect all options.
+        Control + Shift + Home (Optional): Selects the focused option and all options up to the first option. Optionally, moves focus to the first option.
+        Control + Shift + End (Optional): Selects the focused option and all options down to the last option. Optionally, moves focus to the last option.
+      */
+
+      // Test SPACE selection
+      cy.get('@multiSelectListboxList')
+        .focus()
+        .type(' ');
+      cy.get('@multiSelectListboxOptions')
+        .first()
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+      cy.get('@multiSelectListboxOptions')
+        .first()
+        .should('have.attr', 'aria-selected', 'true');
+
+      // Test SPACE deselection
+      cy.get('@multiSelectListboxList')
+        .type(' ');
+      cy.get('@multiSelectListboxOptions')
+        .first()
+        .should('have.attr', ATTRS.ACTIVE_OPTION);
+      cy.get('@multiSelectListboxOptions')
+        .first()
+        .should('have.attr', 'aria-selected', 'false');
+
+
+      // Test SHIFT + SPACE when only first option in range is selected
+      cy.get('@multiSelectListboxList')
+        .type('{downarrow}')
+        .type(' ')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{shift} ');
+
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 3) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+        if (0 < index && index < 4) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      // Test SHIFT + SPACE selection when some options in range are selected
+      cy.get('@multiSelectListboxList')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type(' ')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{shift} ');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 1) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+        if (0 < index && index < 6) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      // Test SHIFT + SPACE after looping around
+      cy.get('@multiSelectListboxList')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{shift} ');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 9) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+        if (0 < index && index < 10) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      // Test SHIFT + DOWN
+      cy.get('@multiSelectListboxList')
+        .type('{shift}{downarrow}')
+        .type('{shift}{downarrow}')
+        .type('{shift}{downarrow}')
+        .type('{shift}{downarrow}')
+        .type('{shift}{downarrow}');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 2) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+        if (index === 1 || index === 2) {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        }
+      });
+
+      // Test SHIFT + UP
+      cy.get('@multiSelectListboxList')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{shift}{uparrow}')
+        .type('{shift}{uparrow}')
+        .type('{shift}{uparrow}')
+        .type('{shift}{uparrow}')
+        .type('{shift}{uparrow}')
+        .type('{shift}{uparrow}')
+        .type('{shift}{uparrow}')
+        .type('{shift}{uparrow}');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 8) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+        if (index === 0 || index === 3 || index > 7) {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        }
+      });
+
+      // Test CTRL + A selection & deselection
+      cy.get('@multiSelectListboxList')
+        .type('{ctrl}a');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        cy.get(option).should('have.attr', 'aria-selected', 'true');
+        if (index === 8) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
+      cy.get('@multiSelectListboxList')
+        .type('{uparrow}')
+        .type('{ctrl}a');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        cy.get(option).should('have.attr', 'aria-selected', 'false');
+        if (index === 7) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+      });
+
+      // Test CTRL + SHIFT + END
+      cy.get('@multiSelectListboxList')
+        .type('{ctrl}{shift}{end}');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 11) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+        if (index > 6) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      // Test CTRL + SHIFT + HOME
+      cy.get('@multiSelectListboxList')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{downarrow}')
+        .type('{ctrl}{shift}{home}');
+      cy.get('@multiSelectListboxOptions').each((option, index) => {
+        if (index === 0) {
+          cy.get(option).should('have.attr', ATTRS.ACTIVE_OPTION);
+        } else {
+          cy.get(option).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+        }
+        if (index < 3 || index > 6) {
+          cy.get(option).should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(option).should('have.attr', 'aria-selected', 'false');
+        }
+      });
+    });
+  });
+
+
+  describe('Type-ahead', () => {
+    beforeEach(() => {
+      cy.reload();
+    });
+
+
+    it('Listbox doesn\'t break if no result found', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('z')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-1`);
+    });
+
+
+    it('Select first option that starts with single typed character', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('h')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-3`);
+    });
+
+
+    it('Type-ahead loops around when single character typed', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('{downarrow}')
+        .type('i')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-1`);
+    });
+
+
+    it('Select first option that starts with typed characters', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('s')
+        .type('p')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-10`);
+    });
+
+
+    it('Type-ahead loops around when single character typed', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('s')
+        .type('c')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-7`);
+    });
+
+
+    it('Select first option that starts with typed character when character typed twice with no delay', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('c')
+        .type('c')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-5`);
+    });
+
+
+    it('Select second option that starts with typed character when character typed twice with delay', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('b', {delay: searchTimeoutTime})
+        .type('b')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-9`);
+    });
+
+
+    it('Type ahead loops around when character typed twice with delay', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('{uparrow}')
+        .type('b', {delay: searchTimeoutTime})
+        .type('b')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-6`);
+    });
+  });
+
+
+  describe('Listbox with dynamic options', () => {
+    beforeEach(() => {
+      cy.reload();
+
+      cy.get(`#${IDS.ADD_OPTION_BTN}`).as('addOptionBtn');
+      cy.get(`#${IDS.REMOVE_OPTION_BTN}`).as('removeOptionBtn');
+
+      cy.get('@dynamicListbox')
+        .find('ul')
+        .as('dynamicListboxList');
+    });
+
+
+    it('Listbox with dynamically added options should intiialise correctly', () => {
+      cy.get('@addOptionBtn')
+        .click()
+        .click()
+        .click();
+
+      cy.get('@dynamicListbox')
+        .find('li')
+        .as('dynamicListboxOptions');
+
+      // Check listbox lists attributes
+      cy.get('@dynamicListboxList').should('have.attr', ATTRS.LIST);
+      cy.get('@dynamicListboxList').should('have.attr', 'role', 'listbox');
+      cy.get('@dynamicListboxList').should('have.attr', 'tabindex', '0');
+      cy.get('@dynamicListboxList').should('not.have.attr', 'aria-activedescendant');
+      cy.get('@dynamicListboxList').should('not.have.attr', 'aria-multiselectable');
+
+      // Check listbox options attributes
+      cy.get('@dynamicListboxOptions').each((listboxOption, index) => {
+        cy.get(listboxOption).should('have.attr', ATTRS.OPTION_INDEX, index.toString());
+        cy.get(listboxOption).should('have.attr', 'id', `${IDS.DYNAMIC_LB}-option-${(index + 1).toString()}`);
+        cy.get(listboxOption).should('have.attr', 'role', 'option');
+        cy.get(listboxOption).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+
+        // All listbox options except the first of a single-select listbox should have aria-selected false
+        const ariaSelected = (index === 0) ? 'true' : 'false';
+        cy.get(listboxOption).should('have.attr', 'aria-selected', ariaSelected);
+      });
+    });
+
+
+    it('Listbox with dynamically removed option should re-intialise correctly', () => {
+      cy.get('@addOptionBtn')
+        .click()
+        .click();
+      cy.get('@removeOptionBtn').click();
+
+      cy.get('@dynamicListbox')
+        .find('li')
+        .as('dynamicListboxOptions');
+
+      cy.get('@dynamicListboxOptions').each((listboxOption, index) => {
+        cy.get(listboxOption).should('have.attr', ATTRS.OPTION_INDEX, index.toString());
+        cy.get(listboxOption).should('have.attr', 'role', 'option');
+        cy.get(listboxOption).should('not.have.attr', ATTRS.ACTIVE_OPTION);
+
+        // All listbox options except the first of a single-select listbox should have aria-selected false
+        const ariaSelected = (index === 0) ? 'true' : 'false';
+        cy.get(listboxOption).should('have.attr', 'aria-selected', ariaSelected);
+      });
+    });
+  });
 });

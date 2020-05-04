@@ -1,26 +1,27 @@
 // Keep block comments (/* */) for sections used
 // Remove all comments starting with '//'
 // Use two blank lines between each section with block comment headings
+  // TODO: Find and replace all instances of 'TEMPLATE', 'Template' and 'template' to actual names
 /* IMPORTS */
 import {NAME} from '../../common/constants.js';
 import {autoID} from '../../common/functions.js';
 
 
-/* COMPONENT NAME */
+/* TEMPLATE NAME */
 // Use kebab-case for the name as this will be the attribute used to attach the class
-export const COMPONENT = `${NAME}-component`; // TODO: Replace 'COMPONENT' and 'component' with actual values
+export const TEMPLATE = `${NAME}-template`;
 
 
 /* CONSTANTS */
-// Add names of HTML attributes used, prefixed with COMPONENT
+// Add names of HTML attributes used, prefixed with TEMPLATE
 // export const ATTRS = {
-//   ATTR_NAME: `${COMPONENT}-attr-name`,
+//   ATTR_NAME: `${TEMPLATE}-attr-name`,
 // };
 
 
-// Add names of custom events used, prefixed with COMPONENT
+// Add names of custom events used, prefixed with TEMPLATE
 // export const EVENTS = {
-//   EVENT_NAME: `${COMPONENT}-event-name`,
+//   EVENT_NAME: `${TEMPLATE}-event-name`,
 // };
 
 
@@ -33,7 +34,7 @@ export const COMPONENT = `${NAME}-component`; // TODO: Replace 'COMPONENT' and '
 
 
 /* CLASS */
-export default class Component extends HTMLElement { // TODO: Change 'Component' to actual value
+export default class Template extends HTMLElement {
   constructor() {
     super();
 
@@ -69,12 +70,16 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
     // Add any initialisation code here
 
     // NOTE:
-    // Dispatch custom events on 'window' to make it easier for components to listen for them
+    // Dispatch custom events on 'window' to make it easier for templates to listen for them
     // When firing custom events include class instance ID in the 'detail' property
-    // window.dispatchEvent(new CustomEvent(EVENTS.EVENT_NAME, {
-    //   detail: {
-    //     'id': this.id,
-    // }}));
+    // window.dispatchEvent(new CustomEvent(
+    //   EVENTS.EVENT_NAME,
+    //   {
+    //     'detail': {
+    //       'id': this.id,
+    //     }
+    //   },
+    // ));
   }
 
 
@@ -103,6 +108,6 @@ export default class Component extends HTMLElement { // TODO: Change 'Component'
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
   // Use autoID to automatically increment the IDs of class instances
-  autoID(COMPONENT); // TODO: Change COMPONENT to actual name
-  customElements.define(COMPONENT, Component); // TODO: Change COMPONENT and 'Component' to actual names
+  autoID(TEMPLATE);
+  customElements.define(TEMPLATE, Template);
 });
