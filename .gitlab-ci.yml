@@ -20,11 +20,15 @@ Install Deps:
   stage: prepare
   script:
     - npm ci
+  only:
+    changes:
+      - README.md
 
 Build:
   interruptible: true
   stage: build
   script:
+    # - stylelint --v
     - npm run build
   artifacts:
     when: always
