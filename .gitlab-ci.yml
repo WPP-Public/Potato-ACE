@@ -18,7 +18,7 @@ Install Deps:
   script:
     - npm ci
   only:
-    - test
+    - test-branch
     # changes:
     #   - package.json
     #   - package-lock.json
