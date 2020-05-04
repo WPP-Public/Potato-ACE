@@ -2,6 +2,7 @@
   "baseUrl": "http://localhost:3030",
   "integrationFolder": "src",
   "testFiles": "**/*.{test,spec}.js",
+  "ignoreTestFiles": "**/template.test.js",
   "env": {
     "lib_name": "asce"
   }
