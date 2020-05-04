@@ -1,81 +1,76 @@
 # Disclosure
 
-A disclosure component is one whose visibility can be changed using one or more trigger elements.
-
-[W3C WAI-ARIA Spec](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure)
+Disclosure is a compoent whose visibility can be changed using trigger buttons. Disclosure conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
 
 
-## Usage
+## Import and instantiation
 
-Import the component module into your JS entry point:
+Import the Disclosure class:
+
 ```js
 import Disclosure from '@potato/asce/components/disclosure/disclosure';
 ```
 
-The names of the component HTML attributes are exported as properties of an object `ATTRS` so they may be imported. To avoid name clashes you can import using `as`, e.g. `import Disclosure as asceDisclosure from ...`. After `DOMContentLoaded` is fired, the component will automatically initialise an instance of itself within each `<asce-disclosure></asce-disclosure>` tag.  It will also automatically assign IDs in the format `asce-template-(n)` to any instances that do not have an ID, where `(n)` is the instance count.
+The attribute names used by the class are also exported as properties of `ATTRS`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Disclosure as aceDisclosure from ...`.
 
-You must add an ID to each disclosure tag for the component to work. Disclosures are hidden by default but can be initially shown by adding the attribute `asce-disclosure-visible="true"` to it.
+After `DOMContentLoaded` is fired, Disclosure automatically instantiates an instance of itself within each `<asce-disclosure></asce-disclosure>` and adds IDs in the format `asce-disclosure-(n)` to any instances without one, where `(n)` is the instance count.
 
-Add the attribute `asce-disclosure-trigger-for=<disclosure-id>` to each triggering element, replacing `<disclosure-id>` with the ID of the disclosure to be triggered. Only use "clickable" elements like buttons or anchor tags for triggers. Triggers will by default toggle the visibiility of the disclosure, but the `asce-disclosure-show-trigger` or `asce-disclosure-hide-trigger` attributes can be added to the trigger to ensure it only shows or hides its disclosure respectively.
+Disclosures are hidden by default but can be initially shown by adding the `asce-disclosure-visible="true"` attribute to it. The attribute `asce-disclosure-trigger-for=<disclosure-id>` should be added to triggering elements, where `<disclosure-id>` is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>`s are used for triggers. Disclosures can also be triggered using custom events, as described in the *Custom events* section below.
+
+Triggers will by default toggle the visibiility of the Disclosure, but the `asce-disclosure-show-trigger` or `asce-disclosure-hide-trigger` attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.
 
 
 ## SASS
 
-The following CSS is applied to discloure components:
+The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.
 
 ```scss
-/* STYLES */
 [asce-disclosure-visible="false"] {
   display: none;
 }
 ```
 
-## Events
 
-Disclosure uses the following custom events, the names of which are exported as properties of an `EVENTS` object so they can be used when dispatching or listen to the following events.
+## Custom events
 
-```js
-export const EVENTS = {
-  CHANGED: `asce-disclosure-changed`,
-  HIDE: `asce-disclosure-hide`,
-  SHOW: `asce-disclosure-show`,
-  TOGGLE: `asce-disclosure-toggle`,
-};
-```
+Disclosure uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
 
 
 ### Changed
 
 `asce-disclosure-changed`
 
-This event is dispatched when disclosure visibility is changed.
+This event is dispatched when a Disclosure visibility is changed and its `detail` object is composed as follows:
 
-The event `detail` property is composed as follows:
 ```js
-{
-  'id': // ID of disclosure
-  'visible': // Whether the disclosure is currently visible or not (boolean)
+'detail': {
+  'id': // ID of Disclosure
+  'visible': // The new value of the Disclosure's `asce-disclosure-visible` attribute, as a boolean
 }
 ```
+
 
 ### Hide, Show and Toggle
 
 `asce-disclosure-hide`, `asce-disclosure-show` & `asce-disclosure-toggle`
 
-The disclosure component listens for these event and then hides, shows or toggles itself respectively. These events should be dispatched on *window* and contain a `detail` property composed as follows:
+A Disclosure listens for these events then hides, shows or toggles itself respectively. These events should be dispatched on `window` and the `detail` object should be composed as follows:
+
 ```js
-{
-  'id': // ID of disclosure
+'detail': {
+  'id': // ID of Disclosure
 }
 ```
 
 
-
 ## Examples
 
-### Button triggered disclosures
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as ASCE components may alter their HTML when they initialise.
 
-Disclosures can be triggered with multiple triggers and there can be multiple disclosures on the same page. Disclosure 1 is initially hidden, which is the default behaviour, whereas Disclosure 2 is initially visible as it has the attribute `asce-disclosure-visible="true"`:
+
+### Button triggered Disclosures
+
+In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute `asce-disclosure-visible="true"`.
 
 ```html
 <button asce-disclosure-trigger-for="disclosure-1">
@@ -84,7 +79,7 @@ Disclosures can be triggered with multiple triggers and there can be multiple di
 <button asce-disclosure-trigger-for="disclosure-1">
   Disclosure 1 Toggle 2
 </button>
-<br>
+<br><br>
 <button asce-disclosure-trigger-for="disclosure-2">
   Disclosure 2 Toggle
 </button>
@@ -95,29 +90,32 @@ Disclosures can be triggered with multiple triggers and there can be multiple di
   Disclosure 2 Hide
 </button>
 
+<br><br>
 
 <asce-disclosure id="disclosure-1">
-  <h1>Disclosure 1</h1>
-  <p>Initially hidden diclosure.</p>
+  <div>
+    Disclosure 1 - Initially hidden diclosure.
+  </div>
 </asce-disclosure>
 
 <asce-disclosure id="disclosure-2" asce-disclosure-visible="true">
-  <h1>Disclosure 2</h1>
-  <p>Initially visible diclosure.</p>
+  <div>
+    Disclosure 2 - Initially visible diclosure.
+  </div>
 </asce-disclosure>
 ```
 
 
-### Custom event triggered disclosure
+### Custom event triggered Disclosure
 
-Example of disclosure controlled through custom events. The buttons in the example are not trigger buttons and instead dispatch the disclosure component's custom events.
+Example of Disclosure controlled through custom events. The buttons in this example are **not** trigger buttons and instead dispatch the Disclosure's custom events. The extra JavaScript code to achieve this is also included below. This implementation is only for demonstration purposes and trigger buttons should have the `asce-disclosure-trigger-for` attribute instead.
 
 ```html
-<button id="custom-event-hide-btn">
-  Hide disclosure using custom event
-</button>
 <button id="custom-event-show-btn">
   Show disclosure using custom event
+</button>
+<button id="custom-event-hide-btn">
+  Hide disclosure using custom event
 </button>
 <button id="custom-event-toggle-btn">
   Toggle disclosure using custom event
@@ -127,4 +125,41 @@ Example of disclosure controlled through custom events. The buttons in the examp
   <h1>Disclosure</h1>
   <p>Disclosure toggled using custom events.</p>
 </asce-disclosure>
+```
+
+```js
+import Disclosure, {EVENTS} from '../../asce/components/disclosure/disclosure.js';
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  window.addEventListener('click', (e) => {
+    const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
+    const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
+    const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
+    let showDisclosure = null;
+
+    if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
+      return;
+    }
+
+    let eventType = EVENTS.TOGGLE;
+
+    if (customEventShowBtnClicked) {
+      eventType = EVENTS.SHOW;
+    }
+
+    if (customEventHideBtnClicked) {
+      eventType = EVENTS.HIDE;
+    }
+
+    window.dispatchEvent(new CustomEvent(
+      eventType,
+      {
+        'detail': {
+          'id': 'custom-event-triggered-disclosure',
+        }
+      },
+    ));
+  });
+});
 ```
