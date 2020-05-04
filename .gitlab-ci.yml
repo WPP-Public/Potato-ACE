@@ -1,9 +1,8 @@
 image: node:13.1.0-alpine3.10
 
 stages:
+  - setup
   - prepare
-  - build
-  # - lint
   # - test
   # - deploy
 
@@ -15,7 +14,7 @@ cache:
 
 # Only install deps if package.json or package-lock.json changed
 Prep:
-  stage: prepare
+  stage: setup
   script:
     - npm ci
   only:
@@ -26,17 +25,23 @@ Prep:
 
 # Install deps if changes made to master branch
 Delployment Prep:
-  stage: prepare
+  stage: setup
   script:
     - npm ci
   only:
-    - test
+    - master
 
+
+Lint:
+  interruptible: true
+  stage: prepare
+  script:
+    - npm run lint
 
 
 Build:
   interruptible: true
-  stage: build
+  stage: prepare
   script:
     - npm run build
   artifacts:
@@ -45,15 +50,6 @@ Build:
     expire_in: 1 week
 
 
-# lint:
-#   interruptible: true
-#   stage: lint
-#   needs: [no_needs]
-#   script:
-#     # We use --no-package-lock to prevent npm from installing *everything* in package.json
-#     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
-#     - npm install --no-package-lock --no-save eslint@6.6.0 eslint-plugin-cypress@2.7.0
-#     - npm run lint
 
 # .e2e:
 #   stage: test
