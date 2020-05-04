@@ -3,94 +3,97 @@ image: node:13.1.0-alpine3.10
 stages:
   - prepare
   - build
-  - lint
-  - test
-  - deploy
+  # - lint
+  # - test
+  # - deploy
 
-# Workaround for https://gitlab.com/gitlab-org/gitlab/issues/30631
-no_needs:
-  interruptible: true
+
+# cache:
+#   key:
+#     files:
+#       - package.json
+#   paths:
+#     - node_modules/
+
+
+Install Deps:
   stage: prepare
-  dependencies: []
-  image: alpine:latest
-  variables:
-    GIT_STRATEGY: none
   script:
-    - echo "This build is a workaround for https://gitlab.com/gitlab-org/gitlab/issues/30631"
+    # - npm ci
+    - echo 'Install deps'
 
-build:
+Build:
   interruptible: true
   stage: build
-  needs: [no_needs]
   script:
-    - npm ci
-    - npm run build
+    # - npm run build
+    - gulp build
   artifacts:
     when: always
     paths:
-      - dist
+      - dist/
 
-lint:
-  interruptible: true
-  stage: lint
-  needs: [no_needs]
-  script:
-    # We use --no-package-lock to prevent npm from installing *everything* in package.json
-    - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
-    - npm install --no-package-lock --no-save eslint@6.6.0 eslint-plugin-cypress@2.7.0
-    - npm run lint
+# lint:
+#   interruptible: true
+#   stage: lint
+#   needs: [no_needs]
+#   script:
+#     # We use --no-package-lock to prevent npm from installing *everything* in package.json
+#     - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
+#     - npm install --no-package-lock --no-save eslint@6.6.0 eslint-plugin-cypress@2.7.0
+#     - npm run lint
 
-.e2e:
-  stage: test
-  image: cypress/base:12.13.0
-  needs: [build]
-  interruptible: true
-  before_script:
-    - npm ci
-    - npm install --no-package-lock --no-save wait-on@3.2.0
-    - npx http-server ./dist --port 3030 &
-    - npx wait-on http://localhost:3030
-  artifacts:
-    when: always
-    paths:
-      - cypress/screenshots/
-      - cypress/videos/
-    expire_in: 10 days
+# .e2e:
+#   stage: test
+#   image: cypress/base:12.13.0
+#   needs: [build]
+#   interruptible: true
+#   before_script:
+#     - npm ci
+#     - npm install --no-package-lock --no-save wait-on@3.2.0
+#     - npx http-server ./dist --port 3030 &
+#     - npx wait-on http://localhost:3030
+#   artifacts:
+#     when: always
+#     paths:
+#       - cypress/screenshots/
+#       - cypress/videos/
+#     expire_in: 10 days
 
-test-chrome:
-  extends: .e2e
-  image: cypress/browsers:node12.8.1-chrome78-ff70
-  script:
-    - npm run test:cli -- --browser chrome
+# test-chrome:
+#   extends: .e2e
+#   image: cypress/browsers:node12.8.1-chrome78-ff70
+#   script:
+#     - npm run test:cli -- --browser chrome
 
-test-firefox:
-  extends: .e2e
-  image: cypress/browsers:node12.8.1-chrome78-ff70
-  script:
-    - npm run test:cli -- --browser firefox
+# test-firefox:
+#   extends: .e2e
+#   image: cypress/browsers:node12.8.1-chrome78-ff70
+#   script:
+#     - npm run test:cli -- --browser firefox
 
-# TODO: Edge is not available on Linux yet - switch to Windows runner on
-# GitLab CI and test Edge there.
-.test-edge:
-  extends: .e2e
-  image: cypress/browsers:node12.8.1-chrome78-ff70
-  script:
-    - npm run test:cli -- --browser edge
+# # TODO: Edge is not available on Linux yet - switch to Windows runner on
+# # GitLab CI and test Edge there.
+# .test-edge:
+#   extends: .e2e
+#   image: cypress/browsers:node12.8.1-chrome78-ff70
+#   script:
+#     - npm run test:cli -- --browser edge
 
-test-electron:
-  extends: .e2e
-  script:
-    - npm run test:cli
+# test-electron:
+#   extends: .e2e
+#   script:
+#     - npm run test:cli
 
-deploy:
-  interruptible: true
-  stage: deploy
-  dependencies:
-    - build
-  needs: [build, lint, test-chrome, test-firefox, test-electron]
-  only:
-    - master
-  script:
-    - npm ci
-    - npm i -g firebase-tools
-    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
+# deploy:
+#   interruptible: true
+#   stage: deploy
+#   dependencies:
+#     - build
+#   needs: [build, lint, test-chrome, test-firefox, test-electron]
+#   only:
+#     - master
+#   script:
+#     - npm ci
+#     - npm i -g firebase-tools
+#     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
