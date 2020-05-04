@@ -18,6 +18,7 @@ Install Deps:
   script:
     - npm ci
   only:
+    - test
     changes:
       - package.json
       - package-lock.json
@@ -28,9 +29,9 @@ Build:
   script:
     - npm run build
   artifacts:
-    when: always
     paths:
       - dist/
+    expires_in: 1 week
 
 
 # lint:
