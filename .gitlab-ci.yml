@@ -8,26 +8,24 @@ stages:
   # - deploy
 
 
-# cache:
+cache:
 #   key:
 #     files:
 #       - package.json
-#   paths:
-#     - node_modules/
+  paths:
+    - node_modules/
 
 
 Install Deps:
   stage: prepare
   script:
     - npm ci
-    - echo 'Install deps'
 
 Build:
   interruptible: true
   stage: build
   script:
-    # - npm run build
-    - gulp build
+    - npm run build
   artifacts:
     when: always
     paths:
