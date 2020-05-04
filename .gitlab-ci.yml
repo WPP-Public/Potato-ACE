@@ -26,7 +26,6 @@ Build:
   interruptible: true
   stage: build
   script:
-    - stylelint --v
     - npm run build
   artifacts:
     when: always
