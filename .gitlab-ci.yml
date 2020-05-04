@@ -19,9 +19,9 @@ Install Deps:
     - npm ci
   only:
     - test-branch
-    # changes:
-    #   - package.json
-    #   - package-lock.json
+    changes:
+      - package.json
+      - package-lock.json
 
 Build:
   interruptible: true
@@ -31,7 +31,7 @@ Build:
   artifacts:
     paths:
       - dist/
-    expires_in: 1 week
+    expire_in: 1 week
 
 
 # lint:
