@@ -19,7 +19,7 @@ stages:
 Install Deps:
   stage: prepare
   script:
-    # - npm ci
+    - npm ci
     - echo 'Install deps'
 
 Build:
