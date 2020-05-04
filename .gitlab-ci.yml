@@ -9,9 +9,6 @@ stages:
 
 
 cache:
-#   key:
-#     files:
-#       - package.json
   paths:
     - node_modules/
 
@@ -22,7 +19,8 @@ Install Deps:
     - npm ci
   only:
     changes:
-      - README.md
+      - package.json
+      - package-lock.json
 
 Build:
   interruptible: true
