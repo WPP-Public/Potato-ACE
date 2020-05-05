@@ -1,5 +1,6 @@
 image: node:13.1.0-alpine3.10
 
+
 stages:
   - prepare
   # - build
@@ -19,7 +20,8 @@ Install dependencies:
   stage: .pre
   script:
     # - npm ci
-    - echo ">>>>>>>>>>>>>>> SOMETHING" > test.txt
+    # - echo ">>>>>>>>>>>>>>> SOMETHING" > test.txt
+    - echo ">>>>>>>>>>>>>>> SOMETHING"
   cache:
     paths:
       # - node_modules/
