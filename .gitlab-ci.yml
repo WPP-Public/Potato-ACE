@@ -10,8 +10,6 @@ stages:
 cache:
   paths:
     - node_modules/
-  policy:
-    pull
 
 
 # Only install deps if package.json or package-lock.json changed
