@@ -8,9 +8,9 @@ stages:
 
 
 cache:
-  key: deps
   paths:
-    - node_modules/
+    # - node_modules/
+    - test.txt
   policy: pull
 
 
@@ -18,11 +18,12 @@ cache:
 Install dependencies:
   stage: .pre
   script:
-    - npm ci
+    # - npm ci
+    - echo ">>>>>>>>>>>>>>> SOMETHING" > test.txt
   cache:
-    key: deps
     paths:
-      - node_modules/
+      # - node_modules/
+      - test.txt
     policy: push
   # rules:
   #   - changes:
@@ -33,7 +34,9 @@ Install dependencies:
 Lint:
   stage: prepare
   script:
-    - npm run lint
+    # - npm run lint
+    - echo ">>>>>>>>>>>>>>>>>>>> HERE"
+    - cat test.txt
     # - exit 1
 
 
