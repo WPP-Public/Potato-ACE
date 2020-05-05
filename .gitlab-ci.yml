@@ -2,7 +2,7 @@ image: node:13.1.0-alpine3.10
 
 stages:
   - prepare
-  - build
+  # - build
   # - test
   # - deploy
 
@@ -15,12 +15,14 @@ cache:
 
 
 # Only install deps if package.json or package-lock.json changed
-# Install dependencies:
-#   stage: .pre
-#   script:
-#     - npm ci
-  # only:
-  #   changes:
+Install dependencies:
+  stage: .pre
+  script:
+    - npm ci
+  # cache:
+  #   policy: push
+  # rules:
+  #   - changes:
   #     - package.json
   #     - package-lock.json
 
@@ -28,23 +30,22 @@ cache:
 Lint:
   stage: prepare
   script:
-    # - npm run lint
-    - exit 1
+    - npm run lint
+    # - exit 1
 
 
 
-Build:
-  stage: build
-  script:
-    - npm ci
-    - npm run build
-  needs: []
-  artifacts:
-    paths:
-      - dist/
-    expire_in: 1 week
-  # when: delayed
-  # start_in: 1 minute
+# Build:
+#   stage: build
+#   script:
+#     - npm ci
+#     - npm run build
+#   needs: []
+#   artifacts:
+#     paths:
+#       - dist/
+#     expire_in: 1 week
+
 
 
 
