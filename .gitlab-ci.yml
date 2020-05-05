@@ -19,8 +19,8 @@ Install dependencies:
   stage: .pre
   script:
     - npm ci
-  # cache:
-  #   policy: push
+  cache:
+    policy: push
   # rules:
   #   - changes:
   #     - package.json
