@@ -37,7 +37,7 @@ Build:
   stage: build
   script:
     - npm run build
-  needs: []
+  # needs: []
   artifacts:
     paths:
       - dist/
