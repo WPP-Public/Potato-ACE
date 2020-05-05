@@ -2,10 +2,10 @@ image: node:13.1.0-alpine3.10
 
 
 stages:
-  - prepare
-  # - build
-  # - test
-  # - deploy
+  - dependencies
+  - build
+  - test
+  - deploy
 
 
 cache:
@@ -16,7 +16,7 @@ cache:
 
 # Only install deps if package.json or package-lock.json changed
 Install dependencies:
-  stage: .pre
+  stage: dependencies
   script:
     - npm ci
   cache:
@@ -29,77 +29,65 @@ Install dependencies:
   #     - package-lock.json
 
 
-Lint:
-  stage: prepare
+Build:
+  stage: build
   script:
-    - npm run lint
+    - npm run lint && npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 week
 
 
-# Build:
-#   stage: build
-#   script:
-#     - npm ci
-#     - npm run build
-#   needs: []
-#   artifacts:
-#     paths:
-#       - dist/
-#     expire_in: 1 week
+.e2e:
+  stage: test
+  image: cypress/base:12.13.0
+  needs: [build]
+  interruptible: true
+  before_script:
+    - npm ci
+    - npm install --no-package-lock --no-save wait-on@3.2.0
+    - npx http-server ./dist --port 3030 &
+    - npx wait-on http://localhost:3030
+  artifacts:
+    when: always
+    paths:
+      - cypress/screenshots/
+      - cypress/videos/
+    expire_in: 10 days
+
+test-chrome:
+  extends: .e2e
+  image: cypress/browsers:node12.8.1-chrome78-ff70
+  script:
+    - npm run test:cli -- --browser chrome
+
+test-firefox:
+  extends: .e2e
+  image: cypress/browsers:node12.8.1-chrome78-ff70
+  script:
+    - npm run test:cli -- --browser firefox
+
+# TODO: Edge is not available on Linux yet - switch to Windows runner on
+# GitLab CI and test Edge there.
+.test-edge:
+  extends: .e2e
+  image: cypress/browsers:node12.8.1-chrome78-ff70
+  script:
+    - npm run test:cli -- --browser edge
+
+test-electron:
+  extends: .e2e
+  script:
+    - npm run test:cli
 
 
-
-
-# .e2e:
-#   stage: test
-#   image: cypress/base:12.13.0
-#   needs: [build]
-#   interruptible: true
-#   before_script:
-#     - npm ci
-#     - npm install --no-package-lock --no-save wait-on@3.2.0
-#     - npx http-server ./dist --port 3030 &
-#     - npx wait-on http://localhost:3030
-#   artifacts:
-#     when: always
-#     paths:
-#       - cypress/screenshots/
-#       - cypress/videos/
-#     expire_in: 10 days
-
-# test-chrome:
-#   extends: .e2e
-#   image: cypress/browsers:node12.8.1-chrome78-ff70
-#   script:
-#     - npm run test:cli -- --browser chrome
-
-# test-firefox:
-#   extends: .e2e
-#   image: cypress/browsers:node12.8.1-chrome78-ff70
-#   script:
-#     - npm run test:cli -- --browser firefox
-
-# # TODO: Edge is not available on Linux yet - switch to Windows runner on
-# # GitLab CI and test Edge there.
-# .test-edge:
-#   extends: .e2e
-#   image: cypress/browsers:node12.8.1-chrome78-ff70
-#   script:
-#     - npm run test:cli -- --browser edge
-
-# test-electron:
-#   extends: .e2e
-#   script:
-#     - npm run test:cli
-
-# deploy:
-#   interruptible: true
-#   stage: deploy
-#   dependencies:
-#     - build
-#   needs: [build, lint, test-chrome, test-firefox, test-electron]
-#   only:
-#     - master
-#   script:
-#     - npm ci
-#     - npm i -g firebase-tools
-#     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
+deploy:
+  stage: deploy
+  only:
+    - master
+    - test
+  before_script:
+    - npm i -g firebase-tools
+  script:
+    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
