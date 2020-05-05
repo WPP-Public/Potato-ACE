@@ -18,6 +18,7 @@ export const ATTRS = {
 
 export const EVENTS = {
   OPTION_SELECTED: `${SELECT}-option-selected`,
+  UPDATE_OPTIONS: `${SELECT}-update-options`,
 };
 
 
@@ -30,10 +31,13 @@ export default class Select extends Listbox {
 
 
     /* CLASS METHOD BINDINGS */
+    this.cancelOptionChange = this.cancelOptionChange.bind(this);
+    this.confirmOptionChange = this.confirmOptionChange.bind(this);
     this.dispatchOptionSelectedEvent = this.dispatchOptionSelectedEvent.bind(this);
     this.hideList = this.hideList.bind(this);
     this.selectClickHandler = this.selectClickHandler.bind(this);
     this.selectKeydownHandler = this.selectKeydownHandler.bind(this);
+    this.selectUpdateOptionsHandler = this.selectUpdateOptionsHandler.bind(this);
     this.showList = this.showList.bind(this);
     this.updateTriggerText = this.updateTriggerText.bind(this);
   }
@@ -45,8 +49,13 @@ export default class Select extends Listbox {
 
 
     /* GET DOM ELEMENTS */
-    this.triggerEl = this.querySelector('button');
     this.listEl = this.querySelector('ul') || this.querySelector('ol');
+    this.triggerEl = this.querySelector('button');
+    // Create <button> if not present
+    if (!this.triggerEl) {
+      this.prepend(document.createElement('button'));
+      this.triggerEl = this.querySelector('button');
+    }
 
 
     /* GET DOM DATA */
@@ -64,13 +73,35 @@ export default class Select extends Listbox {
 
 
     /* ADD EVENT LISTENERS */
-    this.listEl.addEventListener('blur', this.hideList, {passive: true});
     this.addEventListener('keydown', this.selectKeydownHandler);
     window.addEventListener('click', this.selectClickHandler, {passive: true});
+    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler, {passive: true});
 
 
     /* INITIALISATION */
+    this.activeOptionIndex = 0;
     this.hideList();
+    this.updateTriggerText();
+  }
+
+
+  /*
+    Show dropdown list
+  */
+  cancelOptionChange() {
+    this.makeOptionActive(this.triggerOptionIndex);
+    this.hideList();
+  }
+
+
+  /*
+    Confirm the change in selected option by updating the trigger text, hiding the
+  */
+  confirmOptionChange() {
+    this.updateTriggerText();
+    this.hideList();
+    this.triggerEl.focus();
+    this.dispatchOptionSelectedEvent();
   }
 
 
@@ -78,14 +109,16 @@ export default class Select extends Listbox {
     Show dropdown list
   */
   dispatchOptionSelectedEvent() {
-    const optionSelected = this.listEl.querySelector('[aria-selected="true"]');
+    const optionSelectedEl = this.listEl.querySelector('[aria-selected="true"]');
 
-    this.dispatchEvent(
+    window.dispatchEvent(
       new CustomEvent(EVENTS.OPTION_SELECTED, {
-        detail: {
-          selectId: this.id,
-          optionIndex: optionSelected.getAttribute(LISTBOX_ATTRS.OPTION_INDEX),
-          optionId: optionSelected.id,
+        'detail': {
+          'id': this.id,
+          'option': {
+            'id': optionSelectedEl.id,
+            'index': +optionSelectedEl.getAttribute(LISTBOX_ATTRS.OPTION_INDEX),
+          },
         }
       })
     );
@@ -96,7 +129,6 @@ export default class Select extends Listbox {
     Hide dropdown list and update trigger text
   */
   hideList() {
-    this.updateTriggerText();
     this.listEl.setAttribute(ATTRS.LIST_HIDDEN, '');
     this.triggerEl.setAttribute('aria-expanded', 'false');
   }
@@ -106,21 +138,26 @@ export default class Select extends Listbox {
     Handle clicks on trigger and on listbox options
   */
   selectClickHandler(e) {
-    const optionClicked = e.target.closest(`[${LISTBOX_ATTRS.OPTION_INDEX}]`);
+    const optionClicked = e.target.closest(`#${this.id} [${LISTBOX_ATTRS.OPTION_INDEX}]`);
     const triggerClicked = e.target.closest(`[${ATTRS.TRIGGER}]`) === this.triggerEl;
+    const listHidden = this.listEl.hasAttribute(ATTRS.LIST_HIDDEN);
 
-    if (!optionClicked && !triggerClicked) {
+    if (!optionClicked && !triggerClicked && listHidden) {
       return;
    }
 
     if (triggerClicked) {
+      this.selectedOptionEl = this.listEl.querySelector('[aria-selected="true"]');
       this.showList();
-      this.listEl.focus();
       return;
-   }
+    }
 
-    this.dispatchOptionSelectedEvent();
-    this.hideList();
+    if (optionClicked) {
+      this.confirmOptionChange();
+      return;
+    }
+
+    this.cancelOptionChange();
   }
 
 
@@ -136,23 +173,55 @@ export default class Select extends Listbox {
     }
 
     const keyPressed = e.key || e.which || e.keyCode;
-    if (keydownOnList && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.ESCAPE])) {
+    // TAB pressed on list
+    if (keydownOnList && keyPressedMatches(keyPressed, KEYS.TAB)) {
       e.preventDefault();
-      this.hideList();
+      return;
+    }
+
+    // ESC pressed on list
+    if (keydownOnList && keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+      this.cancelOptionChange();
       this.triggerEl.focus();
-      this.dispatchOptionSelectedEvent();
       return;
     }
 
+    // UP or DOWN pressed
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
-      e.preventDefault();
-      this.showList();
-      this.listEl.focus();
+      // UP or DOWN on trigger
+      if (keydownOnTrigger) {
+        e.preventDefault();
+        this.showList();
+      }
       return;
     }
 
-    this.activeOptionIndex = this.activeOptionIndex || 0;
+    // ENTER or SPACE pressed on list
+    if (keydownOnList && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
+      e.preventDefault();
+      this.confirmOptionChange();
+      return;
+    }
+
+    // Letter pressed
     this.keydownHandler(e);
+
+    if (keydownOnTrigger) {
+      this.confirmOptionChange();
+    }
+  }
+
+
+  /*
+    Update options custom event handler
+  */
+  selectUpdateOptionsHandler(e) {
+    if (!e.detail || (e.detail.id !== this.id)) {
+      return;
+    }
+
+    this.activeOptionIndex = null;
+    this.initialiseList();
     this.updateTriggerText();
   }
 
@@ -164,25 +233,27 @@ export default class Select extends Listbox {
     this.triggerEl.setAttribute('aria-expanded', 'true');
     this.listEl.removeAttribute(ATTRS.LIST_HIDDEN);
     handleOverflow(this.listEl);
+    this.listEl.focus();
   }
 
 
   /*
-    Show dropdown list
+    Update the trigger text
   */
   updateTriggerText() {
     const activeOption = this.listEl.querySelector('[aria-selected="true"]');
     if (activeOption !== null) {
       this.triggerEl.textContent = activeOption.textContent;
+      this.triggerOptionIndex = +activeOption.getAttribute(LISTBOX_ATTRS.OPTION_INDEX);
     }
   }
 
 
   disconnectedCallback() {
     /* REMOVE EVENT LISTENERS */
-    this.listEl.removeEventListener('blur', this.hideList, {passive: true});
     this.removeEventListener('keydown', this.selectKeydownHandler);
     window.removeEventListener('click', this.selectClickHandler, {passive: true});
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler, {passive: true});
 
     super.disconnectedCallback();
   }

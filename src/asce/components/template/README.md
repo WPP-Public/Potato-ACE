@@ -10,9 +10,11 @@ Template conforms to W3C WAI-ARIA authoring practices specified [here](https://w
 ## Import and instantiation
 
 Import the Template class:
+
 ```js
 import Template from '@potato/asce/components/template/template';
 ```
+
 To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`.
 <!-- TODO: If no ATTRS are exported then remove following sentence -->
 The attribute names used by the class are also exported as properties of `ATTRS`.
@@ -34,7 +36,7 @@ The following SASS is applied to the component, each declaration of which can be
 ```
 
 
-## Events
+## Custom events
 <!-- TODO: If only one event used remove plural -->
 <!-- TODO: Remove or keep 'dispatched' and 'listened for' as appropriate -->
 Template uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
@@ -49,7 +51,13 @@ Template uses the following custom events, the names of which are exported as pr
 <!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
 
 <!-- DESCRIBE EACH PROPERTY OF THE 'detail' OBJECT -->
-
+<!-- 
+```js
+'detail': {
+  'id': // ID of Template
+}
+```
+-->
 
 
 ## Examples
@@ -62,5 +70,8 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 <!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY HERE -->
 
+<!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
+<!--
 ```html
 ```
+-->
