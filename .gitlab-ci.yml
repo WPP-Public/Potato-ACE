@@ -19,6 +19,9 @@ Install dependencies:
   script:
     - npm ci
   cache:
+    key: deps
+  # paths:
+  #   - node_modules/
     policy: push
   # rules:
   #   - changes:
