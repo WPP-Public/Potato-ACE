@@ -36,6 +36,7 @@ Lint:
 Build:
   stage: build
   script:
+    - npm ci
     - npm run build
   needs: []
   artifacts:
