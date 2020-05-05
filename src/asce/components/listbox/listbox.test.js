@@ -1,5 +1,6 @@
 import {LISTBOX as LB, ATTRS, searchTimeoutTime} from './listbox';
 
+
 const IDS = {
   ADD_OPTION_BTN: 'add-option',
   DYNAMIC_LB: 'dynamic-listbox',
@@ -9,13 +10,15 @@ const IDS = {
 };
 
 
-describe('Listbox', () => {
+context('Listbox', () => {
   before(() => {
     cy.visit(`/listbox`);
   });
 
 
   beforeEach(() => {
+    cy.get(LB).as('listboxes');
+
     // Get single-select listbox elements
     cy.get(`#${IDS.SINGLE_SELECT_LB}`)
       .as('singleSelectListbox')
@@ -40,7 +43,7 @@ describe('Listbox', () => {
 
   describe('Initialisation', () => {
     it('All listboxes should have IDs', () => {
-      cy.get(`${LB}:not(#${IDS.DYNAMIC_LB})`).each(listbox => {
+      cy.get('@listboxes').each(listbox => {
         cy.get(listbox).should('have.attr', 'id');
       });
     });
@@ -642,13 +645,13 @@ describe('Listbox', () => {
   });
 
 
-  describe('Type-ahead', () => {
+  describe('Type-ahead interaction', () => {
     beforeEach(() => {
       cy.reload();
     });
 
 
-    it('Listbox doesn\'t break if no result found', () => {
+    it('Typing a character that leads to no match should not change active option', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('z')
@@ -656,7 +659,7 @@ describe('Listbox', () => {
     });
 
 
-    it('Select first option that starts with single typed character', () => {
+    it('Typing a single character should select first matching option', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('h')
@@ -664,7 +667,17 @@ describe('Listbox', () => {
     });
 
 
-    it('Type-ahead loops around when single character typed', () => {
+    it('Typing character sequence should select first matching option', () => {
+      cy.get('@singleSelectListboxList')
+        .focus()
+        .type('s')
+        .type('p')
+        .type('i')
+        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-10`);
+    });
+
+
+    it('Typing a single character should select first matching option even if it\'s above active option', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('{downarrow}')
@@ -673,16 +686,7 @@ describe('Listbox', () => {
     });
 
 
-    it('Select first option that starts with typed characters', () => {
-      cy.get('@singleSelectListboxList')
-        .focus()
-        .type('s')
-        .type('p')
-        .should('have.attr', 'aria-activedescendant', `${IDS.SINGLE_SELECT_LB}-option-10`);
-    });
-
-
-    it('Type-ahead loops around when single character typed', () => {
+    it('Typing character sequence should select first matching option even if it\'s above active option', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('{uparrow}')
@@ -696,7 +700,7 @@ describe('Listbox', () => {
     });
 
 
-    it('Select first option that starts with typed character when character typed twice with no delay', () => {
+    it('Typing a character twice without delay should select first matching option', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('c')
@@ -705,7 +709,7 @@ describe('Listbox', () => {
     });
 
 
-    it('Select second option that starts with typed character when character typed twice with delay', () => {
+    it('Typing a character twice with short delay should select second matching option', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('b', {delay: searchTimeoutTime})
@@ -714,7 +718,7 @@ describe('Listbox', () => {
     });
 
 
-    it('Type ahead loops around when character typed twice with delay', () => {
+    it('Typing a character twice with short delay should select second matching option even if it\'s above active option', () => {
       cy.get('@singleSelectListboxList')
         .focus()
         .type('{uparrow}')

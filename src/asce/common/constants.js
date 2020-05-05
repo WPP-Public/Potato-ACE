@@ -38,6 +38,10 @@ export const KEYS = {
     'CODE': 32,
     'KEY': ' ',
   },
+  'TAB': {
+    'CODE': 9,
+    'KEY': 'Tab',
+  },
   'UP': {
     'CODE': 38,
     'KEY': 'ArrowUp',
