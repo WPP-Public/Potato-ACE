@@ -10,8 +10,7 @@ stages:
 
 cache:
   paths:
-    # - node_modules/
-    - test.txt
+    - node_modules/
   policy: pull
 
 
@@ -19,28 +18,21 @@ cache:
 Install dependencies:
   stage: .pre
   script:
-    # - npm ci
-    # - echo ">>>>>>>>>>>>>>> SOMETHING" > test.txt
-    - echo ">>>>>>>>>>>>>>> SOMETHING"
+    - npm ci
   cache:
     paths:
-      # - node_modules/
-      - test.txt
+      - node_modules/
     policy: push
-  # rules:
-  #   - changes:
-  #     - package.json
-  #     - package-lock.json
+  rules:
+    - changes:
+      - package.json
+      - package-lock.json
 
 
 Lint:
   stage: prepare
   script:
-    # - npm run lint
-    - echo ">>>>>>>>>>>>>>>>>>>> HERE"
-    - cat test.txt
-    # - exit 1
-
+    - npm run lint
 
 
 # Build:
