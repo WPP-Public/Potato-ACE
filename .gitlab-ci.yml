@@ -23,10 +23,10 @@ Install dependencies:
     paths:
       - node_modules/
     policy: push
-  rules:
-    - changes:
-      - package.json
-      - package-lock.json
+  # rules:
+  #   - changes:
+  #     - package.json
+  #     - package-lock.json
 
 
 Lint:
