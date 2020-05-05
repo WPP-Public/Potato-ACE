@@ -20,8 +20,8 @@ Install dependencies:
     - npm ci
   cache:
     key: deps
-  # paths:
-  #   - node_modules/
+    paths:
+      - node_modules/
     policy: push
   # rules:
   #   - changes:
