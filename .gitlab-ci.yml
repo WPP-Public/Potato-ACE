@@ -2,15 +2,16 @@ image: node:13.1.0-alpine3.10
 
 
 variables:
-  CYPRESS_CACHE_FOLDER: 'cypress-cache/'
+  npm_config_cache: '$CI_PROJECT_DIR/.npm'
+  CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/cypress'
 
 
 cache:
   key: deps
   paths:
-    - .npm/
-    - node_modules/
-    - cypress-cache/
+    - .npm
+    - node_modules
+    - cache/cypress
   policy: pull
 
 
@@ -26,20 +27,20 @@ stages:
 Install deps:
   stage: prepare
   script:
-    - echo 'CI_COMMIT_BRANCH >>>>>> ' $CI_COMMIT_BRANCH
-    - echo 'CI_COMMIT_REF_NAME >>>>>> ' $CI_COMMIT_REF_NAME
-    - npm ci --cache .npm --prefer-offline
+    # - echo 'CI_COMMIT_BRANCH >>>>>> ' $CI_COMMIT_BRANCH
+    # - echo 'CI_COMMIT_REF_NAME >>>>>> ' $CI_COMMIT_REF_NAME
+    - npm ci --prefer-offline
   cache:
     key: deps
     paths:
-      - .npm/
-      - node_modules/
-      - cypress-cache/
+      - .npm
+      - node_modules
+      - cache/cypress
     policy: pull-push
-  rules:
-    - changes:
-      - package.json
-      - package-lock.json
+  # rules:
+  #   - changes:
+  #     - package.json
+  #     - package-lock.json
     # - if: $CI_COMMIT_BRANCH == 'master'
 
 
@@ -63,6 +64,9 @@ Build:
 .test:
   stage: test
   image: cypress/browsers:node13.1.0-chrome78-ff70
+  cache: {}
+  before_script:
+    - npm install start-server-and-test cypress
   script:
     - npm run test:$BROWSER
   # artifacts:
