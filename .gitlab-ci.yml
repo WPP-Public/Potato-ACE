@@ -28,10 +28,10 @@ Install dependencies:
       - .npm/
       - node_modules/
     policy: push
-  rules:
-    - changes:
-      - package.json
-      - package-lock.json
+  # rules:
+  #   - changes:
+  #     - package.json
+  #     - package-lock.json
 
 
 # BUILD STAGE
