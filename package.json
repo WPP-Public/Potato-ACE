@@ -6,9 +6,9 @@
   "scripts": {
     "build": "gulp build",
     "cypress": "cypress open",
-    "cypress:electron": "cypress run --config video=false",
-    "cypress:chrome": "cypress run --config video=false --browser chrome",
-    "cypress:firefox": "cypress run --config video=false --browser firefox",
+    "cypress:electron": "cypress run -c video=false",
+    "cypress:chrome": "cypress run -c video=false -b chrome",
+    "cypress:firefox": "cypress run -c video=false -b firefox",
     "inject": "node --experimental-modules ./scripts/inject-code.mjs",
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/**/*.js\"",
@@ -18,7 +18,8 @@
     "test": "start-server-and-test 'gulp serve-build' 3030 cypress",
     "test:electron": "start-server-and-test serve-dist 3030 cypress:electron",
     "test:chrome": "start-server-and-test serve-dist 3030 cypress:chrome",
-    "test:firefox": "start-server-and-test serve-dist 3030 cypress:firefox"
+    "test:firefox": "start-server-and-test serve-dist 3030 cypress:firefox",
+    "test:parallel": "start-server-and-test serve-dist 3030 'cypress run --record --parallel --group \"electron tests\"'"
   },
   "repository": {
     "type": "git",

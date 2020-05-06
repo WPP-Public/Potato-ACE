@@ -41,7 +41,7 @@ Install deps:
     - changes:
       - package.json
       - package-lock.json
-    - if: $CI_COMMIT_BRANCH == 'master'
+    # - if: $CI_COMMIT_BRANCH == 'master'
 
 
 
@@ -57,7 +57,7 @@ Build:
     - npm run build
   artifacts:
     paths:
-      - dist/
+      - dist
     expire_in: 1 week
 
 
@@ -65,23 +65,25 @@ Build:
 .test:
   stage: test
   image: cypress/browsers:node13.1.0-chrome78-ff70
-  cache: {}
-  before_script:
-    - npm install start-server-and-test cypress
   script:
     - npm run test:$BROWSER
-  # artifacts:
-  #   when: always
-  #   # when: on_failure
-  #   paths:
-  #     - cypress/screenshots/
-  #     - cypress/videos/
-  #   expire_in: 1 week
+  artifacts:
+    when: on_failure
+    paths:
+      - cypress/screenshots/**/*.png
+    expire_in: 1 week
 
-Chrome:
+
+
+Chrome 1:
   extends: .test
   variables:
-    BROWSER: 'chrome'
+    BROWSER: 'parallel'
+
+Chrome 2:
+  extends: .test
+  variables:
+    BROWSER: 'parallel'
 
 Firefox:
   extends: .test
