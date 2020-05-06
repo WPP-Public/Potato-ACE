@@ -28,7 +28,6 @@ Install dependencies:
   script:
     - npm ci --cache .npm --prefer-offline
   cache:
-    key: deps
     policy: push
   # rules:
   #   - changes:
