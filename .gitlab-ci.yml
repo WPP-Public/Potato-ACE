@@ -87,6 +87,7 @@ Edge:
     paths:
       - .npm/
       - node_modules/
+      - cypress-cache/
 
 
 # DEPLOY STAGE
