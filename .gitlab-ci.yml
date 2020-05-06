@@ -36,7 +36,8 @@ Install dependencies:
 Build:
   stage: build
   script:
-    - npm run lint && npm run build
+    - npm run lint
+    - npm run build
   artifacts:
     paths:
       - dist/
