@@ -1,8 +1,7 @@
 image: node:13.1.0-alpine3.10
 
-
 stages:
-  - dependencies
+  - prepare
   - build
   - test
   - deploy
@@ -10,17 +9,21 @@ stages:
 
 cache:
   paths:
+    - .npm/
     - node_modules/
   policy: pull
 
 
+
+# PREPARE STAGE
 # Only install deps if package.json or package-lock.json changed
 Install dependencies:
-  stage: dependencies
+  stage: prepare
   script:
-    - npm ci
+    - npm ci --cache .npm --prefer-offline
   cache:
     paths:
+      - .npm/
       - node_modules/
     policy: push
   # rules:
@@ -29,6 +32,7 @@ Install dependencies:
   #     - package-lock.json
 
 
+# BUILD STAGE
 Build:
   stage: build
   script:
@@ -39,55 +43,41 @@ Build:
     expire_in: 1 week
 
 
-.e2e:
+# TEST STAGE
+.test:
   stage: test
-  image: cypress/base:12.13.0
-  needs: [build]
-  interruptible: true
-  before_script:
-    - npm ci
-    - npm install --no-package-lock --no-save wait-on@3.2.0
-    - npx http-server ./dist --port 3030 &
-    - npx wait-on http://localhost:3030
   artifacts:
     when: always
     paths:
       - cypress/screenshots/
       - cypress/videos/
-    expire_in: 10 days
+    expire_in: 1 week
 
-test-chrome:
-  extends: .e2e
-  image: cypress/browsers:node12.8.1-chrome78-ff70
+
+Chrome and Firefox:
+  extends: .test
+  image: cypress/browsers:node12.13.0-chrome80-ff74
   script:
-    - npm run test:cli -- --browser chrome
+    - npm run test:chrome
+    - npm run test:firefox
 
-test-firefox:
-  extends: .e2e
-  image: cypress/browsers:node12.8.1-chrome78-ff70
+
+Edge:
+  extends: .test
+  image: cypress/base:13.1.0
+  tags:
+    - windows
   script:
-    - npm run test:cli -- --browser firefox
-
-# TODO: Edge is not available on Linux yet - switch to Windows runner on
-# GitLab CI and test Edge there.
-.test-edge:
-  extends: .e2e
-  image: cypress/browsers:node12.8.1-chrome78-ff70
-  script:
-    - npm run test:cli -- --browser edge
-
-test-electron:
-  extends: .e2e
-  script:
-    - npm run test:cli
+    - npm run test:edge
 
 
-deploy:
-  stage: deploy
-  only:
-    - master
-    - test
-  before_script:
-    - npm i -g firebase-tools
-  script:
-    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
+# DEPLOY STAGE
+# Deploy:
+#   stage: deploy
+#   only:
+#     - master
+#     - test
+#   before_script:
+#     - npm i -g firebase-tools
+#   script:
+#     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
