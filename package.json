@@ -20,7 +20,7 @@
     "test:cli": "npm run ssat -- cypress",
     "test:chrome": "npm run ssat -- cypress:chrome",
     "test:firefox": "npm run ssat -- cypress:firefox",
-    "test:edge": "npm run ssat -- cypress:edge"
+    "test:edge": "npm run ssat -- 'cypress run --config video=false --browser edge'"
   },
   "repository": {
     "type": "git",

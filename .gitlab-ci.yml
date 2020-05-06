@@ -1,3 +1,6 @@
+variables:
+  CYPRESS_CACHE_FOLDER: 'cypress-cache/'
+
 image: node:13.1.0-alpine3.10
 
 stages:
@@ -12,21 +15,20 @@ cache:
   paths:
     - .npm/
     - node_modules/
+    - cypress-cache/
   policy: pull
-
 
 
 # PREPARE STAGE
 # Only install deps if package.json or package-lock.json changed
 Install dependencies:
   stage: prepare
+  before_script:
+    - echo $CYPRESS_CACHE_FOLDER
   script:
     - npm ci --cache .npm --prefer-offline
   cache:
     key: deps
-    paths:
-      - .npm/
-      - node_modules/
     policy: push
   # rules:
   #   - changes:
@@ -49,6 +51,8 @@ Build:
 # TEST STAGE
 .test:
   stage: test
+  before_script:
+    - echo $CYPRESS_CACHE_FOLDER
   artifacts:
     when: always
     paths:
