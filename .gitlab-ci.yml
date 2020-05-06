@@ -57,7 +57,7 @@ Build:
 
 Chrome and Firefox:
   extends: .test
-  image: cypress/browsers:node12.13.0-chrome80-ff74
+  image: cypress/browsers:node13.1.0-chrome78-ff70
   script:
     - npm run test:chrome
     - npm run test:firefox
@@ -69,7 +69,13 @@ Edge:
   tags:
     - windows
   script:
+    - npm ci --cache .npm --prefer-offline
     - npm run test:edge
+  cache:
+    key: windows-deps
+    paths:
+      - .npm/
+      - node_modules/
 
 
 # DEPLOY STAGE
