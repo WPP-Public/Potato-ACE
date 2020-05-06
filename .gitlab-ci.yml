@@ -8,6 +8,7 @@ stages:
 
 
 cache:
+  key: deps
   paths:
     - .npm/
     - node_modules/
@@ -22,6 +23,7 @@ Install dependencies:
   script:
     - npm ci --cache .npm --prefer-offline
   cache:
+    key: deps
     paths:
       - .npm/
       - node_modules/
