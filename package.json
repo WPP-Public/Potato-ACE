@@ -16,11 +16,13 @@
     "lint:scss": "stylelint \"src/sass/**/*.scss\"",
     "ssat": "start-server-and-test 'gulp serve-build' 3030",
     "start": "gulp",
+    "serve-build": "gulp serve-build",
     "test": "npm run ssat -- 'cypress open'",
     "test:cli": "npm run ssat -- cypress",
     "test:chrome": "npm run ssat -- cypress:chrome",
     "test:firefox": "npm run ssat -- cypress:firefox",
-    "test:edge": "start-server-and-test 'gulp serve-build' 3030 'cypress run --config video=false --browser edge'"
+    "edge": "cypress run --config video=false --browser edge",
+    "test:edge": "start-server-and-test serve-build 3030 edge"
   },
   "repository": {
     "type": "git",

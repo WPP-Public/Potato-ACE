@@ -23,8 +23,6 @@ cache:
 # Only install deps if package.json or package-lock.json changed
 Install dependencies:
   stage: prepare
-  before_script:
-    - echo $CYPRESS_CACHE_FOLDER
   script:
     - npm ci --cache .npm --prefer-offline
   cache:
@@ -34,10 +32,10 @@ Install dependencies:
       - node_modules/
       - cypress-cache/
     policy: push
-  # rules:
-  #   - changes:
-  #     - package.json
-  #     - package-lock.json
+  rules:
+    - changes:
+      - package.json
+      - package-lock.json
 
 
 # BUILD STAGE
@@ -55,8 +53,6 @@ Build:
 # TEST STAGE
 .test:
   stage: test
-  before_script:
-    - echo $CYPRESS_CACHE_FOLDER
   artifacts:
     when: always
     paths:
