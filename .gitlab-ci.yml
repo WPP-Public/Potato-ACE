@@ -1,5 +1,4 @@
-# image: node:13.1.0-alpine3.10
-image: cypress/browsers:node13.1.0-chrome78-ff70
+image: node:13.1.0-alpine3.10
 
 
 variables:
@@ -63,9 +62,7 @@ Build:
 # TEST STAGE
 .test:
   stage: test
-  # image: cypress/browsers:node13.1.0-chrome78-ff70
-  before_script:
-   - npm rebuild node-sass
+  image: cypress/browsers:node13.1.0-chrome78-ff70
   script:
     - npm run test:$BROWSER
   # artifacts:
@@ -88,37 +85,21 @@ Firefox:
 
 
 # Edge:
-#   extends: .test
-#   image: cypress/base:13.1.0
-#   tags:
-#     - windows
-#   before_script:
-#     - npm ci --cache .npm --prefer-offline
-#     - apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-#   script:
-#     - start-server-and-test serve-build 3030 cypress:edge
-#   cache:
-#     key: windows-deps
-#     paths:
-#       - .npm/
-#       - node_modules/
-#       - cypress-cache/
-
-# Edge:
-#   extends: .test
-#   image: cypress/base:13.1.0
-#   tags:
-#     - osx
-#   script:
-#     # - npm ci --cache .npm --prefer-offline
-#     # - apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-#     - npm run test:edge
-#   # cache:
-#   #   key: windows-deps
-#   #   paths:
-#   #     - .npm/
-#   #     - node_modules/
-#   #     - cypress-cache/
+  # extends: .test
+  # image: cypress/base:13.1.0
+  # tags:
+  #   - windows
+  # before_script:
+  #   - npm ci --cache .npm --prefer-offline
+  #   - apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+  # script:
+  #   - start-server-and-test serve-build 3030 cypress:edge
+  # cache:
+  #   key: windows-deps
+  #   paths:
+  #     - .npm/
+  #     - node_modules/
+  #     - cypress-cache/
 
 
 # DEPLOY STAGE
