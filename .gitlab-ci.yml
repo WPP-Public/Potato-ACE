@@ -37,11 +37,12 @@ Install deps:
       - node_modules
       - cache/cypress
     policy: pull-push
-  # rules:
-  #   - changes:
-  #     - package.json
-  #     - package-lock.json
-    # - if: $CI_COMMIT_BRANCH == 'master'
+  rules:
+    - changes:
+      - package.json
+      - package-lock.json
+    - if: $CI_COMMIT_BRANCH == 'master'
+
 
 
 # BUILD STAGE
