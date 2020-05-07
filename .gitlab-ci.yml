@@ -22,9 +22,6 @@ stages:
   - deploy
 
 
-workflow:
-
-
 # PREPARE STAGE
 # Only install deps if package.json or package-lock.json changed
 Install deps:
