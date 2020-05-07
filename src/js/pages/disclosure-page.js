@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import Disclosure, {EVENTS} from '../../asce/components/disclosure/disclosure.js';
-
 
 document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {

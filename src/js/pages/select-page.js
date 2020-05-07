@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import Select, {EVENTS} from '../../asce/components/select/select.js';
-
 
 document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
@@ -20,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('add-option')
     .addEventListener('click', () => {
-      selectListEl.innerHTML += '<li>Iron Man</li>';
+      selectListEl.innerHTML += '<li>New Option</li>';
       updateOptions();
     });
 

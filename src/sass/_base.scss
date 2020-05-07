@@ -31,7 +31,7 @@ article {
   grid-column: 2;
   height: 100%;
   margin: 0 auto;
-  max-width: $article-max-width;
+  max-width: 900px;
   padding: 30px;
 }
 
@@ -82,9 +82,20 @@ h4,
 h5 {
   font-weight: 700;
   margin: 0 0 $buffer-s;
+}
 
-  p + & {
+h1,
+h2 {
+  * + & {
     margin-top: $buffer-xl;
+  }
+}
+
+h3,
+h4,
+h5 {
+  * + & {
+    margin-top: $buffer-m;
   }
 }
 
@@ -109,11 +120,13 @@ h3 {
 
 kbd {
   background-color: map-get($pot-grey, 1);
-  border: 1px solid  map-get($pot-grey, 2);
-  border-radius: $border-radius;
-  box-shadow: 0 1px 1px rgba(map-get($pot-grey, 7), .2), 0 2px 0 0 rgba(#fff, .7) inset;
-  display: inline-block;
-  font-size: 1.5rem;
+  border: 1px solid  map-get($pot-grey, 3);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 1.4rem;
+  hyphens: none;
+  line-height: 1;
+  margin: 0 2px;
   padding: 2px 4px;
   white-space: nowrap;
 }
