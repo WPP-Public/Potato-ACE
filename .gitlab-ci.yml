@@ -57,6 +57,7 @@ Install deps for deploy:
   extends: .deps
   only:
     - master
+    - test
 
 
 # BUILD STAGE
@@ -104,6 +105,7 @@ Deploy:
   stage: deploy
   rules:
     - if: $CI_COMMIT_BRANCH == 'master'
+    - if: $CI_COMMIT_BRANCH == 'test'
   before_script:
     - npm i -g firebase-tools
   script:
