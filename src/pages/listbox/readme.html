@@ -3,14 +3,14 @@
 <p>Listbox conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">here</a>.</p>
 <h2>Instantiation</h2>
 <p>Import the Listbox class:</p>
-<pre><code class="language-js">import Listbox from '@potato/asce/components/listbox/listbox';
+<pre><code class="language-js">import Listbox from '@potato/ace/components/listbox/listbox';
 </code></pre>
 <p>The attribute names used by the class are also exported as properties of <code>ATTRS</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Listbox automatically instantiates an instance of itself within each <code>&lt;asce-listbox&gt;&lt;/asce-listbox&gt;</code> and adds IDs in the format <code>asce-listbox-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
+<p>After <code>DOMContentLoaded</code> is fired, Listbox automatically instantiates an instance of itself within each <code>&lt;ace-listbox&gt;&lt;/ace-listbox&gt;</code> and adds IDs in the format <code>ace-listbox-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
 <p>Upon instantiation Listbox adds its functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <strong>Custom events</strong> section below for more details.</p>
 <h2>Usage</h2>
-<p>There are two main types of Listboxes, single-select and multi-select. A single-select Listbox allows selection of only a single option at a time, and are instantiated by default. A Multi-select Listbox allows selection of multiple options, and are instantiated in Listboxes with an <code>asce-listbox-multiselect</code> attribute.</p>
-<p>Listbox options can be active and/or selected. Only a single option can be active at once and only when the Listbox list has focus. The active option is given the <code>asce-listbox-active-option</code> attribute and its ID is stored as the Listbox's <code>aria-activedescendant</code> attribute. Both these attributes are removed when the Listbox list loses focus as no option is active at that point.</p>
+<p>There are two main types of Listboxes, single-select and multi-select. A single-select Listbox allows selection of only a single option at a time, and are instantiated by default. A Multi-select Listbox allows selection of multiple options, and are instantiated in Listboxes with an <code>ace-listbox-multiselect</code> attribute.</p>
+<p>Listbox options can be active and/or selected. Only a single option can be active at once and only when the Listbox list has focus. The active option is given the <code>ace-listbox-active-option</code> attribute and its ID is stored as the Listbox's <code>aria-activedescendant</code> attribute. Both these attributes are removed when the Listbox list loses focus as no option is active at that point.</p>
 <p>The active option can be changed by clicking on an option, using <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Home</kbd> or <kbd>End</kbd>, or typing a single or sequence of characters which makes the next option with text starting with the typed string active. <kbd>↑</kbd> will loop around from the top of the list to the bottom, while <kbd>↓</kbd> will loop from the bottom to the top. Similarly, when a character is typed if the bottom of the list is reached the search will loop around and continute from the top until a match or the active option is reached. Repeatedly pressing the same character with a short delay in-between will loop through all matching options.</p>
 <p>The active option is automatically selected in a single-select Listbox. In a multi-select Listbox an option's selected state can be toggled by clicking on it or pressing <kbd>Space</kbd> if it's active. Selection of multiple options can be achieved by clicking on an option and then clicking on another one while holding <kbd>⇧</kbd>, which will select all options in between the two clicked ones. Users can also select multiple options using the keyboard in the following ways:</p>
 <ul>
@@ -24,29 +24,29 @@
 <p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector, with the addition of <code>[aria-selected=&quot;true&quot;]</code> for targetting selected options.  The SASS variables use <code>!default</code> so can also be easily overridden by users.</p>
 <p>To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color, respectively.</p>
 <pre><code class="language-scss">/* VARIABLES */
-$asce-listbox-active-option-outline: 2px dotted #000 !default;
-$asce-listbox-selected-option-bg-color: #ccc !default;
+$ace-listbox-active-option-outline: 2px dotted #000 !default;
+$ace-listbox-selected-option-bg-color: #ccc !default;
 
 
 /* STYLES */
-[asce-listbox-list] {
+[ace-listbox-list] {
   list-style-position: inside;
 }
 
-[asce-listbox-option-index] {
+[ace-listbox-option-index] {
   &amp;[aria-selected=&quot;true&quot;] {
-    background: $asce-listbox-selected-option-bg-color;
+    background: $ace-listbox-selected-option-bg-color;
   }
 }
 
-[asce-listbox-active-option] {
-  outline: $asce-listbox-active-option-outline;
+[ace-listbox-active-option] {
+  outline: $ace-listbox-active-option-outline;
 }
 </code></pre>
 <h2>Custom events</h2>
 <p>Listbox uses the following custom event, the name of which is exported as a property of <code>EVENTS</code>, similar to <code>ATTRS</code>, so it may be imported into other modules and dispatched.</p>
 <h3>Update options</h3>
-<p><code>asce-listbox-update-options</code></p>
+<p><code>ace-listbox-update-options</code></p>
 <p>This event should be dispatched on <code>window</code> when a Listbox's options are altered, e.g. when options are added or deleted. The event <code>detail</code> object should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Listbox
@@ -56,7 +56,7 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Single-select Listbox</h3>
 <p>A single-select Listbox with a nested <code>&lt;ul&gt;</code> list.</p>
-<div class="example-block"><asce-listbox id="single-select-listbox">
+<div class="example-block"><ace-listbox id="single-select-listbox">
   <ul>
     <li>Iron Man</li>
     <li>Nick Fury</li>
@@ -71,9 +71,9 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
     <li>Doctor Strange</li>
     <li>Captain Marvel</li>
   </ul>
-</asce-listbox>
+</ace-listbox>
 </div>
-<pre><code class="language-html">&lt;asce-listbox id=&quot;single-select-listbox&quot;&gt;
+<pre><code class="language-html">&lt;ace-listbox id=&quot;single-select-listbox&quot;&gt;
   &lt;ul&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
@@ -88,10 +88,10 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
     &lt;li&gt;Doctor Strange&lt;/li&gt;
     &lt;li&gt;Captain Marvel&lt;/li&gt;
   &lt;/ul&gt;
-&lt;/asce-listbox&gt;
+&lt;/ace-listbox&gt;
 </code></pre>
 <p>A single-select listbox with a nested <code>&lt;ol&gt;</code> list.</p>
-<div class="example-block"><asce-listbox>
+<div class="example-block"><ace-listbox>
   <ol>
     <li>Iron Man</li>
     <li>Nick Fury</li>
@@ -106,9 +106,9 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
     <li>Doctor Strange</li>
     <li>Captain Marvel</li>
   </ol>
-</asce-listbox>
+</ace-listbox>
 </div>
-<pre><code class="language-html">&lt;asce-listbox&gt;
+<pre><code class="language-html">&lt;ace-listbox&gt;
   &lt;ol&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
@@ -123,11 +123,11 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
     &lt;li&gt;Doctor Strange&lt;/li&gt;
     &lt;li&gt;Captain Marvel&lt;/li&gt;
   &lt;/ol&gt;
-&lt;/asce-listbox&gt;
+&lt;/ace-listbox&gt;
 </code></pre>
 <h3>Multi-select Listbox</h3>
 <p>A multi-select Listbox.</p>
-<div class="example-block"><asce-listbox asce-listbox-multiselect id="multi-select-listbox">
+<div class="example-block"><ace-listbox ace-listbox-multiselect id="multi-select-listbox">
   <ul>
     <li>Iron Man</li>
     <li>Nick Fury</li>
@@ -142,9 +142,9 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
     <li>Doctor Strange</li>
     <li>Captain Marvel</li>
   </ul>
-</asce-listbox>
+</ace-listbox>
 </div>
-<pre><code class="language-html">&lt;asce-listbox asce-listbox-multiselect id=&quot;multi-select-listbox&quot;&gt;
+<pre><code class="language-html">&lt;ace-listbox ace-listbox-multiselect id=&quot;multi-select-listbox&quot;&gt;
   &lt;ul&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
@@ -159,11 +159,11 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
     &lt;li&gt;Doctor Strange&lt;/li&gt;
     &lt;li&gt;Captain Marvel&lt;/li&gt;
   &lt;/ul&gt;
-&lt;/asce-listbox&gt;
+&lt;/ace-listbox&gt;
 </code></pre>
 <h3>Listbox with options containing images</h3>
 <p>A Listbox with options containing images.</p>
-<div class="example-block"><asce-listbox>
+<div class="example-block"><ace-listbox>
   <ul>
     <li style="align-items: center; display: flex;">
       <img src="/img/logo.svg" width="60px">&nbsp;
@@ -182,9 +182,9 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
       Captain America
     </li>
   </ul>
-</asce-listbox>
+</ace-listbox>
 </div>
-<pre><code class="language-html">&lt;asce-listbox&gt;
+<pre><code class="language-html">&lt;ace-listbox&gt;
   &lt;ul&gt;
     &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
       &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
@@ -203,10 +203,10 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
       Captain America
     &lt;/li&gt;
   &lt;/ul&gt;
-&lt;/asce-listbox&gt;
+&lt;/ace-listbox&gt;
 </code></pre>
 <h3>Listbox with dynamic options</h3>
-<p>In this example the Listbox instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the <code>asce-listbox-update-options</code> event that updates the Listbox. The extra JavaScript code to achieve this is also included below.</p>
+<p>In this example the Listbox instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the <code>ace-listbox-update-options</code> event that updates the Listbox. The extra JavaScript code to achieve this is also included below.</p>
 <div class="example-block"><button id="add-option">
   Add option
 </button>
@@ -214,7 +214,7 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
   Remove option
 </button>
 <br><br>
-<asce-listbox id="dynamic-listbox"></asce-listbox>
+<ace-listbox id="dynamic-listbox"></ace-listbox>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
   Add option
@@ -223,9 +223,9 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
   Remove option
 &lt;/button&gt;
 &lt;br&gt;&lt;br&gt;
-&lt;asce-listbox id=&quot;dynamic-listbox&quot;&gt;&lt;/asce-listbox&gt;
+&lt;ace-listbox id=&quot;dynamic-listbox&quot;&gt;&lt;/ace-listbox&gt;
 </code></pre>
-<pre><code class="language-js">import Listbox, {EVENTS} from '../../asce/components/listbox/listbox.js';
+<pre><code class="language-js">import Listbox, {EVENTS} from '../../ace/components/listbox/listbox.js';
 
 
 document.addEventListener('DOMContentLoaded', () =&gt; {

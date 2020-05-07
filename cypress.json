@@ -4,6 +4,6 @@
   "testFiles": "**/*.{test,spec}.js",
   "ignoreTestFiles": "**/template.test.js",
   "env": {
-    "lib_name": "asce"
+    "lib_name": "ace"
   }
 }

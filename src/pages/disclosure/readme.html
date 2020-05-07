@@ -2,30 +2,30 @@
 <p>Disclosure is a compoent whose visibility can be changed using trigger buttons. Disclosure conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">here</a>.</p>
 <h2>Instantiation</h2>
 <p>Import the Disclosure class:</p>
-<pre><code class="language-js">import Disclosure from '@potato/asce/components/disclosure/disclosure';
+<pre><code class="language-js">import Disclosure from '@potato/ace/components/disclosure/disclosure';
 </code></pre>
 <p>The attribute names used by the class are also exported as properties of <code>ATTRS</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Disclosure as aceDisclosure from ...</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Disclosure automatically instantiates an instance of itself within each <code>&lt;asce-disclosure&gt;&lt;/asce-disclosure&gt;</code> and adds IDs in the format <code>asce-disclosure-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
-<p>Disclosures are hidden by default but can be initially shown by adding the <code>asce-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>asce-disclosure-trigger-for=&lt;disclosure-id&gt;</code> should be added to triggering elements, where <code>&lt;disclosure-id&gt;</code> is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code>s are used for triggers. Disclosures can also be triggered using custom events, as described in the <strong>Custom events</strong> section below.</p>
-<p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>asce-disclosure-show-trigger</code> or <code>asce-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
+<p>After <code>DOMContentLoaded</code> is fired, Disclosure automatically instantiates an instance of itself within each <code>&lt;ace-disclosure&gt;&lt;/ace-disclosure&gt;</code> and adds IDs in the format <code>ace-disclosure-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
+<p>Disclosures are hidden by default but can be initially shown by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for=&lt;disclosure-id&gt;</code> should be added to triggering elements, where <code>&lt;disclosure-id&gt;</code> is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code>s are used for triggers. Disclosures can also be triggered using custom events, as described in the <strong>Custom events</strong> section below.</p>
+<p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>ace-disclosure-show-trigger</code> or <code>ace-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
 <h2>SASS</h2>
 <p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.</p>
-<pre><code class="language-scss">[asce-disclosure-visible=&quot;false&quot;] {
+<pre><code class="language-scss">[ace-disclosure-visible=&quot;false&quot;] {
   display: none;
 }
 </code></pre>
 <h2>Custom events</h2>
 <p>Disclosure uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
 <h3>Changed</h3>
-<p><code>asce-disclosure-changed</code></p>
+<p><code>ace-disclosure-changed</code></p>
 <p>This event is dispatched when a Disclosure visibility is changed and its <code>detail</code> object is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Disclosure
-  'visible': // The new value of the Disclosure's `asce-disclosure-visible` attribute, as a boolean
+  'visible': // The new value of the Disclosure's `ace-disclosure-visible` attribute, as a boolean
 }
 </code></pre>
 <h3>Hide, Show and Toggle</h3>
-<p><code>asce-disclosure-hide</code>, <code>asce-disclosure-show</code> &amp; <code>asce-disclosure-toggle</code></p>
+<p><code>ace-disclosure-hide</code>, <code>ace-disclosure-show</code> &amp; <code>ace-disclosure-toggle</code></p>
 <p>A Disclosure listens for these events then hides, shows or toggles itself respectively. These events should be dispatched on <code>window</code> and the <code>detail</code> object should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Disclosure
@@ -34,64 +34,64 @@
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Button triggered Disclosures</h3>
-<p>In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute <code>asce-disclosure-visible=&quot;true&quot;</code>.</p>
-<div class="example-block"><button asce-disclosure-trigger-for="disclosure-1">
+<p>In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute <code>ace-disclosure-visible=&quot;true&quot;</code>.</p>
+<div class="example-block"><button ace-disclosure-trigger-for="disclosure-1">
   Disclosure 1 Toggle 1
 </button>
-<button asce-disclosure-trigger-for="disclosure-1">
+<button ace-disclosure-trigger-for="disclosure-1">
   Disclosure 1 Toggle 2
 </button>
-<button asce-disclosure-trigger-for="disclosure-2">
+<button ace-disclosure-trigger-for="disclosure-2">
   Disclosure 2 Toggle
 </button>
-<button asce-disclosure-trigger-for="disclosure-2" asce-disclosure-trigger-show>
+<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-show>
   Disclosure 2 Show
 </button>
-<button asce-disclosure-trigger-for="disclosure-2" asce-disclosure-trigger-hide>
+<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-hide>
   Disclosure 2 Hide
 </button>
 <br><br>
-<asce-disclosure id="disclosure-1">
+<ace-disclosure id="disclosure-1">
   <div>
     Disclosure 1 - Initially hidden diclosure.
   </div>
-</asce-disclosure>
-<asce-disclosure id="disclosure-2" asce-disclosure-visible="true">
+</ace-disclosure>
+<ace-disclosure id="disclosure-2" ace-disclosure-visible="true">
   <div>
     Disclosure 2 - Initially visible diclosure.
   </div>
-</asce-disclosure>
+</ace-disclosure>
 </div>
-<pre><code class="language-html">&lt;button asce-disclosure-trigger-for=&quot;disclosure-1&quot;&gt;
+<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;disclosure-1&quot;&gt;
   Disclosure 1 Toggle 1
 &lt;/button&gt;
-&lt;button asce-disclosure-trigger-for=&quot;disclosure-1&quot;&gt;
+&lt;button ace-disclosure-trigger-for=&quot;disclosure-1&quot;&gt;
   Disclosure 1 Toggle 2
 &lt;/button&gt;
-&lt;button asce-disclosure-trigger-for=&quot;disclosure-2&quot;&gt;
+&lt;button ace-disclosure-trigger-for=&quot;disclosure-2&quot;&gt;
   Disclosure 2 Toggle
 &lt;/button&gt;
-&lt;button asce-disclosure-trigger-for=&quot;disclosure-2&quot; asce-disclosure-trigger-show&gt;
+&lt;button ace-disclosure-trigger-for=&quot;disclosure-2&quot; ace-disclosure-trigger-show&gt;
   Disclosure 2 Show
 &lt;/button&gt;
-&lt;button asce-disclosure-trigger-for=&quot;disclosure-2&quot; asce-disclosure-trigger-hide&gt;
+&lt;button ace-disclosure-trigger-for=&quot;disclosure-2&quot; ace-disclosure-trigger-hide&gt;
   Disclosure 2 Hide
 &lt;/button&gt;
 &lt;br&gt;&lt;br&gt;
-&lt;asce-disclosure id=&quot;disclosure-1&quot;&gt;
+&lt;ace-disclosure id=&quot;disclosure-1&quot;&gt;
   &lt;div&gt;
     Disclosure 1 - Initially hidden diclosure.
   &lt;/div&gt;
-&lt;/asce-disclosure&gt;
+&lt;/ace-disclosure&gt;
 
-&lt;asce-disclosure id=&quot;disclosure-2&quot; asce-disclosure-visible=&quot;true&quot;&gt;
+&lt;ace-disclosure id=&quot;disclosure-2&quot; ace-disclosure-visible=&quot;true&quot;&gt;
   &lt;div&gt;
     Disclosure 2 - Initially visible diclosure.
   &lt;/div&gt;
-&lt;/asce-disclosure&gt;
+&lt;/ace-disclosure&gt;
 </code></pre>
 <h3>Custom event triggered Disclosure</h3>
-<p>Example of Disclosure controlled through custom events. The buttons in this example are <strong>not</strong> trigger buttons and instead dispatch the Disclosure's custom events. The extra JavaScript code to achieve this is also included below. This implementation is only for demonstration purposes and trigger buttons should have the <code>asce-disclosure-trigger-for</code> attribute instead.</p>
+<p>Example of Disclosure controlled through custom events. The buttons in this example are <strong>not</strong> trigger buttons and instead dispatch the Disclosure's custom events. The extra JavaScript code to achieve this is also included below. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead.</p>
 <div class="example-block"><button id="custom-event-show-btn">
   Show disclosure using custom event
 </button>
@@ -102,10 +102,9 @@
   Toggle disclosure using custom event
 </button>
 <br><br>
-<asce-disclosure id="custom-event-triggered-disclosure">
-  <h1>Disclosure</h1>
+<ace-disclosure id="custom-event-triggered-disclosure">
   <p>Disclosure toggled using custom events.</p>
-</asce-disclosure>
+</ace-disclosure>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;custom-event-show-btn&quot;&gt;
   Show disclosure using custom event
@@ -117,12 +116,11 @@
   Toggle disclosure using custom event
 &lt;/button&gt;
 &lt;br&gt;&lt;br&gt;
-&lt;asce-disclosure id=&quot;custom-event-triggered-disclosure&quot;&gt;
-  &lt;h1&gt;Disclosure&lt;/h1&gt;
+&lt;ace-disclosure id=&quot;custom-event-triggered-disclosure&quot;&gt;
   &lt;p&gt;Disclosure toggled using custom events.&lt;/p&gt;
-&lt;/asce-disclosure&gt;
+&lt;/ace-disclosure&gt;
 </code></pre>
-<pre><code class="language-js">import Disclosure, {EVENTS} from '../../asce/components/disclosure/disclosure.js';
+<pre><code class="language-js">import Disclosure, {EVENTS} from '../../ace/components/disclosure/disclosure.js';
 
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
