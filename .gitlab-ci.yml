@@ -22,10 +22,11 @@ stages:
   - deploy
 
 
-workflow:
-  rules:
-    - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
-    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
+# workflow:
+#   rules:
+#     - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
+#     - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
+
 
 # PREPARE STAGE
 # Only install deps if package.json or package-lock.json changed
@@ -48,16 +49,14 @@ Install deps:
 
 
 # BUILD STAGE
-.build:
-  stage: build
-
 Lint:
-  extends: .build
+  stage: build
   script:
     - npm run lint
 
+
 Build:
-  extends: .build
+  stage: build
   script:
     - npm run build
   artifacts:
