@@ -56,7 +56,6 @@ Install deps:
 Install deps for deploy:
   extends: .deps
   only:
-    - test
     - master
 
 
@@ -89,42 +88,22 @@ Build:
       - cypress/screenshots
     expire_in: 1 week
 
-.chrome-test:
+Chrome:
   extends: .test
   variables:
     BROWSER: 'chrome'
 
-Chrome 1:
-  extends: .chrome-test
-
-Chrome 2:
-  extends: .chrome-test
-
-Chrome 3:
-  extends: .chrome-test
-
-
-.firefox-test:
+Firefox:
   extends: .test
   variables:
     BROWSER: 'firefox'
-
-Firefox 1:
-  extends: .firefox-test
-
-Firefox 2:
-  extends: .firefox-test
-
-Firefox 3:
-  extends: .firefox-test
 
 
 # DEPLOY STAGE
 Deploy:
   stage: deploy
   rules:
-    - if: $CI_COMMIT_BRANCH == 'test'
-    - if: $CI_COMMIT_BRANCH == 'test'
+    - if: $CI_COMMIT_BRANCH == 'master'
   before_script:
     - npm i -g firebase-tools
   script:
