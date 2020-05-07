@@ -1,52 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="/css/styles.css">
-  <link rel="shortcut icon" type="image/png" href="/img/logo.png"/>
-  <title>Accessible Custom Elements</title>
-</head>
-<body>
-
-  <header>
-    <a
-        aria-label="Go to home page"
-        class="lockup"
-        href="/">
-      <img class="lockup__img"src="/img/logo.svg" alt="Potato logo">
-      <span class="lockup__text">ASCE</span>
-    </a>
-  </header>
-
-  <main>
-    <aside>
-      <nav class="side-nav">
-        <ul class="side-nav__list">
-          <li class="side-nav__list-item">
-            <a href="/getting-started">
-              Getting started
-            </a>
-          </li>
-          <li class="side-nav__list-item">
-            <a href="/components">
-              Components
-            </a>
-          </li>
-        </ul>
-      </nav>
-    </aside>
-
-    <article>
-      <h1>
-        Accessible Custom Elements
-      </h1>
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-      </p>
-    </article>
-
-  </main>
-
-
-</body>
+  <head>
+    <link href="/css/prism.css" rel="stylesheet" type="text/css">
+    <link href="/css/styles.css" rel="stylesheet" type="text/css">
+    <link href="/img/logo.png" rel="shortcut icon" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Potato Accessible Components</title>
+  </head>
+  <body>
+    <header><a class="lockup" aria-label="Go to home page" href="/"><img class="lockup__img" src="/img/logo.svg" alt="Potato logo"><span class="lockup__text">ASCE</span></a></header>
+    <main>
+      <aside>
+        <nav class="side-nav">
+          <ul class="side-nav__list">
+            <li class="side-nav__list-item"><a href="/getting-started">Getting started</a></li>
+            <li class="side-nav__list-item"><a href="/components">Components</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <article>
+        <h1>Accessible Custom Elements</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </article>
+    </main>
+    <script src="/js/prism.min.js"></script>
+  </body>
 </html>
