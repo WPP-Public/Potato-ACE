@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
-    "cypress:parallel": "cypress run -c video=false --record --parallel",
-    "cypress:parallel:chrome": "npm run cypress:parallel -- --group \"chrome tests\" -b chrome",
-    "cypress:parallel:firefox": "npm run cypress:parallel -- --group \"firefox tests\" -b firefox",
+    "cypress:cli": "cypress run -c video=false",
+    "cypress:chrome": "npm run cypress:cli -- -b chrome",
+    "cypress:firefox": "npm run cypress:cli -- -b firefox",
     "inject": "node --experimental-modules ./scripts/inject-code.mjs",
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/**/*.js\"",
@@ -16,8 +16,8 @@
     "serve-dist": "npx http-server dist --port 3030",
     "test": "start-server-and-test 'gulp serve-build' 3030 'cypress open'",
     "test:ci": "start-server-and-test serve-dist 3030",
-    "test:ci:chrome": "npm run test:ci -- cypress:parallel:chrome",
-    "test:ci:firefox": "npm run test:ci -- cypress:parallel:firefox"
+    "test:ci:chrome": "npm run test:ci -- cypress:chrome",
+    "test:ci:firefox": "npm run test:ci -- cypress:firefox"
   },
   "repository": {
     "type": "git",
