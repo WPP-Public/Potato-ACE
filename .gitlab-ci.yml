@@ -22,10 +22,10 @@ stages:
   - deploy
 
 
-# workflow:
-#   rules:
-#     - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
-#     - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
+    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
 
 
 
@@ -46,7 +46,6 @@ Install deps:
     - changes:
       - package.json
       - package-lock.json
-    - if: $CI_MERGE_REQUEST_ID == null
 
 
 
