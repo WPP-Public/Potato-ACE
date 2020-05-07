@@ -22,14 +22,11 @@ stages:
   - deploy
 
 
-workflow:
-  rules:
-    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: $CI_MERGE_REQUEST_ID
-      when: always
-    - if: $CI_COMMIT_BRANCH == 'master'
-      when: always
-    - when: never
+# this ignores rules in install deps
+# workflow:
+#   rules:
+#     - if: $CI_MERGE_REQUEST_ID
+#     - if: $CI_COMMIT_BRANCH == 'master'
 
 
 
@@ -47,7 +44,6 @@ Install deps:
       - cache/cypress
     policy: pull-push
   rules:
-    - when: never
     - changes:
       - package.json
       - package-lock.json
