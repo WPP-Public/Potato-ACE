@@ -31,8 +31,7 @@ stages:
 
 
 # PREPARE STAGE
-# Only install deps if package.json or package-lock.json changed
-Install deps:
+.deps:
   stage: prepare
   script:
     - npm ci --prefer-offline
@@ -43,10 +42,22 @@ Install deps:
       - node_modules
       - cache/cypress
     policy: pull-push
+
+
+# Install deps if package.json or package-lock.json changed
+Install deps:
+  extends: .deps
   only:
     changes:
       - package.json
       - package-lock.json
+
+# Install deps when merging into master
+Install deps for deploy:
+  extends: .deps
+  only:
+    - test
+    - master
 
 
 # BUILD STAGE
@@ -112,6 +123,7 @@ Firefox 3:
 Deploy:
   stage: deploy
   rules:
+    - if: $CI_COMMIT_BRANCH == 'test'
     - if: $CI_COMMIT_BRANCH == 'test'
   before_script:
     - npm i -g firebase-tools
