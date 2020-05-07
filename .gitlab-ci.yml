@@ -42,10 +42,12 @@ Install deps:
       - node_modules
       - cache/cypress
     policy: pull-push
-  only:
-    changes:
+  rules:
+    - changes:
       - package.json
       - package-lock.json
+    - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
+    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
 
 
 # BUILD STAGE
