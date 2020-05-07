@@ -47,7 +47,7 @@ Install deps:
       - cache/cypress
     policy: pull-push
   rules:
-    - when: always
+    - when: never
     - changes:
       - package.json
       - package-lock.json
