@@ -76,24 +76,20 @@ gulp.task('serve', () => {
     }
   );
 
+  // Run gulp 'sass' task if SASS files change
+  gulp.watch([`${dirs.src}/**/*.scss`, `!${dirs.comps}/**/*.scss`], gulp.series('sass'));
 
-  // Convert all pug files to HTML when pug include files change
+  // Convert all pug files to HTML if pug include files change
   gulp.watch(`${dirs.pages}/includes/**/*.pug`, gulp.series('pug'));
 
-  // Convert 'index.pug' file to HTML when it changes
+  // Convert 'index.pug' file to HTML if it changes
   gulp.watch(`${dirs.pages}/**/index.pug`)
     .on('change', (path) => {
       console.log(`${path} changed. Converting it to HTML`);
       exec(`gulp pug --src ${path}`).stdout.pipe(process.stdout);
     });
 
-
-  // Run gulp 'sass' task when SASS files change, except component SASS files
-  gulp.watch([`${dirs.src}/**/*.scss`, `!${dirs.comps}/**/*.scss`], gulp.series('sass'));
-
-  gulp.watch(`${dirs.pages}/**/readme.html`, gulp.series('sass'));
-
-  // Reload browser when HTML and JS files or files in img dir change
+  // Reload browser if index.html or JS files or files in img dir change
   gulp.watch([
     `${dirs.pages}/**/index.html`,
     `${dirs.src}/img/*`,
@@ -102,24 +98,54 @@ gulp.task('serve', () => {
     .on('change', browserSync.reload);
 
 
-  // Rebuild component's readme.html when its SASS file changes
-  gulp.watch(`${dirs.comps}/**/*.scss`)
+
+  let injectingCode = false;
+  // Rebuild component's readme.html if its README.md changes
+  gulp.watch(`${dirs.comps}/**/README.md`)
     .on('change', (path) => {
+      if (injectingCode) {
+        return;
+      }
       const pathFragments = path.split('/');
       const componentName = pathFragments[pathFragments.length - 2];
-      console.log(`${componentName} scss changed`);
-      exec(`${injectCodeCmd} -- ${componentName}`).stdout.pipe(process.stdout);
+      console.log(`${componentName} README changed`);
+      injectingCode = true;
+      exec(`${injectCodeCmd} -- ${componentName} --html-only`, () => {
+        injectingCode = false;
+      }).stdout.pipe(process.stdout);
     });
 
 
-  // Watch component example HTML files and rebuild md and HTML page on change
+  // Rebuild component's readme.html if its SASS file changes
+  gulp.watch(`${dirs.comps}/**/*.scss`)
+    .on('change', (path) => {
+      if (injectingCode) {
+        return;
+      }
+      const pathFragments = path.split('/');
+      const componentName = pathFragments[pathFragments.length - 2];
+      console.log(`${componentName} scss changed`);
+      injectingCode = true;
+      exec(`${injectCodeCmd} -- ${componentName} && gulp sass`, () => {
+        injectingCode = false;
+      }).stdout.pipe(process.stdout);
+    });
+
+
+  // Rebuild component's readme.html if its example files change
   gulp.watch(`${dirs.comps}/**/examples/*.html`)
     .on('change', (path) => {
+      if (injectingCode) {
+        return;
+      }
       const pathFragments = path.split('/');
       const exampleName = pathFragments[pathFragments.length - 1];
       const componentName = pathFragments[pathFragments.length - 3];
       console.log(`${componentName} ${exampleName} changed`);
-      exec(`${injectCodeCmd} -- ${componentName} --html-only`).stdout.pipe(process.stdout);
+      injectingCode = true;
+      exec(`${injectCodeCmd} -- ${componentName} --examples-only`, () => {
+        injectingCode = false;
+      }).stdout.pipe(process.stdout);
     });
 });
 
