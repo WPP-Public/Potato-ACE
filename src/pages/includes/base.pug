@@ -1,0 +1,13 @@
+doctype html
+html(lang='en')
+  include head.pug
+
+  body
+    include header.pug
+    main
+      include aside.pug
+      article
+        block article
+
+    block scripts
+    script(src='/js/prism.min.js')

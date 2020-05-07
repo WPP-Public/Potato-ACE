@@ -1,0 +1,183 @@
+<h1>Select</h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+<p><a href="https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html">W3C Spec</a></p>
+<h2>Usage</h2>
+<pre><code class="language-js">import { Select } from 'asce/components/select/select.js';
+</code></pre>
+<pre><code class="language-scss">/* VARIABLES */
+$asce-select-list-background: #fff !default;
+$asce-select-list-height: auto !default;
+$asce-select-list-z-index: 1 !default;
+
+
+/* STYLES */
+asce-select {
+  position: relative;
+}
+
+[asce-select-list] {
+  background: $asce-select-list-background;
+  height: $asce-select-list-height;
+  left: 0;
+  margin: 0;
+  position: absolute;
+  top: 100%;
+  white-space: nowrap;
+  z-index: $asce-select-list-z-index;
+}
+
+[asce-select-list-hidden] {
+  display: none;
+}
+</code></pre>
+<h2>Examples</h2>
+<h3>Select Drop-down</h3>
+<div class="example-block"><asce-select>
+  <button></button>
+  <ul>
+    <li>Select an option</li>
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Black Widow</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Spider-man</li>
+    <li>Black Panther</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
+</asce-select>
+</div>
+<pre><code class="language-html">&lt;asce-select&gt;
+  &lt;button&gt;&lt;/button&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Select an option&lt;/li&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/asce-select&gt;
+</code></pre>
+<h3>Select Drop-down with images</h3>
+<div class="example-block"><asce-select id="listbox-with-images">
+  <button></button>
+  <ul>
+    <li>Select an option</li>
+    <li>
+       <img src="/img/logo.svg">
+       Iron Man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Nick Fury
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Hulk
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Black Widow
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Thor
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Captain America
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Scarlet Witch
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Ant-Man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Spider-man
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Black Panther
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Doctor Strange
+    </li>
+    <li>
+       <img src="/img/logo.svg">
+       Captain Marvel
+    </li>
+  </ul>
+</asce-select>
+</div>
+<pre><code class="language-html">&lt;asce-select id=&quot;listbox-with-images&quot;&gt;
+  &lt;button&gt;&lt;/button&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Select an option&lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Iron Man
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Nick Fury
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Hulk
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Black Widow
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Thor
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Captain America
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Scarlet Witch
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Ant-Man
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Spider-man
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Black Panther
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Doctor Strange
+    &lt;/li&gt;
+    &lt;li&gt;
+       &lt;img src=&quot;/img/logo.svg&quot;&gt;
+       Captain Marvel
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/asce-select&gt;
+</code></pre>
