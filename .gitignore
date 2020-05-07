@@ -38,11 +38,9 @@ Thumbs.db
 
 # Directories
 node_modules/
-build/
 dist/
 styles.css
-webhost.json
 newticket.py
 .cache/
 src/pages/**/*/index.html
-/cypress/screenshots
+cypress/screenshots
