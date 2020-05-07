@@ -22,6 +22,12 @@ stages:
   - deploy
 
 
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
+    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
+
+
 # PREPARE STAGE
 # Only install deps if package.json or package-lock.json changed
 Install deps:
@@ -39,7 +45,7 @@ Install deps:
     - changes:
       - package.json
       - package-lock.json
-    - if: $CI_COMMIT_BRANCH == 'test'
+    - if: $CI_COMMIT_BRANCH == 'master'
 
 
 
@@ -105,7 +111,7 @@ Firefox 3:
 Deploy:
   stage: deploy
   rules:
-    - if: $CI_COMMIT_BRANCH == 'test'
+    - if: $CI_COMMIT_BRANCH == 'master'
   before_script:
     - npm i -g firebase-tools
   script:
