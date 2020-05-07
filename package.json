@@ -5,21 +5,19 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
-    "cypress": "cypress open",
-    "cypress:electron": "cypress run -c video=false",
-    "cypress:chrome": "cypress run -c video=false -b chrome",
-    "cypress:firefox": "cypress run -c video=false -b firefox",
+    "cypress:parallel": "cypress run -c video=false --record --parallel",
+    "cypress:parallel:chrome": "npm run cypress:parallel -- --group \"chrome tests\" -b chrome",
+    "cypress:parallel:firefox": "npm run cypress:parallel -- --group \"firefox tests\" -b firefox",
     "inject": "node --experimental-modules ./scripts/inject-code.mjs",
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/**/*.js\"",
     "lint:scss": "stylelint \"src/**/*.scss\"",
     "start": "gulp",
     "serve-dist": "npx http-server dist --port 3030",
-    "test": "start-server-and-test 'gulp serve-build' 3030 cypress",
-    "test:electron": "start-server-and-test serve-dist 3030 cypress:electron",
-    "test:chrome": "start-server-and-test serve-dist 3030 cypress:chrome",
-    "test:firefox": "start-server-and-test serve-dist 3030 cypress:firefox",
-    "test:parallel": "start-server-and-test serve-dist 3030 'cypress run --record --parallel --group \"electron tests\"'"
+    "test": "start-server-and-test 'gulp serve-build' 3030 'cypress open'",
+    "test:ci": "start-server-and-test serve-dist 3030",
+    "test:ci:chrome": "npm run test:ci -- cypress:parallel:chrome",
+    "test:ci:firefox": "npm run test:ci -- cypress:parallel:firefox"
   },
   "repository": {
     "type": "git",

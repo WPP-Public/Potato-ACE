@@ -27,8 +27,6 @@ stages:
 Install deps:
   stage: prepare
   script:
-    # - echo 'CI_COMMIT_BRANCH >>>>>> ' $CI_COMMIT_BRANCH
-    # - echo 'CI_COMMIT_REF_NAME >>>>>> ' $CI_COMMIT_REF_NAME
     - npm ci --prefer-offline
   cache:
     key: deps
@@ -66,47 +64,35 @@ Build:
   stage: test
   image: cypress/browsers:node13.1.0-chrome78-ff70
   script:
-    - npm run test:$BROWSER
+    - npm run test:parallel:$BROWSER
   artifacts:
     when: on_failure
     paths:
-      - cypress/screenshots/**/*.png
+      - cypress/screenshots
     expire_in: 1 week
 
-
+.chrome-test:
+  extends: .test
+  variables:
+    BROWSER: 'chrome'
 
 Chrome 1:
-  extends: .test
-  variables:
-    BROWSER: 'parallel'
+  extends: .chrome-test
 
 Chrome 2:
-  extends: .test
-  variables:
-    BROWSER: 'parallel'
+  extends: .chrome-test
 
-Firefox:
+
+.firefox-test:
   extends: .test
   variables:
     BROWSER: 'firefox'
 
+Firefox 1:
+  extends: .firefox-test
 
-# Edge:
-  # extends: .test
-  # image: cypress/base:13.1.0
-  # tags:
-  #   - windows
-  # before_script:
-  #   - npm ci --cache .npm --prefer-offline
-  #   - apt-get install libgtk2.0-0 libgtk-3-0 libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
-  # script:
-  #   - start-server-and-test serve-build 3030 cypress:edge
-  # cache:
-  #   key: windows-deps
-  #   paths:
-  #     - .npm/
-  #     - node_modules/
-  #     - cypress-cache/
+Firefox 2:
+  extends: .firefox-test
 
 
 # DEPLOY STAGE
