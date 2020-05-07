@@ -50,6 +50,7 @@ Install deps:
     - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
 
 
+
 # BUILD STAGE
 Lint:
   stage: build
