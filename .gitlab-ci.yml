@@ -41,9 +41,9 @@ Install deps:
       - cache/cypress
     policy: pull-push
   rules:
-    # - changes:
-    #   - package.json
-    #   - package-lock.json
+    - changes:
+      - package.json
+      - package-lock.json
     - if: $CI_COMMIT_BRANCH == 'master'
 
 
