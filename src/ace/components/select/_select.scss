@@ -1,0 +1,25 @@
+/* VARIABLES */
+$ace-select-list-background-color: #fff !default;
+$ace-select-list-height: auto !default;
+$ace-select-list-z-index: 1 !default;
+
+
+/* STYLES */
+ace-select {
+  position: relative;
+}
+
+[ace-select-list] {
+  background: $ace-select-list-background-color;
+  height: $ace-select-list-height;
+  left: 0;
+  position: absolute;
+  text-align: left;
+  top: 100%;
+  white-space: nowrap;
+  z-index: $ace-select-list-z-index;
+}
+
+[ace-select-list-hidden] {
+  display: none;
+}

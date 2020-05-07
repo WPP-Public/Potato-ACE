@@ -1,4 +1,4 @@
-import { KEYS } from '../src/asce/common/constants';
+import { KEYS } from '../src/ace/common/constants';
 
 /* Common functions that can be used by all tests */
 export const getKeycodeAndWhich = (key) => {
