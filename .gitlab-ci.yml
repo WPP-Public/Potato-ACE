@@ -46,6 +46,7 @@ Install deps:
     - changes:
       - package.json
       - package-lock.json
+    - if: $CI_MERGE_REQUEST_ID == null
 
 
 
