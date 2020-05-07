@@ -22,9 +22,14 @@ stages:
   - deploy
 
 
-# workflow:
-#   rules:
-#     - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
+workflow:
+  rules:
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      # when: never
+    - if: $CI_MERGE_REQUEST_ID
+      # when: always
+    - if: $CI_COMMIT_BRANCH == 'master'
+      # when: always
 
 
 
@@ -41,11 +46,11 @@ Install deps:
       - node_modules
       - cache/cypress
     policy: pull-push
-  only:
-    changes:
+  rules:
+    - changes:
       - package.json
       - package-lock.json
-
+    - if: $CI_COMMIT_BRANCH == 'master'
 
 # BUILD STAGE
 Lint:
