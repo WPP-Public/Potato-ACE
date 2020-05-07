@@ -8,9 +8,11 @@ Listbox conforms to W3C WAI-ARIA authoring practices specified [here](https://ww
 ## Import and instantiation
 
 Import the Listbox class:
+
 ```js
 import Listbox from '@potato/asce/components/listbox/listbox';
 ```
+
 The attribute names used by the class are also exported as properties of `ATTRS`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`.
 
 After `DOMContentLoaded` is fired, Listbox automatically instantiates an instance of itself within each `<asce-listbox></asce-listbox>` and adds IDs in the format `asce-listbox-(n)` to any instances without one, where `(n)` is the instance count.
@@ -65,7 +67,7 @@ $asce-listbox-selected-option-bg-color: #ccc !default;
 ```
 
 
-## Events
+## Custom events
 
 Listbox uses the following custom event, the name of which is exported as a property of `EVENTS`, similar to `ATTRS`, so it may be imported into other modules and dispatched.
 
@@ -74,8 +76,13 @@ Listbox uses the following custom event, the name of which is exported as a prop
 
 `asce-listbox-update-options`
 
-This event should be dispatched when a Listbox's options are altered, e.g. when options are added or deleted. The event `detail` property should contain the Listbox ID `id`.
+This event should be dispatched on `window` when a Listbox's options are altered, e.g. when options are added or deleted. The event `detail` object should be composed as follows:
 
+```js
+'detail': {
+  'id': // ID of Listbox
+}
+```
 
 ## Examples
 
@@ -195,6 +202,7 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 ```js
 import Listbox, {EVENTS} from '../../asce/components/listbox/listbox.js';
 
+
 document.addEventListener('DOMContentLoaded', () => {
   const listboxId = 'dynamic-listbox';
   const listboxListEl = document.querySelector(`#${listboxId} ul`);
@@ -202,22 +210,28 @@ document.addEventListener('DOMContentLoaded', () => {
   const updateOptions = () => {
     window.dispatchEvent(new CustomEvent(
       EVENTS.UPDATE_OPTIONS,
-      {'detail': {'id': listboxId}},
+      {
+        'detail': {
+          'id': listboxId,
+        }
+      },
     ));
   };
 
-  document.getElementById('add-option').addEventListener('click', () => {
-    listboxListEl.innerHTML += '<li>Iron Man</li>';
-    updateOptions();
-  });
+  document.getElementById('add-option')
+    .addEventListener('click', () => {
+      listboxListEl.innerHTML += '<li>Iron Man</li>';
+      updateOptions();
+    });
 
-  document.getElementById('remove-option').addEventListener('click', () => {
-    const fistOptionEl = listboxListEl.querySelector('li');
-    if (!fistOptionEl) {
-      return;
-    }
-    listboxListEl.removeChild(fistOptionEl);
-    updateOptions();
-  });
+  document.getElementById('remove-option')
+    .addEventListener('click', () => {
+      const fistOptionEl = listboxListEl.querySelector('li');
+      if (!fistOptionEl) {
+        return;
+      }
+      listboxListEl.removeChild(fistOptionEl);
+      updateOptions();
+    });
 });
 ```
