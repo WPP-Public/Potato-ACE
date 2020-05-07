@@ -22,6 +22,11 @@ stages:
   - deploy
 
 
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
+    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
+
 # PREPARE STAGE
 # Only install deps if package.json or package-lock.json changed
 Install deps:
@@ -36,19 +41,15 @@ Install deps:
       - cache/cypress
     policy: pull-push
   rules:
-    - changes:
-      - package.json
-      - package-lock.json
-    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
-
+    # - changes:
+    #   - package.json
+    #   - package-lock.json
+    - if: $CI_COMMIT_BRANCH == 'master'
 
 
 # BUILD STAGE
 .build:
   stage: build
-  rules:
-    - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
-    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
 
 Lint:
   extends: .build
@@ -69,9 +70,6 @@ Build:
 .test:
   stage: test
   image: cypress/browsers:node13.1.0-chrome78-ff70
-  rules:
-    - if: $CI_MERGE_REQUEST_ID # Execute jobs in merge request context
-    - if: $CI_COMMIT_BRANCH == 'master' # Execute jobs when a new commit is pushed to master
   script:
     - npm run test:ci:$BROWSER
   artifacts:
