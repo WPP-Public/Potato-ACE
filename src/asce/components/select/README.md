@@ -101,7 +101,7 @@ This event should be dispatched when a Listbox's options are altered, e.g. when 
 
 ## Examples
 
-Each example contains a live demo and the HTML code that produces it. The code shown may differ slightly to that rendered for the demo as some ASCE components may alter their HTML when they are instantiated.
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
 ### Default Select

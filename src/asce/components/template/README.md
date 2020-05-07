@@ -62,7 +62,7 @@ Template uses the following custom events, the names of which are exported as pr
 
 ## Examples
 
-Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as ASCE components may alter their HTML when they initialise.
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
 <!-- TODO: Replace 'Example' with more descriptive name -->
