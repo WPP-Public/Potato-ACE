@@ -1,11 +1,21 @@
 <h1>Select</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-<p><a href="https://www.w3.org/TR/wai-aria-practices-1.1/examples/listbox/listbox-collapsible.html">W3C Spec</a></p>
-<h2>Usage</h2>
-<pre><code class="language-js">import { Select } from 'asce/components/select/select.js';
+<p>Select is a special type of <a href="/listbox">Listbox</a> component that mimics the native HTML <code>&lt;select&gt;</code>, allowing more flexibility particularly in terms of styling.</p>
+<p>Select conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">here</a>.</p>
+<h2>Import and instantiation</h2>
+<p>Import the Select class:</p>
+<pre><code class="language-js">import Select from '@potato/asce/components/select/select';
 </code></pre>
+<p>To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
+<p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>&lt;asce-template&gt;&lt;/asce-template&gt;</code> and adds IDs in the format <code>asce-template-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
+<p>Select extends the Listbox class and applies its single-select attributes and functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it, then hides it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <em>Events</em> section below for more details. Select uses a <code>&lt;button&gt;</code> as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.</p>
+<h2>Usage</h2>
+<p>The list is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed. The list is aware of it's position in the window and will appear below the trigger if there is enough space, otherwise it will appear above.</p>
+<p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option.</p>
+<p>Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options. Type-ahead can be used on a focussed trigger, which will select the option and update the trigger text, or in a list where it will only select the option but not update the trigger text until <kbd>Enter</kbd> or <kbd>Space</kbd> are pressed to confirm. Pressing <kdb>Esc</kbd> or clicking outside the element closes an open list without confirming a change in selected option.</p>
+<h2>SASS</h2>
+<p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users. The list also inherits Listbox styles detailed in the <em>SASS</em> section <a href="/listbox">here</a>.</p>
 <pre><code class="language-scss">/* VARIABLES */
-$asce-select-list-background: #fff !default;
+$asce-select-list-background-color: #fff !default;
 $asce-select-list-height: auto !default;
 $asce-select-list-z-index: 1 !default;
 
@@ -16,7 +26,7 @@ asce-select {
 }
 
 [asce-select-list] {
-  background: $asce-select-list-background;
+  background: $asce-select-list-background-color;
   height: $asce-select-list-height;
   left: 0;
   margin: 0;
@@ -30,8 +40,30 @@ asce-select {
   display: none;
 }
 </code></pre>
+<h2>Custom events</h2>
+<p>Select uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
+<h3>Option selected</h3>
+<p><code>asce-select-option-selected</code></p>
+<p>This event is dispatched on <code>window</code> when a new option is selected and its <code>detail</code> object is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of the Select
+  'option': {
+    'id': // ID of selected option
+    'index': // Index of selected option
+  },
+}
+</code></pre>
+<h3>Update options</h3>
+<p><code>asce-select-update-options</code></p>
+<p>This event should be dispatched when a Listbox's options are altered, e.g. when options are added or deleted. The event <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Select
+}
+</code></pre>
 <h2>Examples</h2>
-<h3>Select Drop-down</h3>
+<p>Each example contains a live demo and the HTML code that produces it. The code shown may differ slightly to that rendered for the demo as some ASCE components may alter their HTML when they are instantiated.</p>
+<h3>Default Select</h3>
+<p>The default Select.</p>
 <div class="example-block"><asce-select>
   <button></button>
   <ul>
@@ -70,114 +102,102 @@ asce-select {
   &lt;/ul&gt;
 &lt;/asce-select&gt;
 </code></pre>
-<h3>Select Drop-down with images</h3>
-<div class="example-block"><asce-select id="listbox-with-images">
+<h3>Select with options containing images</h3>
+<p>A Select with options containing images.</p>
+<div class="example-block"><asce-select>
   <button></button>
-  <ul>
-    <li>Select an option</li>
+  <ul class="list-with-images">
     <li>
-       <img src="/img/logo.svg">
-       Iron Man
+      <img src="/img/logo.svg">
+      Iron Man
     </li>
     <li>
-       <img src="/img/logo.svg">
-       Nick Fury
+      <img src="/img/logo.svg">
+      Hulk
     </li>
     <li>
-       <img src="/img/logo.svg">
-       Hulk
+      <img src="/img/logo.svg">
+      Thor
     </li>
     <li>
-       <img src="/img/logo.svg">
-       Black Widow
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Thor
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Captain America
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Scarlet Witch
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Ant-Man
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Spider-man
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Black Panther
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Doctor Strange
-    </li>
-    <li>
-       <img src="/img/logo.svg">
-       Captain Marvel
+      <img src="/img/logo.svg">
+      Captain America
     </li>
   </ul>
 </asce-select>
 </div>
-<pre><code class="language-html">&lt;asce-select id=&quot;listbox-with-images&quot;&gt;
+<pre><code class="language-html">&lt;asce-select&gt;
   &lt;button&gt;&lt;/button&gt;
-  &lt;ul&gt;
-    &lt;li&gt;Select an option&lt;/li&gt;
+  &lt;ul class=&quot;list-with-images&quot;&gt;
     &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Iron Man
+      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+      Iron Man
     &lt;/li&gt;
     &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Nick Fury
+      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+      Hulk
     &lt;/li&gt;
     &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Hulk
+      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+      Thor
     &lt;/li&gt;
     &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Black Widow
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Thor
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Captain America
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Scarlet Witch
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Ant-Man
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Spider-man
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Black Panther
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Doctor Strange
-    &lt;/li&gt;
-    &lt;li&gt;
-       &lt;img src=&quot;/img/logo.svg&quot;&gt;
-       Captain Marvel
+      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+      Captain America
     &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/asce-select&gt;
+</code></pre>
+<h3>Select with dynamic options</h3>
+<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>asce-select-update-options</code> event that updates the Listbox and the trigger text. The extra JavaScript code to achieve this is also included below.</p>
+<div class="example-block"><button id="add-option">
+  Add option
+</button>
+<button id="remove-option">
+  Remove option
+</button>
+<asce-select id="dynamic-select"></asce-select>
+</div>
+<pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
+  Add option
+&lt;/button&gt;
+&lt;button id=&quot;remove-option&quot;&gt;
+  Remove option
+&lt;/button&gt;
+&lt;asce-select id=&quot;dynamic-select&quot;&gt;&lt;/asce-select&gt;
+</code></pre>
+<pre><code class="language-js">import Select, {EVENTS} from '../../asce/components/select/select.js';
+
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const selectId = 'dynamic-select';
+  const selectListEl = document.querySelector(`#${selectId} ul`);
+
+  const updateOptions = () =&gt; {
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.UPDATE_OPTIONS,
+      {
+        'detail': {
+          'id': selectId,
+        }
+      },
+    ));
+  };
+
+  document.getElementById('add-option')
+    .addEventListener('click', () =&gt; {
+      selectListEl.innerHTML += '&lt;li&gt;Iron Man&lt;/li&gt;';
+      updateOptions();
+    });
+
+  document.getElementById('remove-option')
+    .addEventListener('click', () =&gt; {
+      const fistOptionEl = selectListEl.querySelector('li');
+      if (!fistOptionEl) {
+        return;
+      }
+      selectListEl.removeChild(fistOptionEl);
+      updateOptions();
+    });
+});
 </code></pre>
