@@ -82,6 +82,9 @@ Chrome 1:
 Chrome 2:
   extends: .chrome-test
 
+Chrome 3:
+  extends: .chrome-test
+
 
 .firefox-test:
   extends: .test
@@ -92,6 +95,9 @@ Firefox 1:
   extends: .firefox-test
 
 Firefox 2:
+  extends: .firefox-test
+
+Firefox 3:
   extends: .firefox-test
 
 
