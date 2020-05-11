@@ -131,7 +131,8 @@ context('Select', () => {
         .type('{downarrow}');
       cy.get('@selectOption3').should('have.attr', 'aria-selected', 'true');
 
-      cy.get('body').click();
+      // click outside select
+      cy.get('@select').parent().click();
 
       cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
       cy.get('@selectOption1').should('have.attr', 'aria-selected', 'true');
@@ -191,7 +192,7 @@ context('Select', () => {
 
 
       // Test UP key
-      cy.get('body').click();
+      cy.get('@select').parent().click();
       cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
       cy.get('@selectTrigger')
         .focus()
