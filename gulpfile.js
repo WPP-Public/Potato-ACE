@@ -160,10 +160,17 @@ gulp.task('build-clean', async () => {
 });
 
 
-gulp.task('build-css', () => {
+gulp.task('build-sass', () => {
   return gulp.src(`${dirs.src}/sass/**/*.scss`)
     .pipe(sass().on('error', sass.logError))
     .pipe(autoprefixer())
+    .pipe(minify())
+    .pipe(gulp.dest(`${dirs.dist}/css`));
+});
+
+
+gulp.task('build-css', () => {
+  return gulp.src([`${dirs.src}/css/**/*.css`, `!${dirs.src}/css/styles.css`])
     .pipe(minify())
     .pipe(gulp.dest(`${dirs.dist}/css`));
 });
@@ -194,6 +201,7 @@ gulp.task(
   gulp.series(
     'build-clean',
     gulp.parallel(
+      'build-sass',
       'build-css',
       'build-img',
       'build-js',
