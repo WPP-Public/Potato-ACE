@@ -22,23 +22,17 @@ which will launch a browsersync server on port [3000](http://localhost:3000)
 
 
 
+
 # Documentation engine
 
-The code in `scripts/inject-code.mjs` injects the SASS and examples HTML code for each component into code fences in that component's `README` file located at `src/asce/components/<component-name>/`. This allows the SASS and examples HTML files to act as sources of truth so that the documentation is alway up to date. The code also converts the `README` file to HTML and injects the HTML code of the examples into the component's documentation page (`src/<component-name>/index.html`) above the code-fence displaying the example's code. This allows users to interact with the examples on the project documentation site. The script can be run manually or automatically using gulp.
+The documentation pages for ACE components are generated programatically by combining their `README.md`, SASS and examples files, ensuring the pages are always up to date. The pages also contain live demos of each example along with the example HTML, allowing users to interact with them as well as see and copy the exact code that generated it.
 
-## Manual injection
+To achieve this, the code in `scripts/inject-code.mjs` reads the content of a component's `README.md` in `src/asce/components/<component>/README.md`, and adds the component's SASS in `src/asce/components/<component>/_<component>.scss` to the first markdown SASS code block, represented by ` ```scss`. The code for each example in `src/asce/components/<component>/examples/` is then added to each markdown HTML code block, represented by ` ```html`, in ascending order. The combined markdown content is then written to `README.md`, ensuring that it is always kept up to date and can therefore be used as the docs page on websites like GitHub that automatically render README.md files in page.
+Following this, the markdown is converted to HTML before the HTML for each example is added to the converted HTML just above the code block displaying the code. Finally it writes the HTML code to `src/pages/<component>/index.html`, which then becomes the documentation page for the component.
 
-To run the script manually use `node --experimental-modules ./scripts/inject-code.mjs` or `npm run inject`. This will inject the SASS and examples HTML code into `README` and the documentation page, for all components in `src/asce/components/`.
+The script can be run using `node --experimental-modules ./scripts/inject-code.mjs` or `npm run inject`, which will generate `index.html` pages for all ACE components. To do this for a single component run `node --experimental-modules ./scripts/inject-code.mjs <component-name>` or `npm run inject -- <component-name>`. To only inject HTML from a component's examples run `node --experimental-modules ./scripts/inject-code.mjs <component-name> --examples-only` or `npm run inject -- <component-name> --examples-only`.
 
-To do this for a single component run `node --experimental-modules ./scripts/inject-code.mjs <component-name>` or `npm run inject -- <component-name>`.
-
-To only inject HTML from a component's examples run `node --experimental-modules ./scripts/inject-code.mjs <component-name> --html-only`  or  `npm run inject -- <component-name> --html-only`.
-
-
-
-## Automatic injection
-
-When the development server is run using `npm start`, gulp task `build-pages` is first run, which injects SASS and HTML examples code into the `README` and documentation page for each component. When a change is made to a component's SASS or one of it's example, these changes are automatically injected into the `README` and documentation page of that component, which in turn triggers a page reload through a gulp `.watch()` listener. See the gulp `serve` task for more details. *Note*: changes to the SASS do not cause page reload, the new SASS is instead injected into the page by browsersync.
+When the development server is run using `npm start`, gulp task `build-pages` is first run, which in turn runs `inject-code.mjs`. The script is also run for a specific component when a change is made to its SASS or any of it's examples and the page is reloaded using browsersync. *Note*: changes to the SASS are injected into the page by browsersync without causing page reload.
 
 
 

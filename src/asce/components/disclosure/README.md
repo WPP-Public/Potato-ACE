@@ -1,6 +1,6 @@
 # Disclosure
 
-Disclosure is a compoent whose visibility can be changed using trigger buttons. Disclosure conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
+Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
 
 
 ## Import and instantiation
