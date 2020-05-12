@@ -120,12 +120,10 @@ h3 {
 
 kbd {
   background-color: map-get($pot-grey, 1);
-  border: 1px solid  map-get($pot-grey, 3);
+  border: 1px solid map-get($pot-grey, 3);
   border-radius: 3px;
   font-family: inherit;
-  font-size: 1.4rem;
-  hyphens: none;
-  line-height: 1;
+  font-size: 1.3rem;
   margin: 0 2px;
   padding: 2px 4px;
   white-space: nowrap;
