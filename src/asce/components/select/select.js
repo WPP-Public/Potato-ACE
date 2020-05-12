@@ -89,7 +89,9 @@ export default class Select extends Listbox {
     Show dropdown list
   */
   cancelOptionChange() {
-    this.makeOptionActive(this.triggerOptionIndex);
+    if (this.triggerOptionIndex || this.triggerOptionIndex == 0) {
+      this.makeOptionActive(this.triggerOptionIndex);
+    }
     this.hideList();
   }
 

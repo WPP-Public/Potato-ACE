@@ -3,7 +3,7 @@
 Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
 
 
-## Import and instantiation
+## Instantiation
 
 Import the Disclosure class:
 
@@ -15,7 +15,7 @@ The attribute names used by the class are also exported as properties of `ATTRS`
 
 After `DOMContentLoaded` is fired, Disclosure automatically instantiates an instance of itself within each `<asce-disclosure></asce-disclosure>` and adds IDs in the format `asce-disclosure-(n)` to any instances without one, where `(n)` is the instance count.
 
-Disclosures are hidden by default but can be initially shown by adding the `asce-disclosure-visible="true"` attribute to it. The attribute `asce-disclosure-trigger-for=<disclosure-id>` should be added to triggering elements, where `<disclosure-id>` is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>`s are used for triggers. Disclosures can also be triggered using custom events, as described in the *Custom events* section below.
+Disclosures are hidden by default but can be initially shown by adding the `asce-disclosure-visible="true"` attribute to it. The attribute `asce-disclosure-trigger-for=<disclosure-id>` should be added to triggering elements, where `<disclosure-id>` is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>`s are used for triggers. Disclosures can also be triggered using custom events, as described in the **Custom events** section below.
 
 Triggers will by default toggle the visibiility of the Disclosure, but the `asce-disclosure-show-trigger` or `asce-disclosure-hide-trigger` attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.
 
@@ -65,7 +65,7 @@ A Disclosure listens for these events then hides, shows or toggles itself respec
 
 ## Examples
 
-Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as ASCE components may alter their HTML when they initialise.
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
 ### Button triggered Disclosures
@@ -79,7 +79,6 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 <button asce-disclosure-trigger-for="disclosure-1">
   Disclosure 1 Toggle 2
 </button>
-<br><br>
 <button asce-disclosure-trigger-for="disclosure-2">
   Disclosure 2 Toggle
 </button>
@@ -89,9 +88,7 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 <button asce-disclosure-trigger-for="disclosure-2" asce-disclosure-trigger-hide>
   Disclosure 2 Hide
 </button>
-
 <br><br>
-
 <asce-disclosure id="disclosure-1">
   <div>
     Disclosure 1 - Initially hidden diclosure.
@@ -120,7 +117,7 @@ Example of Disclosure controlled through custom events. The buttons in this exam
 <button id="custom-event-toggle-btn">
   Toggle disclosure using custom event
 </button>
-
+<br><br>
 <asce-disclosure id="custom-event-triggered-disclosure">
   <h1>Disclosure</h1>
   <p>Disclosure toggled using custom events.</p>

@@ -1,0 +1,65 @@
+$code-block-font-size: 1.2rem;
+$btn-offset: 4px;
+$btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$btn-offset}));
+
+
+// CODE BLOCK
+.code-toolbar {
+  background: map-get($pot-grey, 7);
+  border-radius: $border-radius;
+  font-size: $code-block-font-size;
+  margin-bottom: $buffer-m;
+  padding-right: calc(#{$btn-size} + 4px);
+  position: relative;
+
+  pre {
+    background: transparent;
+  }
+
+  .variable {
+    color: map-get($pot-yellow, 4);
+  }
+
+  .comment {
+    color: map-get($pot-grey, 2);
+  }
+}
+
+
+// TOOLBAR & COPY BUTTON
+.toolbar-item {
+  position: absolute;
+  right: $btn-offset;
+  top: $btn-offset;
+
+  button {
+    background-color: transparent;
+    background-image: url('../img/clipboard-interactive.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 60%;
+    border-radius: $border-radius;
+    border-radius: 50%;
+    color: transparent;
+    cursor: pointer;
+    font-size: 0;
+    height: $btn-size;
+    transition: background-image $transition, background-color $transition;
+    width: $btn-size;
+
+    &:hover,
+    &:focus {
+      background-color: map-get($pot-blue, 4);
+      background-image: url('../img/clipboard-white.svg');
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:active {
+      background-color: #fff;
+      background-image: url('../img/clipboard-interactive.svg');
+    }
+  }
+}
