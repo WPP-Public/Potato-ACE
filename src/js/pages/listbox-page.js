@@ -1,6 +1,4 @@
-/* eslint-disable no-unused-vars */
 import Listbox, {EVENTS} from '../../asce/components/listbox/listbox.js';
-
 
 document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);

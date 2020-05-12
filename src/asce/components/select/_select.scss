@@ -13,8 +13,8 @@ asce-select {
   background: $asce-select-list-background-color;
   height: $asce-select-list-height;
   left: 0;
-  margin: 0;
   position: absolute;
+  text-align: left;
   top: 100%;
   white-space: nowrap;
   z-index: $asce-select-list-z-index;

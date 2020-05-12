@@ -5,7 +5,7 @@ Select is a special type of [Listbox](/listbox) component that mimics the native
 Select conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/examples/listbox/listbox-collapsible.html).
 
 
-## Import and instantiation
+## Instantiation
 
 Import the Select class:
 
@@ -17,7 +17,7 @@ To avoid name clashes the `as` keyword can be used when importing, e.g. `import 
 
 After `DOMContentLoaded` is fired, Select automatically instantiates an instance of itself within each `<asce-template></asce-template>` and adds IDs in the format `asce-template-(n)` to any instances without one, where `(n)` is the instance count.
 
-Select extends the Listbox class and applies its single-select attributes and functionality to a `<ul>` or `<ol>` nested within it, then hides it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the *Events* section below for more details. Select uses a `<button>` as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.
+Select extends the Listbox class and applies its single-select attributes and functionality to a `<ul>` or `<ol>` nested within it, then hides it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the **Custom events** section below for more details. Select uses a `<button>` as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.
 
 
 ## Usage
@@ -49,8 +49,8 @@ asce-select {
   background: $asce-select-list-background-color;
   height: $asce-select-list-height;
   left: 0;
-  margin: 0;
   position: absolute;
+  text-align: left;
   top: 100%;
   white-space: nowrap;
   z-index: $asce-select-list-z-index;
@@ -101,7 +101,7 @@ This event should be dispatched when a Listbox's options are altered, e.g. when 
 
 ## Examples
 
-Each example contains a live demo and the HTML code that produces it. The code shown may differ slightly to that rendered for the demo as some ASCE components may alter their HTML when they are instantiated.
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
 ### Default Select
@@ -136,21 +136,21 @@ A Select with options containing images.
 ```html
 <asce-select>
   <button></button>
-  <ul class="list-with-images">
-    <li>
-      <img src="/img/logo.svg">
+  <ul>
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Iron Man
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Hulk
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Thor
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Captain America
     </li>
   </ul>
@@ -160,7 +160,7 @@ A Select with options containing images.
 
 ### Select with dynamic options
 
-In this example the Select instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can also be removed using the **Remove option**. Both these buttons dispatch the `asce-select-update-options` event that updates the Listbox and the trigger text. The extra JavaScript code to achieve this is also included below.
+In this example the Select instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can be removed using the **Remove option**. Both these buttons dispatch the `asce-select-update-options` event that updates the Listbox and the trigger text. The extra JavaScript code to achieve this is also included below.
 
 ```html
 <button id="add-option">
@@ -169,14 +169,16 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 <button id="remove-option">
   Remove option
 </button>
-<asce-select id="dynamic-select"></asce-select>
+<asce-select id="dynamic-select">
+  <button>No options yet</button>
+</asce-select>
 ```
 
 ```js
 import Select, {EVENTS} from '../../asce/components/select/select.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
+  window.scrollTo(0, 0);
   const selectId = 'dynamic-select';
   const selectListEl = document.querySelector(`#${selectId} ul`);
 
@@ -193,7 +195,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('add-option')
     .addEventListener('click', () => {
-      selectListEl.innerHTML += '<li>Iron Man</li>';
+      const selectOptionEls = selectListEl.querySelectorAll('li');
+      const optionCount = selectOptionEls.length || 0;
+      selectListEl.innerHTML += `<li>New option ${optionCount + 1}</li>`;
       updateOptions();
     });
 
