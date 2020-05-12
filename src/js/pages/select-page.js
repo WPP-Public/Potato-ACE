@@ -1,4 +1,4 @@
-import Select, {EVENTS} from '../../asce/components/select/select.js';
+import Select, {EVENTS} from '../../ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);

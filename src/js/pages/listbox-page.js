@@ -1,4 +1,4 @@
-import Listbox, {EVENTS} from '../../asce/components/listbox/listbox.js';
+import Listbox, {EVENTS} from '../../ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
