@@ -5,7 +5,7 @@ Listbox is a list of options that allows users to select one (single-select) or 
 Listbox conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox).
 
 
-## Import and instantiation
+## Instantiation
 
 Import the Listbox class:
 
@@ -17,7 +17,7 @@ The attribute names used by the class are also exported as properties of `ATTRS`
 
 After `DOMContentLoaded` is fired, Listbox automatically instantiates an instance of itself within each `<asce-listbox></asce-listbox>` and adds IDs in the format `asce-listbox-(n)` to any instances without one, where `(n)` is the instance count.
 
-Upon instantiation Listbox adds its functionality to a `<ul>` or `<ol>` nested within it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the *Events* section below for more details.
+Upon instantiation Listbox adds its functionality to a `<ul>` or `<ol>` nested within it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the **Custom events** section below for more details.
 
 
 ## Usage
@@ -86,7 +86,7 @@ This event should be dispatched on `window` when a Listbox's options are altered
 
 ## Examples
 
-Each example contains a live demo and the HTML code that produces it. The code shown may differ slightly to that rendered for the demo as some ASCE components may alter their HTML when they are instantiated.
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
 ### Single-select Listbox
@@ -163,21 +163,21 @@ A Listbox with options containing images.
 
 ```html
 <asce-listbox>
-  <ul class="list-with-images">
-    <li>
-      <img src="/img/logo.svg">
+  <ul>
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Iron Man
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Hulk
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Thor
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Captain America
     </li>
   </ul>
@@ -187,7 +187,7 @@ A Listbox with options containing images.
 
 ### Listbox with dynamic options
 
-In this example the Listbox instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can also be removed using the **Remove option**. Both these buttons dispatch the `asce-listbox-update-options` event that updates the Listbox. The extra JavaScript code to achieve this is also included below.
+In this example the Listbox instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the `asce-listbox-update-options` event that updates the Listbox. The extra JavaScript code to achieve this is also included below.
 
 ```html
 <button id="add-option">
@@ -196,6 +196,7 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 <button id="remove-option">
   Remove option
 </button>
+<br><br>
 <asce-listbox id="dynamic-listbox"></asce-listbox>
 ```
 

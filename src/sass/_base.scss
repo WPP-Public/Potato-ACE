@@ -1,71 +1,181 @@
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800');
 
-body {
-  font-family: 'Work Sans', sans-serif;
-  padding: 0 20px;
+
+// REPEATING ELEMENTS
+* {
+  box-sizing: border-box;
+  padding: 0;
 }
+
+
+a {
+  font-weight: 700;
+  text-decoration: none;
+  transition: color $transition;
+
+  &,
+  &:visited {
+    color: $interactive-color;
+  }
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: map-get($pot-blue, 7);
+  }
+}
+
+
+article {
+  color: $text-color;
+  grid-column: 2;
+  height: 100%;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 30px;
+}
+
+
+aside {
+  background: map-get($pot-grey, 6);
+  bottom: 0;
+  color: #fff;
+  left: 0;
+  padding: $buffer-m $buffer-s;
+  position: fixed;
+  top: $header-height;
+  width: $aside-width;
+
+  @include mq($until: desktop) {
+    display: none;
+  }
+}
+
+
+button {
+  border: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+
+// Inline Code
+code {
+  :not(pre) > & {
+    background: map-get($pot-mauve, 7);
+    border-radius: $border-radius;
+    color: map-get($pot-grey, 1);
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1.2rem;
+    padding: 2px 4px;
+  }
+}
+
 
 h1,
 h2,
 h3,
 h4,
 h5 {
-  @extend .u-mb-s;
-
-  margin-top: 0;
+  font-weight: 700;
+  margin: 0 0 $buffer-s;
 }
 
-ul,
-ol {
-  list-style-position: inside;
-}
-
-.inline-code {
-  background: $code-background-color;
-  border-radius: 4px;
-  padding: 2px 10px;
-}
-
-.code-toolbar {
-  font-size: 1.4rem;
-  margin: 16px 0 32px;
-  position: relative;
-
-  pre {
-    padding-bottom: 30px;
-    padding-top: 30px;
+h1,
+h2 {
+  * + & {
+    margin-top: $buffer-xl;
   }
 }
 
-.toolbar-item {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-
-  button {
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 500;
-    padding: 3px 5px;
+h3,
+h4,
+h5 {
+  * + & {
+    margin-top: $buffer-m;
   }
 }
 
-.example-block {
-  border: 1px solid black;
-  font-size: 1.4rem;
-  margin: 16px 0 32px;
-  padding: 16px;
+h1 {
+  font-size: 4.8rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: $buffer-m;
 }
 
-.list-with-images {
-  li {
-    align-items: center;
-    display: flex;
+h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
 
-    img {
-      margin: 5px;
-      width: 40px;
-    }
+h3 {
+  font-size: 2.1rem;
+  line-height: 1.4;
+}
+
+
+kbd {
+  background-color: map-get($pot-grey, 1);
+  border: 1px solid map-get($pot-grey, 3);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 1.3rem;
+  margin: 0 2px;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+
+
+p {
+  margin: 0 0 $buffer-s;
+}
+
+
+ul {
+  list-style: none;
+  margin: 0;
+}
+
+
+// ONE-OFF ELEMENTS
+body {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.5rem;
+  height: 100%;
+  line-height: 1.5em;
+  margin: 0;
+}
+
+
+html {
+  font-size: 10px;
+  height: 100%;
+}
+
+
+header {
+  background: map-get($pot-grey, 7);
+  color: #fff;
+  height: $header-height;
+  left: 0;
+  padding: $buffer-xs $buffer-s;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+
+main {
+  height: 100%;
+  margin-top: $header-height;
+
+  @include mq(desktop) {
+    display: grid;
+    grid-template-columns: $aside-width 1fr;
   }
 }

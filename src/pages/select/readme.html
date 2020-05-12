@@ -1,13 +1,13 @@
 <h1>Select</h1>
 <p>Select is a special type of <a href="/listbox">Listbox</a> component that mimics the native HTML <code>&lt;select&gt;</code>, allowing more flexibility particularly in terms of styling.</p>
 <p>Select conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">here</a>.</p>
-<h2>Import and instantiation</h2>
+<h2>Instantiation</h2>
 <p>Import the Select class:</p>
 <pre><code class="language-js">import Select from '@potato/asce/components/select/select';
 </code></pre>
 <p>To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
 <p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>&lt;asce-template&gt;&lt;/asce-template&gt;</code> and adds IDs in the format <code>asce-template-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
-<p>Select extends the Listbox class and applies its single-select attributes and functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it, then hides it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <em>Events</em> section below for more details. Select uses a <code>&lt;button&gt;</code> as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.</p>
+<p>Select extends the Listbox class and applies its single-select attributes and functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it, then hides it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <strong>Custom events</strong> section below for more details. Select uses a <code>&lt;button&gt;</code> as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.</p>
 <h2>Usage</h2>
 <p>The list is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed. The list is aware of it's position in the window and will appear below the trigger if there is enough space, otherwise it will appear above.</p>
 <p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option.</p>
@@ -29,8 +29,8 @@ asce-select {
   background: $asce-select-list-background-color;
   height: $asce-select-list-height;
   left: 0;
-  margin: 0;
   position: absolute;
+  text-align: left;
   top: 100%;
   white-space: nowrap;
   z-index: $asce-select-list-z-index;
@@ -61,7 +61,7 @@ asce-select {
 }
 </code></pre>
 <h2>Examples</h2>
-<p>Each example contains a live demo and the HTML code that produces it. The code shown may differ slightly to that rendered for the demo as some ASCE components may alter their HTML when they are instantiated.</p>
+<p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Default Select</h3>
 <p>The default Select.</p>
 <div class="example-block"><asce-select>
@@ -106,21 +106,21 @@ asce-select {
 <p>A Select with options containing images.</p>
 <div class="example-block"><asce-select>
   <button></button>
-  <ul class="list-with-images">
-    <li>
-      <img src="/img/logo.svg">
+  <ul>
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Iron Man
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Hulk
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Thor
     </li>
-    <li>
-      <img src="/img/logo.svg">
+    <li style="align-items: center; display: flex;">
+      <img src="/img/logo.svg" width="60px">&nbsp;
       Captain America
     </li>
   </ul>
@@ -128,35 +128,37 @@ asce-select {
 </div>
 <pre><code class="language-html">&lt;asce-select&gt;
   &lt;button&gt;&lt;/button&gt;
-  &lt;ul class=&quot;list-with-images&quot;&gt;
-    &lt;li&gt;
-      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+  &lt;ul&gt;
+    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Iron Man
     &lt;/li&gt;
-    &lt;li&gt;
-      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Hulk
     &lt;/li&gt;
-    &lt;li&gt;
-      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Thor
     &lt;/li&gt;
-    &lt;li&gt;
-      &lt;img src=&quot;/img/logo.svg&quot;&gt;
+    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Captain America
     &lt;/li&gt;
   &lt;/ul&gt;
 &lt;/asce-select&gt;
 </code></pre>
 <h3>Select with dynamic options</h3>
-<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>asce-select-update-options</code> event that updates the Listbox and the trigger text. The extra JavaScript code to achieve this is also included below.</p>
+<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>asce-select-update-options</code> event that updates the Listbox and the trigger text. The extra JavaScript code to achieve this is also included below.</p>
 <div class="example-block"><button id="add-option">
   Add option
 </button>
 <button id="remove-option">
   Remove option
 </button>
-<asce-select id="dynamic-select"></asce-select>
+<asce-select id="dynamic-select">
+  <button>No options yet</button>
+</asce-select>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
   Add option
@@ -164,12 +166,14 @@ asce-select {
 &lt;button id=&quot;remove-option&quot;&gt;
   Remove option
 &lt;/button&gt;
-&lt;asce-select id=&quot;dynamic-select&quot;&gt;&lt;/asce-select&gt;
+&lt;asce-select id=&quot;dynamic-select&quot;&gt;
+  &lt;button&gt;No options yet&lt;/button&gt;
+&lt;/asce-select&gt;
 </code></pre>
 <pre><code class="language-js">import Select, {EVENTS} from '../../asce/components/select/select.js';
 
-
 document.addEventListener('DOMContentLoaded', () =&gt; {
+  window.scrollTo(0, 0);
   const selectId = 'dynamic-select';
   const selectListEl = document.querySelector(`#${selectId} ul`);
 
@@ -186,7 +190,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
   document.getElementById('add-option')
     .addEventListener('click', () =&gt; {
-      selectListEl.innerHTML += '&lt;li&gt;Iron Man&lt;/li&gt;';
+      const selectOptionEls = selectListEl.querySelectorAll('li');
+      const optionCount = selectOptionEls.length || 0;
+      selectListEl.innerHTML += `&lt;li&gt;New option ${optionCount + 1}&lt;/li&gt;`;
       updateOptions();
     });
 

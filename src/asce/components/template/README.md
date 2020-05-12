@@ -7,7 +7,7 @@
 Template conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>).
 
 
-## Import and instantiation
+## Instantiation
 
 Import the Template class:
 
@@ -30,7 +30,7 @@ After `DOMContentLoaded` is fired, Template automatically instantiates an instan
 
 ## SASS
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.
+The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by users. 
 
 ```scss
 ```
@@ -62,7 +62,7 @@ Template uses the following custom events, the names of which are exported as pr
 
 ## Examples
 
-Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as ASCE components may alter their HTML when they initialise.
+Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
 <!-- TODO: Replace 'Example' with more descriptive name -->
