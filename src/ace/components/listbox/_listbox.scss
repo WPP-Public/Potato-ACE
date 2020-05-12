@@ -1,0 +1,19 @@
+/* VARIABLES */
+$ace-listbox-active-option-outline: 2px dotted #000 !default;
+$ace-listbox-selected-option-bg-color: #ccc !default;
+
+
+/* STYLES */
+[ace-listbox-list] {
+  list-style-position: inside;
+}
+
+[ace-listbox-option-index] {
+  &[aria-selected="true"] {
+    background: $ace-listbox-selected-option-bg-color;
+  }
+}
+
+[ace-listbox-active-option] {
+  outline: $ace-listbox-active-option-outline;
+}

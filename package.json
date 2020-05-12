@@ -55,6 +55,6 @@
     "**/*.min.js"
   ],
   "customProperties": {
-    "componentLibrary": "asce"
+    "componentLibrary": "ace"
   }
 }
