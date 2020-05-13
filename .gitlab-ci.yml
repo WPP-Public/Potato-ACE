@@ -3,6 +3,7 @@ image: node:13.1.0-alpine3.10
 
 variables:
   npm_config_cache: '$CI_PROJECT_DIR/.npm'
+  npm_config_progress: 'false'
   CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/cypress'
 
 
@@ -26,7 +27,6 @@ stages:
 .deps:
   stage: prepare
   script:
-    - npm set progress=false
     - npm ci --prefer-offline
   cache:
     key: deps
