@@ -7,7 +7,14 @@ Select conforms to W3C WAI-ARIA authoring practices specified [here](https://www
 
 ## Instantiation
 
-Import the Select class:
+First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+
+```scss
+@import '../path/to/node_modules/@potato/ace/components/select/select'
+```
+
+
+Then import the class into your JavaScript entry point:
 
 ```js
 import Select from '@potato/ace/components/select/select';
