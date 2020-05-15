@@ -1,0 +1,14 @@
+.component-list {
+  list-style: none;
+
+  &__component:not(:first-of-type) {
+    margin-top: $buffer-xl;
+  }
+
+  &__component-img {
+    border: 1px solid map-get($pot-blue, 6);
+    display: block;
+    max-width: 400px;
+    width: 100%;
+  }
+}
