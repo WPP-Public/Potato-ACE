@@ -68,7 +68,24 @@ A Disclosure listens for these events then hides, shows or toggles itself respec
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
-### Button triggered Disclosures
+### Simple Disclosure
+
+This is a simple button triggered Disclosure.
+
+```html
+<button ace-disclosure-trigger-for="disclosure">
+  Disclosure Toggle
+</button>
+<br><br>
+<ace-disclosure id="disclosure">
+  <h2>Disclosure heading</h2>
+  <p>Disclosure content</p>
+  <img src="/img/logo.svg" width="50px" alt="potato logo"/>
+</ace-disclosure>
+```
+
+
+### Initially visible Disclosure
 
 In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute `ace-disclosure-visible="true"`.
 
