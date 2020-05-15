@@ -1,5 +1,10 @@
 extends ../includes/base
+include ../mixins/component
 
 block article
-  h1 Components
-  p Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+  h1 ACE Components
+
+  ul(class='component-list')
+    +component('disclosure', 'Disclosure', ['Pop-up'])
+    +component('listbox', 'Listbox')
+    +component('select', 'Select', ['Drop-down', 'Drop-down list'])

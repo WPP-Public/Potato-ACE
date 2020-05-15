@@ -1,0 +1,11 @@
+mixin component(comp, name, aliases)
+  li(class="component-list__component")
+    a(href=`/${comp}`)
+      h2=name
+    if aliases
+      p
+        strong=`Alias${aliases.length > 1 ? 'es' : ''}:`
+        span=` ${aliases.join(', ')}.`
+
+    a(href=`/${comp}`)
+      img(alt=`${name} in action` class="component-list__component-img" src=`/img/components/${comp}/${comp}.gif`)
