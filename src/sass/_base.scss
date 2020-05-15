@@ -53,16 +53,6 @@ aside {
 }
 
 
-button {
-  border: none;
-  cursor: pointer;
-
-  &:focus {
-    outline: 0;
-  }
-}
-
-
 // Inline Code
 code {
   :not(pre) > & {
