@@ -182,7 +182,7 @@ gulp.task('build-html', () => {
 
 
 gulp.task('build-imgs', () => {
-  return gulp.src(`${dirs.src}/img/**/*`)
+  return gulp.src(`${dirs.src}/img/**/*`, {base: `${dirs.src}/`})
     .pipe(gulp.dest(dirs.dist));
 });
 
