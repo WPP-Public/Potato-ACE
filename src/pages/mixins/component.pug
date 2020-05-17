@@ -1,10 +1,10 @@
-mixin component(comp, name, aliases)
+mixin component(key, component)
   li(class="component-list__component")
-    h2=name
-    if aliases
+    h2=component.name
+    if component.aliases
       p
-        strong=`Alias${aliases.length > 1 ? 'es' : ''}:`
-        span=` ${aliases.join(', ')}.`
+        strong=`Alias${component.aliases.length > 1 ? 'es' : ''}: `
+        =`${component.aliases.join(', ')}.`
 
-    a(href=`/${comp}` class="component-list__component-link")
-      img(alt=`${name} in action` class="component-list__component-img" src=`/img/${comp}/${comp}.gif`)
+    a(href=`/${key}` class="component-list__component-link")
+      img(alt=`${component.name} in action` class="component-list__component-img" src=`/img/${key}/${key}.gif`)

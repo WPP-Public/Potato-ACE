@@ -5,6 +5,5 @@ block article
   h1 ACE Components
 
   ul(class='component-list')
-    +component('disclosure', 'Disclosure', ['Pop-up'])
-    +component('listbox', 'Listbox')
-    +component('select', 'Select', ['Drop-down', 'Drop-down list'])
+    each component, key in components
+      +component(key, component)
