@@ -1,0 +1,25 @@
+.component-list {
+  list-style: none;
+
+  li:not(:last-of-type) a {
+    margin-bottom: $buffer-xl;
+  }
+
+  &__component-link {
+    display: block;
+    max-width: 350px;
+    width: 100%;
+  }
+
+  &__component-img {
+    border: 2px solid map-get($pot-blue, 6);
+    border-radius: $border-radius;
+    display: block;
+    width: 100%;
+
+    &:hover,
+    &:focus {
+      border-color: map-get($pot-blue, 7);
+    }
+  }
+}

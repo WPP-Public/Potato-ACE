@@ -1,6 +1,6 @@
 # Select
 
-Select is a special type of [Listbox](/listbox) component that mimics the native HTML `<select>`, allowing more flexibility particularly in terms of styling.
+Select is a special type of [Listbox](/listbox) component that mimics the native HTML `<select>` while allowing more styling flexibility.
 
 Select conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/examples/listbox/listbox-collapsible.html).
 
@@ -104,7 +104,7 @@ This event should be dispatched when a Listbox's options are altered, e.g. when 
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
-### Default Select
+### Simple Select
 
 The default Select.
 
