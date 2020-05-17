@@ -16,19 +16,20 @@ const componentLibrary = pjson.customProperties.componentLibrary;
 
 const dirs = {
   comps: `${srcDir}/${componentLibrary}/components`,
+  lib: `${srcDir}/${componentLibrary}`,
   dist: distDir,
   pages: `${srcDir}/pages`,
   src: srcDir,
 };
 
-const injectCodeCmd = 'npm run inject';
+const buildDocsCmd = 'npm run build-docs';
 
 /////////////// DEFAULT SUBTASKS ///////////////
 
 // Build md and HTML pages for all components
 gulp.task('build-pages', () => {
   return new Promise((resolve, reject) => {
-      exec(injectCodeCmd, (error) => {
+      exec(buildDocsCmd, (error) => {
         if (error) {
           reject(error);
           return;
@@ -82,6 +83,8 @@ gulp.task('serve', () => {
   // Convert all pug files to HTML if pug include files change
   gulp.watch(`${dirs.pages}/includes/**/*.pug`, gulp.series('pug'));
 
+  gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-pages', 'pug'));
+
   // Convert 'index.pug' file to HTML if it changes
   gulp.watch(`${dirs.pages}/**/index.pug`)
     .on('change', (path) => {
@@ -98,7 +101,6 @@ gulp.task('serve', () => {
     .on('change', browserSync.reload);
 
 
-
   let injectingCode = false;
   // Rebuild component's readme.html if its README.md changes
   gulp.watch(`${dirs.comps}/**/README.md`)
@@ -110,7 +112,7 @@ gulp.task('serve', () => {
       const componentName = pathFragments[pathFragments.length - 2];
       console.log(`${componentName} README changed`);
       injectingCode = true;
-      exec(`${injectCodeCmd} -- ${componentName} --html-only`, () => {
+      exec(`${buildDocsCmd} -- ${componentName} --html-only`, () => {
         injectingCode = false;
       }).stdout.pipe(process.stdout);
     });
@@ -126,7 +128,7 @@ gulp.task('serve', () => {
       const componentName = pathFragments[pathFragments.length - 2];
       console.log(`${componentName} scss changed`);
       injectingCode = true;
-      exec(`${injectCodeCmd} -- ${componentName} && gulp sass`, () => {
+      exec(`${buildDocsCmd} -- ${componentName} && gulp sass`, () => {
         injectingCode = false;
       }).stdout.pipe(process.stdout);
     });
@@ -143,7 +145,7 @@ gulp.task('serve', () => {
       const componentName = pathFragments[pathFragments.length - 3];
       console.log(`${componentName} ${exampleName} changed`);
       injectingCode = true;
-      exec(`${injectCodeCmd} -- ${componentName} --examples-only`, () => {
+      exec(`${buildDocsCmd} -- ${componentName} --examples-only`, () => {
         injectingCode = false;
       }).stdout.pipe(process.stdout);
     });
@@ -176,7 +178,7 @@ gulp.task('build-css', () => {
 });
 
 
-gulp.task('build-html', () => {
+gulp.task('build-docs', () => {
   return gulp.src(`${dirs.src}/pages/**/index.html`, {base: `${dirs.src}/pages`})
     .pipe(gulp.dest(dirs.dist));
 });
@@ -208,7 +210,7 @@ gulp.task(
       gulp.series(
         'build-pages',
         'pug',
-        'build-html'
+        'build-docs'
       )
     )
   )

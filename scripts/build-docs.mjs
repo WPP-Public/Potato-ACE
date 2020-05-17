@@ -1,13 +1,13 @@
 /*
   Script to inject SASS and examples HTML into README.md and index.html files for components
 
- `node --experimental-modules scripts/inject-code.mjs` will inject SASS and examples HTML into README.md and index.html file for all components
+ `node --experimental-modules scripts/build-docs.mjs` will inject SASS and examples HTML into README.md and index.html file for all components
 
- `node --experimental-modules scripts/inject-code.mjs <component>` will inject SASS and examples HTML into README.md and index.html file for given component
+ `node --experimental-modules scripts/build-docs.mjs <component>` will inject SASS and examples HTML into README.md and index.html file for given component
 
- `node --experimental-modules scripts/inject-code.mjs <component-name> --examples-only` will inject examples HTML only (no SASS injection) into README.md and index.html file for given component
+ `node --experimental-modules scripts/build-docs.mjs <component-name> --examples-only` will inject examples HTML only (no SASS injection) into README.md and index.html file for given component
 
- `node --experimental-modules scripts/inject-code.mjs <component-name> --html-only` will only convert README.md to readme.html
+ `node --experimental-modules scripts/build-docs.mjs <component-name> --html-only` will only convert README.md to readme.html
 */
 
 import {promises as fsPromises} from 'fs';
@@ -18,6 +18,7 @@ import pjson from '../package.json';
 // CONSTANTS
 const NAME = pjson.customProperties.componentLibrary;
 const componentsDir = `./src/${NAME}/components`;
+const libraryDir = `./src/${NAME}`;
 const pagesDir = './src/pages';
 const htmlArg = '--html-only';
 const examplesArg = '--examples-only';
@@ -57,17 +58,17 @@ const writeContentToFile = async (content, filePath) => {
 
 
 // INJECT SASS AND HTML FOR ALL COMPONENTS
-const injectAllComponentsCode = async () => {
+const buildDocsForAllComponents = async () => {
   // For all component directories in componentsDir
   const items = await fsPromises.readdir(componentsDir, {withFileTypes: true});
   const promises = items.filter(item => item.isDirectory())
-    .map(directory => injectComponentCode(directory.name));
+    .map(directory => buildComponentDocs(directory.name));
   return Promise.all(promises);
 };
 
 
 // INJECT CODE FOR GIVEN COMPONENT
-const injectComponentCode = async (componentName, htmlOnly=false, examplesOnly=false) => {
+const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=false) => {
   // Ignore the template component
   if (componentName === 'template') {
     return;
@@ -127,6 +128,17 @@ const injectComponentCode = async (componentName, htmlOnly=false, examplesOnly=f
   }
 };
 
+
+const buildHomePageDocs = async () => {
+  // Read md file
+  const mdFileContent = await fsPromises.readFile(`${libraryDir}/README.md`, fileEncoding);
+
+  // Convert md content for HTML page to HTML and save
+  console.log(magenta, `>> Converting home page markdown to html`);
+  const convertedHtmlContent = md.render(mdFileContent);
+  console.log(magenta, `>> Writing converted HTML to file`);
+  writeContentToFile(convertedHtmlContent, `${pagesDir}/readme.html`);
+};
 
 // INJECT SASS INTO CONTENT FOR GIVEN COMPONENT
 const injectSass = async (componentName, mdFileContent) => {
@@ -211,10 +223,11 @@ const injectExamples = async (componentName, mdFileContent, htmlOnly=false) => {
       const componentName = args[2];
       const examplesOnly = args.includes(examplesArg);
       const htmlOnly = args.includes(htmlArg);
-      await injectComponentCode(componentName, htmlOnly, examplesOnly);
+      await buildComponentDocs(componentName, htmlOnly, examplesOnly);
     } else {
       // Else build md and html for all components
-      await injectAllComponentsCode();
+      buildHomePageDocs();
+      await buildDocsForAllComponents();
     }
   }
   catch(err) {
