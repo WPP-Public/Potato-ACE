@@ -11,6 +11,7 @@ const terser = require('gulp-terser');
 
 const srcDir = './src';
 const distDir = './dist';
+
 // Get component library name from package.json
 const componentLibrary = pjson.customProperties.componentLibrary;
 
@@ -22,6 +23,8 @@ const dirs = {
 };
 
 const injectCodeCmd = 'npm run inject';
+
+const componentsData = require(`${dirs.comps}/components.json`);
 
 
 /////////////// DEFAULT SUBTASKS ///////////////
@@ -50,6 +53,9 @@ gulp.task('pug', () => {
   return gulp.src(gulpSrc, {base: dirs.pages})
     .pipe(pug({
       pretty: true,
+      data: {
+        components: componentsData
+      },
     }))
     .pipe(gulp.dest(dirs.pages));
 });
@@ -64,6 +70,7 @@ gulp.task('sass', () => {
     .pipe(gulp.dest(`${dirs.src}/css`))
     .pipe(browserSync.stream());
 });
+
 
 // Copy component gifs to ./src/img directory
 gulp.task('gifs', () => {

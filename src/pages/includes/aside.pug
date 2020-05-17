@@ -1,5 +1,3 @@
-include ../mixins/component-nav-item
-
 aside
   nav(class='side-nav')
     ul(class='side-nav__list')
@@ -10,6 +8,6 @@ aside
 
         //- Component list
         ul(class='side-nav__sub-list')
-          +component-nav-item('disclosure', 'Disclosure')
-          +component-nav-item('listbox', 'Listbox')
-          +component-nav-item('select', 'Select')
+          each component, key in components
+            li(class='side-nav__sub-list-item')
+              a(href=`/${key}`)=component.name
