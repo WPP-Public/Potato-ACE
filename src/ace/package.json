@@ -1,0 +1,24 @@
+{
+  "name": "@potato/ace",
+  "version": "1.0.1",
+  "description": "Accessible Custom Elements is a library of custom elements that conform to the W3 WAI-ARIA Authoring Practices 1.1",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "custom elements",
+    "web components",
+    "accessibility",
+    "a11y",
+    "WAI-ARIA"
+  ],
+  "author": "Potato",
+  "contributors": [
+    "Ahmed Abuelgasim (https://ahmeda.ga)",
+    "Alex Eales (https://alex-eales.com)",
+    "Michael Strutt",
+    "Wills Bithrey"
+  ],
+  "license": "ISC"
+}
