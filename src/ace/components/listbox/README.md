@@ -7,7 +7,14 @@ Listbox conforms to W3C WAI-ARIA authoring practices specified [here](https://ww
 
 ## Instantiation
 
-Import the Listbox class:
+First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+
+```scss
+@import '../path/to/node_modules/@potato/ace/components/listbox/listbox'
+```
+
+
+Then import the class into your JavaScript entry point:
 
 ```js
 import Listbox from '@potato/ace/components/listbox/listbox';
