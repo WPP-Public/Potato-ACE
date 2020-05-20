@@ -1,2 +1,5 @@
 components/template/
 components/**/examples/
+components/components.json
+components/**/*.gif
+components/**/*.mov
