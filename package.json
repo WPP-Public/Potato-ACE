@@ -13,7 +13,8 @@
     "start:test": "npx http-server ./dist --port 3030 -c-1",
     "test": "gulp serve-build & cypress open",
     "test:cli": "cypress run --config video=false",
-    "pipeline": "npm run build && npm run lint && npm run test:cli -- --browser chrome && npm run test:cli -- --browser firefox && npm run test:cli"
+    "pipeline": "npm run build && npm run lint && npm run test:cli -- --browser chrome && npm run test:cli -- --browser firefox && npm run test:cli",
+    "publish": "cd src/ace && npm publish --access public"
   },
   "repository": {
     "type": "git",
