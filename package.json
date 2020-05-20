@@ -17,7 +17,9 @@
     "test": "start-server-and-test 'gulp serve-build' 3030 'cypress open'",
     "test:ci": "start-server-and-test serve-dist 3030",
     "test:ci:chrome": "npm run test:ci -- cypress:chrome",
-    "test:ci:firefox": "npm run test:ci -- cypress:firefox"
+    "test:ci:firefox": "npm run test:ci -- cypress:firefox",
+    "pipeline": "npm run lint && npm run build && npm run test:ci:chrome && npm run test:ci:firefox",
+    "publish": "cd src/ace && npm publish --access public"
   },
   "repository": {
     "type": "git",
