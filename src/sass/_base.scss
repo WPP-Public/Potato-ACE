@@ -21,7 +21,7 @@ a {
   &:active,
   &:focus,
   &:hover {
-    color: map-get($pot-blue, 7);
+    color: $active-color;
   }
 }
 
