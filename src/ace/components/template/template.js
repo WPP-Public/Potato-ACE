@@ -1,7 +1,7 @@
 // Keep block comments (/* */) for sections used
 // Remove all comments starting with '//'
 // Use two blank lines between each section with block comment headings
-  // TODO: Find and replace all instances of 'TEMPLATE', 'Template' and 'template' to actual names
+// TODO: Find and replace all instances of 'TEMPLATE', 'Template' and 'template' to actual names
 /* IMPORTS */
 import {NAME} from '../../common/constants.js';
 import {autoID} from '../../common/functions.js';

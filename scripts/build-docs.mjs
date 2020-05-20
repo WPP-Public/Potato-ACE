@@ -112,12 +112,21 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
   console.log(magenta, `>> Writing converted HTML to file`);
   writeContentToFile(convertedHtmlContent, `${componentPageDir}/readme.html`);
 
+
   // If component page has a script file then add script to `script.pug`
-  const scriptFileExists = await fsPromises.stat(`./src/js/pages/${componentName}-page.js`);
+  const scriptFileExists = await fsPromises.stat(`${componentDir}/${componentName}-page.js`);
   const scriptPugFileExists = await fsPromises.stat(`${componentPageDir}/script.pug`).catch(() => {});
   if (scriptFileExists && !scriptPugFileExists) {
     console.log(magenta, `>> Adding page script tag to script.pug`);
-    writeContentToFile(`script(src='/js/pages/${componentName}-page.js' type='module')`, `${componentPageDir}/script.pug`);
+    writeContentToFile(`script(src='/src/ace/components/${componentName}/${componentName}-page.js' type='module')`, `${componentPageDir}/script.pug`);
+  }
+
+
+  // Copy index-template.pug to component directory as `index.pug`
+  const docPagePugFileExists = await fsPromises.stat(`${componentPageDir}/component-page.pug`).catch(() => {});
+  if (!docPagePugFileExists) {
+    console.log(magenta, `>> Copying index-template to component directory`);
+    fsPromises.copyFile(`${pagesDir}/includes/component-page.pug`, `${componentPageDir}/index.pug`);
   }
 };
 

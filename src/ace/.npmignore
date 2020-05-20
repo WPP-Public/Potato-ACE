@@ -1,5 +1,7 @@
 components/template/
 components/**/examples/
 components/components.json
+components/**/*-page.js
+components/**/*-page.ts
 components/**/*.gif
 components/**/*.mov

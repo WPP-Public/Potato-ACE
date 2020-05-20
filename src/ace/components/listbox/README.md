@@ -208,10 +208,10 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 ```
 
 ```js
-import Listbox, {EVENTS} from '../../ace/components/listbox/listbox.js';
-
+import Listbox, {EVENTS} from '../../../ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+
   const listboxId = 'dynamic-listbox';
   const listboxListEl = document.querySelector(`#${listboxId} ul`);
 
