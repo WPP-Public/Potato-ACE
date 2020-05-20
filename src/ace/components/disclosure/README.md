@@ -5,7 +5,14 @@ Disclosure is a component whose visibility can be changed using trigger buttons 
 
 ## Instantiation
 
-Import the Disclosure class:
+First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+
+```scss
+@import '../path/to/node_modules/@potato/ace/components/disclosure/disclosure'
+```
+
+
+Then import the class into your JavaScript entry point:
 
 ```js
 import Disclosure from '@potato/ace/components/disclosure/disclosure';
