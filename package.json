@@ -9,12 +9,13 @@
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/js/**/*.js\"",
     "lint:scss": "stylelint \"src/sass/**/*.scss\"",
+    "pack": "npm pack ./src/ace && open .",
+    "pipeline": "npm run build && npm run lint && npm run test:cli -- --browser chrome && npm run test:cli -- --browser firefox && npm run test:cli",
+    "publish": "cd src/ace && npm publish --access public",
     "start": "gulp",
     "start:test": "npx http-server ./dist --port 3030 -c-1",
     "test": "gulp serve-build & cypress open",
-    "test:cli": "cypress run --config video=false",
-    "pipeline": "npm run build && npm run lint && npm run test:cli -- --browser chrome && npm run test:cli -- --browser firefox && npm run test:cli",
-    "publish": "cd src/ace && npm publish --access public"
+    "test:cli": "cypress run --config video=false"
   },
   "repository": {
     "type": "git",

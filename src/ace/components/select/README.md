@@ -182,10 +182,9 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 ```
 
 ```js
-import Select, {EVENTS} from '../../ace/components/select/select.js';
+import Select, {EVENTS} from '../../../ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  window.scrollTo(0, 0);
   const selectId = 'dynamic-select';
   const selectListEl = document.querySelector(`#${selectId} ul`);
 
@@ -202,9 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('add-option')
     .addEventListener('click', () => {
-      const selectOptionEls = selectListEl.querySelectorAll('li');
-      const optionCount = selectOptionEls.length || 0;
-      selectListEl.innerHTML += `<li>New option ${optionCount + 1}</li>`;
+      selectListEl.innerHTML += '<li>New Option</li>';
       updateOptions();
     });
 

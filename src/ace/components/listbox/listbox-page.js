@@ -1,16 +1,17 @@
-import Select, {EVENTS} from '../../ace/components/select/select.js';
+import Listbox, {EVENTS} from '../../../ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   window.scrollTo(0, 0);
-  const selectId = 'dynamic-select';
-  const selectListEl = document.querySelector(`#${selectId} ul`);
+
+  const listboxId = 'dynamic-listbox';
+  const listboxListEl = document.querySelector(`#${listboxId} ul`);
 
   const updateOptions = () => {
     window.dispatchEvent(new CustomEvent(
       EVENTS.UPDATE_OPTIONS,
       {
         'detail': {
-          'id': selectId,
+          'id': listboxId,
         }
       },
     ));
@@ -18,17 +19,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('add-option')
     .addEventListener('click', () => {
-      selectListEl.innerHTML += '<li>New Option</li>';
+      listboxListEl.innerHTML += '<li>Iron Man</li>';
       updateOptions();
     });
 
   document.getElementById('remove-option')
     .addEventListener('click', () => {
-      const fistOptionEl = selectListEl.querySelector('li');
+      const fistOptionEl = listboxListEl.querySelector('li');
       if (!fistOptionEl) {
         return;
       }
-      selectListEl.removeChild(fistOptionEl);
+      listboxListEl.removeChild(fistOptionEl);
       updateOptions();
     });
 });

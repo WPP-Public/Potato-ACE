@@ -36,7 +36,7 @@
   },
   "overrides": [
     {
-      "files": ["src/js/pages/*.js"],
+      "files": ["src/ace/components/**/*-page.js"],
       "rules": {
         "no-unused-vars": [
           "off"
