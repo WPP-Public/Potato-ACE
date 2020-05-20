@@ -2,7 +2,10 @@
 <p>Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard.</p>
 <p>Listbox conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">here</a>.</p>
 <h2>Instantiation</h2>
-<p>Import the Listbox class:</p>
+<p>First import the styles into your main SASS file, replacing <code>../path/to</code> with the path to <em>node_modules</em> relative to the file:</p>
+<pre><code class="language-scss">@import '../path/to/node_modules/@potato/ace/components/listbox/listbox'
+</code></pre>
+<p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import Listbox from '@potato/ace/components/listbox/listbox';
 </code></pre>
 <p>The attribute names used by the class are also exported as properties of <code>ATTRS</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>.</p>
