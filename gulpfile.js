@@ -11,6 +11,7 @@ const terser = require('gulp-terser');
 
 const srcDir = './src';
 const distDir = './dist';
+
 // Get component library name from package.json
 const componentLibrary = pjson.customProperties.componentLibrary;
 
@@ -22,6 +23,9 @@ const dirs = {
 };
 
 const injectCodeCmd = 'npm run inject';
+
+const componentsData = require(`${dirs.comps}/components.json`);
+
 
 /////////////// DEFAULT SUBTASKS ///////////////
 
@@ -49,6 +53,9 @@ gulp.task('pug', () => {
   return gulp.src(gulpSrc, {base: dirs.pages})
     .pipe(pug({
       pretty: true,
+      data: {
+        components: componentsData
+      },
     }))
     .pipe(gulp.dest(dirs.pages));
 });
@@ -65,92 +72,91 @@ gulp.task('sass', () => {
 });
 
 
+// Copy component gifs to ./src/img directory
+gulp.task('gifs', () => {
+  return gulp.src(`${dirs.comps}/**/*.gif`)
+    .pipe(gulp.dest(`${dirs.src}/img`));
+});
+
+
 gulp.task('serve', () => {
-  browserSync.init(
-    {
-      open: false,
-      server: [
-        dirs.src,
-        `${dirs.src}/pages`,
-      ],
-    }
-  );
+  browserSync.init({
+    open: false,
+    server: [
+      dirs.src,
+      `${dirs.src}/pages`,
+    ],
+  });
 
   // Run gulp 'sass' task if SASS files change
   gulp.watch([`${dirs.src}/**/*.scss`, `!${dirs.comps}/**/*.scss`], gulp.series('sass'));
 
   // Convert all pug files to HTML if pug include files change
-  gulp.watch(`${dirs.pages}/includes/**/*.pug`, gulp.series('pug'));
+  gulp.watch([`${dirs.pages}/**/*.pug`, `!${dirs.pages}/**/index.pug`], gulp.series('pug'));
 
   // Convert 'index.pug' file to HTML if it changes
-  gulp.watch(`${dirs.pages}/**/index.pug`)
-    .on('change', (path) => {
-      console.log(`${path} changed. Converting it to HTML`);
-      exec(`gulp pug --src ${path}`).stdout.pipe(process.stdout);
-    });
+  gulp.watch(`${dirs.pages}/**/index.pug`).on('change', (path) => {
+    console.log(`${path} changed. Converting it to HTML`);
+    exec(`gulp pug --src ${path}`).stdout.pipe(process.stdout);
+  });
+
+  // Run gulp 'gifs' task if gifs changed
+  gulp.watch(`${dirs.comps}/**/*.gif`, gulp.series('gifs'));
 
   // Reload browser if index.html or JS files or files in img dir change
   gulp.watch([
     `${dirs.pages}/**/index.html`,
     `${dirs.src}/img/*`,
     `${dirs.src}/**/*.js`,
-  ])
-    .on('change', browserSync.reload);
-
+  ]).on('change', browserSync.reload);
 
 
   let injectingCode = false;
   // Rebuild component's readme.html if its README.md changes
-  gulp.watch(`${dirs.comps}/**/README.md`)
-    .on('change', (path) => {
-      if (injectingCode) {
-        return;
-      }
-      const pathFragments = path.split('/');
-      const componentName = pathFragments[pathFragments.length - 2];
-      console.log(`${componentName} README changed`);
-      injectingCode = true;
-      exec(`${injectCodeCmd} -- ${componentName} --html-only`, () => {
-        injectingCode = false;
-      }).stdout.pipe(process.stdout);
-    });
+  gulp.watch(`${dirs.comps}/**/README.md`).on('change', (path) => {
+    if (injectingCode) {
+      return;
+    }
+    const pathFragments = path.split('/');
+    const componentName = pathFragments[pathFragments.length - 2];
+    console.log(`${componentName} README changed`);
+    injectingCode = true;
+    exec(`${injectCodeCmd} -- ${componentName} --html-only`, () => {
+      injectingCode = false;
+    }).stdout.pipe(process.stdout);
+  });
 
 
   // Rebuild component's readme.html if its SASS file changes
-  gulp.watch(`${dirs.comps}/**/*.scss`)
-    .on('change', (path) => {
-      if (injectingCode) {
-        return;
-      }
-      const pathFragments = path.split('/');
-      const componentName = pathFragments[pathFragments.length - 2];
-      console.log(`${componentName} scss changed`);
-      injectingCode = true;
-      exec(`${injectCodeCmd} -- ${componentName} && gulp sass`, () => {
-        injectingCode = false;
-      }).stdout.pipe(process.stdout);
-    });
+  gulp.watch(`${dirs.comps}/**/*.scss`).on('change', (path) => {
+    if (injectingCode) {
+      return;
+    }
+    const pathFragments = path.split('/');
+    const componentName = pathFragments[pathFragments.length - 2];
+    console.log(`${componentName} scss changed`);
+    injectingCode = true;
+    exec(`${injectCodeCmd} -- ${componentName} && gulp sass`, () => {
+      injectingCode = false;
+    }).stdout.pipe(process.stdout);
+  });
 
 
   // Rebuild component's readme.html if its example files change
-  gulp.watch(`${dirs.comps}/**/examples/*.html`)
-    .on('change', (path) => {
-      if (injectingCode) {
-        return;
-      }
-      const pathFragments = path.split('/');
-      const exampleName = pathFragments[pathFragments.length - 1];
-      const componentName = pathFragments[pathFragments.length - 3];
-      console.log(`${componentName} ${exampleName} changed`);
-      injectingCode = true;
-      exec(`${injectCodeCmd} -- ${componentName} --examples-only`, () => {
-        injectingCode = false;
-      }).stdout.pipe(process.stdout);
-    });
+  gulp.watch(`${dirs.comps}/**/examples/*.html`).on('change', (path) => {
+    if (injectingCode) {
+      return;
+    }
+    const pathFragments = path.split('/');
+    const exampleName = pathFragments[pathFragments.length - 1];
+    const componentName = pathFragments[pathFragments.length - 3];
+    console.log(`${componentName} ${exampleName} changed`);
+    injectingCode = true;
+    exec(`${injectCodeCmd} -- ${componentName} --examples-only`, () => {
+      injectingCode = false;
+    }).stdout.pipe(process.stdout);
+  });
 });
-
-
-gulp.task('default', gulp.series('build-pages', gulp.parallel('pug', 'sass'), 'serve'));
 
 
 /////////////// BUILD SUBTASKS ///////////////
@@ -182,7 +188,7 @@ gulp.task('build-html', () => {
 });
 
 
-gulp.task('build-img', () => {
+gulp.task('build-imgs', () => {
   return gulp.src(`${dirs.src}/img/**/*`, {base: `${dirs.src}/`})
     .pipe(gulp.dest(dirs.dist));
 });
@@ -194,7 +200,10 @@ gulp.task('build-js', () => {
     .pipe(gulp.dest(dirs.dist));
 });
 
-/////////////// BUILD TASKS ///////////////
+/////////////// MAIN TASKS ///////////////
+
+gulp.task('default', gulp.series('build-pages', gulp.parallel('pug', 'sass', 'gifs'), 'serve'));
+
 
 gulp.task(
   'build',
@@ -203,7 +212,7 @@ gulp.task(
     gulp.parallel(
       'build-sass',
       'build-css',
-      'build-img',
+      'build-imgs',
       'build-js',
       gulp.series(
         'build-pages',

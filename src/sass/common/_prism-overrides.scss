@@ -38,6 +38,7 @@ $btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$btn-offset}));
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 60%;
+    border: none;
     border-radius: $border-radius;
     border-radius: 50%;
     color: transparent;
