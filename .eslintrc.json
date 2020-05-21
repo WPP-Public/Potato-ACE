@@ -6,20 +6,24 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:cypress/recommended"
+    "plugin:cypress/recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "plugins": [
-    "cypress"
+    "cypress",
+    "@typescript-eslint"
   ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
+    "@typescript-eslint/rule-name": "error",
     "semi": [
       "error",
       "always"
