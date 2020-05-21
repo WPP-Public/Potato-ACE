@@ -21,7 +21,7 @@ a {
   &:active,
   &:focus,
   &:hover {
-    color: map-get($pot-blue, 7);
+    color: $active-color;
   }
 }
 
@@ -29,10 +29,10 @@ a {
 article {
   color: $text-color;
   grid-column: 2;
-  height: 100%;
   margin: 0 auto;
   max-width: 900px;
   padding: 30px;
+  width: 100%;
 }
 
 
@@ -48,16 +48,6 @@ aside {
 
   @include mq($until: desktop) {
     display: none;
-  }
-}
-
-
-button {
-  border: none;
-  cursor: pointer;
-
-  &:focus {
-    outline: 0;
   }
 }
 
