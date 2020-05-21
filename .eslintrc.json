@@ -7,6 +7,8 @@
   "extends": [
     "eslint:recommended",
     "plugin:cypress/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended"
   ],
   "plugins": [
@@ -23,7 +25,6 @@
     "sourceType": "module"
   },
   "rules": {
-    "@typescript-eslint/rule-name": "error",
     "semi": [
       "error",
       "always"
