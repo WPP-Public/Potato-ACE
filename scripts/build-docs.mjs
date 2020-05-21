@@ -24,8 +24,10 @@ const htmlArg = '--html-only';
 const examplesArg = '--examples-only';
 const fileEncoding = 'utf8';
 const htmlQuery = '```html';
+const jsQuery = '```js';
 const sassQuery = '```scss';
 const endQuery = '```';
+const examplesHeading = `# Examples`;
 const examplesDirName = 'examples';
 const exampleBlockClass = 'example-block';
 
@@ -52,7 +54,10 @@ const replaceContentBetweenIndices = (sourceString, stringToInsert, startIndex, 
 
 // WRITE CONTENT TO GIVEN FILE
 const writeContentToFile = async (content, filePath) => {
-  await fsPromises.writeFile(filePath, content, fileEncoding);
+  await fsPromises.writeFile(filePath, content, fileEncoding).catch((e) => {
+    console.log(red, `>> Failed to write to ${filePath}`);
+    console.log(e);
+  });
   console.log(green, `>> Changes to ${filePath} written successfully`);
 };
 
@@ -87,7 +92,8 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
   }
 
   // Get content for md and HTML page
-  const {mdContentForMd, mdContentForHtml} = await injectExamples(componentName, mdFileContent, htmlOnly);
+  const {mdContentForMd, mdContentForHtml, scriptsPugContent} =
+    await injectExamples(componentName, mdFileContent, htmlOnly);
 
   // README.MD
   // Save new md content to README.md
@@ -113,20 +119,19 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
   writeContentToFile(convertedHtmlContent, `${componentPageDir}/readme.html`);
 
 
-  // If component page has a script file then add script to `script.pug`
-  const scriptFileExists = await fsPromises.stat(`${componentDir}/${componentName}-page.js`);
-  const scriptPugFileExists = await fsPromises.stat(`${componentPageDir}/script.pug`).catch(() => {});
-  if (scriptFileExists && !scriptPugFileExists) {
-    console.log(magenta, `>> Adding page script tag to script.pug`);
-    writeContentToFile(`script(src='/src/ace/components/${componentName}/${componentName}-page.js' type='module')`, `${componentPageDir}/script.pug`);
-  }
+  // Write scriptsPugContent to scripts.pug file
+  console.log(magenta, `>> Writing content to ${componentPageDir}/scripts.pug`);
+  writeContentToFile(scriptsPugContent, `${componentPageDir}/scripts.pug`);
 
 
-  // Copy index-template.pug to component directory as `index.pug`
-  const docPagePugFileExists = await fsPromises.stat(`${componentPageDir}/component-page.pug`).catch(() => {});
-  if (!docPagePugFileExists) {
-    console.log(magenta, `>> Copying index-template to component directory`);
-    fsPromises.copyFile(`${pagesDir}/includes/component-page.pug`, `${componentPageDir}/index.pug`);
+  // Copy component-view.pug to component directory as `index.pug`
+  const componentViewPugFileExists = await fsPromises.stat(`${componentPageDir}/component-view.pug`).catch(() => {});
+  if (!componentViewPugFileExists) {
+    console.log(magenta, `>> Copying component-view to component directory`);
+    fsPromises.copyFile(`${pagesDir}/includes/component-view.pug`, `${componentPageDir}/index.pug`)
+      .catch(() => {
+        console.log(red, `>> Failed to copy component-view to component directory`);
+      });
   }
 };
 
@@ -141,6 +146,7 @@ const buildHomePageDocs = async () => {
   console.log(magenta, `>> Writing converted HTML to file`);
   writeContentToFile(convertedHtmlContent, `${pagesDir}/readme.html`);
 };
+
 
 // INJECT SASS INTO CONTENT FOR GIVEN COMPONENT
 const injectSass = async (componentName, mdFileContent) => {
@@ -172,47 +178,90 @@ const injectExamples = async (componentName, mdFileContent, htmlOnly=false) => {
   const componentDir = `${componentsDir}/${componentName}`;
   const examplesDirPath = `${componentDir}/${examplesDirName}`;
   let queryIndex, startIndex, endIndex;
-
-  // Pointers for keeping track of which code block to inject code into
-  // Pointer for markdown file content
-  let mdFromIndex = 0;
-  // Pointer for html file content
-  let htmlFromIndex = 0;
+  let scriptsPugContent = '';
 
   // Content to be converted to HTML for component's HTML page
   let mdContentForMd, mdContentForHtml;
   mdContentForMd = mdContentForHtml = mdFileContent;
 
+
   // Get all example files for component
   const exampleFiles = await fsPromises.readdir(`${examplesDirPath}`);
 
-  for (const file of exampleFiles) {
-    // Read example file content
-    const exampleFileContents = await fsPromises.readFile(`${examplesDirPath}/${file}`, fileEncoding);
+  // Split example files into HTML and JS
+  const htmlExampleFiles = [];
+  const jsExampleFiles = [];
+  exampleFiles.forEach((file) => {
+    if (file.includes('.html')) {
+      htmlExampleFiles.push(file);
+    }
+    if (file.includes('.js')) {
+      jsExampleFiles.push(file);
+    }
+  });
 
-    if (!htmlOnly) {
-      // Inject example file HTML code into source content for component's README.md
-      console.log(magenta, `>> Injecting ${file} into ${componentName} README.md content`);
-      queryIndex = mdContentForMd.indexOf(htmlQuery, mdFromIndex);
+
+  // Inject Examples' HTML code
+  if (htmlExampleFiles.length > 0) {
+    // Pointers for keeping track of which code block to inject code into
+    // Pointer for markdown file content
+    let mdFromIndex = mdContentForMd.indexOf(examplesHeading);
+    // Pointer for html file content
+    let htmlFromIndex = mdContentForHtml.indexOf(examplesHeading);
+
+    for (const file of htmlExampleFiles) {
+      // Read example file content
+      const exampleFileContents = await fsPromises.readFile(`${examplesDirPath}/${file}`, fileEncoding);
+
+      if (!htmlOnly) {
+        // Inject example file HTML code into source content for component's README.md
+        console.log(magenta, `>> Injecting ${file} into ${componentName} README.md content`);
+        queryIndex = mdContentForMd.indexOf(htmlQuery, mdFromIndex);
+        startIndex = queryIndex + htmlQuery.length + 1;
+        endIndex = mdContentForMd.indexOf(endQuery, startIndex);
+        mdContentForMd = replaceContentBetweenIndices(mdContentForMd, exampleFileContents, startIndex, endIndex);
+        mdFromIndex = startIndex;
+      }
+
+      // Inject example file HTML code into source content for component's HTML page
+      console.log(magenta, `>> Injecting ${file} into ${componentName} page content`);
+      queryIndex = mdContentForHtml.indexOf(htmlQuery, htmlFromIndex);
       startIndex = queryIndex + htmlQuery.length + 1;
+      endIndex = mdContentForHtml.indexOf(endQuery, startIndex);
+      mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleFileContents, startIndex, endIndex);
+      const exampleBlock = `<div class="${exampleBlockClass}">${exampleFileContents}</div>\n`;
+      mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleBlock, queryIndex - 1, queryIndex - 1);
+      htmlFromIndex = startIndex + exampleBlock.length;
+    }
+  }
+
+
+  // Inject Examples' JS code
+  if (jsExampleFiles.length > 0) {
+    // Pointers for keeping track of which code block to inject code into
+    // Pointer for markdown file content
+    let mdFromIndex = mdContentForMd.indexOf(examplesHeading);
+
+    for (const file of jsExampleFiles) {
+      // Read example file content
+      const exampleFileContents = await fsPromises.readFile(`${examplesDirPath}/${file}`, fileEncoding);
+
+      // Inject example file JS code into example's JS code block in component's README.md
+      console.log(magenta, `>> Injecting ${file} into ${componentName} README.md content`);
+      queryIndex = mdContentForMd.indexOf(jsQuery, mdFromIndex);
+      startIndex = queryIndex + jsQuery.length + 1;
       endIndex = mdContentForMd.indexOf(endQuery, startIndex);
       mdContentForMd = replaceContentBetweenIndices(mdContentForMd, exampleFileContents, startIndex, endIndex);
       mdFromIndex = startIndex;
-    }
 
-    // Inject example file HTML code into source content for component's HTML page
-    console.log(magenta, `>> Injecting ${file} into ${componentName} page content`);
-    queryIndex = mdContentForHtml.indexOf(htmlQuery, htmlFromIndex);
-    startIndex = queryIndex + htmlQuery.length + 1;
-    endIndex = mdContentForHtml.indexOf(endQuery, startIndex);
-    mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleFileContents, startIndex, endIndex);
-    const exampleBlock = `<div class="${exampleBlockClass}">${exampleFileContents}</div>\n`;
-    mdContentForHtml = replaceContentBetweenIndices(mdContentForHtml, exampleBlock, queryIndex - 1, queryIndex - 1);
-    htmlFromIndex = startIndex + exampleBlock.length;
+      // Inject script tag for example file JS code into component's scripts.pug file
+      console.log(magenta, `>> Adding ${file} to script.pug content`);
+      scriptsPugContent += `script(src='/src/ace/components/${componentName}/examples/${file}' type='module')\n`;
+    }
   }
 
   // Return the source contents for README.md and component's HTML page
-  return {mdContentForMd, mdContentForHtml};
+  return {mdContentForMd, mdContentForHtml, scriptsPugContent};
 };
 
 
