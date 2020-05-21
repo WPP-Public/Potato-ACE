@@ -12,12 +12,15 @@
   }
 
   &__sub-list {
-    font-size: 1.8rem;
     margin-left: $buffer-s;
   }
 
-  &__list-item:not(:first-of-type),
   &__sub-list-item {
+    font-size: 1.8rem;
+    margin-top: $buffer-xs;
+  }
+
+  &__list-item:not(:first-of-type) {
     margin-top: $buffer-s;
   }
 }

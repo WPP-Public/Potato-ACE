@@ -1,0 +1,23 @@
+{
+  "disclosure": {
+    "name": "Disclosure",
+    "aliases": [
+      "Pop-up"
+    ]
+  },
+  "listbox": {
+    "name": "Listbox"
+  },
+  "select": {
+    "name": "Select",
+    "aliases": [
+      "Drop-down list"
+    ]
+  },
+  "tabs": {
+    "name": "Tabs",
+    "aliases": [
+      "Tabset"
+    ]
+  }
+}
