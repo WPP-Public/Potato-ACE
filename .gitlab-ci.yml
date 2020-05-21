@@ -36,8 +36,8 @@ lint:
   needs: [no_needs]
   script:
     # We use --no-package-lock to prevent npm from installing *everything* in package.json
-    - npm install --no-package-lock --no-save stylelint@11.1.1 stylelint-scss@3.13.0 stylelint-config-standard@19.0.0 stylelint-order@3.1.1
-    - npm install --no-package-lock --no-save eslint@6.6.0 eslint-plugin-cypress@2.7.0
+    - npm install --no-package-lock --no-save stylelint@13.3.3 stylelint-scss@3.17.0 stylelint-config-standard@020.0.0 stylelint-order@4.0.0
+    - npm install --no-package-lock --no-save eslint@6.8.0 eslint-plugin-cypress@2.10.3
     - npm run lint
 
 .e2e:

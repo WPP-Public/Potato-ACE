@@ -7,7 +7,7 @@
     "build": "gulp build",
     "build-docs": "node --experimental-modules ./scripts/build-docs.mjs",
     "lint": "npm run lint:scss && npm run lint:js",
-    "lint:js": "eslint \"src/js/**/*.js\"",
+    "lint:js": "eslint \"src/**/*.js\"",
     "lint:scss": "stylelint \"src/sass/**/*.scss\"",
     "pack": "npm pack ./src/ace && open .",
     "pipeline": "npm run build && npm run lint && npm run test:cli -- --browser chrome && npm run test:cli -- --browser firefox && npm run test:cli",
@@ -49,7 +49,7 @@
     "not IE > 9"
   ],
   "eslintIgnore": [
-    "**/*.min.js"
+    "/**/*.min.js"
   ],
   "customProperties": {
     "componentLibrary": "ace"
