@@ -1,7 +1,6 @@
 import Select, {EVENTS} from '../../../ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  window.scrollTo(0, 0);
   const selectId = 'dynamic-select';
   const selectListEl = document.querySelector(`#${selectId} ul`);
 

@@ -75,7 +75,7 @@ gulp.task('sass', () => {
 
 // Copy component gifs to ./src/img directory
 gulp.task('gifs', () => {
-  return gulp.src(`${dirs.comps}/**/*.gif`)
+  return gulp.src(`${dirs.comps}/media/**/*.gif`)
     .pipe(gulp.dest(`${dirs.src}/img`));
 });
 
@@ -105,7 +105,7 @@ gulp.task('serve', () => {
   });
 
   // Run gulp 'gifs' task if gifs changed
-  gulp.watch(`${dirs.comps}/**/*.gif`, gulp.series('gifs'));
+  gulp.watch(`${dirs.comps}/media/**/*.gif`, gulp.series('gifs'));
 
   // Reload browser if index.html or JS files or files in img dir change
   gulp.watch([
