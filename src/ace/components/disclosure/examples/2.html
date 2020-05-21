@@ -1,13 +1,27 @@
-<button id="custom-event-show-btn">
-  Show disclosure using custom event
+<button ace-disclosure-trigger-for="disclosure-1">
+  Disclosure 1 Toggle 1
 </button>
-<button id="custom-event-hide-btn">
-  Hide disclosure using custom event
+<button ace-disclosure-trigger-for="disclosure-1">
+  Disclosure 1 Toggle 2
 </button>
-<button id="custom-event-toggle-btn">
-  Toggle disclosure using custom event
+<button ace-disclosure-trigger-for="disclosure-2">
+  Disclosure 2 Toggle
+</button>
+<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-show>
+  Disclosure 2 Show
+</button>
+<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-hide>
+  Disclosure 2 Hide
 </button>
 <br><br>
-<ace-disclosure id="custom-event-triggered-disclosure">
-  <p>Disclosure toggled using custom events.</p>
+<ace-disclosure id="disclosure-1">
+  <div>
+    Disclosure 1 - Initially hidden diclosure.
+  </div>
+</ace-disclosure>
+
+<ace-disclosure id="disclosure-2" ace-disclosure-visible="true">
+  <div>
+    Disclosure 2 - Initially visible diclosure.
+  </div>
 </ace-disclosure>

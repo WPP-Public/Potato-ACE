@@ -1,0 +1,39 @@
+.component-list {
+  display: grid;
+  gap: $buffer-m;
+
+  @include mq($from: tablet) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include mq($from: desktop) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &__component {
+    @include bordered($color: $interactive-color, $padding: 0);
+
+    &:hover,
+    &:focus {
+      border-color: $active-color;
+    }
+  }
+
+  &__component-link {
+    display: block;
+    height: 100%;
+    max-width: 350px;
+    padding: $buffer-s;
+    width: 100%;
+
+    &,
+    &:visited {
+      color: inherit;
+    }
+  }
+
+  &__component-img {
+    display: block;
+    width: 100%;
+  }
+}

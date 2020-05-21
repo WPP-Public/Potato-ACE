@@ -5,3 +5,9 @@ aside
         a(href='/getting-started') Getting started
       li(class='side-nav__list-item')
         a(href='/components') Components
+
+        //- Component list
+        ul(class='side-nav__sub-list')
+          each component, key in components
+            li(class='side-nav__sub-list-item')
+              a(href=`/${key}`)=component.name
