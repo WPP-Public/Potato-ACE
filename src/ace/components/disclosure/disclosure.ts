@@ -5,7 +5,6 @@ import {autoID} from '../../common/functions.js';
 
 export const DISCLOSURE = `${NAME}-disclosure`;
 
-
 /* CONSTANTS */
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
@@ -23,9 +22,18 @@ export const EVENTS = {
 };
 
 
+declare global {
+  interface Element {
+    setAttribute(name: string, value: boolean): void;
+  }
+}
+
 
 /* CLASS */
 export default class Disclosure extends HTMLElement {
+  private triggerSelector: string;
+  private triggerEls: NodeListOf<Element>;
+
   /* CONSTRUCTOR */
   constructor() {
     super();
@@ -41,7 +49,7 @@ export default class Disclosure extends HTMLElement {
   }
 
 
-  connectedCallback() {
+  public connectedCallback(): void {
     /* GET DOM ELEMENTS */
     this.triggerEls = document.querySelectorAll(this.triggerSelector);
 
@@ -60,26 +68,26 @@ export default class Disclosure extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    window.addEventListener('click', this.windowClickHandler, {passive: true});
+    window.addEventListener('click', this.windowClickHandler);
     window.addEventListener(EVENTS.HIDE, this.customEventsHandler, {passive: true});
     window.addEventListener(EVENTS.SHOW, this.customEventsHandler, {passive: true});
     window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler, {passive: true});
   }
 
 
-  disconnectedCallback() {
+  public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    window.removeEventListener('click', this.windowClickHandler, {passive: true});
-    window.removeEventListener(EVENTS.HIDE, this.toggleEventHandler, {passive: true});
-    window.removeEventListener(EVENTS.SHOW, this.toggleEventHandler, {passive: true});
-    window.removeEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
+    window.removeEventListener('click', this.windowClickHandler,);
+    window.removeEventListener(EVENTS.HIDE, this.customEventsHandler);
+    window.removeEventListener(EVENTS.SHOW, this.customEventsHandler);
+    window.removeEventListener(EVENTS.TOGGLE, this.customEventsHandler);
   }
 
 
   /*
     Handles custom events
   */
-  customEventsHandler(e) {
+  private customEventsHandler(e: CustomEvent): void {
     const detail = e['detail'];
     if (!detail || (detail['id'] !== this.id) || !e.type) {
       return;
@@ -100,7 +108,7 @@ export default class Disclosure extends HTMLElement {
   /*
     Show, hide or toggle the visibility of the disclosure
   */
-  setDisclosure(showDisclosure) {
+  private setDisclosure(showDisclosure: boolean): void {
     const currentlyShown = this.getAttribute(ATTRS.VISIBLE) === 'true';
 
     if (showDisclosure && currentlyShown) {
@@ -133,9 +141,9 @@ export default class Disclosure extends HTMLElement {
   /*
     Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
   */
-  windowClickHandler(e) {
+  private windowClickHandler(e: MouseEvent): void {
     // Check that the trigger clicked is linked to this disclosure instance
-    const triggerClicked = e.target.closest(this.triggerSelector);
+    const triggerClicked = (<HTMLElement>e.target).closest(this.triggerSelector);
     if (!triggerClicked) {
       return;
     }
