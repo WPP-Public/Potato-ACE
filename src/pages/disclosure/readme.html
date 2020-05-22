@@ -36,7 +36,29 @@
 </code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<h3>Button triggered Disclosures</h3>
+<h3>Simple Disclosure</h3>
+<p>This is a simple button triggered Disclosure.</p>
+<div class="example-block"><button ace-disclosure-trigger-for="disclosure">
+  Disclosure Toggle
+</button>
+<br><br>
+<ace-disclosure id="disclosure">
+  <h2>Disclosure heading</h2>
+  <p>Disclosure content</p>
+  <img src="/img/logo.svg" width="50px" alt="potato logo"/>
+</ace-disclosure>
+</div>
+<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;disclosure&quot;&gt;
+  Disclosure Toggle
+&lt;/button&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;ace-disclosure id=&quot;disclosure&quot;&gt;
+  &lt;h2&gt;Disclosure heading&lt;/h2&gt;
+  &lt;p&gt;Disclosure content&lt;/p&gt;
+  &lt;img src=&quot;/img/logo.svg&quot; width=&quot;50px&quot; alt=&quot;potato logo&quot;/&gt;
+&lt;/ace-disclosure&gt;
+</code></pre>
+<h3>Initially visible Disclosure</h3>
 <p>In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute <code>ace-disclosure-visible=&quot;true&quot;</code>.</p>
 <div class="example-block"><button ace-disclosure-trigger-for="disclosure-1">
   Disclosure 1 Toggle 1
