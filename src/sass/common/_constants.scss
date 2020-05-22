@@ -72,6 +72,7 @@ $pot-yellow: (
   7: #53483b,
 );
 
+$active-color: map-get($pot-blue, 7);
 $interactive-color: map-get($pot-blue, 6);
 $interactive-light-color: map-get($pot-blue, 4);
 
