@@ -4,7 +4,7 @@
   "description": "Accessible component library website",
   "main": "index.js",
   "scripts": {
-    "build": "gulp build",
+    "build": "gulp --production build",
     "inject": "node --experimental-modules ./scripts/inject-code.mjs",
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/js/**/*.js\"",
@@ -35,17 +35,20 @@
     "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
     "gulp-clean-css": "^4.3.0",
+    "gulp-if": "^3.0.0",
     "gulp-pug": "^4.0.1",
     "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-terser": "^1.2.0",
+    "gulp-typescript": "^6.0.0-alpha.1",
     "markdown-it": "^10.0.0",
     "pug": "^2.0.4",
     "stylelint": "^13.3.3",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.0.0",
     "stylelint-scss": "^3.17.1",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "yargs": "^15.3.1"
   },
   "browserslist": [
     "last 2 versions",

@@ -8,6 +8,11 @@ const pug = require('gulp-pug');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const terser = require('gulp-terser');
+const ts = require('gulp-typescript');
+const argv = require('yargs').argv;
+const gulpif = require('gulp-if');
+
+const isProduction = !!argv['production'];
 
 const srcDir = './src';
 const distDir = './dist';
@@ -83,6 +88,8 @@ gulp.task('serve', () => {
   browserSync.init({
     open: false,
     server: [
+      './',
+      dirs.dist,
       dirs.src,
       `${dirs.src}/pages`,
     ],
@@ -110,6 +117,7 @@ gulp.task('serve', () => {
     `${dirs.src}/**/*.js`,
   ]).on('change', browserSync.reload);
 
+  gulp.watch([`${dirs.src}/{ts,${componentLibrary}}/**/*.ts`]).on('change', () => (gulp.series('build-ts'))());
 
   let injectingCode = false;
   // Rebuild component's readme.html if its README.md changes
@@ -196,13 +204,20 @@ gulp.task('build-imgs', () => {
 
 gulp.task('build-js', () => {
   return gulp.src(`${dirs.src}/{js,${componentLibrary}}/**/*.js`)
-    .pipe(terser())
+    .pipe(gulpif(isProduction,terser()))
+    .pipe(gulp.dest(dirs.dist));
+});
+
+gulp.task('build-ts', () => {
+  return gulp.src(`${dirs.src}/{ts,${componentLibrary}}/**/*.ts`)
+    .pipe(ts({target: 'esnext'}))
+    .pipe(gulpif(isProduction,terser()))
     .pipe(gulp.dest(dirs.dist));
 });
 
 /////////////// MAIN TASKS ///////////////
 
-gulp.task('default', gulp.series('build-pages', gulp.parallel('pug', 'sass', 'gifs'), 'serve'));
+gulp.task('default', gulp.series('build-pages', gulp.parallel('pug', 'sass', 'gifs', 'build-ts', 'build-js'), 'serve'));
 
 
 gulp.task(
@@ -214,6 +229,7 @@ gulp.task(
       'build-css',
       'build-imgs',
       'build-js',
+      'build-ts',
       gulp.series(
         'build-pages',
         'pug',
