@@ -6,16 +6,18 @@
   "scripts": {
     "build": "gulp build",
     "build-docs": "node --experimental-modules ./scripts/build-docs.mjs",
+    "inject": "node --experimental-modules ./scripts/inject-code.mjs",
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/**/*.js\"",
-    "lint:scss": "stylelint \"src/sass/**/*.scss\"",
-    "pack": "npm pack ./src/ace && open .",
-    "pipeline": "npm run build && npm run lint && npm run test:cli -- --browser chrome && npm run test:cli -- --browser firefox && npm run test:cli",
-    "publish": "cd src/ace && npm publish --access public",
+    "lint:scss": "stylelint \"src/**/*.scss\"",
     "start": "gulp",
-    "start:test": "npx http-server ./dist --port 3030 -c-1",
-    "test": "gulp serve-build & cypress open",
-    "test:cli": "cypress run --config video=false"
+    "test": "start-server-and-test 'gulp serve-build' 3030 'cypress open'",
+    "test:ci": "start-server-and-test serve-dist 3030",
+    "test:ci:chrome": "npm run test:ci -- cypress:chrome",
+    "test:ci:firefox": "npm run test:ci -- cypress:firefox",
+    "pack": "npm pack ./src/ace && open .",
+    "pipeline": "npm run lint && npm run build && npm run test:ci:chrome && npm run test:ci:firefox",
+    "publish": "cd src/ace && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -27,7 +29,7 @@
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.4.3",
     "browser-sync": "^2.26.7",
-    "cypress": "^4.5.0",
+    "cypress": "^4.6.0",
     "eslint": "^6.8.0",
     "eslint-plugin-cypress": "^2.10.3",
     "gulp": "^4.0.2",
@@ -39,10 +41,11 @@
     "gulp-terser": "^1.2.0",
     "markdown-it": "^10.0.0",
     "pug": "^2.0.4",
+    "start-server-and-test": "^1.11.0",
     "stylelint": "^13.3.3",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.0.0",
-    "stylelint-scss": "^3.17.1"
+    "stylelint-scss": "^3.17.2"
   },
   "browserslist": [
     "last 2 versions",
