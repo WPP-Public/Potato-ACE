@@ -31,7 +31,7 @@
   "devDependencies": {
     "@webcomponents/webcomponentsjs": "^2.4.3",
     "browser-sync": "^2.26.7",
-    "cypress": "^4.5.0",
+    "cypress": "^4.6.0",
     "eslint": "^6.8.0",
     "eslint-plugin-cypress": "^2.10.3",
     "gulp": "^4.0.2",
