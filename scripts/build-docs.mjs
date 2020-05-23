@@ -81,7 +81,7 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
 
   const componentDir = `${componentsDir}/${componentName}`;
   const mdFilePath = `${componentDir}/README.md`;
-  const componentPageDir = `${pagesDir}/${componentName}`;
+  const componentPageDir = `${pagesDir}/includes/components/${componentName}`;
 
   // Read md file
   let mdFileContent = await fsPromises.readFile(mdFilePath, fileEncoding);
@@ -124,15 +124,12 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
   writeContentToFile(scriptsPugContent, `${componentPageDir}/scripts.pug`);
 
 
-  // Copy component-view.pug to component directory as `index.pug`
-  const componentViewPugFileExists = await fsPromises.stat(`${componentPageDir}/component-view.pug`).catch(() => {});
-  if (!componentViewPugFileExists) {
-    console.log(magenta, `>> Copying component-view to component directory`);
-    fsPromises.copyFile(`${pagesDir}/includes/component-view.pug`, `${componentPageDir}/index.pug`)
-      .catch(() => {
-        console.log(red, `>> Failed to copy component-view to component directory`);
-      });
-  }
+  // Copy component.pug to component directory as `index.pug`
+  console.log(magenta, `>> Copying component.pug to component directory`);
+  fsPromises.copyFile(`${pagesDir}/includes/component.pug`, `${componentPageDir}/index.pug`)
+    .catch(() => {
+      console.log(red, `>> Failed to copy component.pug to component directory`);
+    });
 };
 
 
@@ -256,7 +253,7 @@ const injectExamples = async (componentName, mdFileContent, htmlOnly=false) => {
 
       // Inject script tag for example file JS code into component's scripts.pug file
       console.log(magenta, `>> Adding ${file} to script.pug content`);
-      scriptsPugContent += `script(src='/src/ace/components/${componentName}/examples/${file}' type='module')\n`;
+      scriptsPugContent += `script(src='/js/${componentName}/${file}' type='module')\n`;
     }
   }
 

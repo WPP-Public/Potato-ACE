@@ -1,4 +1,4 @@
-import Select, {EVENTS} from '../../../ace/components/select/select.js';
+import Select, {EVENTS} from '../../ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const selectId = 'dynamic-select';
