@@ -36,15 +36,5 @@
     "no-unused-vars": [
       "warn"
     ]
-  },
-  "overrides": [
-    {
-      "files": ["src/ace/components/**/*-page.js"],
-      "rules": {
-        "no-unused-vars": [
-          "off"
-        ]
-      }
-    }
-  ]
+  }
 }
