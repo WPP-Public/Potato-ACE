@@ -75,7 +75,7 @@ gulp.task('imgs', () => {
 
 gulp.task('js', () => {
   const isProd = process.argv[process.argv.length - 1] === '--prod';
-  return gulp.src([`${dirs.src}/js/*.js`, `${dirs.comps}/**/examples/*.js`])
+  return gulp.src([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`])
     .pipe(gulpif(isProd, terser()))
     .pipe(flatten({ subPath: [0, 1]}))
     .pipe(gulp.dest(`${dirs.dist}/js`));
@@ -120,19 +120,15 @@ gulp.task('sass', () => {
 
 
 gulp.task('serve', () => {
+  let injectingCode = false;
+
   browserSync.init({
     open: false,
     server: dirs.dist,
   });
 
-  // Run gulp 'sass' task if SASS files change
-  gulp.watch([`${dirs.src}/**/*.scss`, `!${dirs.comps}/**/*.scss`], gulp.series('sass'));
-
   // Convert all pug files to HTML if pug include files change
   gulp.watch([`${dirs.pages}/**/*.pug`, `!${dirs.pages}/**/index.pug`], gulp.series('pug'));
-
-  // Build pages if package README.md changes
-  gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-docs', 'pug'));
 
   // Convert 'index.pug' file to HTML if it changes
   gulp.watch(`${dirs.pages}/**/index.pug`).on('change', (path) => {
@@ -140,19 +136,10 @@ gulp.task('serve', () => {
     exec(`gulp pug --src ${path}`).stdout.pipe(process.stdout);
   });
 
-  // Run gulp 'gifs' task if gifs changed
-  gulp.watch(`${dirs.comps}/media/**/*.gif`, gulp.series('gifs'));
+  // Build docs if package main README.md changes
+  gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-docs'));
 
-  // Reload browser if index.html or JS files or files in img dir change
-  gulp.watch([
-    `${dirs.pages}/**/index.html`,
-    `${dirs.src}/img/*`,
-    `${dirs.src}/**/*.js`,
-  ]).on('change', browserSync.reload);
-
-
-  let injectingCode = false;
-  // Rebuild component's readme.html if its README.md changes
+  // Rebuild component readme.html if README.md changes
   gulp.watch(`${dirs.comps}/**/README.md`).on('change', (path) => {
     if (injectingCode) {
       return;
@@ -165,22 +152,6 @@ gulp.task('serve', () => {
       injectingCode = false;
     }).stdout.pipe(process.stdout);
   });
-
-
-  // Rebuild component's readme.html if its SASS file changes
-  gulp.watch(`${dirs.comps}/**/*.scss`).on('change', (path) => {
-    if (injectingCode) {
-      return;
-    }
-    const pathFragments = path.split('/');
-    const componentName = pathFragments[pathFragments.length - 2];
-    console.log(`${componentName} scss changed`);
-    injectingCode = true;
-    exec(`${buildDocsCmd} -- ${componentName} && gulp sass`, () => {
-      injectingCode = false;
-    }).stdout.pipe(process.stdout);
-  });
-
 
   // Rebuild component's readme.html if its example files change
   gulp.watch(`${dirs.comps}/**/examples/*.html`).on('change', (path) => {
@@ -196,6 +167,35 @@ gulp.task('serve', () => {
       injectingCode = false;
     }).stdout.pipe(process.stdout);
   });
+
+  // Run gulp 'sass' task if SASS files change
+  gulp.watch([`${dirs.src}/**/*.scss`, `!${dirs.comps}/**/*.scss`], gulp.series('sass'));
+
+  // Rebuild component's readme.html if its SASS file changes
+  gulp.watch(`${dirs.comps}/**/*.scss`).on('change', (path) => {
+    if (injectingCode) {
+      return;
+    }
+    const pathFragments = path.split('/');
+    const componentName = pathFragments[pathFragments.length - 2];
+    console.log(`${componentName} scss changed`);
+    injectingCode = true;
+    exec(`${buildDocsCmd} -- ${componentName} && gulp sass`, () => {
+      injectingCode = false;
+    }).stdout.pipe(process.stdout);
+  });
+
+  gulp.watch([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`], gulp.series('js'));
+
+  // Run gulp 'gifs' task if gifs changed
+  gulp.watch(`${dirs.comps}/**/media/*.gif`, gulp.series('gifs', () => { return browserSync.reload; }));
+
+  // RELOAD
+  // Reload browser if index.html or JS files or files in img dir change
+  gulp.watch([
+    `${dirs.dist}/**/index.html`,
+    `${dirs.dist}/**/*.js`,
+  ]).on('change', browserSync.reload);
 });
 
 
