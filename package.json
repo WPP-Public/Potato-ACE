@@ -15,7 +15,7 @@
     "start": "gulp",
     "serve:build": "gulp --prod",
     "serve:ci": "npx http-server dist --port 3030",
-    "test": "start-server-and-test 'gulp serve-build' 3030 'cypress open'",
+    "test": "start-server-and-test serve:build 3030 'cypress open'",
     "test:ci": "start-server-and-test serve:ci 3030",
     "test:ci:chrome": "npm run test:ci -- cypress:chrome",
     "test:ci:firefox": "npm run test:ci -- cypress:firefox",
