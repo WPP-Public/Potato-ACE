@@ -1,7 +1,9 @@
 const autoprefixer = require('gulp-autoprefixer');
 const browserSync = require('browser-sync').create();
 const {exec} = require('child_process');
+const flatten = require('gulp-flatten');
 const gulp = require('gulp');
+const gulpif = require('gulp-if');
 const minify = require('gulp-clean-css');
 const pjson = require('./package.json');
 const pug = require('gulp-pug');
@@ -9,12 +11,12 @@ const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const terser = require('gulp-terser');
 
-const srcDir = './src';
-const distDir = './dist';
-
+const buildDocsCmd = 'npm run build-docs';
 // Get component library name from package.json
 const componentLibrary = pjson.customProperties.componentLibrary;
 
+const srcDir = './src';
+const distDir = './dist';
 const dirs = {
   comps: `${srcDir}/${componentLibrary}/components`,
   dist: distDir,
@@ -22,16 +24,13 @@ const dirs = {
   pages: `${srcDir}/pages`,
   src: srcDir,
 };
-
-const buildDocsCmd = 'npm run build-docs';
-
 const componentsData = require(`${dirs.comps}/components.json`);
 
 
-/////////////// DEFAULT SUBTASKS ///////////////
+/////////////// SUBTASKS ///////////////
 
 // Build md and HTML pages for all components
-gulp.task('build-pages', () => {
+gulp.task('build-docs', () => {
   return new Promise((resolve, reject) => {
       exec(buildDocsCmd, (error) => {
         if (error) {
@@ -45,48 +44,85 @@ gulp.task('build-pages', () => {
 });
 
 
-// Convert all or specific pug file to HTML
-gulp.task('pug', () => {
-  const args = process.argv;
-  const srcArgIndex = args.indexOf('--src');
-  let gulpSrc = (srcArgIndex === -1) ? `${dirs.pages}/**/index.pug` : args[srcArgIndex + 1];
-
-  return gulp.src(gulpSrc, {base: dirs.pages})
-    .pipe(pug({
-      pretty: true,
-      data: {
-        components: componentsData
-      },
-    }))
-    .pipe(gulp.dest(dirs.pages));
+// Clean dist directory
+gulp.task('clean', async () => {
+  exec(`rm -rf ${dirs.dist}/*`);
 });
 
 
-gulp.task('sass', () => {
-  return gulp.src(`${dirs.src}/sass/**/*.scss`)
-    .pipe(sourcemaps.init())
-    .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
-    .pipe(autoprefixer())
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(`${dirs.src}/css`))
-    .pipe(browserSync.stream());
+// Copy other CSS files to dist and minify e.g. prism.js
+gulp.task('css', () => {
+  const isProd = process.argv[process.argv.length - 1] === '--prod';
+  return gulp.src([`${dirs.src}/css/**/*.css`, `!${dirs.src}/css/styles.css`])
+    .pipe(gulpif(isProd, minify()))
+    .pipe(gulp.dest(`${dirs.dist}/css`));
 });
 
 
 // Copy component gifs to ./src/img directory
 gulp.task('gifs', () => {
-  return gulp.src(`${dirs.comps}/media/**/*.gif`)
-    .pipe(gulp.dest(`${dirs.src}/img`));
+  return gulp.src(`${dirs.comps}/**/media/*.gif`)
+    .pipe(flatten())
+    .pipe(gulp.dest(`${dirs.dist}/img/components`));
+});
+
+
+gulp.task('imgs', () => {
+  return gulp.src(`${dirs.src}/img/**/*`)
+    .pipe(gulp.dest(`${dirs.dist}/img`));
+});
+
+
+gulp.task('js', () => {
+  const isProd = process.argv[process.argv.length - 1] === '--prod';
+  return gulp.src([`${dirs.src}/js/*.js`, `${dirs.comps}/**/examples/*.js`])
+    .pipe(gulpif(isProd, terser()))
+    .pipe(flatten({ subPath: [0, 1]}))
+    .pipe(gulp.dest(`${dirs.dist}/js`));
+});
+
+
+gulp.task(`js-${componentLibrary}`, () => {
+  const isProd = process.argv[process.argv.length - 1] === '--prod';
+  return gulp.src([`${dirs.src}/ace/**/*.js`, `!${dirs.comps}/**/*.test.js`, `!${dirs.comps}/**/examples/*.js`, `!${dirs.comps}/template/*`], {base: dirs.src})
+    .pipe(gulpif(isProd, terser()))
+    .pipe(gulp.dest(dirs.dist));
+});
+
+
+// Convert all or specific pug file to HTML
+gulp.task('pug', () => {
+  const args = process.argv;
+  const srcArgIndex = args.indexOf('--src');
+  const gulpSrc = (srcArgIndex === -1) ? `${dirs.pages}/**/index.pug` : args[srcArgIndex + 1];
+
+  return gulp.src(gulpSrc, {base: dirs.pages})
+    .pipe(pug({
+      pretty: true,
+      data: { components: componentsData },
+    }))
+    .pipe(flatten({ includeParents: -1 }))
+    .pipe(gulp.dest(dirs.dist));
+});
+
+
+gulp.task('sass', () => {
+  const isProd = process.argv[process.argv.length - 1] === '--prod';
+  return gulp.src(`${dirs.src}/sass/**/*.scss`)
+    .pipe(sourcemaps.init())
+    .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
+    .pipe(autoprefixer())
+    .pipe(sourcemaps.write())
+    .pipe(gulpif(isProd, minify()))
+    .pipe(gulp.dest(`${dirs.dist}/css`))
+    .pipe(browserSync.stream());
 });
 
 
 gulp.task('serve', () => {
   browserSync.init({
     open: false,
-    server: [
-      dirs.src,
-      `${dirs.src}/pages`,
-    ],
+    server: dirs.dist,
   });
 
   // Run gulp 'sass' task if SASS files change
@@ -96,7 +132,7 @@ gulp.task('serve', () => {
   gulp.watch([`${dirs.pages}/**/*.pug`, `!${dirs.pages}/**/index.pug`], gulp.series('pug'));
 
   // Build pages if package README.md changes
-  gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-pages', 'pug'));
+  gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-docs', 'pug'));
 
   // Convert 'index.pug' file to HTML if it changes
   gulp.watch(`${dirs.pages}/**/index.pug`).on('change', (path) => {
@@ -163,75 +199,19 @@ gulp.task('serve', () => {
 });
 
 
-/////////////// BUILD SUBTASKS ///////////////
+/////////////// TASKS ///////////////
 
-gulp.task('build-clean', async () => {
-  exec(`rm -rf ${dirs.dist}/*`);
-});
-
-
-gulp.task('build-sass', () => {
-  return gulp.src(`${dirs.src}/sass/**/*.scss`)
-    .pipe(sass().on('error', sass.logError))
-    .pipe(autoprefixer())
-    .pipe(minify())
-    .pipe(gulp.dest(`${dirs.dist}/css`));
-});
-
-
-gulp.task('build-css', () => {
-  return gulp.src([`${dirs.src}/css/**/*.css`, `!${dirs.src}/css/styles.css`])
-    .pipe(minify())
-    .pipe(gulp.dest(`${dirs.dist}/css`));
-});
-
-
-gulp.task('build-docs', () => {
-  return gulp.src(`${dirs.src}/pages/**/index.html`, {base: `${dirs.src}/pages`})
-    .pipe(gulp.dest(dirs.dist));
-});
-
-
-gulp.task('build-imgs', () => {
-  return gulp.src(`${dirs.src}/img/**/*`, {base: `${dirs.src}/`})
-    .pipe(gulp.dest(dirs.dist));
-});
-
-
-gulp.task('build-js', () => {
-  return gulp.src(`${dirs.src}/{js,${componentLibrary}}/**/*.js`)
-    .pipe(terser())
-    .pipe(gulp.dest(dirs.dist));
-});
-
-/////////////// MAIN TASKS ///////////////
-
-gulp.task('default', gulp.series('build-pages', gulp.parallel('pug', 'sass', 'gifs'), 'serve'));
-
-
-gulp.task(
-  'build',
-  gulp.series(
-    'build-clean',
-    gulp.parallel(
-      'build-sass',
-      'build-css',
-      'build-imgs',
-      'build-js',
-      gulp.series(
-        'build-pages',
-        'pug',
-        'build-docs'
-      )
-    )
+gulp.task('build',
+  gulp.series('clean', gulp.parallel(
+    'css',
+    'gifs',
+    'imgs',
+    'js',
+    `js-${componentLibrary}`,
+    'sass',
+    gulp.series('build-docs', 'pug'))
   )
 );
 
 
-gulp.task('serve-build', gulp.series('build', () => {
-  browserSync.init({
-    port: 3030,
-    open: false,
-    server: dirs.dist,
-  });
-}));
+gulp.task('default', gulp.series('build', 'serve'));

@@ -1,4 +1,4 @@
-import Listbox, {EVENTS} from '../../../ace/components/listbox/listbox.js';
+import Listbox, {EVENTS} from '../../ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const listboxId = 'dynamic-listbox';
