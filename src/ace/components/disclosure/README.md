@@ -150,13 +150,11 @@ Example of Disclosure controlled through custom events. The buttons in this exam
 ```js
 import Disclosure, {EVENTS} from '../../ace/components/disclosure/disclosure.js';
 
-
 document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {
     const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
     const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
-    let showDisclosure = null;
 
     if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
       return;
