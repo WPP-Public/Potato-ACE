@@ -112,10 +112,10 @@
 
 
 // ADD AN OVERLAYED ::AFTER PSEUDO-ELEMENT TO ELEMENT
-@mixin overlayed-after($content: '') {
+@mixin overlayed-pseudo($content: '', $type: 'after') {
   position: relative;
 
-  &::after {
+  &::#{$type} {
     bottom: 0;
     content: $content;
     left: 0;
@@ -128,7 +128,7 @@
 
 // MAKE ELEMENT AN ICON BUTTON
 @mixin icon-btn($size: $icon-btn-size, $icon-url: '', $bg-color: false) {
-  @include overlayed-after();
+  @include overlayed-pseudo();
 
   @if $bg-color {
     background-color: $bg-color;
