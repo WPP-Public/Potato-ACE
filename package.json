@@ -63,10 +63,10 @@
     "not IE > 9"
   ],
   "eslintIgnore": [
-    "/**/*.min.js"
+    "/**/*.min.js",
+    "gulpfile.js"
   ],
   "customProperties": {
     "componentLibrary": "ace"
   }
 }
-
