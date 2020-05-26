@@ -117,6 +117,7 @@ gulp.task('pug', () => {
 
 
 gulp.task('sass', () => {
+  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src(`${dirs.src}/sass/**/*.scss`)
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
