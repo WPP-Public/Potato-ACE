@@ -85,8 +85,6 @@ gulp.task('imgs', () => {
 });
 
 
-
-
 gulp.task('js', () => {
   return gulp.src([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`])
     .pipe(gulpif(isProd, terser()))
