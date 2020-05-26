@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
     const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
-    let showDisclosure = null;
 
     if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
       return;

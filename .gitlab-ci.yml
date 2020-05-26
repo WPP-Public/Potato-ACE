@@ -34,7 +34,7 @@ stages:
       - .npm
       - node_modules
       - cache/cypress
-    policy: pull-push
+    policy: push
 
 # Install deps if package.json or package-lock.json changed
 Install deps:
