@@ -27,8 +27,9 @@ $border-width: 2px;
 $border-radius: 4px;
 
 $header-height: 60px;
-$aside-width: 250px;
+$sidebar-width: 250px;
 
+$icon-btn-size: 40px;
 
 
 // COLORS
@@ -80,4 +81,9 @@ $text-color: map-get($pot-grey, 7);
 
 
 // ANIMATIONS
+$animation: .5s forwards;
 $transition: .1s ease-in;
+
+
+// Z-INDICES
+$sidebar-z-index: 1;
