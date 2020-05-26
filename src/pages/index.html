@@ -8,18 +8,20 @@
     <title>Potato Accessible Components</title>
   </head>
   <body>
-    <header><a class="lockup" aria-label="Go to home page" href="/"><img class="lockup__img" src="/img/logo.svg" alt="Potato logo"><span class="lockup__text">ACE</span></a></header>
+    <header class="header"><a class="lockup" aria-label="Go to home page" href="/"><img class="lockup__img" alt="Potato logo" src="/img/logo.svg"><span class="lockup__text">ACE</span></a>
+      <button class="header__sidebar-btn" aria-label="Open sidenav" sidebar-btn></button>
+    </header>
     <main>
-      <aside>
-        <nav class="side-nav">
-          <ul class="side-nav__list">
-            <li class="side-nav__list-item"><a href="/getting-started">Getting started</a></li>
-            <li class="side-nav__list-item"><a href="/components">Components</a>
-              <ul class="side-nav__sub-list">
-                <li class="side-nav__sub-list-item"><a href="/disclosure">Disclosure</a></li>
-                <li class="side-nav__sub-list-item"><a href="/listbox">Listbox</a></li>
-                <li class="side-nav__sub-list-item"><a href="/select">Select</a></li>
-                <li class="side-nav__sub-list-item"><a href="/tabs">Tabs</a></li>
+      <sidebar-comp class="sidebar" sidebar>
+        <nav>
+          <ul class="sidebar__list">
+            <li class="sidebar__list-item"><a href="/getting-started">Getting started</a></li>
+            <li class="sidebar__list-item"><a href="/components">Components</a>
+              <ul class="sidebar__sublist">
+                <li class="sidebar__sublist-item"><a href="/disclosure">Disclosure</a></li>
+                <li class="sidebar__sublist-item"><a href="/listbox">Listbox</a></li>
+                <li class="sidebar__sublist-item"><a href="/select">Select</a></li>
+                <li class="sidebar__sublist-item"><a href="/tabs">Tabs</a></li>
               </ul>
             </li>
           </ul>

@@ -103,8 +103,67 @@
 }
 
 
+// ADD BORDER TO ELEMENT
 @mixin bordered($padding: $buffer-s, $color: map-get($pot-mauve, 7)) {
   border: $border-width solid $color;
   border-radius: $border-radius;
   padding: $padding;
+}
+
+
+// ADD AN OVERLAYED ::AFTER PSEUDO-ELEMENT TO ELEMENT
+@mixin overlayed-after($content: '') {
+  position: relative;
+
+  &::after {
+    bottom: 0;
+    content: $content;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+}
+
+
+// MAKE ELEMENT AN ICON BUTTON
+@mixin icon-btn($size: $icon-btn-size, $icon-url: '', $bg-color: false) {
+  @include overlayed-after();
+
+  @if $bg-color {
+    background-color: $bg-color;
+  }
+  @else {
+    background-color: transparent;
+  }
+
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0;
+  height: $size;
+  transition: background-color $transition;
+  width: $size;
+
+  &:hover,
+  &:focus {
+    background-color: map-get($pot-blue, 4);
+
+    &::after {
+      background-color: #fff;
+    }
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &::after {
+    background-color: map-get($pot-blue, 5);
+    mask-image: url($icon-url);
+    mask-position: center center;
+    mask-repeat: no-repeat;
+    mask-size: 60%;
+    transition: mask-image $transition;
+  }
 }
