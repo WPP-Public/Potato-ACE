@@ -11,10 +11,7 @@ const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const terser = require('gulp-terser');
 const ts = require('gulp-typescript');
-const argv = require('yargs').argv;
-const gulpif = require('gulp-if');
-
-const isProduction = !!argv['production'];
+const tsProject = ts.createProject('tsconfig.json');
 
 const buildDocsCmd = 'npm run build-docs';
 // Get component library name from package.json
@@ -30,6 +27,8 @@ const dirs = {
   src: srcDir,
 };
 const componentsData = require(`${dirs.comps}/components.json`);
+
+let isProd = false;
 
 
 /////////////// SUBTASKS ///////////////
@@ -55,9 +54,17 @@ gulp.task('clean', async () => {
 });
 
 
+// Check if prod arg given
+gulp.task('is-prod', () => {
+  return new Promise((resolve, reject) => {
+    isProd = process.argv[process.argv.length - 1] === '--prod';
+    resolve();
+  });
+});
+
+
 // Copy other CSS files to dist and minify e.g. prism.js
 gulp.task('css', () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src([`${dirs.src}/css/**/*.css`, `!${dirs.src}/css/styles.css`])
     .pipe(gulpif(isProd, minify()))
     .pipe(gulp.dest(`${dirs.dist}/css`));
@@ -78,8 +85,9 @@ gulp.task('imgs', () => {
 });
 
 
+
+
 gulp.task('js', () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`])
     .pipe(gulpif(isProd, terser()))
     .pipe(flatten({ subPath: [0, 1]}))
@@ -88,7 +96,6 @@ gulp.task('js', () => {
 
 
 gulp.task(`js-${componentLibrary}`, () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src([`${dirs.src}/ace/**/*.js`, `!${dirs.comps}/**/*.test.js`, `!${dirs.comps}/**/examples/*.js`, `!${dirs.comps}/template/*`], {base: dirs.src})
     .pipe(gulpif(isProd, terser()))
     .pipe(gulp.dest(dirs.dist));
@@ -112,7 +119,6 @@ gulp.task('pug', () => {
 
 
 gulp.task('sass', () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src(`${dirs.src}/sass/**/*.scss`)
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
@@ -125,9 +131,8 @@ gulp.task('sass', () => {
 
 
 gulp.task('ts', () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
-  return gulp.src(`${dirs.src}/{ts,${componentLibrary}}/**/*.ts`)
-    .pipe(ts({target: 'esnext'}))
+  return gulp.src(`${dirs.src}/{js,${componentLibrary}}/**/*.ts`)
+    .pipe(tsProject())
     .pipe(gulpif(isProd, terser()))
     .pipe(gulp.dest(dirs.dist));
 });
@@ -154,7 +159,8 @@ gulp.task('serve', () => {
   gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-docs'));
 
 
-  gulp.watch([`${dirs.src}/{ts,${componentLibrary}}/**/*.ts`]).on('change', () => (gulp.series('build-ts'))());
+  // Build ts files if they change
+  gulp.watch(`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, gulp.series('ts'));
 
 
   // Rebuild component readme.html if README.md changes
@@ -220,15 +226,21 @@ gulp.task('serve', () => {
 /////////////// TASKS ///////////////
 
 gulp.task('build',
-  gulp.series('clean', gulp.parallel(
-    'css',
-    'gifs',
-    'imgs',
-    'js',
-    `js-${componentLibrary}`,
-    'sass',
-    gulp.series('build-docs', 'pug'))
-  )
+  gulp.series(
+    gulp.parallel(
+      'clean',
+      'is-prod'
+    ),
+    gulp.parallel(
+      'css',
+      'gifs',
+      'imgs',
+      'js',
+      `js-${componentLibrary}`,
+      'sass',
+      'ts',
+      gulp.series('build-docs', 'pug'))
+    )
 );
 
 
