@@ -1,3 +1,4 @@
+// For sidebar trigger btn styles see `_header.scss`
 .sidebar {
   $sidebar-switch-bp: 'desktop';
 
@@ -7,7 +8,7 @@
   color: #fff;
   font-weight: 500;
   left: 0;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: $buffer-m $buffer-s;
   position: fixed;
   top: $header-height;
