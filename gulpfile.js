@@ -140,8 +140,11 @@ gulp.task('ts', () => {
 gulp.task('serve', () => {
   let injectingCode = false;
 
+  const portNumber = isProd ? 3030 : 3000;
+
   browserSync.init({
     open: false,
+    port: portNumber,
     server: dirs.dist,
   });
 
