@@ -13,6 +13,7 @@
   npm i
   ```
 
+
 # Development
 Run the development server using
 ```
@@ -22,17 +23,17 @@ which will launch a browsersync server on port [3000](http://localhost:3000)
 
 
 
-
 # Documentation engine
 
 The documentation pages for ACE components are generated programatically by combining their `README.md`, SASS and examples files, ensuring the pages are always up to date. The pages also contain live demos of each example along with the example HTML, allowing users to interact with them as well as see and copy the exact code that generated it.
 
-To achieve this, the code in `scripts/inject-code.mjs` reads the content of a component's `README.md` in `src/ace/components/<component>/README.md`, and adds the component's SASS in `src/ace/components/<component>/_<component>.scss` to the first markdown SASS code block, represented by ` ```scss`. The code for each example in `src/ace/components/<component>/examples/` is then added to each markdown HTML code block, represented by ` ```html`, in acending order. The combined markdown content is then written to `README.md`, ensuring that it is always kept up to date and can therefore be used as the docs page on websites like GitHub that automatically render README.md files in page.
+To achieve this, the code in `scripts/build-docs.mjs` reads the content of a component's `README.md` in `src/ace/components/<component>/README.md`, and adds the component's SASS in `src/ace/components/<component>/_<component>.scss` to the first markdown SASS code block, represented by ` ```scss`. The code for each example in `src/ace/components/<component>/examples/` is then added to each markdown HTML code block, represented by ` ```html`, in acending order. The combined markdown content is then written to `README.md`, ensuring that it is always kept up to date and can therefore be used as the docs page on websites like GitHub that automatically render README.md files in page.
+
 Following this, the markdown is converted to HTML before the HTML for each example is added to the converted HTML just above the code block displaying the code. Finally it writes the HTML code to `src/pages/<component>/index.html`, which then becomes the documentation page for the component.
 
-The script can be run using `node --experimental-modules ./scripts/inject-code.mjs` or `npm run inject`, which will generate `index.html` pages for all ACE components. To do this for a single component run `node --experimental-modules ./scripts/inject-code.mjs <component-name>` or `npm run inject -- <component-name>`. To only inject HTML from a component's examples run `node --experimental-modules ./scripts/inject-code.mjs <component-name> --examples-only` or `npm run inject -- <component-name> --examples-only`.
+The script can be run using `npm run build-docs`, which will generate `index.html` pages for all ACE components. To do this for a single component run `npm run build-docs -- <component-name>`. To only inject HTML from a component's examples run `npm run build-docs -- <component-name> --examples-only`.
 
-When the development server is run using `npm start`, gulp task `build-pages` is first run, which in turn runs `inject-code.mjs`. The script is also run for a specific component when a change is made to its SASS or any of it's examples and the page is reloaded using browsersync. *Note*: changes to the SASS are injected into the page by browsersync without causing page reload.
+When the development server is run using `npm start`, gulp task `build-pages` is first run, which in turn runs `build-docs.mjs`. The script is also run for a specific component when a change is made to its SASS or any of it's examples and the page is reloaded using browsersync. *Note*: changes to the SASS are injected into the page by browsersync without causing page reload.
 
 
 
