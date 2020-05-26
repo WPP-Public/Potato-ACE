@@ -147,13 +147,11 @@
 </code></pre>
 <pre><code class="language-js">import Disclosure, {EVENTS} from '../../ace/components/disclosure/disclosure.js';
 
-
 document.addEventListener('DOMContentLoaded', () =&gt; {
   window.addEventListener('click', (e) =&gt; {
     const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
     const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
-    let showDisclosure = null;
 
     if (!customEventToggleBtnClicked &amp;&amp; !customEventShowBtnClicked &amp;&amp; !customEventHideBtnClicked) {
       return;

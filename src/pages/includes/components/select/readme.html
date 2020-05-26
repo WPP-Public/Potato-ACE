@@ -176,7 +176,6 @@ ace-select {
 <pre><code class="language-js">import Select, {EVENTS} from '../../ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  window.scrollTo(0, 0);
   const selectId = 'dynamic-select';
   const selectListEl = document.querySelector(`#${selectId} ul`);
 
@@ -193,9 +192,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
   document.getElementById('add-option')
     .addEventListener('click', () =&gt; {
-      const selectOptionEls = selectListEl.querySelectorAll('li');
-      const optionCount = selectOptionEls.length || 0;
-      selectListEl.innerHTML += `&lt;li&gt;New option ${optionCount + 1}&lt;/li&gt;`;
+      selectListEl.innerHTML += '&lt;li&gt;New Option&lt;/li&gt;';
       updateOptions();
     });
 

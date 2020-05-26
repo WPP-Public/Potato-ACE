@@ -79,7 +79,7 @@ context('Template', () => {
       cy.get('@templateVariantBar').should('have.attr', ATTRS.TEMPLATE_VARIANT_BAR_ATTR, 'value');
       cy.get('@templateVariantBar').should('have.attr', 'attribute', 'value');
 
-      cy.get('@templateVariantFoos').each((foo, index) => {
+      cy.get('@templateVariantFoos').each((foo) => {
         cy.get(foo).should('have.attr', ATTRS.TEMPLATE_VARIANT_FOO_ATTR, 'value');
         cy.get(foo).should('have.attr', 'attribute', 'value');
       });
