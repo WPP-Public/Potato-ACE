@@ -1,0 +1,77 @@
+.sidebar {
+  $sidebar-switch-bp: 'desktop';
+
+  @include resp-prop(font-size, 3rem, 2.5rem, 2rem);
+  background: map-get($pot-grey, 6);
+  bottom: 0;
+  color: #fff;
+  font-weight: 500;
+  left: 0;
+  overflow-y: scroll;
+  padding: $buffer-m $buffer-s;
+  position: fixed;
+  top: $header-height;
+  width: $sidebar-width;
+
+  @include mq($until: $sidebar-switch-bp) {
+    padding: $buffer-l;
+    text-align: center;
+    transform: translateX(-100%);
+    visibility: hidden;
+    width: 100%;
+    z-index: $sidebar-z-index;
+
+    &[sidebar-visible] {
+      animation: slide-in $animation;
+    }
+
+    &:not([sidebar-visible]) {
+      animation: slide-out $animation;
+    }
+  }
+
+  a {
+    @extend .unstyled-anchor;
+
+    &,
+    &:visited {
+      &:hover {
+        color: map-get($pot-grey, 2);
+      }
+    }
+  }
+
+  &__list-item:not(:first-of-type) {
+    margin-top: $buffer-m;
+
+    @include mq($from: $sidebar-switch-bp) {
+      margin-top: $buffer-s;
+    }
+  }
+
+  &__sublist-item {
+    @extend .u-hide-mobile;
+    font-size: .8em;
+    margin-top: $buffer-m;
+
+    @include mq($from: $sidebar-switch-bp) {
+      margin-top: $buffer-s;
+    }
+  }
+
+  @keyframes slide-in {
+    100% {
+      transform: translateX(0%);
+    }
+  }
+
+  @keyframes slide-out {
+    0% {
+      transform: translateX(0%);
+    }
+
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+}

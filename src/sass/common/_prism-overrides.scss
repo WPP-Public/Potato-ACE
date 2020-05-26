@@ -33,34 +33,14 @@ $btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$btn-offset}));
   top: $btn-offset;
 
   button {
-    background-color: transparent;
-    background-image: url('../img/clipboard-interactive.svg');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: 60%;
-    border: none;
-    border-radius: $border-radius;
-    border-radius: 50%;
-    color: transparent;
-    cursor: pointer;
-    font-size: 0;
-    height: $btn-size;
-    transition: background-image $transition, background-color $transition;
-    width: $btn-size;
-
-    &:hover,
-    &:focus {
-      background-color: map-get($pot-blue, 4);
-      background-image: url('../img/clipboard-white.svg');
-    }
-
-    &:focus {
-      outline: none;
-    }
+    @include icon-btn($btn-size, '../img/clipboard.svg');
 
     &:active {
       background-color: #fff;
-      background-image: url('../img/clipboard-interactive.svg');
+
+      &::after {
+        background-color: map-get($pot-blue, 4);
+      }
     }
   }
 }
