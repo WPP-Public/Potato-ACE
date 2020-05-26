@@ -150,14 +150,14 @@ export default class Listbox extends HTMLElement {
   */
   findInList() {
     let i = this.activeOptionIndex;
-    let maxIndex = this.options.length - 1;
+    const maxIndex = this.options.length - 1;
 
     if (this.query.length === 1) {
       // If it's the first letter of a new search, we start searching _after_ the currently selected option
       i = (i === maxIndex) ? 0 : i + 1;
     }
 
-    let startingIndex = i;
+    const startingIndex = i;
 
     do {
       if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
