@@ -17,10 +17,10 @@ First import the styles into your main SASS file, replacing `../path/to` with th
 Then import the class into your JavaScript entry point:
 
 ```js
-import Select from '@potato/ace/components/select/select';
+import '@potato/ace/components/select/select';
 ```
 
-To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
+For the sake of convenience the ES6 class is exported as `Select`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Select as aceSelect from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
 
 After `DOMContentLoaded` is fired, Select automatically instantiates an instance of itself within each `<ace-template></ace-template>` and adds IDs in the format `ace-template-(n)` to any instances without one, where `(n)` is the instance count.
 
@@ -167,7 +167,7 @@ A Select with options containing images.
 
 ### Select with dynamic options
 
-In this example the Select instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can be removed using the **Remove option**. Both these buttons dispatch the `ace-select-update-options` event that updates the Listbox and the trigger text. The extra JavaScript code to achieve this is also included below.
+In this example the Select instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can be removed using the **Remove option**. Both these buttons dispatch the `ace-select-update-options` event that updates the Listbox and the trigger text. The extra JavaScript code required by this example is also included below.
 
 ```html
 <button id="add-option">
@@ -182,7 +182,7 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 ```
 
 ```js
-import Select, {EVENTS} from '../../ace/components/select/select.js';
+import {EVENTS} from '../../ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const selectId = 'dynamic-select';
