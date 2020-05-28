@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
-import Sidebar from './components/sidebar.js';
+import './components/sidebar.js';
 
 // ACE Components
-import Disclosure from '../ace/components/disclosure/disclosure.js';
-import Select from '../ace/components/select/select.js';
-import Listbox from '../ace/components/listbox/listbox.js';
-/* eslint-enable no-unused-vars */
+import '../ace/components/disclosure/disclosure.js';
+import '../ace/components/listbox/listbox.js';
+import '../ace/components/select/select.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
