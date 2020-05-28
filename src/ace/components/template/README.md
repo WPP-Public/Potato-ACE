@@ -19,10 +19,10 @@ First import the styles into your main SASS file, replacing `../path/to` with th
 Then import the class into your JavaScript entry point:
 
 ```js
-import Template from '@potato/ace/components/template/template';
+import '@potato/ace/components/template/template';
 ```
 
-To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`.
+For the sake of convenience the ES6 class is exported as `Template`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Template as aceTemplate from ...`.
 <!-- TODO: If no ATTRS are exported then remove following sentence -->
 The attribute names used by the class are also exported as properties of `ATTRS`.
 
@@ -75,10 +75,19 @@ Each example contains a live demo and the HTML code that produced it. The code s
 <!-- TODO: Replace 'Example' with more descriptive name -->
 ### Example
 
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY HERE -->
+<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
+
+<!-- IF EXAMPLE HAS CUSTOM CODE THAT MUST BE RUN THEN INCLUDE THIS LINE -->
+The extra JavaScript code required by this example is also included below.
 
 <!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
 <!--
 ```html
+```
+-->
+
+<!-- IF EXAMPLE HAS CUSTOM CODE THAT MUST BE RUN THEN INCLUDE AN EMPTY JS CODE BLOCK AS WELL -->
+<!--
+```js
 ```
 -->
