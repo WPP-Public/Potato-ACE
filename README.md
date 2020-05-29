@@ -1,17 +1,17 @@
-# Installation
+# Project set-up
 
 1. Use node.js v13.1.0 using
-  ```
-  nvm install 13.1.0
-  ```
-2. Install gulp globally using
-  ```
-  npm i -g gulp-cli
-  ```
+    ```
+    nvm install 13.1.0
+    ```
+2. Install gulp cli globally using
+    ```
+    npm i -g gulp-cli
+    ```
 3. Install dependencies using
-  ```
-  npm i
-  ```
+    ```
+    npm i
+    ```
 
 
 # Development

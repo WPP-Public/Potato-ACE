@@ -8,7 +8,6 @@ import {autoID} from '../../common/functions.js';
 
 
 /* TEMPLATE NAME */
-// Use kebab-case for the name as this will be the attribute used to attach the class
 export const TEMPLATE = `${NAME}-template`;
 
 
@@ -88,8 +87,8 @@ export default class Template extends HTMLElement {
   }
 
 
-  // OTHER CLASS METHODS
-  // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback
+  /* OTHER CLASS METHODS */
+  // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback whch should be at the top.
   // For each method, first add a block comment that describes the method
   // Use two blank lines between methods
   // /*
