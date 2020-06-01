@@ -49,7 +49,6 @@ export default class Select extends Listbox {
 
 
     /* GET DOM ELEMENTS */
-    this.listEl = this.querySelector('ul') || this.querySelector('ol');
     this.triggerEl = this.querySelector('button');
     // Create <button> if not present
     if (!this.triggerEl) {
