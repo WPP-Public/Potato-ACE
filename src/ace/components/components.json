@@ -19,5 +19,12 @@
     "aliases": [
       "Tabset"
     ]
+  },
+  "tooltip": {
+    "name": "Tooltip",
+    "aliases": [
+      "Hint",
+      "Infotip"
+    ]
   }
 }

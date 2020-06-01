@@ -1,0 +1,45 @@
+<h1>Tooltip</h1>
+<p>Tooltip is a component whose visibility can be changed by focus, hover and custom events. Tooltip conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#tooltip">here</a>.</p>
+<h2>Instantiation</h2>
+<p>First import the styles into your main SASS file, replacing <code>../path/to</code> with the path to <em>node_modules</em> relative to the file:</p>
+<pre><code class="language-scss">/* VARIABLES */
+$ace-tooltip-background-color: #000 !default;
+
+
+[ace-tooltip-visible=&quot;false&quot;] {
+  display: none;
+}
+
+ace-tooltip {
+  border: 1px solid $ace-tooltip-background-color;
+  display: block;
+  max-width: fit-content;
+}
+</code></pre>
+<p>Then import the class into your JavaScript entry point:</p>
+<pre><code class="language-js">import '@potato/ace/components/tooltip/tooltip';
+</code></pre>
+<p>For the sake of convenience the ES6 class is exported as <code>Tooltip</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Tooltip as aceTooltip from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
+<p>After <code>DOMContentLoaded</code> is fired, Disclosure automatically instantiates an instance of itself within each <code>&lt;ace-tooltip&gt;&lt;/ace-tooltip&gt;</code> and adds IDs in the format <code>ace-tooltip-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
+<h2>SASS</h2>
+<h2>Custom events</h2>
+<h3>Hide, Show and Toggle</h3>
+<p><code>ace-tooltip-hide</code>, <code>ace-tooltip-show</code> &amp; <code>ace-tooltip-toggle</code></p>
+<p>A Tooltip listens for these events then hides, shows or toggles itself respectively. These events should be dispatched on <code>window</code> and the <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Tooltip
+}
+</code></pre>
+<h2>Examples</h2>
+<p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
+<h3>Simple hover Tooltip</h3>
+<p>This is a simple hover triggered Tooltip.</p>
+<div class="example-block"><button aria-labelledby="tooltip-label">i</button>
+<ace-tooltip id="tooltip-label" ace-tooltip-visible="false" id="tooltip">
+  <div>This is a description</div>
+</ace-tooltip></div>
+<pre><code class="language-html">&lt;button aria-labelledby=&quot;tooltip-label&quot;&gt;i&lt;/button&gt;
+&lt;ace-tooltip id=&quot;tooltip-label&quot; ace-tooltip-visible=&quot;false&quot; id=&quot;tooltip&quot;&gt;
+  &lt;div&gt;This is a description&lt;/div&gt;
+&lt;/ace-tooltip&gt;```
+</code></pre>
