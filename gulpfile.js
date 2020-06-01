@@ -26,6 +26,8 @@ const dirs = {
 };
 const componentsData = require(`${dirs.comps}/components.json`);
 
+let isProd = false;
+
 
 /////////////// SUBTASKS ///////////////
 
@@ -50,9 +52,17 @@ gulp.task('clean', async () => {
 });
 
 
+// Check if prod arg given
+gulp.task('is-prod', () => {
+  return new Promise((resolve) => {
+    isProd = process.argv[process.argv.length - 1] === '--prod';
+    resolve();
+  });
+});
+
+
 // Copy other CSS files to dist and minify e.g. prism.js
 gulp.task('css', () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src([`${dirs.src}/css/**/*.css`, `!${dirs.src}/css/styles.css`])
     .pipe(gulpif(isProd, minify()))
     .pipe(gulp.dest(`${dirs.dist}/css`));
@@ -74,7 +84,6 @@ gulp.task('imgs', () => {
 
 
 gulp.task('js', () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`])
     .pipe(gulpif(isProd, terser()))
     .pipe(flatten({ subPath: [0, 1]}))
@@ -83,7 +92,6 @@ gulp.task('js', () => {
 
 
 gulp.task(`js-${componentLibrary}`, () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
   return gulp.src([`${dirs.src}/ace/**/*.js`, `!${dirs.comps}/**/*.test.js`, `!${dirs.comps}/**/examples/*.js`, `!${dirs.comps}/template/*`], {base: dirs.src})
     .pipe(gulpif(isProd, terser()))
     .pipe(gulp.dest(dirs.dist));
@@ -122,8 +130,11 @@ gulp.task('sass', () => {
 gulp.task('serve', () => {
   let injectingCode = false;
 
+  const portNumber = isProd ? 3030 : 3000;
+
   browserSync.init({
     open: false,
+    port: portNumber,
     server: dirs.dist,
   });
 
@@ -202,15 +213,20 @@ gulp.task('serve', () => {
 /////////////// TASKS ///////////////
 
 gulp.task('build',
-  gulp.series('clean', gulp.parallel(
-    'css',
-    'gifs',
-    'imgs',
-    'js',
-    `js-${componentLibrary}`,
-    'sass',
-    gulp.series('build-docs', 'pug'))
-  )
+  gulp.series(
+    gulp.parallel(
+      'clean',
+      'is-prod'
+    ),
+    gulp.parallel(
+      'css',
+      'gifs',
+      'imgs',
+      'js',
+      `js-${componentLibrary}`,
+      'sass',
+      gulp.series('build-docs', 'pug'))
+    )
 );
 
 
