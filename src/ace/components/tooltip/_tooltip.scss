@@ -1,0 +1,13 @@
+/* VARIABLES */
+$ace-tooltip-background-color: #000 !default;
+
+
+[ace-tooltip-visible="false"] {
+  display: none;
+}
+
+ace-tooltip {
+  border: 1px solid $ace-tooltip-background-color;
+  display: block;
+  max-width: fit-content;
+}
