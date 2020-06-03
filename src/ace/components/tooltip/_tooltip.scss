@@ -9,5 +9,7 @@ $ace-tooltip-background-color: #000 !default;
 ace-tooltip {
   border: 1px solid $ace-tooltip-background-color;
   display: block;
+  margin: 1px;
   max-width: fit-content;
+  padding: 1px;
 }
