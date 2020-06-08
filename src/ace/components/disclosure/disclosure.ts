@@ -22,17 +22,10 @@ export const EVENTS = {
 };
 
 
-declare global {
-  interface Element {
-    setAttribute(name: string, value: boolean): void;
-  }
-}
-
-
 /* CLASS */
 export default class Disclosure extends HTMLElement {
   private triggerSelector: string;
-  private triggerEls: NodeListOf<Element>;
+  private triggerEls: NodeListOf<HTMLElement>;
 
   /* CONSTRUCTOR */
   constructor() {
@@ -59,11 +52,11 @@ export default class Disclosure extends HTMLElement {
 
 
     /* SET DOM DATA */
-    this.setAttribute(ATTRS.VISIBLE, visible);
+    this.setAttribute(ATTRS.VISIBLE, visible.toString());
 
     this.triggerEls.forEach((triggerEl) => {
       triggerEl.setAttribute('aria-controls', this.id);
-      triggerEl.setAttribute('aria-expanded', visible);
+      triggerEl.setAttribute('aria-expanded', visible.toString());
     });
 
 
@@ -123,8 +116,8 @@ export default class Disclosure extends HTMLElement {
     if (showDisclosure === null || showDisclosure === undefined) {
       showDisclosure = !currentlyShown;
     }
-    this.setAttribute(ATTRS.VISIBLE, showDisclosure);
-    this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure));
+    this.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
+    this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure.toString()));
 
     window.dispatchEvent(new CustomEvent(
       EVENTS.CHANGED,
@@ -143,7 +136,7 @@ export default class Disclosure extends HTMLElement {
   */
   private windowClickHandler(e: MouseEvent): void {
     // Check that the trigger clicked is linked to this disclosure instance
-    const triggerClicked = (<HTMLElement>e.target).closest(this.triggerSelector);
+    const triggerClicked = (e.target as HTMLElement).closest(this.triggerSelector);
     if (!triggerClicked) {
       return;
     }

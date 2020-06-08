@@ -48,7 +48,7 @@ export default class Template extends HTMLElement {
   }
 
 
-  connectedCallback() {
+  public connectedCallback(): void {
     /* GET DOM ELEMENTS */
     // Add suffix `El` to the names of class constants containing elements:
     // this.someEl = this.querySelector(`[${ATTRS.ATTR_NAME}]`);
@@ -83,7 +83,7 @@ export default class Template extends HTMLElement {
   }
 
 
-  disconnectedCallback() {
+  public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
   }
 
