@@ -130,8 +130,9 @@ gulp.task('sass', () => {
 
 
 gulp.task('ts', () => {
-  return gulp.src(`${dirs.src}/{js,${componentLibrary}}/**/*.ts`)
+  return gulp.src([`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, `!${dirs.comps}/template/*`])
     .pipe(tsProject())
+    .pipe(gulp.dest(dirs.src))
     .pipe(gulpif(isProd, terser()))
     .pipe(gulp.dest(dirs.dist));
 });
