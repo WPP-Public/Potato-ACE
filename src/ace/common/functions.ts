@@ -28,7 +28,6 @@ export const keyPressedMatches = (keyPressed: string | number, keysToMatch: Arra
 };
 
 
-
 /*
   Checks if an element will overflow to the bottom or the right
   of the viewport and adds utility attibutes to prevent either or both.
