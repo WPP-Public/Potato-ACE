@@ -6,9 +6,9 @@
 <pre><code class="language-scss">@import '../path/to/node_modules/@potato/ace/components/select/select'
 </code></pre>
 <p>Then import the class into your JavaScript entry point:</p>
-<pre><code class="language-js">import Select from '@potato/ace/components/select/select';
+<pre><code class="language-js">import '@potato/ace/components/select/select';
 </code></pre>
-<p>To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
+<p>For the sake of convenience the ES6 class is exported as <code>Select</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Select as aceSelect from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
 <p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>&lt;ace-template&gt;&lt;/ace-template&gt;</code> and adds IDs in the format <code>ace-template-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
 <p>Select extends the Listbox class and applies its single-select attributes and functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it, then hides it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <strong>Custom events</strong> section below for more details. Select uses a <code>&lt;button&gt;</code> as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.</p>
 <h2>Usage</h2>
@@ -152,7 +152,7 @@ ace-select {
 &lt;/ace-select&gt;
 </code></pre>
 <h3>Select with dynamic options</h3>
-<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-select-update-options</code> event that updates the Listbox and the trigger text. The extra JavaScript code to achieve this is also included below.</p>
+<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-select-update-options</code> event that updates the Listbox and the trigger text. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="add-option">
   Add option
 </button>

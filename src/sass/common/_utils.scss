@@ -21,6 +21,18 @@
   }
 }
 
+.u-hide-handheld {
+  @include mq($until: desktop) {
+    display: none;
+  }
+}
+
+.u-only-handheld {
+  @include mq($from: desktop) {
+    display: none;
+  }
+}
+
 
 // RESPONSIVE VERTCIAL SPACINGS
 // Resposive vertical spacing utility classes generated from $vertical-spacings map in ./_variables.scss. Creates the following utility classes .u-<m/p><t/b>-<s/m/l>

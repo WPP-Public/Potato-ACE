@@ -1,7 +1,7 @@
 // TODO: Change 'TEMPLATE' and 'template' in file
 // TODO: Remove 'TODO:' comments
 // TODO: Remove ATTRS and/or EVENTS if not used
-import {TEMPLATE, ATTRS, EVENTS} from './tempalte';
+import {TEMPLATE, ATTRS, EVENTS} from './template';
 
 
 // TODO: Add IDs used to find elements here or remove object

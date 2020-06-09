@@ -15,10 +15,10 @@ First import the styles into your main SASS file, replacing `../path/to` with th
 Then import the class into your JavaScript entry point:
 
 ```js
-import Disclosure from '@potato/ace/components/disclosure/disclosure';
+import '@potato/ace/components/disclosure/disclosure';
 ```
 
-The attribute names used by the class are also exported as properties of `ATTRS`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Disclosure as aceDisclosure from ...`.
+For the sake of convenience the ES6 class is exported as `Disclosure`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Disclosure as aceDisclosure from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
 
 After `DOMContentLoaded` is fired, Disclosure automatically instantiates an instance of itself within each `<ace-disclosure></ace-disclosure>` and adds IDs in the format `ace-disclosure-(n)` to any instances without one, where `(n)` is the instance count.
 
@@ -129,7 +129,7 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 
 ### Custom event triggered Disclosure
 
-Example of Disclosure controlled through custom events. The buttons in this example are **not** trigger buttons and instead dispatch the Disclosure's custom events. The extra JavaScript code to achieve this is also included below. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead.
+Example of Disclosure controlled through custom events. The buttons in this example are **not** trigger buttons and instead dispatch the Disclosure's custom events. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The extra JavaScript code required by this example is also included below.
 
 ```html
 <button id="custom-event-show-btn">

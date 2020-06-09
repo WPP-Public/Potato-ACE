@@ -56,7 +56,7 @@ gulp.task('clean', async () => {
 
 // Check if prod arg given
 gulp.task('is-prod', () => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     isProd = process.argv[process.argv.length - 1] === '--prod';
     resolve();
   });
