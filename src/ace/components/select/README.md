@@ -182,7 +182,7 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 ```
 
 ```js
-import Select, {EVENTS} from '../../ace/components/select/select.js';
+import {EVENTS} from '../../ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const selectId = 'dynamic-select';
