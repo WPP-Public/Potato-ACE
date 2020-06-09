@@ -6,9 +6,9 @@
 <pre><code class="language-scss">@import '../path/to/node_modules/@potato/ace/components/listbox/listbox'
 </code></pre>
 <p>Then import the class into your JavaScript entry point:</p>
-<pre><code class="language-js">import Listbox from '@potato/ace/components/listbox/listbox';
+<pre><code class="language-js">import '@potato/ace/components/listbox/listbox';
 </code></pre>
-<p>The attribute names used by the class are also exported as properties of <code>ATTRS</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>.</p>
+<p>For the sake of convenience the ES6 class is exported as <code>Listbox</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
 <p>After <code>DOMContentLoaded</code> is fired, Listbox automatically instantiates an instance of itself within each <code>&lt;ace-listbox&gt;&lt;/ace-listbox&gt;</code> and adds IDs in the format <code>ace-listbox-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
 <p>Upon instantiation Listbox adds its functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <strong>Custom events</strong> section below for more details.</p>
 <h2>Usage</h2>
@@ -209,7 +209,7 @@ $ace-listbox-selected-option-bg-color: #ccc !default;
 &lt;/ace-listbox&gt;
 </code></pre>
 <h3>Listbox with dynamic options</h3>
-<p>In this example the Listbox instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the <code>ace-listbox-update-options</code> event that updates the Listbox. The extra JavaScript code to achieve this is also included below.</p>
+<p>In this example the Listbox instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the <code>ace-listbox-update-options</code> event that updates the Listbox. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="add-option">
   Add option
 </button>

@@ -120,8 +120,9 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
 
 
   // Write scriptsPugContent to scripts.pug file
-  console.log(magenta, `>> Writing content to ${componentPageDir}/scripts.pug`);
-  writeContentToFile(scriptsPugContent, `${componentPageDir}/scripts.pug`);
+  if (scriptsPugContent) {
+    writeContentToFile(scriptsPugContent, `${componentPageDir}/scripts.pug`);
+  }
 
 
   // Copy component.pug to component directory as `index.pug`
@@ -252,7 +253,7 @@ const injectExamples = async (componentName, mdFileContent, htmlOnly=false) => {
       mdFromIndex = startIndex;
 
       // Inject script tag for example file JS code into component's scripts.pug file
-      console.log(magenta, `>> Adding ${file} to script.pug content`);
+      console.log(magenta, `>> Adding ${file} to scripts.pug content`);
       scriptsPugContent += `script(src='/js/${componentName}/${file}' type='module')\n`;
     }
   }

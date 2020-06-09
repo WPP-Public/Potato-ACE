@@ -1,0 +1,13 @@
+sidebar-comp(class='sidebar' sidebar)
+  nav
+    ul(class='sidebar__list')
+      li(class='sidebar__list-item')
+        a(href='/getting-started') Getting started
+      li(class='sidebar__list-item')
+        a(href='/components') Components
+
+        //- Component list
+        ul(class='sidebar__sublist')
+          each component, key in components
+            li(class='sidebar__sublist-item')
+              a(href=`/${key}`)=component.name

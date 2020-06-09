@@ -17,10 +17,10 @@ First import the styles into your main SASS file, replacing `../path/to` with th
 Then import the class into your JavaScript entry point:
 
 ```js
-import Listbox from '@potato/ace/components/listbox/listbox';
+import '@potato/ace/components/listbox/listbox';
 ```
 
-The attribute names used by the class are also exported as properties of `ATTRS`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`.
+For the sake of convenience the ES6 class is exported as `Listbox`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
 
 After `DOMContentLoaded` is fired, Listbox automatically instantiates an instance of itself within each `<ace-listbox></ace-listbox>` and adds IDs in the format `ace-listbox-(n)` to any instances without one, where `(n)` is the instance count.
 
@@ -194,7 +194,7 @@ A Listbox with options containing images.
 
 ### Listbox with dynamic options
 
-In this example the Listbox instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the `ace-listbox-update-options` event that updates the Listbox. The extra JavaScript code to achieve this is also included below.
+In this example the Listbox instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the `ace-listbox-update-options` event that updates the Listbox. The extra JavaScript code required by this example is also included below.
 
 ```html
 <button id="add-option">
