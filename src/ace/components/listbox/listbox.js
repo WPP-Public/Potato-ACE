@@ -1,14 +1,14 @@
 /* IMPORTS */
-import { NAME, KEYS } from '../../common/constants.js';
+import { KEYS, NAME } from '../../common/constants.js';
 import { autoID, keyPressedMatches } from '../../common/functions.js';
 /* COMPONENT NAME */
 export const LISTBOX = `${NAME}-listbox`;
 /* CONSTANTS */
 export const ATTRS = {
+    ACTIVE_OPTION: `${LISTBOX}-active-option`,
     LIST: `${LISTBOX}-list`,
     MULTISELECT: `${LISTBOX}-multiselect`,
     OPTION_INDEX: `${LISTBOX}-option-index`,
-    ACTIVE_OPTION: `${LISTBOX}-active-option`,
 };
 export const EVENTS = {
     UPDATE_OPTIONS: `${LISTBOX}-update-options`,
