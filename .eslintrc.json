@@ -27,10 +27,7 @@
     "template.test.js"
   ],
   "rules": {
-    "semi": [
-      "error",
-      "always"
-    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
     "no-multiple-empty-lines": [
       "error",
       {
@@ -46,7 +43,15 @@
         "destructuring": "all"
       }
     ],
-    "@typescript-eslint/explicit-function-return-type": "off"
+    "semi": [
+      "error",
+      "always"
+    ],
+    "sort-imports": "error",
+    "sort-keys": [
+        "error",
+        "asc"
+    ]
   },
   "overrides": [
     {
