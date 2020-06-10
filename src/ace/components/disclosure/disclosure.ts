@@ -8,8 +8,8 @@ export const DISCLOSURE = `${NAME}-disclosure`;
 /* CONSTANTS */
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
-  TRIGGER_SHOW: `${DISCLOSURE}-trigger-show`,
   TRIGGER_HIDE: `${DISCLOSURE}-trigger-hide`,
+  TRIGGER_SHOW: `${DISCLOSURE}-trigger-show`,
   VISIBLE: `${DISCLOSURE}-visible`,
 };
 

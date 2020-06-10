@@ -1,5 +1,5 @@
 /* IMPORTS */
-import {NAME, KEYS} from '../../common/constants.js';
+import {KEYS, NAME} from '../../common/constants.js';
 import Listbox, {ATTRS as LISTBOX_ATTRS} from '../listbox/listbox.js';
 import {autoID, handleOverflow, keyPressedMatches} from '../../common/functions.js';
 
