@@ -86,7 +86,7 @@ gulp.task('imgs', () => {
 gulp.task('js', () => {
   return gulp.src([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`])
     .pipe(gulpif(isProd, terser()))
-    .pipe(flatten({ subPath: [0, 1]}))
+    .pipe(flatten({subPath: [0, 1]}))
     .pipe(gulp.dest(`${dirs.dist}/js`));
 });
 
@@ -115,13 +115,13 @@ gulp.task('pug', () => {
 
 
 gulp.task('sass', () => {
-  const isProd = process.argv[process.argv.length - 1] === '--prod';
-  return gulp.src(`${dirs.src}/sass/**/*.scss`)
+  return gulp.src([`${dirs.src}/sass/**/*.scss`, `${dirs.comps}/**/examples/*.scss`])
     .pipe(sourcemaps.init())
     .pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
     .pipe(autoprefixer())
     .pipe(sourcemaps.write())
     .pipe(gulpif(isProd, minify()))
+    .pipe(flatten({subPath: [0, 1]}))
     .pipe(gulp.dest(`${dirs.dist}/css`))
     .pipe(browserSync.stream());
 });
@@ -182,7 +182,7 @@ gulp.task('serve', () => {
   // Run gulp 'sass' task if SASS files change
   gulp.watch([`${dirs.src}/**/*.scss`, `!${dirs.comps}/**/*.scss`], gulp.series('sass'));
 
-  // Rebuild component's readme.html if its SASS file changes
+  // Rebuild component's readme.html if its SASS files change
   gulp.watch(`${dirs.comps}/**/*.scss`).on('change', (path) => {
     if (injectingCode) {
       return;
@@ -193,10 +193,13 @@ gulp.task('serve', () => {
     injectingCode = true;
     exec(`${buildDocsCmd} -- ${componentName} && gulp sass`, () => {
       injectingCode = false;
+      browserSync.reload();
     }).stdout.pipe(process.stdout);
   });
 
   gulp.watch([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`], gulp.series('js'));
+
+  gulp.watch([`${dirs.comps}/**/*.js`, `!${dirs.comps}/**/examples/*.js`], gulp.series(`js-${componentLibrary}`));
 
   // Run gulp 'gifs' task if gifs changed
   gulp.watch(`${dirs.comps}/**/media/*.gif`, gulp.series('gifs', () => { return browserSync.reload; }));
