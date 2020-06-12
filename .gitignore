@@ -52,4 +52,5 @@ src/js/*.js
 !src/js/*.min.js
 src/ace/common/*.js
 src/ace/components/**/*.js
+!src/ace/components/**/*.d.js
 !src/ace/components/**/*.test.js
