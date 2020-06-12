@@ -26,13 +26,13 @@ export const searchTimeoutTime = 500;
 
 /* CLASS */
 export default class Listbox extends HTMLElement {
-  private options: Array<HTMLElement>;
   public activeOptionIndex: number;
+  public listEl: HTMLElement;
+  private options: Array<HTMLElement>;
   private lastSelectedOptionIndex: number;
   private allSelected: boolean;
   private query: string;
-  private searchTimeout: NodeJS.Timeout;
-  public listEl: HTMLElement;
+  private searchTimeout: number;
   private multiselectable: boolean;
 
   constructor() {
@@ -211,7 +211,7 @@ export default class Listbox extends HTMLElement {
   */
   public initialiseList(): void {
     // Get all child <li> elements
-    this.options = [...this.listEl.querySelectorAll('li')];
+    this.options = Array.from(this.listEl.querySelectorAll('li'));
 
     if (this.options.length === 0) {
       return;
@@ -316,7 +316,7 @@ export default class Listbox extends HTMLElement {
     clearTimeout(this.searchTimeout);
     this.query+=e.key.toLowerCase();
     this.findInList();
-    this.searchTimeout = setTimeout(this.clearListSearch, searchTimeoutTime);
+    this.searchTimeout = window.setTimeout(this.clearListSearch, searchTimeoutTime);
   }
 
 
@@ -395,7 +395,7 @@ export default class Listbox extends HTMLElement {
       return;
     }
 
-    let startIndex, endIndex;
+    let startIndex: number, endIndex: number;
     if (this.lastSelectedOptionIndex < this.activeOptionIndex) {
       startIndex = this.lastSelectedOptionIndex + 1;
       endIndex = this.activeOptionIndex;

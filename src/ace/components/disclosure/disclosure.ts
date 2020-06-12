@@ -25,7 +25,7 @@ export const EVENTS = {
 /* CLASS */
 export default class Disclosure extends HTMLElement {
   private triggerSelector: string;
-  private triggerEls: NodeListOf<HTMLElement>;
+  private triggerEls: Array<HTMLElement>;
 
   /* CONSTRUCTOR */
   constructor() {
@@ -44,7 +44,7 @@ export default class Disclosure extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.triggerEls = document.querySelectorAll(this.triggerSelector);
+    this.triggerEls = Array.from(document.querySelectorAll(this.triggerSelector));
 
 
     /* GET DOM DATA */
@@ -86,7 +86,7 @@ export default class Disclosure extends HTMLElement {
       return;
     }
 
-    let showDisclosure = null;
+    let showDisclosure: boolean = null;
     if (e.type === EVENTS.SHOW) {
       showDisclosure = true;
     }
@@ -141,7 +141,7 @@ export default class Disclosure extends HTMLElement {
       return;
     }
 
-    let showDisclosure = null;
+    let showDisclosure: boolean = null;
     if (triggerClicked.hasAttribute(ATTRS.TRIGGER_SHOW)) {
       showDisclosure = true;
     }
