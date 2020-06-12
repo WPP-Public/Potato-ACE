@@ -85,6 +85,13 @@ gulp.task('imgs', () => {
 });
 
 
+gulp.task('ts', () => {
+  return gulp.src([`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, `!${dirs.comps}/template/*`])
+    .pipe(tsProject())
+    .pipe(gulp.dest(dirs.src))
+});
+
+
 gulp.task('js', () => {
   return gulp.src([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`])
     .pipe(gulpif(isProd, terser()))
@@ -128,13 +135,6 @@ gulp.task('sass', () => {
 });
 
 
-gulp.task('ts', () => {
-  return gulp.src([`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, `!${dirs.comps}/template/*`])
-    .pipe(tsProject())
-    .pipe(gulp.dest(dirs.src))
-});
-
-
 gulp.task('serve', () => {
   let injectingCode = false;
 
@@ -158,9 +158,11 @@ gulp.task('serve', () => {
   // Build docs if package main README.md changes
   gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-docs'));
 
-
   // Build ts files if they change
-  gulp.watch(`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, gulp.series('ts'));
+  gulp.watch([`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, `!**/*.d.ts`], gulp.series('ts'));
+
+  // Build js files if they change
+  gulp.watch([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`], gulp.series('js'));
 
 
   // Rebuild component readme.html if README.md changes
@@ -209,7 +211,6 @@ gulp.task('serve', () => {
     }).stdout.pipe(process.stdout);
   });
 
-  gulp.watch([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`], gulp.series('js'));
 
   // Run gulp 'gifs' task if gifs changed
   gulp.watch(`${dirs.comps}/**/media/*.gif`, gulp.series('gifs', () => { return browserSync.reload; }));
