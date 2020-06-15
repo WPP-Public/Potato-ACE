@@ -27,7 +27,7 @@ stages:
   stage: prepare
   script:
     - npm set progress=false
-    - npm ci --prefer-offline
+    - npm ci
   cache:
     key: deps
     paths:
