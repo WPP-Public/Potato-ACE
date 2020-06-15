@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build --prod",
-    "build-docs": "node --experimental-modules ./scripts/build-docs.mjs",
+    "build-docs": "npm run node:exp -- ./scripts/build-docs.mjs",
     "cypress:cli": "cypress run -c video=false",
     "cypress:chrome": "npm run cypress:cli -- -b chrome",
     "cypress:firefox": "npm run cypress:cli -- -b firefox",
@@ -19,6 +19,7 @@
     "test:ci": "start-server-and-test serve:ci 3030",
     "test:ci:chrome": "npm run test:ci -- cypress:chrome",
     "test:ci:firefox": "npm run test:ci -- cypress:firefox",
+    "node:exp": "node --experimental-modules",
     "pack": "npm pack ./src/ace && open .",
     "publish": "cd src/ace && npm publish --access public"
   },
@@ -49,7 +50,6 @@
     "gulp-terser": "^1.2.0",
     "gulp-typescript": "^6.0.0-alpha.1",
     "markdown-it": "^10.0.0",
-    "pug": "^2.0.4",
     "start-server-and-test": "^1.11.0",
     "stylelint": "^13.3.3",
     "stylelint-config-standard": "^20.0.0",

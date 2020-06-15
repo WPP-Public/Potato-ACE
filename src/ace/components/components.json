@@ -13,11 +13,5 @@
     "aliases": [
       "Drop-down list"
     ]
-  },
-  "tabs": {
-    "name": "Tabs",
-    "aliases": [
-      "Tabset"
-    ]
   }
 }
