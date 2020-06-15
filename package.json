@@ -12,16 +12,16 @@
     "lint": "npm run lint:scss && npm run lint:js",
     "lint:js": "eslint \"src/**/*.js\"",
     "lint:scss": "stylelint \"src/**/*.scss\"",
+    "node:exp": "node --experimental-modules",
+    "pack": "npm pack ./src/ace && open .",
+    "publish": "cd src/ace && npm publish --access public",
     "start": "gulp",
     "serve:build": "gulp --prod",
     "serve:ci": "npx http-server dist --port 3030",
     "test": "start-server-and-test serve:build 3030 'cypress open'",
     "test:ci": "gulp ts && start-server-and-test serve:ci 3030",
     "test:ci:chrome": "npm run test:ci -- cypress:chrome",
-    "test:ci:firefox": "npm run test:ci -- cypress:firefox",
-    "node:exp": "node --experimental-modules",
-    "pack": "npm pack ./src/ace && open .",
-    "publish": "cd src/ace && npm publish --access public"
+    "test:ci:firefox": "npm run test:ci -- cypress:firefox"
   },
   "repository": {
     "type": "git",
