@@ -27,8 +27,6 @@ stages:
   stage: prepare
   script:
     - npm set progress=false
-    - npm cache clean --force
-    - npm cache verify
     - npm ci --prefer-offline
   cache:
     key: deps
@@ -74,6 +72,8 @@ Build:
 .test:
   stage: test
   image: cypress/browsers:node13.1.0-chrome78-ff70
+  before_script:
+    - npm run test:ci:prep
   script:
     - npm run test:ci:$BROWSER
   artifacts:
