@@ -72,9 +72,8 @@ Build:
 .test:
   stage: test
   image: cypress/browsers:node13.1.0-chrome78-ff70
-  before_script:
-    - npm run test:ci:prep
   script:
+    - npm run test:ci:prep
     - npm run test:ci:$BROWSER
   artifacts:
     when: on_failure
