@@ -1,4 +1,4 @@
-import {ATTRS, LISTBOX as LB, searchTimeoutTime} from './listbox.js';
+import {ATTRS, LISTBOX as LB, searchTimeoutTime} from './listbox';
 
 
 const IDS = {
