@@ -22,7 +22,7 @@
     "test:ci": "start-server-and-test serve:ci 3030",
     "test:ci:chrome": "npm run test:ci -- cypress:chrome",
     "test:ci:firefox": "npm run test:ci -- cypress:firefox",
-    "test:ci:prep": "npm rebuild node-sass && gulp ts"
+    "test:ci:prep": "npm rebuild node-sass"
   },
   "repository": {
     "type": "git",
