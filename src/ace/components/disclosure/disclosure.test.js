@@ -1,4 +1,4 @@
-import {ATTRS, DISCLOSURE, EVENTS} from './disclosure';
+import {ATTRS, DISCLOSURE, EVENTS} from './disclosure.js';
 
 
 const IDS = {
