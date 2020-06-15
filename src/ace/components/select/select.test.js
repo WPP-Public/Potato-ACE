@@ -1,5 +1,5 @@
-import {ATTRS,  EVENTS, SELECT} from './select';
-import {ATTRS as LB_ATTRS, searchTimeoutTime} from '../listbox/listbox';
+import {ATTRS,  EVENTS, SELECT} from './select.js';
+import {ATTRS as LB_ATTRS, searchTimeoutTime} from '../listbox/listbox.js';
 
 
 const IDS = {
