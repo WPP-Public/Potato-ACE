@@ -73,6 +73,7 @@ Build:
   stage: test
   image: cypress/browsers:node13.1.0-chrome78-ff70
   script:
+    - npm rebuild node-sass
     - npm run test:ci:$BROWSER
   artifacts:
     when: on_failure
