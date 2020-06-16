@@ -49,10 +49,7 @@ src/pages/**/*/index.html
 
 # Transpiled js files
 src/js/*.js
-src/js/*.d.ts
 !src/js/*.min.js
-src/ace/common/*.js
-src/ace/common/**/*.d.ts
-src/ace/components/**/*.js
-src/ace/components/**/*.d.ts
+src/**/*.d.ts
+src/ace/**/*.js
 !src/ace/components/**/*.test.js
