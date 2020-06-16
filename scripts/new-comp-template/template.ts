@@ -1,4 +1,4 @@
-// Keep block comments (/* */) for sections used
+// Keep block comments (/* */) even for unused sections
 // Remove all comments starting with '//'
 // Use two blank lines between each section with block comment headings
 /* IMPORTS */

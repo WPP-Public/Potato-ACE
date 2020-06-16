@@ -27,23 +27,23 @@ export const searchTimeoutTime = 500;
 /* CLASS */
 export default class Listbox extends HTMLElement {
   public activeOptionIndex: number;
-  public listEl: HTMLElement;
-  private options: Array<HTMLElement>;
-  private lastSelectedOptionIndex: number;
   private allSelected: boolean;
+  public listEl: HTMLElement;
+  private lastSelectedOptionIndex: number;
+  private multiselectable: boolean;
+  private options: Array<HTMLElement>;
   private query: string;
   private searchTimeout: number;
-  private multiselectable: boolean;
 
   constructor() {
     super();
 
 
     /* CLASS CONSTANTS */
-    this.options = [];
     this.activeOptionIndex = null;
-    this.lastSelectedOptionIndex = null;
     this.allSelected = false;
+    this.lastSelectedOptionIndex = null;
+    this.options = [];
     this.query = '';
     this.searchTimeout = null;
 
@@ -93,11 +93,11 @@ export default class Listbox extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    this.listEl.addEventListener('focus', this.focusHandler, {passive: true});
-    this.listEl.addEventListener('blur', this.focusHandler, {passive: true});
+    this.listEl.addEventListener('focus', this.focusHandler);
+    this.listEl.addEventListener('blur', this.focusHandler);
     this.listEl.addEventListener('keydown', this.keydownHandler);
-    this.listEl.addEventListener('click', this.clickHandler, {passive: true});
-    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+    this.listEl.addEventListener('click', this.clickHandler);
+    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler);
 
 
     /* INITIALISATION */
@@ -107,11 +107,11 @@ export default class Listbox extends HTMLElement {
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    this.listEl.removeEventListener('focus', this.focusHandler, {passive: true} as EventListenerOptions);
-    this.listEl.removeEventListener('blur', this.focusHandler, {passive: true} as EventListenerOptions);
+    this.listEl.removeEventListener('focus', this.focusHandler);
+    this.listEl.removeEventListener('blur', this.focusHandler);
     this.listEl.removeEventListener('keydown', this.keydownHandler);
-    this.listEl.removeEventListener('click', this.clickHandler, {passive: true} as EventListenerOptions);
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true} as EventListenerOptions);
+    this.listEl.removeEventListener('click', this.clickHandler);
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler);
   }
 
 
