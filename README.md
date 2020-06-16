@@ -40,7 +40,7 @@ To create a new component:
   
 1. Import the component into `./src/scss/styles.scss` maintaining alphabetical order using
     ```scss
-    @import '../ace/components/select/select';
+    @import '../ace/components/<component-name>/<component-name>';
     ```
   
 1. Follow the instructions in the newly created files to add content appropriately.
