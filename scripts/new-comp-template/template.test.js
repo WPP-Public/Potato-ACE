@@ -1,19 +1,18 @@
-// TODO: Change 'TEMPLATE' and 'template' in file
 // TODO: Remove 'TODO:' comments
 // TODO: Remove ATTRS and/or EVENTS if not used
-import {TEMPLATE, ATTRS, EVENTS} from './template';
+import {TEMPLATE, ATTRS, EVENTS} from './template-kebab';
 
 
 // TODO: Add IDs used to find elements here or remove object
 const IDS = {
-  TEMPLATE_1: 'template_1',
-  TEMPLATE_VARIANT: 'template-variant',
+  TEMPLATE_1: 'template-kebab-1',
+  TEMPLATE_VARIANT: 'template-kebab-variant',
 };
 
 
 context('Template', () => {
   before(() => {
-    cy.visit(`/template`);
+    cy.visit(`/template-kebab`);
   });
 
 
@@ -49,7 +48,7 @@ context('Template', () => {
   // TODO: Test that component and children initialise with correctly
   describe('Initialisation', () => {
     // TODO: Try to include the word 'should' in each test description
-    it('All templates should have IDs', () => {
+    it('All Templates should have IDs', () => {
       cy.get('@templates').each(template => {
         cy.get(template).should('have.attr', 'id');
       });
@@ -134,7 +133,7 @@ context('Template', () => {
       cy.window().then((window) => {
         window.addEventListener(EVENTS.SOME_EVENT, (e) => {
           expect(e.detail.id).to.equal(IDS.TEMPLATE_1);
-          // TODO: Check other detail properties if any
+          // TODO: Check other e.detail properties if any
         });
       });
 

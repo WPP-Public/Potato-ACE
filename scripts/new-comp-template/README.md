@@ -1,4 +1,3 @@
-<!-- TODO: Replace 'Template', 'TEMPLATE' and 'template' with actual values -->
 # Template
 
 <!-- DESCRIBE COMPONENT AND ITS FUNCTIONALITY HERE -->
@@ -19,10 +18,10 @@ First import the styles into your main SASS file, replacing `../path/to` with th
 Then import the class into your JavaScript entry point:
 
 ```js
-import '@potato/ace/components/template/template';
+import '../path/to/node_modules/@potato/ace/components/template/template.js';
 ```
 
-For the sake of convenience the ES6 class is exported as `Template`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Template as aceTemplate from ...`.
+For the sake of convenience the ES6 class is exported as `TemplatePascal`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import TemplatePascal as aceTemplatePascal from ...`.
 <!-- TODO: If no ATTRS are exported then remove following sentence -->
 The attribute names used by the class are also exported as properties of `ATTRS`.
 
@@ -35,9 +34,9 @@ After `DOMContentLoaded` is fired, Template automatically instantiates an instan
 
 
 
-## SASS
+## Styles
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by users. 
+The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by users.
 
 ```scss
 ```
@@ -58,7 +57,7 @@ Template uses the following custom events, the names of which are exported as pr
 <!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
 
 <!-- DESCRIBE EACH PROPERTY OF THE 'detail' OBJECT -->
-<!-- 
+<!--
 ```js
 'detail': {
   'id': // ID of Template
@@ -77,16 +76,22 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 <!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
 
-<!-- IF EXAMPLE HAS CUSTOM CODE THAT MUST BE RUN THEN INCLUDE THIS LINE -->
-The extra JavaScript code required by this example is also included below.
+<!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
+Custom styles have been applied to this example and are included below.
+<!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
+The extra JavaScript required by this example is also shown below.
 
 <!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
-<!--
 ```html
+```
+
+<!-- IF EXAMPLE HAS CUSTOM STYLES INCLUDE AN EMPTY SCSS CODE BLOCK AS WELL -->
+<!--
+```scss
 ```
 -->
 
-<!-- IF EXAMPLE HAS CUSTOM CODE THAT MUST BE RUN THEN INCLUDE AN EMPTY JS CODE BLOCK AS WELL -->
+<!-- IF EXAMPLE HAS CUSTOM JS CODE INCLUDE AN EMPTY JS CODE BLOCK AS WELL -->
 <!--
 ```js
 ```

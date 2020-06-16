@@ -19,9 +19,6 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "ignorePatterns": [
-    "template.test.js"
-  ],
   "rules": {
     "semi": [
       "error",
