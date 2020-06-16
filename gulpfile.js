@@ -92,7 +92,7 @@ gulp.task('js', () => {
 
 
 gulp.task(`js-${componentLibrary}`, () => {
-  return gulp.src([`${dirs.src}/ace/**/*.js`, `!${dirs.comps}/**/*.test.js`, `!${dirs.comps}/**/examples/*.js`, `!${dirs.comps}/template/*`], {base: dirs.src})
+  return gulp.src([`${dirs.src}/ace/**/*.js`, `!${dirs.comps}/**/*.test.js`, `!${dirs.comps}/**/examples/*.js`], {base: dirs.src})
     .pipe(gulpif(isProd, terser()))
     .pipe(gulp.dest(dirs.dist));
 });
