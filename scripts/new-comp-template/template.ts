@@ -62,7 +62,6 @@ export default class Template extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    // Use passive event listeners when possible. Please don't use anonymous functions
 
 
     /* INITIALISATION */
