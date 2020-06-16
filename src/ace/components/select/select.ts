@@ -24,9 +24,9 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Select extends Listbox {
+  private selectedOptionEl: HTMLElement;
   private triggerEl: HTMLElement;
   private triggerOptionIndex: number;
-  private selectedOptionEl: HTMLElement;
 
   constructor() {
     super();
@@ -78,14 +78,24 @@ export default class Select extends Listbox {
 
     /* ADD EVENT LISTENERS */
     this.addEventListener('keydown', this.selectKeydownHandler);
-    window.addEventListener('click', this.selectClickHandler, {passive: true});
-    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler, {passive: true});
+    window.addEventListener('click', this.selectClickHandler);
+    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
 
 
     /* INITIALISATION */
     this.activeOptionIndex = 0;
     this.hideList();
     this.updateTriggerText();
+  }
+
+
+  public disconnectedCallback(): void {
+    /* REMOVE EVENT LISTENERS */
+    this.removeEventListener('keydown', this.selectKeydownHandler);
+    window.removeEventListener('click', this.selectClickHandler);
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
+
+    super.disconnectedCallback();
   }
 
 
@@ -252,16 +262,6 @@ export default class Select extends Listbox {
       this.triggerEl.textContent = activeOption.textContent;
       this.triggerOptionIndex = +activeOption.getAttribute(LISTBOX_ATTRS.OPTION_INDEX);
     }
-  }
-
-
-  public disconnectedCallback(): void {
-    /* REMOVE EVENT LISTENERS */
-    this.removeEventListener('keydown', this.selectKeydownHandler);
-    window.removeEventListener('click', this.selectClickHandler, {passive: true} as AddEventListenerOptions);
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler, {passive: true} as AddEventListenerOptions);
-
-    super.disconnectedCallback();
   }
 }
 

@@ -24,8 +24,8 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Disclosure extends HTMLElement {
-  private triggerSelector: string;
   private triggerEls: Array<HTMLElement>;
+  private triggerSelector: string;
 
   /* CONSTRUCTOR */
   constructor() {
@@ -62,15 +62,15 @@ export default class Disclosure extends HTMLElement {
 
     /* ADD EVENT LISTENERS */
     window.addEventListener('click', this.windowClickHandler);
-    window.addEventListener(EVENTS.HIDE, this.customEventsHandler, {passive: true});
-    window.addEventListener(EVENTS.SHOW, this.customEventsHandler, {passive: true});
-    window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler, {passive: true});
+    window.addEventListener(EVENTS.HIDE, this.customEventsHandler);
+    window.addEventListener(EVENTS.SHOW, this.customEventsHandler);
+    window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler);
   }
 
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    window.removeEventListener('click', this.windowClickHandler,);
+    window.removeEventListener('click', this.windowClickHandler);
     window.removeEventListener(EVENTS.HIDE, this.customEventsHandler);
     window.removeEventListener(EVENTS.SHOW, this.customEventsHandler);
     window.removeEventListener(EVENTS.TOGGLE, this.customEventsHandler);
