@@ -10,6 +10,8 @@ const pug = require('gulp-pug');
 const sass = require('gulp-sass');
 const sourcemaps = require('gulp-sourcemaps');
 const terser = require('gulp-terser');
+const ts = require('gulp-typescript');
+const tsProject = ts.createProject('tsconfig.json');
 
 const buildDocsCmd = 'npm run build-docs';
 // Get component library name from package.json
@@ -83,6 +85,13 @@ gulp.task('imgs', () => {
 });
 
 
+gulp.task('ts', () => {
+  return gulp.src([`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, `!${dirs.comps}/template/*`])
+    .pipe(tsProject())
+    .pipe(gulp.dest(dirs.src))
+});
+
+
 gulp.task('js', () => {
   return gulp.src([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`])
     .pipe(gulpif(isProd, terser()))
@@ -150,6 +159,13 @@ gulp.task('serve', () => {
   // Build docs if package main README.md changes
   gulp.watch(`${dirs.lib}/README.md`, gulp.series('build-docs'));
 
+  // Build ts files if they change
+  gulp.watch([`${dirs.src}/{js,${componentLibrary}}/**/*.ts`, `!**/*.d.ts`], gulp.series('ts'));
+
+  // Build js files if they change
+  gulp.watch([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`], gulp.series('js'));
+
+
   // Rebuild component readme.html if README.md changes
   gulp.watch(`${dirs.comps}/**/README.md`).on('change', (path) => {
     if (injectingCode) {
@@ -197,7 +213,6 @@ gulp.task('serve', () => {
     }).stdout.pipe(process.stdout);
   });
 
-  gulp.watch([`${dirs.src}/js/**/*.js`, `${dirs.comps}/**/examples/*.js`], gulp.series('js'));
 
   gulp.watch([`${dirs.comps}/**/*.js`, `!${dirs.comps}/**/examples/*.js`], gulp.series(`js-${componentLibrary}`));
 
@@ -225,9 +240,11 @@ gulp.task('build',
       'css',
       'gifs',
       'imgs',
-      'js',
-      `js-${componentLibrary}`,
       'sass',
+      gulp.series('ts', gulp.parallel(
+        'js',
+        `js-${componentLibrary}`
+      )),
       gulp.series('build-docs', 'pug'))
     )
 );

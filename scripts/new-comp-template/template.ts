@@ -1,4 +1,4 @@
-// Keep block comments (/* */) for sections used
+// Keep block comments (/* */) even for unused sections
 // Remove all comments starting with '//'
 // Use two blank lines between each section with block comment headings
 /* IMPORTS */
@@ -7,6 +7,7 @@ import {autoID} from '../../common/functions.js';
 
 
 /* TEMPLATE NAME */
+// Use kebab-case for the name as this will be the attribute used to attach the class
 export const TEMPLATE = `${NAME}-template`;
 
 
@@ -46,7 +47,7 @@ export default class Template extends HTMLElement {
   }
 
 
-  connectedCallback() {
+  public connectedCallback(): void {
     /* GET DOM ELEMENTS */
     // Add suffix `El` to the names of class constants containing elements:
     // this.someEl = this.querySelector(`[${ATTRS.ATTR_NAME}]`);
@@ -61,7 +62,6 @@ export default class Template extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    // Use passive event listeners when possible. Please don't use anonymous functions
 
 
     /* INITIALISATION */
@@ -81,13 +81,13 @@ export default class Template extends HTMLElement {
   }
 
 
-  disconnectedCallback() {
+  public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
   }
 
 
-  /* OTHER CLASS METHODS */
-  // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback whch should be at the top.
+  // OTHER CLASS METHODS
+  // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback
   // For each method, first add a block comment that describes the method
   // Use two blank lines between methods
   // /*

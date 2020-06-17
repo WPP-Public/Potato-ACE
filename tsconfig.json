@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "lib": ["dom", "es2017", "dom.iterable"],
+    "target": "esnext",
+    "declaration": true
+  }
+}

@@ -46,3 +46,10 @@ newticket.py
 src/pages/**/*/index.html
 /cypress/screenshots
 /package/
+
+# Transpiled js files
+src/js/*.js
+!src/js/*.min.js
+src/**/*.d.ts
+src/ace/**/*.js
+!src/ace/components/**/*.test.js
