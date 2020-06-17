@@ -28,8 +28,8 @@ export const searchTimeoutTime = 500;
 export default class Listbox extends HTMLElement {
   public activeOptionIndex: number;
   private allSelected: boolean;
-  public listEl: HTMLElement;
   private lastSelectedOptionIndex: number;
+  public listEl: HTMLElement;
   private multiselectable: boolean;
   private options: Array<HTMLElement>;
   private query: string;
