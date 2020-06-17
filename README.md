@@ -33,19 +33,19 @@ To create a new component:
     ```
     will add an entry for the component in `./src/ace/components/components.json` and generate the necessary core files in the `./src/ace/components/component-name/` directory.
     
-1. Import the component into`./src/js/script.ts` maintaining alphabetical order using:
+2. Import the component into`./src/js/script.ts` maintaining alphabetical order using:
     ```js
     import '../ace/components/<component-name>/<component-name>.js';
     ```
   
-1. Import the component into `./src/scss/styles.scss` maintaining alphabetical order using
+3. Import the component into `./src/scss/styles.scss` maintaining alphabetical order using
     ```scss
     @import '../ace/components/<component-name>/<component-name>';
     ```
   
-1. Follow the instructions in the newly created files to add content appropriately.
+4. Follow the instructions in the newly created files to add content appropriately.
 
-1. Add examples bearing in mind the following:
+5. Add examples bearing in mind the following:
     * A component must have at least one example
     * Each example must have a HTML file named using the example number e.g. *1.html* for the first example, *2.html* for the second etc.
     * Examples can optionally also have one `.scss` file and/or one `.js` file also named with the examaple number e.g. *1.scss* and *1.js* for the first example, *2.scss* and *2.js* for the second etc. 
