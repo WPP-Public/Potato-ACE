@@ -1,4 +1,4 @@
-import {SELECT, ATTRS, EVENTS} from './select';
+import {ATTRS,  EVENTS, SELECT} from './select';
 import {ATTRS as LB_ATTRS, searchTimeoutTime} from '../listbox/listbox';
 
 

@@ -13,12 +13,14 @@
     "a11y",
     "WAI-ARIA"
   ],
-  "author": "Potato",
+  "author": "Potato (https://p.ota.to)",
   "contributors": [
     "Ahmed Abuelgasim (https://ahmeda.ga)",
     "Alex Eales (https://alex-eales.com)",
+    "Alexandra Stoica (http://alexandrastoica.co.uk/)",
+    "James Robinson (https://jrobind.github.io/)",
     "Michael Strutt",
-    "Wills Bithrey"
+    "Wills Bithrey (https://willsbithrey.com/)"
   ],
   "license": "ISC"
 }

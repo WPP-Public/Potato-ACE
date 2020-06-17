@@ -1,11 +1,11 @@
 /* FUNCTIONS THAT CAN BE USED BY ANY COMPONENT */
-import {UTIL_ATTRS} from './constants.js';
+import {Key, UTIL_ATTRS} from './constants.js';
 
 
 /*
   Automatically assign IDs to components that do not have them
 */
-export const autoID = (component) => {
+export const autoID = (component: string): void => {
   let i = 0;
   document.querySelectorAll(component)
     .forEach((elem) => {
@@ -22,11 +22,10 @@ export const autoID = (component) => {
 /*
   Check if key pressed matches any key in the provided keysToMatch array
 */
-export const keyPressedMatches = (keyPressed, keysToMatch) => {
+export const keyPressedMatches = (keyPressed: string | number, keysToMatch: Array<Key> | Key): boolean => {
   const keys = Array.isArray(keysToMatch) ? keysToMatch : [keysToMatch];
   return keys.some((key) => key.CODE === keyPressed || key.KEY === keyPressed);
 };
-
 
 
 /*
@@ -34,7 +33,7 @@ export const keyPressedMatches = (keyPressed, keysToMatch) => {
   of the viewport and adds utility attibutes to prevent either or both.
   Util attributes are in `./_utils.scss`
 */
-export const handleOverflow = (elem) => {
+export const handleOverflow = (elem: HTMLElement): void => {
   elem.removeAttribute(UTIL_ATTRS.FLOAT_LEFT);
   elem.removeAttribute(UTIL_ATTRS.FLOAT_ABOVE);
   const bounding = elem.getBoundingClientRect();

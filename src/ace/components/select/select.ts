@@ -1,5 +1,5 @@
 /* IMPORTS */
-import {NAME, KEYS} from '../../common/constants.js';
+import {KEYS, NAME} from '../../common/constants.js';
 import Listbox, {ATTRS as LISTBOX_ATTRS} from '../listbox/listbox.js';
 import {autoID, handleOverflow, keyPressedMatches} from '../../common/functions.js';
 
@@ -24,6 +24,10 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Select extends Listbox {
+  private selectedOptionEl: HTMLElement;
+  private triggerEl: HTMLElement;
+  private triggerOptionIndex: number;
+
   constructor() {
     super();
 
@@ -44,11 +48,12 @@ export default class Select extends Listbox {
 
 
   /* CLASS METHODS */
-  connectedCallback() {
+  public connectedCallback(): void {
     super.connectedCallback();
 
 
     /* GET DOM ELEMENTS */
+    this.listEl = this.querySelector('ul') || this.querySelector('ol');
     this.triggerEl = this.querySelector('button');
     // Create <button> if not present
     if (!this.triggerEl) {
@@ -73,8 +78,8 @@ export default class Select extends Listbox {
 
     /* ADD EVENT LISTENERS */
     this.addEventListener('keydown', this.selectKeydownHandler);
-    window.addEventListener('click', this.selectClickHandler, {passive: true});
-    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler, {passive: true});
+    window.addEventListener('click', this.selectClickHandler);
+    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
 
 
     /* INITIALISATION */
@@ -84,10 +89,20 @@ export default class Select extends Listbox {
   }
 
 
+  public disconnectedCallback(): void {
+    /* REMOVE EVENT LISTENERS */
+    this.removeEventListener('keydown', this.selectKeydownHandler);
+    window.removeEventListener('click', this.selectClickHandler);
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
+
+    super.disconnectedCallback();
+  }
+
+
   /*
     Show dropdown list
   */
-  cancelOptionChange() {
+  private cancelOptionChange(): void {
     if (this.triggerOptionIndex || this.triggerOptionIndex == 0) {
       this.makeOptionActive(this.triggerOptionIndex);
     }
@@ -98,7 +113,7 @@ export default class Select extends Listbox {
   /*
     Confirm the change in selected option by updating the trigger text, hiding the
   */
-  confirmOptionChange() {
+  private confirmOptionChange(): void {
     this.updateTriggerText();
     this.hideList();
     this.triggerEl.focus();
@@ -109,7 +124,7 @@ export default class Select extends Listbox {
   /*
     Show dropdown list
   */
-  dispatchOptionSelectedEvent() {
+  private dispatchOptionSelectedEvent(): void {
     const optionSelectedEl = this.listEl.querySelector('[aria-selected="true"]');
 
     window.dispatchEvent(
@@ -129,7 +144,7 @@ export default class Select extends Listbox {
   /*
     Hide dropdown list and update trigger text
   */
-  hideList() {
+  private hideList(): void {
     this.listEl.setAttribute(ATTRS.LIST_HIDDEN, '');
     this.triggerEl.setAttribute('aria-expanded', 'false');
   }
@@ -138,9 +153,9 @@ export default class Select extends Listbox {
   /*
     Handle clicks on trigger and on listbox options
   */
-  selectClickHandler(e) {
-    const optionClicked = e.target.closest(`#${this.id} [${LISTBOX_ATTRS.OPTION_INDEX}]`);
-    const triggerClicked = e.target.closest(`[${ATTRS.TRIGGER}]`) === this.triggerEl;
+  private selectClickHandler(e: MouseEvent): void {
+    const optionClicked = (e.target as HTMLElement).closest(`#${this.id} [${LISTBOX_ATTRS.OPTION_INDEX}]`);
+    const triggerClicked = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`) === this.triggerEl;
     const listHidden = this.listEl.hasAttribute(ATTRS.LIST_HIDDEN);
 
     if (!optionClicked && !triggerClicked && listHidden) {
@@ -165,9 +180,9 @@ export default class Select extends Listbox {
   /*
     Handle keystrokes on select
   */
-  selectKeydownHandler(e) {
-    const keydownOnTrigger = e.target.closest(`[${ATTRS.TRIGGER}]`);
-    const keydownOnList = e.target.closest(`[${LISTBOX_ATTRS.LIST}]`);
+  private selectKeydownHandler(e: KeyboardEvent): void {
+    const keydownOnTrigger = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`);
+    const keydownOnList = (e.target as HTMLElement).closest(`[${LISTBOX_ATTRS.LIST}]`);
 
     if (!keydownOnTrigger && !keydownOnList) {
       return;
@@ -216,7 +231,7 @@ export default class Select extends Listbox {
   /*
     Update options custom event handler
   */
-  selectUpdateOptionsHandler(e) {
+  private selectUpdateOptionsHandler(e: CustomEvent): void {
     if (!e.detail || (e.detail.id !== this.id)) {
       return;
     }
@@ -230,7 +245,7 @@ export default class Select extends Listbox {
   /*
     Show dropdown list
   */
-  showList() {
+  private showList(): void {
     this.triggerEl.setAttribute('aria-expanded', 'true');
     this.listEl.removeAttribute(ATTRS.LIST_HIDDEN);
     handleOverflow(this.listEl);
@@ -241,22 +256,12 @@ export default class Select extends Listbox {
   /*
     Update the trigger text
   */
-  updateTriggerText() {
+  private updateTriggerText(): void {
     const activeOption = this.listEl.querySelector('[aria-selected="true"]');
     if (activeOption !== null) {
       this.triggerEl.textContent = activeOption.textContent;
       this.triggerOptionIndex = +activeOption.getAttribute(LISTBOX_ATTRS.OPTION_INDEX);
     }
-  }
-
-
-  disconnectedCallback() {
-    /* REMOVE EVENT LISTENERS */
-    this.removeEventListener('keydown', this.selectKeydownHandler);
-    window.removeEventListener('click', this.selectClickHandler, {passive: true});
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler, {passive: true});
-
-    super.disconnectedCallback();
   }
 }
 
