@@ -27,7 +27,7 @@ which will launch a browsersync server on port [3000](http://localhost:3000)
 
 To create a new component:
 
-1. Run `npm run new-comp` giving it the component's display name and an optional, space-separated list of aliases or other names the component may be known as (e.g. **dialog** is an alias of **modal**). For example running:
+1. Run `npm run new-comp` giving it the component's display name and an optional, space-separated list of aliases or other names the component may be known as (e.g. **Dialog** is an alias of **Modal**). For example running:
     ```sh
     npm run new-comp "Component Name" "Alias 1" "Alias 2" ...
     ```
@@ -35,7 +35,7 @@ To create a new component:
     
 1. Import the component into`./src/js/script.ts` maintaining alphabetical order using:
     ```js
-    import '../ace/components/<component-name>/<component-name>.ts';
+    import '../ace/components/<component-name>/<component-name>.js';
     ```
   
 1. Import the component into `./src/scss/styles.scss` maintaining alphabetical order using
