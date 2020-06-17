@@ -56,17 +56,17 @@ const createCompFiles = async () => {
 
 
   // Create JS file
-  let templateJs = await fs.readFile(`${TEMPLATE_DIR}/template.js`, ENCODING)
+  let templateTs = await fs.readFile(`${TEMPLATE_DIR}/template.ts`, ENCODING)
     .catch(error => console.error(LOG_COLORS.RED, error));
 
-  templateJs = templateJs
+  templateTs = templateTs
     .replace(/TEMPLATE/g, COMP_NAME_CAPS)
     .replace(/template/g, COMP_NAME_KEBAB)
     .replace(/Template/g, COMP_NAME_PASCAL);
 
-  await fs.writeFile(`${COMP_DIR}/${COMP_NAME_KEBAB}.js`, templateJs)
+  await fs.writeFile(`${COMP_DIR}/${COMP_NAME_KEBAB}.ts`, templateTs)
     .catch(error => console.error(LOG_COLORS.RED, error));
-  console.log(LOG_COLORS.GREEN, `New component JS file created`);
+  console.log(LOG_COLORS.GREEN, `New component TS file created`);
 
 
   // Create test file
