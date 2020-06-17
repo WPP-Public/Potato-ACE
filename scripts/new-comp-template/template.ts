@@ -6,19 +6,18 @@ import {NAME} from '../../common/constants.js';
 import {autoID} from '../../common/functions.js';
 
 
-/* TEMPLATE NAME */
-// Use kebab-case for the name as this will be the attribute used to attach the class
+/* COMPONENT NAME */
 export const TEMPLATE = `${NAME}-template`;
 
 
 /* CONSTANTS */
-// Add names of HTML attributes used, prefixed with TEMPLATE
+// Add names of any HTML attributes used, prefixed with TEMPLATE
 // export const ATTRS = {
 //   ATTR_NAME: `${TEMPLATE}-attr-name`,
 // };
 
 
-// Add names of custom events used, prefixed with TEMPLATE
+// Add names of any custom events used, prefixed with TEMPLATE
 // export const EVENTS = {
 //   EVENT_NAME: `${TEMPLATE}-event-name`,
 // };

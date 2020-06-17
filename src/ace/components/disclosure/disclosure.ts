@@ -3,7 +3,9 @@ import {NAME} from '../../common/constants.js';
 import {autoID} from '../../common/functions.js';
 
 
+/* COMPONENT NAME */
 export const DISCLOSURE = `${NAME}-disclosure`;
+
 
 /* CONSTANTS */
 export const ATTRS = {
