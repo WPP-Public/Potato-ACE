@@ -2,12 +2,12 @@ image: node:13.1.0-alpine3.10
 
 
 variables:
-  npm_config_cache: '$CI_PROJECT_DIR/.npm'
-  CYPRESS_CACHE_FOLDER: '$CI_PROJECT_DIR/cache/cypress'
+  npm_config_cache: $CI_PROJECT_DIR/.npm
+  CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
 
 
 cache:
-  key: deps
+  key: $CI_COMMIT_REF_NAME
   paths:
     - .npm
     - node_modules
@@ -18,6 +18,7 @@ cache:
 stages:
   - prepare
   - build
+  - build fail
   - test
   - deploy
 
@@ -29,7 +30,7 @@ stages:
     - npm set progress=false
     - npm ci --prefer-offline
   cache:
-    key: deps
+    key: $CI_COMMIT_REF_NAME
     paths:
       - .npm
       - node_modules
@@ -39,34 +40,64 @@ stages:
 # Install deps if package.json or package-lock.json changed
 Install deps:
   extends: .deps
-  # only:
-  #   changes:
-  #     - package.json
-  #     - package-lock.json
+  only:
+    changes:
+      - package.json
+      - package-lock.json
 
-# # Install deps when merging into master
-# Install deps for deploy:
-#   extends: .deps
-#   only:
-#     - master
-#     -
+# Install deps when merging into master
+Install deps for deploy:
+  extends: .deps
+  only:
+    - master
+
 
 
 # BUILD STAGE
-Lint:
-  stage: build
+.lint:
   script:
     - npm run lint
 
-
-Build:
-  stage: build
+.build:
   script:
     - npm run build
   artifacts:
     paths:
       - dist
     expire_in: 1 week
+
+Lint:
+  extends: .lint
+  stage: build
+
+Build:
+  extends: .build
+  stage: build
+
+
+# BUILD FAIL STAGE
+# If any task from build stage fails retry without using cache
+Lint without cache:
+  extends: .lint
+  stage: build fail
+  when: on_failure
+  before_script:
+    - npm i --prefer-cache
+  cache:
+    key: $CI_COMMIT_REF_NAME
+    paths:
+      - .npm
+      - node_modules
+      - cache/cypress
+    policy: push
+
+Build without cache:
+  extends: .build
+  stage: build fail
+  when: on_failure
+  before_script:
+    - npm i --prefer-cache
+
 
 
 # TEST STAGE

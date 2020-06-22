@@ -4,5 +4,9 @@
     "lib": ["dom", "es2017", "dom.iterable"],
     "target": "esnext",
     "declaration": true
-  }
+  },
+  "include": [
+    "src/js/**/*",
+    "src/ace/**/*"
+  ]
 }
