@@ -27,7 +27,7 @@ const addNewCompToJsonFile = async (aliases) => {
 
   // Read components.json file
   let componentsJson = await fs.readFile(COMPS_JSON_FILE, ENCODING)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
   const comps = JSON.parse(componentsJson);
 
   // Create new component object
@@ -44,7 +44,7 @@ const addNewCompToJsonFile = async (aliases) => {
   Object.keys(comps).sort().forEach(key => compsSorted[key] = comps[key]);
   componentsJson = JSON.stringify(compsSorted, null, '  ') + '\n';
   await fs.writeFile(COMPS_JSON_FILE, componentsJson, ENCODING)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
   console.log(LOG_COLORS.GREEN, `New component added to ${COMPS_JSON}`);
 };
 
@@ -52,7 +52,7 @@ const addNewCompToJsonFile = async (aliases) => {
 const createCompFiles = async () => {
   console.log(LOG_COLORS.MAGENTA, `Creating new component files...`);
   await fs.mkdir(`${COMP_DIR}/examples`, {recursive: true})
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
 
 
   // Create JS file
@@ -71,7 +71,7 @@ const createCompFiles = async () => {
 
   // Create test file
   let templateTestJs = await fs.readFile(`${TEMPLATE_DIR}/template.test.js`, ENCODING)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
 
   templateTestJs = templateTestJs
     .replace(/Template/g, COMP_NAME)
@@ -79,13 +79,13 @@ const createCompFiles = async () => {
     .replace(/template/g, COMP_NAME_CAMEL);
 
   await fs.writeFile(`${COMP_DIR}/${COMP_NAME_KEBAB}.test.js`, templateTestJs)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
   console.log(LOG_COLORS.GREEN, `New component test file created`);
 
 
   // Create README.md file
   let templateReadMe = await fs.readFile(`${TEMPLATE_DIR}/README.md`, ENCODING)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
 
   templateReadMe = templateReadMe
     .replace(/TemplatePascal/g, COMP_NAME_PASCAL)
@@ -93,20 +93,20 @@ const createCompFiles = async () => {
     .replace(/template/g, COMP_NAME_KEBAB);
 
   await fs.writeFile(`${COMP_DIR}/README.md`, templateReadMe)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
   console.log(LOG_COLORS.GREEN, `New component README.md file created`);
 
 
   // Create SASS file
   await fs.copyFile(`${TEMPLATE_DIR}/_template.scss`, `${COMP_DIR}/_${COMP_NAME_KEBAB}.scss`)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
   console.log(LOG_COLORS.GREEN, `New component SASS file created`);
 
 
   // Create 1.html file
   const COMP_CUSTOM_EL_TAG = `${NAME}-${COMP_NAME_KEBAB}`;
   await fs.writeFile(`${COMP_DIR}/examples/1.html`,  `<${COMP_CUSTOM_EL_TAG}></${COMP_CUSTOM_EL_TAG}>\n`)
-    .catch(error => console.error(LOG_COLORS.RED, error));
+    .catch(error => console.log(LOG_COLORS.RED, error));
   console.log(LOG_COLORS.GREEN, `New component example file 1.html created`);
 };
 

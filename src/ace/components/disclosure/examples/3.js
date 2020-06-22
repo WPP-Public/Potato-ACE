@@ -1,4 +1,4 @@
-import {EVENTS} from '../../ace/components/disclosure/disclosure.js';
+import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {
