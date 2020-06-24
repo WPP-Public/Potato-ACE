@@ -76,7 +76,8 @@ const createCompFiles = async () => {
   templateTestJs = templateTestJs
     .replace(/Template/g, COMP_NAME)
     .replace(/template-kebab/g, COMP_NAME_KEBAB)
-    .replace(/template/g, COMP_NAME_CAMEL);
+    .replace(/template/g, COMP_NAME_CAMEL)
+    .replace(/TEMPLATE/g, COMP_NAME_CAPS);
 
   await fs.writeFile(`${COMP_DIR}/${COMP_NAME_KEBAB}.test.js`, templateTestJs)
     .catch(error => console.log(LOG_COLORS.RED, error));
