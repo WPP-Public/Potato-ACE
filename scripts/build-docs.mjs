@@ -233,7 +233,8 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
 
   // README.HTML
   // Create component directory in `pages/` if it doesn't exist
-  const dirExists = await fsPromises.stat(`${componentPageDir}`);
+  const dirExists = await fsPromises.stat(`${componentPageDir}`)
+    .catch(() => console.log(LOG_COLORS.MAGENTA, `>> Creating ${componentPageDir}`));
 
   if (!dirExists) {
     await fsPromises.mkdir(componentPageDir, {recursive: true});
