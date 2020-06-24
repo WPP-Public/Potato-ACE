@@ -35,6 +35,7 @@ export default class Tooltip extends HTMLElement {
 
     /* CLASS METHOD BINDINGS */
     this.hoverHandler = this.hoverHandler.bind(this);
+    this.focusHandler = this.focusHandler.bind(this);
 
   }
 
@@ -42,6 +43,8 @@ export default class Tooltip extends HTMLElement {
   connectedCallback(): void  {
     this.triggerElement.addEventListener('mouseover', this.hoverHandler);
     this.triggerElement.addEventListener('mouseout', this.hoverHandler);
+    this.triggerElement.addEventListener('focus', this.focusHandler);
+    this.triggerElement.addEventListener('focusout', this.focusHandler);
   }
 
   /*
@@ -80,15 +83,25 @@ export default class Tooltip extends HTMLElement {
     Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
   */
  hoverHandler(e: MouseEvent): void {
-  //  const isHidden = this.getAttribute(ATTRS.VISIBILITY) === 'false';
+    //  const isHidden = this.getAttribute(ATTRS.VISIBILITY) === 'false';
 
-  if (e.type === 'mouseover') {
-    this.setAttribute(ATTRS.VISIBILITY, 'true');
-  } else if (e.type === 'mouseout') {
-    this.setAttribute(ATTRS.VISIBILITY, 'false');
+    if (e.type === 'mouseover') {
+      this.setAttribute(ATTRS.VISIBILITY, 'true');
+    } else if (e.type === 'mouseout') {
+      this.setAttribute(ATTRS.VISIBILITY, 'false');
+    }
   }
-}
 
+  /*
+    Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
+  */
+ focusHandler(e: KeyboardEvent): void {
+     const isHidden = this.getAttribute(ATTRS.VISIBILITY) === 'false';
+
+    isHidden ?
+      this.setAttribute(ATTRS.VISIBILITY, 'true') :
+      this.setAttribute(ATTRS.VISIBILITY, 'false');
+  }
 }
 
 
