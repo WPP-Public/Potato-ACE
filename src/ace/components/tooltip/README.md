@@ -8,7 +8,21 @@ Tooltip is a component whose visibility can be changed using trigger buttons and
 First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
 
 ```scss
-@import '../path/to/node_modules/@potato/ace/components/tooltip/tooltip'
+/* VARIABLES */
+$ace-tooltip-background-color: #000 !default;
+
+
+[ace-tooltip-visible="false"] {
+  display: none;
+}
+
+ace-tooltip {
+  border: 1px solid $ace-tooltip-background-color;
+  display: block;
+  margin: 1px;
+  max-width: fit-content;
+  padding: 1px;
+}
 ```
 
 
@@ -55,10 +69,12 @@ Each example contains a live demo and the HTML code that produced it. The code s
 This is a tooltip as a label triggered, by hover and focus.
 
 ```html
-<button ace-tooltip-trigger-for="tooltip-label" type="button" aria-labelledby="tooltip-label">🥔</button>
-<ace-tooltip role="tooltip" ace-tooltip-visible="false" id="tooltip-label">
-  <div>Potato</div>
-</ace-tooltip>
+<button ace-tooltip-trigger-for="tooltip" type="button" aria-describedby="tooltip">
+  <ace-tooltip role="tooltip" ace-tooltip-visible="false" id="tooltip">
+    <div>Potato</div>
+  </ace-tooltip>
+  🥔
+</button>
 ```
 
 ### Tooltip as a description
