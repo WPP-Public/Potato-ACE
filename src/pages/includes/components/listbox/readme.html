@@ -23,7 +23,7 @@
 <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>End</kbd>: Selects active option and all options below it and makes the last option active.</li>
 <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>A</kbd>: Toggles selected state of all options.</li>
 </ul>
-<h2>SASS</h2>
+<h2>Styles</h2>
 <p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector, with the addition of <code>[aria-selected=&quot;true&quot;]</code> for targetting selected options.  The SASS variables use <code>!default</code> so can also be easily overridden by users.</p>
 <p>To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color, respectively.</p>
 <pre><code class="language-scss">/* VARIABLES */
@@ -228,7 +228,7 @@ $ace-listbox-selected-option-bg-color: #ccc !default;
 &lt;br&gt;&lt;br&gt;
 &lt;ace-listbox id=&quot;dynamic-listbox&quot;&gt;&lt;/ace-listbox&gt;
 </code></pre>
-<pre><code class="language-js">import {EVENTS} from '../../ace/components/listbox/listbox.js';
+<pre><code class="language-js">import {EVENTS} from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
   const listboxId = 'dynamic-listbox';

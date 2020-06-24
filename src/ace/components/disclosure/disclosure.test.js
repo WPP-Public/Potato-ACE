@@ -1,13 +1,13 @@
-import {DISCLOSURE, ATTRS, EVENTS} from './disclosure';
+import {ATTRS, DISCLOSURE, EVENTS} from './disclosure';
 
 
 const IDS = {
-  DISCLOSURE_1: 'disclosure-1',
-  DISCLOSURE_2: 'disclosure-2',
+  CUSTOM_EVENT_DISCLOSURE: 'custom-event-triggered-disclosure',
   CUSTOM_EVENT_HIDE_BTN: 'custom-event-hide-btn',
   CUSTOM_EVENT_SHOW_BTN: 'custom-event-show-btn',
   CUSTOM_EVENT_TOGGLE_BTN: 'custom-event-toggle-btn',
-  CUSTOM_EVENT_DISCLOSURE: 'custom-event-triggered-disclosure',
+  DISCLOSURE_1: 'disclosure-1',
+  DISCLOSURE_2: 'disclosure-2',
 };
 
 

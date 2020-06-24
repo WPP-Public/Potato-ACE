@@ -5,13 +5,17 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build --prod",
-    "build-docs": "node --experimental-modules ./scripts/build-docs.mjs",
+    "build-docs": "npm run nxm -- ./scripts/build-docs.mjs",
     "cypress:cli": "cypress run -c video=false",
     "cypress:chrome": "npm run cypress:cli -- -b chrome",
     "cypress:firefox": "npm run cypress:cli -- -b firefox",
-    "lint": "npm run lint:scss && npm run lint:js",
-    "lint:js": "eslint \"src/**/*.js\"",
+    "lint": "npm run lint:scss && npm run lint:ts",
+    "lint:ts": "eslint \"src/**/*.ts\"",
     "lint:scss": "stylelint \"src/**/*.scss\"",
+    "nxm": "node --experimental-modules",
+    "new-comp": "npm run nxm -- ./scripts/new-comp.mjs",
+    "pack": "gulp ts && npm pack ./src/ace && open .",
+    "publish": "gulp ts && cd src/ace && npm publish --access public && cd ..",
     "start": "gulp",
     "serve:build": "gulp --prod",
     "serve:ci": "npx http-server dist --port 3030",
@@ -19,9 +23,7 @@
     "test:ci": "start-server-and-test serve:ci 3030",
     "test:ci:chrome": "npm run test:ci -- cypress:chrome",
     "test:ci:firefox": "npm run test:ci -- cypress:firefox",
-    "pack": "npm pack ./src/ace && open .",
-    "pipeline": "npm run lint && npm run build && npm run test:ci:chrome && npm run test:ci:firefox",
-    "publish": "cd src/ace && npm publish --access public"
+    "test:ci:prep": "npm rebuild node-sass && gulp ts"
   },
   "repository": {
     "type": "git",
@@ -31,37 +33,40 @@
   "license": "ISC",
   "private": true,
   "devDependencies": {
+    "@types/node": "^14.0.4",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
     "@webcomponents/webcomponentsjs": "^2.4.3",
+    "autoprefixer": "^9.8.0",
     "browser-sync": "^2.26.7",
-    "cypress": "^4.6.0",
+    "cypress": "^4.8.0",
     "eslint": "^6.8.0",
     "eslint-plugin-cypress": "^2.10.3",
     "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
     "gulp-clean-css": "^4.3.0",
     "gulp-flatten": "^0.4.0",
     "gulp-if": "^3.0.0",
+    "gulp-postcss": "^8.0.0",
     "gulp-pug": "^4.0.1",
     "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5",
     "gulp-terser": "^1.2.0",
     "markdown-it": "^10.0.0",
-    "pug": "^2.0.4",
     "start-server-and-test": "^1.11.0",
     "stylelint": "^13.3.3",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-order": "^4.0.0",
-    "stylelint-scss": "^3.17.2"
+    "stylelint-scss": "^3.17.2",
+    "typescript": "^3.9.3"
   },
   "browserslist": [
     "last 2 versions",
     "not IE > 9"
   ],
   "eslintIgnore": [
-    "/**/*.min.js"
+    "/**/*.min.js",
+    "gulpfile.js"
   ],
   "customProperties": {
     "componentLibrary": "ace"
   }
 }
-

@@ -11,7 +11,7 @@
 <p>After <code>DOMContentLoaded</code> is fired, Disclosure automatically instantiates an instance of itself within each <code>&lt;ace-disclosure&gt;&lt;/ace-disclosure&gt;</code> and adds IDs in the format <code>ace-disclosure-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
 <p>Disclosures are hidden by default but can be initially shown by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for=&lt;disclosure-id&gt;</code> should be added to triggering elements, where <code>&lt;disclosure-id&gt;</code> is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code>s are used for triggers. Disclosures can also be triggered using custom events, as described in the <strong>Custom events</strong> section below.</p>
 <p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>ace-disclosure-show-trigger</code> or <code>ace-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
-<h2>SASS</h2>
+<h2>Styles</h2>
 <p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.</p>
 <pre><code class="language-scss">[ace-disclosure-visible=&quot;false&quot;] {
   display: none;
@@ -145,7 +145,7 @@
   &lt;p&gt;Disclosure toggled using custom events.&lt;/p&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
-<pre><code class="language-js">import {EVENTS} from '../../ace/components/disclosure/disclosure.js';
+<pre><code class="language-js">import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
   window.addEventListener('click', (e) =&gt; {

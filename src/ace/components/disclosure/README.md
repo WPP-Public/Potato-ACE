@@ -27,7 +27,7 @@ Disclosures are hidden by default but can be initially shown by adding the `ace-
 Triggers will by default toggle the visibiility of the Disclosure, but the `ace-disclosure-show-trigger` or `ace-disclosure-hide-trigger` attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.
 
 
-## SASS
+## Styles
 
 The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.
 
@@ -148,7 +148,7 @@ Example of Disclosure controlled through custom events. The buttons in this exam
 ```
 
 ```js
-import {EVENTS} from '../../ace/components/disclosure/disclosure.js';
+import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {

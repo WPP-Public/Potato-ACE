@@ -44,7 +44,7 @@ The active option is automatically selected in a single-select Listbox. In a mul
 - <kbd>Ctrl</kbd>/<kbd>&#8984;</kbd> + <kbd>A</kbd>: Toggles selected state of all options.
 
 
-## SASS
+## Styles
 
 The following SASS is applied to the component, each declaration of which can be overridden by a single class selector, with the addition of `[aria-selected="true"]` for targetting selected options.  The SASS variables use `!default` so can also be easily overridden by users.
 
@@ -208,7 +208,7 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 ```
 
 ```js
-import {EVENTS} from '../../ace/components/listbox/listbox.js';
+import {EVENTS} from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const listboxId = 'dynamic-listbox';

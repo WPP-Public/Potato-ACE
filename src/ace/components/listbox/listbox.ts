@@ -1,5 +1,5 @@
 /* IMPORTS */
-import {NAME, KEYS} from '../../common/constants.js';
+import {KEYS, NAME} from '../../common/constants.js';
 import {autoID, keyPressedMatches} from '../../common/functions.js';
 
 
@@ -9,10 +9,10 @@ export const LISTBOX = `${NAME}-listbox`;
 
 /* CONSTANTS */
 export const ATTRS = {
+  ACTIVE_OPTION: `${LISTBOX}-active-option`,
   LIST: `${LISTBOX}-list`,
   MULTISELECT: `${LISTBOX}-multiselect`,
   OPTION_INDEX: `${LISTBOX}-option-index`,
-  ACTIVE_OPTION: `${LISTBOX}-active-option`,
 };
 
 
@@ -26,15 +26,24 @@ export const searchTimeoutTime = 500;
 
 /* CLASS */
 export default class Listbox extends HTMLElement {
+  public activeOptionIndex: number;
+  private allSelected: boolean;
+  private lastSelectedOptionIndex: number;
+  public listEl: HTMLElement;
+  private multiselectable: boolean;
+  private options: Array<HTMLElement>;
+  private query: string;
+  private searchTimeout: number;
+
   constructor() {
     super();
 
 
     /* CLASS CONSTANTS */
-    this.options = [];
     this.activeOptionIndex = null;
-    this.lastSelectedOptionIndex = null;
     this.allSelected = false;
+    this.lastSelectedOptionIndex = null;
+    this.options = [];
     this.query = '';
     this.searchTimeout = null;
 
@@ -56,7 +65,7 @@ export default class Listbox extends HTMLElement {
   }
 
 
-  connectedCallback() {
+  public connectedCallback(): void {
     /* GET DOM ELEMENTS */
     this.listEl = this.querySelector('ul') || this.querySelector('ol');
     // Create <ul> if neither <ul> nor <ol> present
@@ -84,11 +93,11 @@ export default class Listbox extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    this.listEl.addEventListener('focus', this.focusHandler, {passive: true});
-    this.listEl.addEventListener('blur', this.focusHandler, {passive: true});
+    this.listEl.addEventListener('focus', this.focusHandler);
+    this.listEl.addEventListener('blur', this.focusHandler);
     this.listEl.addEventListener('keydown', this.keydownHandler);
-    this.listEl.addEventListener('click', this.clickHandler, {passive: true});
-    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+    this.listEl.addEventListener('click', this.clickHandler);
+    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler);
 
 
     /* INITIALISATION */
@@ -96,20 +105,20 @@ export default class Listbox extends HTMLElement {
   }
 
 
-  disconnectedCallback() {
+  public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    this.listEl.removeEventListener('focus', this.focusHandler, {passive: true});
-    this.listEl.removeEventListener('blur', this.focusHandler, {passive: true});
+    this.listEl.removeEventListener('focus', this.focusHandler);
+    this.listEl.removeEventListener('blur', this.focusHandler);
     this.listEl.removeEventListener('keydown', this.keydownHandler);
-    this.listEl.removeEventListener('click', this.clickHandler, {passive: true});
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler, {passive: true});
+    this.listEl.removeEventListener('click', this.clickHandler);
+    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler);
   }
 
 
   /*
     Clears the search query
   */
-  clearListSearch() {
+  private clearListSearch(): void {
     this.query = '';
   }
 
@@ -117,8 +126,8 @@ export default class Listbox extends HTMLElement {
   /*
     Handle clicks on listbox options by setting clicked option to selected
   */
-  clickHandler(e) {
-    const optionClicked = e.target.closest(`[${ATTRS.OPTION_INDEX}]`);
+  private clickHandler(e: MouseEvent): void {
+    const optionClicked = (e.target as HTMLElement).closest(`[${ATTRS.OPTION_INDEX}]`);
     if (!optionClicked) {
       return;
     }
@@ -148,16 +157,16 @@ export default class Listbox extends HTMLElement {
   /*
     Finds options starting with given keyPressed wrapping around
   */
-  findInList() {
+  private findInList(): void {
     let i = this.activeOptionIndex;
-    let maxIndex = this.options.length - 1;
+    const maxIndex = this.options.length - 1;
 
     if (this.query.length === 1) {
       // If it's the first letter of a new search, we start searching _after_ the currently selected option
       i = (i === maxIndex) ? 0 : i + 1;
     }
 
-    let startingIndex = i;
+    const startingIndex = i;
 
     do {
       if (this.options[i].textContent.toLowerCase().startsWith(this.query)) {
@@ -175,7 +184,7 @@ export default class Listbox extends HTMLElement {
     On focus: set first option or last active option as active
     On blur: unset active option
   */
-  focusHandler(e) {
+  private focusHandler(e: Event): void {
     if (this.options.length === 0) {
       return;
     }
@@ -200,9 +209,9 @@ export default class Listbox extends HTMLElement {
     Update the listbox by recalculating the indices and setting the first option as active.
     Should be run if the list ID or options are dynamically changed to update indices.
   */
-  initialiseList() {
+  public initialiseList(): void {
     // Get all child <li> elements
-    this.options = [...this.listEl.querySelectorAll('li')];
+    this.options = Array.from(this.listEl.querySelectorAll('li'));
 
     if (this.options.length === 0) {
       return;
@@ -212,7 +221,7 @@ export default class Listbox extends HTMLElement {
     this.options.forEach((option, i) => {
       option.setAttribute('role', 'option');
       option.setAttribute('aria-selected', 'false');
-      option.setAttribute(ATTRS.OPTION_INDEX, i);
+      option.setAttribute(ATTRS.OPTION_INDEX, i.toString());
       // If no ID given create an ID from parent ID and index
       option.id = option.id || `${this.id}-option-${i + 1}`;
     });
@@ -228,7 +237,7 @@ export default class Listbox extends HTMLElement {
   /*
     Handle keystrokes
   */
-  keydownHandler(e) {
+  public keydownHandler(e: KeyboardEvent): void {
     const keyPressed = e.key || e.which || e.keyCode;
 
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
@@ -290,7 +299,7 @@ export default class Listbox extends HTMLElement {
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
           this.options.forEach(option => {
-            option.setAttribute('aria-selected', !this.allSelected);
+            option.setAttribute('aria-selected', (!this.allSelected).toString());
           });
           this.allSelected = !this.allSelected;
           return;
@@ -307,7 +316,7 @@ export default class Listbox extends HTMLElement {
     clearTimeout(this.searchTimeout);
     this.query+=e.key.toLowerCase();
     this.findInList();
-    this.searchTimeout = setTimeout(this.clearListSearch, searchTimeoutTime);
+    this.searchTimeout = window.setTimeout(this.clearListSearch, searchTimeoutTime);
   }
 
 
@@ -317,7 +326,7 @@ export default class Listbox extends HTMLElement {
     An "active" option is one currently has keyboard focus. There can be only one active option at any given time.
     For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
   */
-  makeOptionActive(index) {
+  public makeOptionActive(index: number): void {
     // Deactivate previously active option
     if (this.activeOptionIndex !== null && this.activeOptionIndex !== undefined) {
       this.options[this.activeOptionIndex].removeAttribute(ATTRS.ACTIVE_OPTION);
@@ -341,7 +350,7 @@ export default class Listbox extends HTMLElement {
   /*
     Make a range of options selected
   */
-  makeOptionRangeSelected(startIndex, endIndex) {
+  private makeOptionRangeSelected(startIndex: number, endIndex: number): void {
     for (let i = startIndex; i < endIndex; i++) {
       this.options[i].setAttribute('aria-selected', 'true');
     }
@@ -353,7 +362,7 @@ export default class Listbox extends HTMLElement {
     An "active" option is one that is selected. For multi-select listboxes there could be multiple "active" options.
     For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
   */
-  makeOptionSelected(index) {
+  private makeOptionSelected(index: number): void {
     // If single select list and an item is currently selected
     if (!this.multiselectable && (this.lastSelectedOptionIndex !== null)) {
       this.options[this.lastSelectedOptionIndex]
@@ -368,25 +377,25 @@ export default class Listbox extends HTMLElement {
   /*
     Scroll option at given index into view
   */
-  scrollOptionIntoView(index) {
+  private scrollOptionIntoView(index: number): void {
     this.options[index]
       .scrollIntoView({
         behaviour: 'smooth',
         block: 'nearest',
         inline: 'start',
-      });
+      } as ScrollIntoViewOptions);
   }
 
 
   /*
     Select all options from last selected option to active option
   */
-  selectContiguousOptions() {
+  private selectContiguousOptions(): void {
     if (this.lastSelectedOptionIndex === null) {
       return;
     }
 
-    let startIndex, endIndex;
+    let startIndex: number, endIndex: number;
     if (this.lastSelectedOptionIndex < this.activeOptionIndex) {
       startIndex = this.lastSelectedOptionIndex + 1;
       endIndex = this.activeOptionIndex;
@@ -404,10 +413,10 @@ export default class Listbox extends HTMLElement {
   /*
     Toggle the selected state of the option at given index
   */
-  toggleOptionState(index) {
+  private toggleOptionState(index: number): void {
     const option = this.options[index];
     const newSelectedState = option.getAttribute('aria-selected') !== 'true';
-    option.setAttribute('aria-selected', newSelectedState);
+    option.setAttribute('aria-selected', newSelectedState.toString());
     this.lastSelectedOptionIndex = newSelectedState ? index : null;
   }
 
@@ -416,7 +425,7 @@ export default class Listbox extends HTMLElement {
     Calculate and return index to move to based on the direction
     and wraps around if you are at the top or bottom
   */
-  updateActiveOption(direction) {
+  private updateActiveOption(direction: number): void {
     let newIndex = this.activeOptionIndex + direction;
     if (newIndex < 0) {
       newIndex = this.options.length - 1;
@@ -433,7 +442,7 @@ export default class Listbox extends HTMLElement {
     Run when the EVENTS.UPDATE_OPTIONS event is fired and updates
     the listbox options and indices
   */
-  updateOptionsHandler(e) {
+  private updateOptionsHandler(e: CustomEvent): void {
     const detail = e['detail'];
     if (!detail || (detail['id'] !== this.id)) {
       return;

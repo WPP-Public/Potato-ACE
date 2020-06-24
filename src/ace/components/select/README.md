@@ -36,7 +36,7 @@ Clicking on an option or navigating to it using <kbd>&#8593;</kbd> or <kbd>&#859
 Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options. Type-ahead can be used on a focussed trigger, which will select the option and update the trigger text, or in a list where it will only select the option but not update the trigger text until <kbd>Enter</kbd> or <kbd>Space</kbd> are pressed to confirm. Pressing <kdb>Esc</kbd> or clicking outside the element closes an open list without confirming a change in selected option.
 
 
-## SASS
+## Styles
 
 The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use `!default` so can also be easily overridden by users. The list also inherits Listbox styles detailed in the *SASS* section [here](/listbox).
 
@@ -66,6 +66,8 @@ ace-select {
 [ace-select-list-hidden] {
   display: none;
 }
+
+@import '../../common/utils';
 ```
 
 
@@ -182,7 +184,7 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 ```
 
 ```js
-import {EVENTS} from '../../ace/components/select/select.js';
+import {EVENTS} from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const selectId = 'dynamic-select';

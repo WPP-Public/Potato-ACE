@@ -6,27 +6,25 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:cypress/recommended"
+    "plugin:cypress/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
   ],
   "plugins": [
-    "cypress"
+    "cypress",
+    "@typescript-eslint"
   ],
   "globals": {
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "ignorePatterns": [
-    "template.test.js"
-  ],
   "rules": {
-    "semi": [
-      "error",
-      "always"
-    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
     "no-multiple-empty-lines": [
       "error",
       {
@@ -35,15 +33,28 @@
     ],
     "no-unused-vars": [
       "warn"
+    ],
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "sort-imports": "error",
+    "sort-keys": [
+        "error",
+        "asc"
     ]
   },
   "overrides": [
     {
-      "files": ["src/ace/components/**/*-page.js"],
+      "files": ["*.ts", "*.tsx"],
       "rules": {
-        "no-unused-vars": [
-          "off"
-        ]
+        "@typescript-eslint/explicit-function-return-type": ["error"]
       }
     }
   ]

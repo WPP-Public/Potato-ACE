@@ -3,14 +3,15 @@ import {NAME} from '../../common/constants.js';
 import {autoID} from '../../common/functions.js';
 
 
+/* COMPONENT NAME */
 export const DISCLOSURE = `${NAME}-disclosure`;
 
 
 /* CONSTANTS */
 export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
-  TRIGGER_SHOW: `${DISCLOSURE}-trigger-show`,
   TRIGGER_HIDE: `${DISCLOSURE}-trigger-hide`,
+  TRIGGER_SHOW: `${DISCLOSURE}-trigger-show`,
   VISIBLE: `${DISCLOSURE}-visible`,
 };
 
@@ -23,9 +24,11 @@ export const EVENTS = {
 };
 
 
-
 /* CLASS */
 export default class Disclosure extends HTMLElement {
+  private triggerEls: Array<HTMLElement>;
+  private triggerSelector: string;
+
   /* CONSTRUCTOR */
   constructor() {
     super();
@@ -41,9 +44,9 @@ export default class Disclosure extends HTMLElement {
   }
 
 
-  connectedCallback() {
+  public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.triggerEls = document.querySelectorAll(this.triggerSelector);
+    this.triggerEls = Array.from(document.querySelectorAll(this.triggerSelector));
 
 
     /* GET DOM DATA */
@@ -51,41 +54,41 @@ export default class Disclosure extends HTMLElement {
 
 
     /* SET DOM DATA */
-    this.setAttribute(ATTRS.VISIBLE, visible);
+    this.setAttribute(ATTRS.VISIBLE, visible.toString());
 
     this.triggerEls.forEach((triggerEl) => {
       triggerEl.setAttribute('aria-controls', this.id);
-      triggerEl.setAttribute('aria-expanded', visible);
+      triggerEl.setAttribute('aria-expanded', visible.toString());
     });
 
 
     /* ADD EVENT LISTENERS */
-    window.addEventListener('click', this.windowClickHandler, {passive: true});
-    window.addEventListener(EVENTS.HIDE, this.customEventsHandler, {passive: true});
-    window.addEventListener(EVENTS.SHOW, this.customEventsHandler, {passive: true});
-    window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler, {passive: true});
+    window.addEventListener('click', this.windowClickHandler);
+    window.addEventListener(EVENTS.HIDE, this.customEventsHandler);
+    window.addEventListener(EVENTS.SHOW, this.customEventsHandler);
+    window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler);
   }
 
 
-  disconnectedCallback() {
+  public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    window.removeEventListener('click', this.windowClickHandler, {passive: true});
-    window.removeEventListener(EVENTS.HIDE, this.toggleEventHandler, {passive: true});
-    window.removeEventListener(EVENTS.SHOW, this.toggleEventHandler, {passive: true});
-    window.removeEventListener(EVENTS.TOGGLE, this.toggleEventHandler, {passive: true});
+    window.removeEventListener('click', this.windowClickHandler);
+    window.removeEventListener(EVENTS.HIDE, this.customEventsHandler);
+    window.removeEventListener(EVENTS.SHOW, this.customEventsHandler);
+    window.removeEventListener(EVENTS.TOGGLE, this.customEventsHandler);
   }
 
 
   /*
     Handles custom events
   */
-  customEventsHandler(e) {
+  private customEventsHandler(e: CustomEvent): void {
     const detail = e['detail'];
     if (!detail || (detail['id'] !== this.id) || !e.type) {
       return;
     }
 
-    let showDisclosure = null;
+    let showDisclosure: boolean = null;
     if (e.type === EVENTS.SHOW) {
       showDisclosure = true;
     }
@@ -100,7 +103,7 @@ export default class Disclosure extends HTMLElement {
   /*
     Show, hide or toggle the visibility of the disclosure
   */
-  setDisclosure(showDisclosure) {
+  private setDisclosure(showDisclosure: boolean): void {
     const currentlyShown = this.getAttribute(ATTRS.VISIBLE) === 'true';
 
     if (showDisclosure && currentlyShown) {
@@ -115,8 +118,8 @@ export default class Disclosure extends HTMLElement {
     if (showDisclosure === null || showDisclosure === undefined) {
       showDisclosure = !currentlyShown;
     }
-    this.setAttribute(ATTRS.VISIBLE, showDisclosure);
-    this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure));
+    this.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
+    this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure.toString()));
 
     window.dispatchEvent(new CustomEvent(
       EVENTS.CHANGED,
@@ -133,14 +136,14 @@ export default class Disclosure extends HTMLElement {
   /*
     Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
   */
-  windowClickHandler(e) {
+  private windowClickHandler(e: MouseEvent): void {
     // Check that the trigger clicked is linked to this disclosure instance
-    const triggerClicked = e.target.closest(this.triggerSelector);
+    const triggerClicked = (e.target as HTMLElement).closest(this.triggerSelector);
     if (!triggerClicked) {
       return;
     }
 
-    let showDisclosure = null;
+    let showDisclosure: boolean = null;
     if (triggerClicked.hasAttribute(ATTRS.TRIGGER_SHOW)) {
       showDisclosure = true;
     }

@@ -1,24 +1,23 @@
-// Keep block comments (/* */) for sections used
+// Keep block comments (/* */) even for unused sections
 // Remove all comments starting with '//'
 // Use two blank lines between each section with block comment headings
-// TODO: Find and replace all instances of 'TEMPLATE', 'Template' and 'template' to actual names
 /* IMPORTS */
 import {NAME} from '../../common/constants.js';
 import {autoID} from '../../common/functions.js';
 
 
-/* TEMPLATE NAME */
+/* COMPONENT NAME */
 export const TEMPLATE = `${NAME}-template`;
 
 
 /* CONSTANTS */
-// Add names of HTML attributes used, prefixed with TEMPLATE
+// Add names of any HTML attributes used, prefixed with TEMPLATE
 // export const ATTRS = {
 //   ATTR_NAME: `${TEMPLATE}-attr-name`,
 // };
 
 
-// Add names of custom events used, prefixed with TEMPLATE
+// Add names of any custom events used, prefixed with TEMPLATE
 // export const EVENTS = {
 //   EVENT_NAME: `${TEMPLATE}-event-name`,
 // };
@@ -47,7 +46,7 @@ export default class Template extends HTMLElement {
   }
 
 
-  connectedCallback() {
+  public connectedCallback(): void {
     /* GET DOM ELEMENTS */
     // Add suffix `El` to the names of class constants containing elements:
     // this.someEl = this.querySelector(`[${ATTRS.ATTR_NAME}]`);
@@ -62,7 +61,6 @@ export default class Template extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    // Use passive event listeners when possible. Please don't use anonymous functions
 
 
     /* INITIALISATION */
@@ -82,13 +80,13 @@ export default class Template extends HTMLElement {
   }
 
 
-  disconnectedCallback() {
+  public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
   }
 
 
-  /* OTHER CLASS METHODS */
-  // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback whch should be at the top.
+  // OTHER CLASS METHODS
+  // Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback
   // For each method, first add a block comment that describes the method
   // Use two blank lines between methods
   // /*
