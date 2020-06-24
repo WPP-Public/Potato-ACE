@@ -1,6 +1,6 @@
 // TODO: Remove 'TODO:' comments
 // TODO: Remove ATTRS and/or EVENTS if not used
-import {TEMPLATE, ATTRS, EVENTS} from './template-kebab';
+import {ATTRS, EVENTS, TEMPLATE} from './template-kebab';
 
 
 // TODO: Add IDs used to find elements here or remove object
