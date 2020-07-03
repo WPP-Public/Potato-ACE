@@ -18,9 +18,9 @@ export const TEMPLATE = `${NAME}-template`;
 
 
 // Add names of any custom events used, prefixed with TEMPLATE
-// export const EVENTS = {
-//   EVENT_NAME: `${TEMPLATE}-event-name`,
-// };
+export const EVENTS = {
+  READY: `${TEMPLATE}-ready`,
+};
 
 
 // Add any other exported constants here, using all caps and underscores:
@@ -66,17 +66,19 @@ export default class Template extends HTMLElement {
     /* INITIALISATION */
     // Add any initialisation code here
 
-    // NOTE:
-    // Dispatch custom events on 'window' to make it easier for templates to listen for them
-    // When firing custom events include class instance ID in the 'detail' property
-    // window.dispatchEvent(new CustomEvent(
-    //   EVENTS.EVENT_NAME,
-    //   {
-    //     'detail': {
-    //       'id': this.id,
-    //     }
-    //   },
-    // ));
+
+    // Dispatch 'ready' event
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.READY,
+      {
+        'detail': {
+          'id': this.id,
+        }
+      },
+    ));
+    // CUSTOM EVENT NOTES:
+    // Dispatch custom events on 'window'
+    // When dispatching custom events include class instance ID in the 'detail' property
   }
 
 

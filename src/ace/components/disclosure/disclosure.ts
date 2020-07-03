@@ -19,6 +19,7 @@ export const ATTRS = {
 export const EVENTS = {
   CHANGED: `${DISCLOSURE}-changed`,
   HIDE: `${DISCLOSURE}-hide`,
+  READY: `${DISCLOSURE}-ready`,
   SHOW: `${DISCLOSURE}-show`,
   TOGGLE: `${DISCLOSURE}-toggle`,
 };
@@ -67,6 +68,18 @@ export default class Disclosure extends HTMLElement {
     window.addEventListener(EVENTS.HIDE, this.customEventsHandler);
     window.addEventListener(EVENTS.SHOW, this.customEventsHandler);
     window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler);
+
+
+    /* INITIALISATION */
+    // Dispatch 'ready' event
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.READY,
+      {
+        'detail': {
+          'id': this.id,
+        }
+      },
+    ));
   }
 
 

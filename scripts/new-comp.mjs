@@ -99,10 +99,13 @@ const createCompFiles = async () => {
 
 
   // Create SASS file
-  await fs.copyFile(`${TEMPLATE_DIR}/_template.scss`, `${COMP_DIR}/_${COMP_NAME_KEBAB}.scss`)
+  let templateSass = await fs.readFile(`${TEMPLATE_DIR}/_template.scss`, ENCODING)
+    .catch(error => console.log(LOG_COLORS.RED, error));
+
+  templateSass = templateSass.replace(/template/g, COMP_NAME_KEBAB);
+  await fs.writeFile(`${COMP_DIR}/_${COMP_NAME_KEBAB}.scss`, templateSass)
     .catch(error => console.log(LOG_COLORS.RED, error));
   console.log(LOG_COLORS.GREEN, `New component SASS file created`);
-
 
   // Create 1.html file
   const COMP_CUSTOM_EL_TAG = `${NAME}-${COMP_NAME_KEBAB}`;
