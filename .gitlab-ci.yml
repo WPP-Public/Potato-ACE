@@ -126,10 +126,10 @@ Firefox:
 
 # DEPLOY STAGE
 Deploy:
+  image: andreysenov/firebase-tools
+  cache: {}
   stage: deploy
   rules:
     - if: $CI_COMMIT_BRANCH == 'master'
-  before_script:
-    - npm i -g firebase-tools
   script:
     - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
