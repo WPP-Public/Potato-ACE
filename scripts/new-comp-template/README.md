@@ -42,11 +42,23 @@ The following SASS is applied to the component, each declaration of which can be
 ```
 
 
+<!-- TODO: If one event used remove plural from following heading and sentence  -->
 ## Custom events
-<!-- TODO: If only one event used remove plural -->
-<!-- TODO: Remove or keep 'dispatched' and 'listened for' as appropriate -->
+<!-- TODO: Remove 'listened for' in following sentence if component only dispatches and does not listen for events -->
 Template uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
 
+
+### Ready
+
+`ace-template-ready`
+
+This event is dispatched on `window` when Template finishes initialising and its `detail` object is composed as follows:
+
+```js
+'detail': {
+  'id': // ID of Template
+}
+```
 
 <!-- TODO: Replace 'Event name' with a descriptive name -->
 ### Event name
