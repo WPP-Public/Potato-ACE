@@ -1,17 +1,23 @@
 // Keep styles to minimum and make sure styles added are obvious, prompting users to override them
+// Import styles for component this component is extending if any
+// @import '../listbox/listbox';
 
 /* VARIABLES */
 // Define SASS variables here using `!default` so users can override these
-// $ace-component-var: value !default;
+// $ace-template-var: value !default;
 
 
 /* STYLES */
 // Apply styles in a way that they can be overridden by a user with a single class selector
 // Use the following guidelines to achieve this:
 // 1. Don't use classes for selectors, instead only use the component tag or it's attributes
-// 2. Don't nest selectors nor use multi-property selectors e.g. ace-component [ace-component-attr]
-// ace-component {
+// 2. Don't nest selectors nor use multi-property selectors e.g. 'ace-template [ace-template-attr]'
+// ace-template {
 // }
 
-// [ace-component-attr] {
+// [ace-template-attr] {
 // }
+
+
+// Import ACE utils styles to make use of any of them
+// @import '../../common/utils';

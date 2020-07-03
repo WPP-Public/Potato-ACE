@@ -1,5 +1,5 @@
 /* FUNCTIONS THAT CAN BE USED BY ANY COMPONENT */
-import {Key, UTIL_ATTRS} from './constants.js';
+import {KEYS, Key, UTIL_ATTRS} from './constants.js';
 
 
 /*
@@ -48,4 +48,19 @@ export const handleOverflow = (elem: HTMLElement): void => {
   ) {
     elem.setAttribute(UTIL_ATTRS.FLOAT_LEFT, '');
   }
+};
+
+
+/*
+  Increments or decrements a given index based on whether DOWN or UP arrow is pressed respectively, looping around if necessary.
+*/
+export const getIndexAfterArrowKeyPress = (startIndex: number, arrowKeyPressed: string | number, total: number): number => {
+  const direction = keyPressedMatches(arrowKeyPressed, KEYS.UP) ? -1 : 1;
+  let optionToSelectIndex = startIndex + direction;
+  if (optionToSelectIndex < 0) {
+    optionToSelectIndex = total - 1;
+  } else if (optionToSelectIndex === total) {
+    optionToSelectIndex = 0;
+  }
+  return optionToSelectIndex;
 };

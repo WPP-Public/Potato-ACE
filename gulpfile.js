@@ -196,6 +196,9 @@ gulp.task('serve', () => {
       if (path.includes('.scss')) {
         runCmd('gulp sass');
       }
+      if (path.includes('.js')) {
+        runCmd('gulp js');
+      }
 
       // Build docs and compile index.pug for component
       const component = path.split('components/')[1].split('/')[0];
