@@ -41,6 +41,9 @@ Type-ahead can also be used to select an option by typing one or more characters
 The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use `!default` so can also be easily overridden by users. The list also inherits Listbox styles detailed in the *SASS* section [here](/listbox).
 
 ```scss
+@import '../listbox/listbox';
+
+
 /* VARIABLES */
 $ace-select-list-background-color: #fff !default;
 $ace-select-list-height: auto !default;
@@ -63,9 +66,10 @@ ace-select {
   z-index: $ace-select-list-z-index;
 }
 
-[ace-select-list-hidden] {
+[ace-select-list-visible="false"] {
   display: none;
 }
+
 
 @import '../../common/utils';
 ```
@@ -75,6 +79,18 @@ ace-select {
 
 Select uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
 
+
+### Ready
+
+`ace-select-ready`
+
+This event is dispatched on `window` when Select finishes initialising and its `detail` object is composed as follows:
+
+```js
+'detail': {
+  'id': // ID of Select
+}
+```
 
 ### Option selected
 

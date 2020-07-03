@@ -1,6 +1,6 @@
 /* IMPORTS */
 import {KEYS, NAME} from '../../common/constants.js';
-import {autoID, keyPressedMatches} from '../../common/functions.js';
+import {autoID, getIndexAfterArrowKeyPress, keyPressedMatches} from '../../common/functions.js';
 
 
 /* COMPONENT NAME */
@@ -17,6 +17,7 @@ export const ATTRS = {
 
 
 export const EVENTS = {
+  READY: `${LISTBOX}-ready`,
   UPDATE_OPTIONS: `${LISTBOX}-update-options`,
 };
 
@@ -70,8 +71,8 @@ export default class Listbox extends HTMLElement {
     this.listEl = this.querySelector('ul') || this.querySelector('ol');
     // Create <ul> if neither <ul> nor <ol> present
     if (!this.listEl) {
-      this.appendChild(document.createElement('ul'));
-      this.listEl = this.querySelector('ul');
+      this.listEl = document.createElement('ul');
+      this.appendChild(this.listEl);
     }
 
 
@@ -102,6 +103,16 @@ export default class Listbox extends HTMLElement {
 
     /* INITIALISATION */
     this.initialiseList();
+
+    // Dispatch 'ready' event
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.READY,
+      {
+        'detail': {
+          'id': this.id,
+        }
+      },
+    ));
   }
 
 
@@ -242,8 +253,8 @@ export default class Listbox extends HTMLElement {
 
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
       e.preventDefault();
-      const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
-      this.updateActiveOption(direction);
+      const optionToMakeActiveIndex = getIndexAfterArrowKeyPress(this.activeOptionIndex, keyPressed, this.options.length);
+      this.updateActiveOption(optionToMakeActiveIndex);
 
       if (this.multiselectable && e.shiftKey) {
         this.toggleOptionState(this.activeOptionIndex);
@@ -422,17 +433,10 @@ export default class Listbox extends HTMLElement {
 
 
   /*
-    Calculate and return index to move to based on the direction
-    and wraps around if you are at the top or bottom
+    Makes option with given index active
   */
-  private updateActiveOption(direction: number): void {
-    let newIndex = this.activeOptionIndex + direction;
-    if (newIndex < 0) {
-      newIndex = this.options.length - 1;
-    } else if (newIndex === this.options.length) {
-      newIndex = 0;
-    }
-    this.makeOptionActive(newIndex);
+  private updateActiveOption(index: number): void {
+    this.makeOptionActive(index);
     this.scrollOptionIntoView(this.activeOptionIndex);
   }
 

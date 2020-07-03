@@ -14,7 +14,7 @@
 <h2>Usage</h2>
 <p>There are two main types of Listboxes, single-select and multi-select. A single-select Listbox allows selection of only a single option at a time, and are instantiated by default. A Multi-select Listbox allows selection of multiple options, and are instantiated in Listboxes with an <code>ace-listbox-multiselect</code> attribute.</p>
 <p>Listbox options can be active and/or selected. Only a single option can be active at once and only when the Listbox list has focus. The active option is given the <code>ace-listbox-active-option</code> attribute and its ID is stored as the Listbox's <code>aria-activedescendant</code> attribute. Both these attributes are removed when the Listbox list loses focus as no option is active at that point.</p>
-<p>The active option can be changed by clicking on an option, using <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Home</kbd> or <kbd>End</kbd>, or typing a single or sequence of characters which makes the next option with text starting with the typed string active. <kbd>↑</kbd> will loop around from the top of the list to the bottom, while <kbd>↓</kbd> will loop from the bottom to the top. Similarly, when a character is typed if the bottom of the list is reached the search will loop around and continute from the top until a match or the active option is reached. Repeatedly pressing the same character with a short delay in-between will loop through all matching options.</p>
+<p>The active option can be changed by clicking on an option, using <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Home</kbd> or <kbd>End</kbd>, or by typing one or more characters making the next option with text starting with the typed string active. <kbd>↑</kbd> will loop around from the top of the list to the bottom, while <kbd>↓</kbd> will loop from the bottom to the top. Similarly, when a character is typed if the bottom of the list is reached the search will loop around and continute from the top until a match or the active option is reached. Repeatedly pressing the same character with a short delay in-between will loop through all matching options.</p>
 <p>The active option is automatically selected in a single-select Listbox. In a multi-select Listbox an option's selected state can be toggled by clicking on it or pressing <kbd>Space</kbd> if it's active. Selection of multiple options can be achieved by clicking on an option and then clicking on another one while holding <kbd>⇧</kbd>, which will select all options in between the two clicked ones. Users can also select multiple options using the keyboard in the following ways:</p>
 <ul>
 <li><kbd>⇧</kbd> + <kbd>↑</kbd> or <kbd>⇧</kbd> + <kbd>↓</kbd>: Toggles selected state of previous or next option respectively, and makes it active.</li>
@@ -48,11 +48,19 @@ $ace-listbox-selected-option-bg-color: #ccc !default;
 </code></pre>
 <h2>Custom events</h2>
 <p>Listbox uses the following custom event, the name of which is exported as a property of <code>EVENTS</code>, similar to <code>ATTRS</code>, so it may be imported into other modules and dispatched.</p>
+<h3>Ready</h3>
+<p><code>ace-listbox-ready</code></p>
+<p>This event is dispatched on <code>window</code> when Listbox finishes initialising and its <code>detail</code> object is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Listbox
+}
+</code></pre>
 <h3>Update options</h3>
 <p><code>ace-listbox-update-options</code></p>
 <p>This event should be dispatched on <code>window</code> when a Listbox's options are altered, e.g. when options are added or deleted. The event <code>detail</code> object should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Listbox
+  'noneSelected': &lt;boolean&gt; // (Optional): Initialise single-select listbox without selecting first option 
 }
 </code></pre>
 <h2>Examples</h2>

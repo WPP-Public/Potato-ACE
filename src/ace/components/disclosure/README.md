@@ -43,6 +43,18 @@ The following SASS is applied to the component, each declaration of which can be
 Disclosure uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
 
 
+### Ready
+
+`ace-disclosure-ready`
+
+This event is dispatched on `window` when Disclosure finishes initialising and its `detail` object is composed as follows:
+
+```js
+'detail': {
+  'id': // ID of Disclosure
+}
+```
+
 ### Changed
 
 `ace-disclosure-changed`

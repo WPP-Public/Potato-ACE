@@ -19,6 +19,13 @@
 </code></pre>
 <h2>Custom events</h2>
 <p>Disclosure uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
+<h3>Ready</h3>
+<p><code>ace-disclosure-ready</code></p>
+<p>This event is dispatched on <code>window</code> when Disclosure finishes initialising and its <code>detail</code> object is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Disclosure
+}
+</code></pre>
 <h3>Changed</h3>
 <p><code>ace-disclosure-changed</code></p>
 <p>This event is dispatched when a Disclosure visibility is changed and its <code>detail</code> object is composed as follows:</p>

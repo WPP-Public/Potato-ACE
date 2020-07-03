@@ -11,13 +11,14 @@ export const SELECT = `${NAME}-select`;
 /* CONSTANTS */
 export const ATTRS = {
   LIST: `${SELECT}-list`,
-  LIST_HIDDEN: `${SELECT}-list-hidden`,
+  LIST_VISIBLE: `${SELECT}-list-visible`,
   TRIGGER: `${SELECT}-trigger`,
 };
 
 
 export const EVENTS = {
   OPTION_SELECTED: `${SELECT}-option-selected`,
+  READY: `${SELECT}-ready`,
   UPDATE_OPTIONS: `${SELECT}-update-options`,
 };
 
@@ -86,6 +87,16 @@ export default class Select extends Listbox {
     this.activeOptionIndex = 0;
     this.hideList();
     this.updateTriggerText();
+
+    // Dispatch 'ready' event
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.READY,
+      {
+        'detail': {
+          'id': this.id,
+        }
+      },
+    ));
   }
 
 
@@ -145,7 +156,7 @@ export default class Select extends Listbox {
     Hide dropdown list and update trigger text
   */
   private hideList(): void {
-    this.listEl.setAttribute(ATTRS.LIST_HIDDEN, '');
+    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
     this.triggerEl.setAttribute('aria-expanded', 'false');
   }
 
@@ -156,7 +167,7 @@ export default class Select extends Listbox {
   private selectClickHandler(e: MouseEvent): void {
     const optionClicked = (e.target as HTMLElement).closest(`#${this.id} [${LISTBOX_ATTRS.OPTION_INDEX}]`);
     const triggerClicked = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`) === this.triggerEl;
-    const listHidden = this.listEl.hasAttribute(ATTRS.LIST_HIDDEN);
+    const listHidden = this.listEl.getAttribute(ATTRS.LIST_VISIBLE) === 'false';
 
     if (!optionClicked && !triggerClicked && listHidden) {
       return;
@@ -247,7 +258,7 @@ export default class Select extends Listbox {
   */
   private showList(): void {
     this.triggerEl.setAttribute('aria-expanded', 'true');
-    this.listEl.removeAttribute(ATTRS.LIST_HIDDEN);
+    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'true');
     handleOverflow(this.listEl);
     this.listEl.focus();
   }
