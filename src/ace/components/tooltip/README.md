@@ -28,8 +28,6 @@ ace-tooltip {
   margin: 1px;
   max-width: fit-content;
   padding: 1px;
-  position: absolute;
-  top: 100%;
 }
 ```
 

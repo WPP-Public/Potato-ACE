@@ -18,7 +18,6 @@ export default class Tooltip extends HTMLElement {
     /* CONSTRUCTOR */
     constructor() {
         super();
-        debugger;
         this.triggerElement = document.querySelector(`[${ATTRS.TRIGGER}=${this.id}]`);
         /* CLASS METHOD BINDINGS */
         this.hoverHandler = this.hoverHandler.bind(this);

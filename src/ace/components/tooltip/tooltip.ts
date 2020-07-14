@@ -30,10 +30,7 @@ export default class Tooltip extends HTMLElement {
   constructor() {
     super();
 
-    debugger;
-
     this.triggerElement = document.querySelector(`[${ATTRS.TRIGGER}=${this.id}]`);
-
 
     /* CLASS METHOD BINDINGS */
     this.hoverHandler = this.hoverHandler.bind(this);
@@ -86,7 +83,6 @@ export default class Tooltip extends HTMLElement {
   */
  hoverHandler(e: MouseEvent): void {
     //  const isHidden = this.getAttribute(ATTRS.VISIBILITY) === 'false';
-
     if (e.type === 'mouseover') {
       this.setAttribute(ATTRS.VISIBILITY, 'true');
     } else if (e.type === 'mouseout') {

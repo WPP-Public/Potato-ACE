@@ -1,5 +1,4 @@
 import './components/sidebar.js';
-import './components/tooltip/tooltip.js';
 
 
 document.addEventListener('DOMContentLoaded', () => {
