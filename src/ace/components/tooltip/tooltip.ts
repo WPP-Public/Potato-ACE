@@ -30,6 +30,8 @@ export default class Tooltip extends HTMLElement {
   constructor() {
     super();
 
+    debugger;
+
     this.triggerElement = document.querySelector(`[${ATTRS.TRIGGER}=${this.id}]`);
 
 

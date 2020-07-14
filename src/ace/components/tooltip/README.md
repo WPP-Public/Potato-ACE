@@ -9,19 +9,27 @@ First import the styles into your main SASS file, replacing `../path/to` with th
 
 ```scss
 /* VARIABLES */
-$ace-tooltip-background-color: #000 !default;
+$ace-tooltip-color: #000 !default;
 
 
 [ace-tooltip-visible="false"] {
   display: none;
 }
 
+[ace-tooltip-trigger-for="tooltip"] {
+  position: relative;
+}
+
 ace-tooltip {
-  border: 1px solid $ace-tooltip-background-color;
+  border: 1px solid $ace-tooltip-color;
+  color: $ace-tooltip-color;
   display: block;
+  left: 0;
   margin: 1px;
   max-width: fit-content;
   padding: 1px;
+  position: absolute;
+  top: 100%;
 }
 ```
 
@@ -64,22 +72,9 @@ ace-tooltip {
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 
-### Tooltip as main label
+### Tooltip
 
-This is a tooltip as a label triggered, by hover and focus.
-
-```html
-<button ace-tooltip-trigger-for="tooltip" type="button" aria-describedby="tooltip">
-  <ace-tooltip role="tooltip" ace-tooltip-visible="false" id="tooltip">
-    <div>Potato</div>
-  </ace-tooltip>
-  🥔
-</button>
-```
-
-### Tooltip as a description
-
-This is a tooltip as an auxiliary description triggered by hover and focus.
+This is a tooltip triggered, by hover and focus.
 
 ```html
 <button ace-tooltip-trigger-for="tooltip-description" aria-describedby="tooltip-description" type="button">🥔</button>
