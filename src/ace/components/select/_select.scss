@@ -1,3 +1,6 @@
+@import '../listbox/listbox';
+
+
 /* VARIABLES */
 $ace-select-list-background-color: #fff !default;
 $ace-select-list-height: auto !default;
@@ -20,8 +23,9 @@ ace-select {
   z-index: $ace-select-list-z-index;
 }
 
-[ace-select-list-hidden] {
+[ace-select-list-visible="false"] {
   display: none;
 }
+
 
 @import '../../common/utils';

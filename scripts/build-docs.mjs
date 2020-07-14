@@ -87,7 +87,7 @@ const injectExamples = async (componentName, mdFileContent, htmlOnly=false) => {
   const componentDir = `${componentsDir}/${componentName}`;
   const examplesDirPath = `${componentDir}/${examplesDirName}`;
   let queryIndex, startIndex, endIndex;
-  let scriptsPugContent = '';
+  let scriptsPugContent = `script(src='/ace/components/${componentName}/${componentName}.js' type='module')\n`;
   let stylesPugContent = '';
 
   // Content to be converted to HTML for component's HTML page
@@ -233,7 +233,8 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
 
   // README.HTML
   // Create component directory in `pages/` if it doesn't exist
-  const dirExists = await fsPromises.stat(`${componentPageDir}`);
+  const dirExists = await fsPromises.stat(`${componentPageDir}`)
+    .catch(() => console.log(LOG_COLORS.MAGENTA, `>> Creating ${componentPageDir}`));
 
   if (!dirExists) {
     await fsPromises.mkdir(componentPageDir, {recursive: true});
@@ -245,18 +246,15 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
 
 
   // Create pug files
-  let componentPugFileContents = await fsPromises.readFile(`${pagesDir}/includes/component.pug`, fileEncoding);
+  // Write scriptsPugContent to scripts.pug file
+  writeContentToFile(scriptsPugContent, `${componentPageDir}/scripts.pug`);
   // Write stylesPugContent to styles.pug file
   if (stylesPugContent) {
     writeContentToFile(stylesPugContent, `${componentPageDir}/styles.pug`);
+    let componentPugFileContents = await fsPromises.readFile(`${pagesDir}/includes/component.pug`, fileEncoding);
     componentPugFileContents += `\nblock styles\n  include styles\n`;
+    writeContentToFile(componentPugFileContents, `${componentPageDir}/index.pug`);
   }
-  // Write scriptsPugContent to scripts.pug file
-  if (scriptsPugContent) {
-    writeContentToFile(scriptsPugContent, `${componentPageDir}/scripts.pug`);
-    componentPugFileContents += `\nblock scripts\n  include scripts\n`;
-  }
-  writeContentToFile(componentPugFileContents, `${componentPageDir}/index.pug`);
 };
 
 

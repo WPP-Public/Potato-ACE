@@ -87,7 +87,7 @@ context('Select', () => {
 
       // Check select list attributes
       cy.get('@selectList').should('have.attr', ATTRS.LIST);
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
       cy.get('@selectList').should('have.attr', LB_ATTRS.LIST);
       cy.get('@selectList').should('have.attr', 'tabindex', '-1');
       cy.get('@selectList').should('have.attr', 'role', 'listbox');
@@ -117,7 +117,7 @@ context('Select', () => {
       cy.get('@selectTrigger').click();
       cy.get('@selectTrigger').should('have.attr', 'aria-expanded', 'true');
       cy.get('@selectList').should('have.focus');
-      cy.get('@selectList').should('not.have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'true');
       cy.get('@selectList').should('have.attr', 'aria-activedescendant', `${IDS.SELECT_1}-option-1`);
       cy.get('@selectOption1').should('have.attr', 'aria-selected', 'true');
     });
@@ -134,7 +134,7 @@ context('Select', () => {
       // click outside select
       cy.get('@select').parent().click();
 
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
       cy.get('@selectOption1').should('have.attr', 'aria-selected', 'true');
       cy.get('@selectOption1')
         .invoke('text')
@@ -152,7 +152,7 @@ context('Select', () => {
       cy.get('@selectOption6').should('have.attr', 'aria-selected', 'true');
 
       // Check list is hidden
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
 
       // Check trigger text updated
       cy.get('@selectOption6')
@@ -181,24 +181,24 @@ context('Select', () => {
 
     it('DOWN and UP on trigger should show list but not change selected option', () => {
       // Test DOWN key
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
       cy.get('@selectTrigger')
         .focus()
         .type('{downarrow}');
       cy.get('@selectList').should('have.focus');
-      cy.get('@selectList').should('not.have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'true');
       cy.get('@selectList').should('have.attr', 'aria-activedescendant', `${IDS.SELECT_1}-option-1`);
       cy.get('@selectOption1').should('have.attr', 'aria-selected', 'true');
 
 
       // Test UP key
       cy.get('@select').parent().click();
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
       cy.get('@selectTrigger')
         .focus()
         .type('{uparrow}');
       cy.get('@selectList').should('have.focus');
-      cy.get('@selectList').should('not.have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'true');
       cy.get('@selectList').should('have.attr', 'aria-activedescendant', `${IDS.SELECT_1}-option-1`);
       cy.get('@selectOption1').should('have.attr', 'aria-selected', 'true');
     });
@@ -229,9 +229,9 @@ context('Select', () => {
 
 
     it('ENTER and SPACE on trigger should show list, and on list should close it and update trigger text', () => {
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
       cy.get('@selectTrigger').trigger('click');
-      cy.get('@selectList').should('not.have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'true');
 
       // Test ENTER on list
       cy.get('@selectList')
@@ -240,7 +240,7 @@ context('Select', () => {
         .type('{downarrow}')
         .type('{enter}');
       cy.get('@selectOption4').should('have.attr', 'aria-selected', 'true');
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
 
       // Test SPACE on list
       cy.get('@selectTrigger').trigger('click');
@@ -248,7 +248,7 @@ context('Select', () => {
         .type('{uparrow}')
         .type(' ');
       cy.get('@selectOption3').should('have.attr', 'aria-selected', 'true');
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
 
       // Check trigger text updated
       cy.get('@selectOption3')
@@ -278,7 +278,7 @@ context('Select', () => {
       cy.get('@selectList').type('{esc}');
       cy.get('@selectOption8').should('not.have.attr', 'aria-selected', 'true');
       cy.get('@selectOption5').should('have.attr', 'aria-selected', 'true');
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
     });
   });
 
@@ -408,7 +408,7 @@ context('Select', () => {
         .type('b', {delay: searchTimeoutTime})
         .type('b');
       cy.get('@selectOption11').should('have.attr', 'aria-selected', 'true');
-      cy.get('@selectList').should('not.have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'true');
 
       // Check trigger text updated
       cy.get('@selectOption1')
@@ -535,7 +535,7 @@ context('Select', () => {
 
       // Check select list attributes
       cy.get('@selectList').should('have.attr', ATTRS.LIST);
-      cy.get('@selectList').should('have.attr', ATTRS.LIST_HIDDEN);
+      cy.get('@selectList').should('have.attr', ATTRS.LIST_VISIBLE, 'false');
       cy.get('@selectList').should('have.attr', LB_ATTRS.LIST);
       cy.get('@selectList').should('have.attr', 'tabindex', '-1');
       cy.get('@selectList').should('have.attr', 'role', 'listbox');

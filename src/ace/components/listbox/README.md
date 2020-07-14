@@ -33,7 +33,7 @@ There are two main types of Listboxes, single-select and multi-select. A single-
 
 Listbox options can be active and/or selected. Only a single option can be active at once and only when the Listbox list has focus. The active option is given the `ace-listbox-active-option` attribute and its ID is stored as the Listbox's `aria-activedescendant` attribute. Both these attributes are removed when the Listbox list loses focus as no option is active at that point.
 
-The active option can be changed by clicking on an option, using <kbd>&#8593;</kbd>, <kbd>&#8595;</kbd>, <kbd>Home</kbd> or <kbd>End</kbd>, or typing a single or sequence of characters which makes the next option with text starting with the typed string active. <kbd>&#8593;</kbd> will loop around from the top of the list to the bottom, while <kbd>&#8595;</kbd> will loop from the bottom to the top. Similarly, when a character is typed if the bottom of the list is reached the search will loop around and continute from the top until a match or the active option is reached. Repeatedly pressing the same character with a short delay in-between will loop through all matching options.
+The active option can be changed by clicking on an option, using <kbd>&#8593;</kbd>, <kbd>&#8595;</kbd>, <kbd>Home</kbd> or <kbd>End</kbd>, or by typing one or more characters making the next option with text starting with the typed string active. <kbd>&#8593;</kbd> will loop around from the top of the list to the bottom, while <kbd>&#8595;</kbd> will loop from the bottom to the top. Similarly, when a character is typed if the bottom of the list is reached the search will loop around and continute from the top until a match or the active option is reached. Repeatedly pressing the same character with a short delay in-between will loop through all matching options.
 
 The active option is automatically selected in a single-select Listbox. In a multi-select Listbox an option's selected state can be toggled by clicking on it or pressing <kbd>Space</kbd> if it's active. Selection of multiple options can be achieved by clicking on an option and then clicking on another one while holding <kbd>&#8679;</kbd>, which will select all options in between the two clicked ones. Users can also select multiple options using the keyboard in the following ways:
 
@@ -79,6 +79,18 @@ $ace-listbox-selected-option-bg-color: #ccc !default;
 Listbox uses the following custom event, the name of which is exported as a property of `EVENTS`, similar to `ATTRS`, so it may be imported into other modules and dispatched.
 
 
+### Ready
+
+`ace-listbox-ready`
+
+This event is dispatched on `window` when Listbox finishes initialising and its `detail` object is composed as follows:
+
+```js
+'detail': {
+  'id': // ID of Listbox
+}
+```
+
 ### Update options
 
 `ace-listbox-update-options`
@@ -88,6 +100,7 @@ This event should be dispatched on `window` when a Listbox's options are altered
 ```js
 'detail': {
   'id': // ID of Listbox
+  'noneSelected': <boolean> // (Optional): Initialise single-select listbox without selecting first option 
 }
 ```
 
