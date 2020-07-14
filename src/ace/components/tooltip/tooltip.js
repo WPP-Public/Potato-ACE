@@ -27,40 +27,12 @@ export default class Tooltip extends HTMLElement {
         this.triggerElement.addEventListener('mouseover', this.hoverHandler);
         this.triggerElement.addEventListener('mouseout', this.hoverHandler);
         this.triggerElement.addEventListener('focus', this.focusHandler);
-        this.triggerElement.addEventListener('focusout', this.focusHandler);
+        this.triggerElement.addEventListener('blur', this.focusHandler);
     }
-    /*
-      Show, hide or toggle the visibility of the tooltip
-    */
-    //  setDisclosure(showDisclosure) {
-    //   const currentlyShown = this.getAttribute(ATTRS.VISIBLE) === 'true';
-    //   if (showDisclosure && currentlyShown) {
-    //     return;
-    //   }
-    //   if ((showDisclosure === false) && !currentlyShown) {
-    //     return;
-    //   }
-    //   // if showDisclosure not defined toggle state
-    //   if (showDisclosure === null || showDisclosure === undefined) {
-    //     showDisclosure = !currentlyShown;
-    //   }
-    //   this.setAttribute(ATTRS.VISIBLE, showDisclosure);
-    //   this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure));
-    //   window.dispatchEvent(new CustomEvent(
-    //     EVENTS.CHANGED,
-    //     {
-    //       'detail': {
-    //         'id': this.id,
-    //         'visible': showDisclosure,
-    //       }
-    //     }
-    //   ));
-    // }
     /*
       Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
     */
     hoverHandler(e) {
-        //  const isHidden = this.getAttribute(ATTRS.VISIBILITY) === 'false';
         if (e.type === 'mouseover') {
             this.setAttribute(ATTRS.VISIBILITY, 'true');
         }
@@ -72,10 +44,21 @@ export default class Tooltip extends HTMLElement {
       Handles clicks on the window and if a trigger for this instance clicked run setDisclosure
     */
     focusHandler(e) {
+        const { type } = e;
         const isHidden = this.getAttribute(ATTRS.VISIBILITY) === 'false';
-        isHidden ?
-            this.setAttribute(ATTRS.VISIBILITY, 'true') :
-            this.setAttribute(ATTRS.VISIBILITY, 'false');
+        if (type === 'blur') {
+            if (isHidden) {
+                return;
+            }
+            else {
+                this.setAttribute(ATTRS.VISIBILITY, 'false');
+            }
+        }
+        else {
+            isHidden ?
+                this.setAttribute(ATTRS.VISIBILITY, 'true') :
+                this.setAttribute(ATTRS.VISIBILITY, 'false');
+        }
     }
 }
 /* INITIALISE AND REGISTER CUSTOM ELEMENT */
