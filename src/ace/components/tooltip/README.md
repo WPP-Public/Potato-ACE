@@ -69,15 +69,21 @@ ace-tooltip {
 
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
-
-### Tooltip
-
-This is a tooltip triggered, by hover and focus.
+This is a descriptive tooltip triggered, by hover and focus.
 
 ```html
 <button ace-tooltip-trigger-for="tooltip-description" aria-describedby="tooltip-description" type="button">🥔</button>
 <ace-tooltip role="tooltip" ace-tooltip-visible="false" id="tooltip-description">
-  <div>This is a superb King Edward</div>
+  <div>This is a superb, well formed and tasty King Edward</div>
+</ace-tooltip>
+```
+
+This is a tooltip as a primary label triggered, by hover and focus.
+
+```html
+<button ace-tooltip-trigger-for="tooltip-label" aria-labelledby="tooltip-label" type="button">🥔</button>
+<ace-tooltip role="tooltip" ace-tooltip-visible="false" id="tooltip-label">
+  <div>King Edward</div>
 </ace-tooltip>
 ```
 
