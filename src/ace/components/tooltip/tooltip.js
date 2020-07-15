@@ -4,7 +4,8 @@ import { autoID } from '../../common/functions.js';
 export const TOOLTIP = `${NAME}-tooltip`;
 /* CONSTANTS */
 export const ATTRS = {
-    TRIGGER: `aria-describedby`,
+    DESCRIBED_BY: `aria-describedby`,
+    LABELLED_BY: `aria-labelledby`,
     VISIBILITY: `${TOOLTIP}-visible`,
 };
 // export const EVENTS = {
@@ -18,7 +19,11 @@ export default class Tooltip extends HTMLElement {
     /* CONSTRUCTOR */
     constructor() {
         super();
-        this.triggerElement = document.querySelector(`[${ATTRS.TRIGGER}=${this.id}]`);
+
+        this.triggerElement = 
+            document.querySelector(`[${ATTRS.DESCRIBED_BY}=${this.id}]`) || 
+            document.querySelector(`[${ATTRS.LABELLED_BY}=${this.id}]`);
+  
         /* CLASS METHOD BINDINGS */
         this.hoverHandler = this.hoverHandler.bind(this);
         this.focusHandler = this.focusHandler.bind(this);
