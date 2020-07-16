@@ -18,7 +18,6 @@ export const EVENTS = {
   HIDE: `${TOOLTIP}-hide`,
   READY: `${TOOLTIP}-ready`,
   SHOW: `${TOOLTIP}-show`,
-  TOGGLE: `${TOOLTIP}-toggle`,
 };
 
 
