@@ -73,6 +73,15 @@ export default class Tooltip extends HTMLElement {
   }
 
   /*
+    Handles showing of the tooltip.
+  */
+  private showTooltip(): void {
+    this.triggerElement.focus();
+    this.setAttribute(ATTRS.VISIBILITY, 'true');
+    handleOverflow(this);
+  }
+
+  /*
     Handles custom events.
   */
   private customEventsHandler(e: CustomEvent): void {
@@ -83,7 +92,7 @@ export default class Tooltip extends HTMLElement {
     }
 
     if (e.type === EVENTS.SHOW) {
-      this.setAttribute(ATTRS.VISIBILITY, 'true');
+      this.showTooltip();
     }
     if (e.type === EVENTS.HIDE) {
       this.setAttribute(ATTRS.VISIBILITY, 'false');
@@ -98,7 +107,7 @@ export default class Tooltip extends HTMLElement {
     const isVisible = this.getAttribute(ATTRS.VISIBILITY) === 'true';
 
       if (type === 'mouseover') {
-        this.setAttribute(ATTRS.VISIBILITY, 'true');
+        this.showTooltip();
       } else if (type === 'mouseout') {
         this.setAttribute(ATTRS.VISIBILITY, 'false');
       }
@@ -131,7 +140,7 @@ export default class Tooltip extends HTMLElement {
       }
     } else {
       !isVisible ?
-        this.setAttribute(ATTRS.VISIBILITY, 'true') :
+        this.showTooltip() :
         this.setAttribute(ATTRS.VISIBILITY, 'false');
     }
   }
