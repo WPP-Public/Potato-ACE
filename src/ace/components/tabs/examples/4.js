@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(e.target);
     window.dispatchEvent(new CustomEvent(EVENTS.SET_TAB, {detail: {
       id: TABS_ID,
-      tab: formData.get('tab-number')
+      tab: +formData.get('tab-number')
     }}));
   });
 });
