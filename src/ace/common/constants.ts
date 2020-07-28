@@ -41,6 +41,14 @@ export const KEYS: Keys = {
     CODE: 36,
     KEY: 'Home',
   },
+  LEFT: {
+    CODE: 37,
+    KEY: 'ArrowLeft'
+  },
+  RIGHT: {
+    CODE: 39,
+    KEY: 'ArrowRight'
+  },
   SPACE: {
     CODE: 32,
     KEY: ' ',
