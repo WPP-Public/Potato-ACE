@@ -1,4 +1,4 @@
-import {ATTRS,  EVENTS, SELECT} from './select';
+import {ATTRS, EVENTS, SELECT} from './select';
 import {ATTRS as LB_ATTRS, searchTimeoutTime} from '../listbox/listbox';
 
 
@@ -320,7 +320,7 @@ context('Select', () => {
     });
 
 
-    it('Typing character on trigger twice wihtout delay should select first matching option and update trigger text', () => {
+    it('Typing character on trigger twice without delay should select first matching option and update trigger text', () => {
       cy.get('@selectTrigger')
         .focus()
         .type('c')
@@ -336,7 +336,7 @@ context('Select', () => {
     });
 
 
-    it('Typing character on trigger twice wiht short delay should select second matching option and update trigger text', () => {
+    it('Typing character on trigger twice with short delay should select second matching option and update trigger text', () => {
       cy.get('@selectTrigger')
         .focus()
         .type('c', {delay: searchTimeoutTime})
@@ -428,10 +428,10 @@ context('Select', () => {
 
     it('Selecting an option with mouse should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_SELECTED, (e) => {
+        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
-          expect(e.detail.option.id).to.equal(`${IDS.SELECT_1}-option-5`);
-          expect(e.detail.option.index).to.equal(4);
+          expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-5`);
+          expect(e.detail.chosenOption.index).to.equal(4);
         });
       });
 
@@ -442,10 +442,10 @@ context('Select', () => {
 
     it('Selecting an option with ENTER should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_SELECTED, (e) => {
+        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
-          expect(e.detail.option.id).to.equal(`${IDS.SELECT_1}-option-4`);
-          expect(e.detail.option.index).to.equal(3);
+          expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-4`);
+          expect(e.detail.chosenOption.index).to.equal(3);
         });
       });
 
@@ -461,10 +461,10 @@ context('Select', () => {
 
     it('Selecting an option with SPACE should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_SELECTED, (e) => {
+        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
-          expect(e.detail.option.id).to.equal(`${IDS.SELECT_1}-option-2`);
-          expect(e.detail.option.index).to.equal(1);
+          expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-2`);
+          expect(e.detail.chosenOption.index).to.equal(1);
         });
       });
 
@@ -478,10 +478,10 @@ context('Select', () => {
 
     it('Selecting an option with type-ahead on trigger should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_SELECTED, (e) => {
+        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
-          expect(e.detail.option.id).to.equal(`${IDS.SELECT_1}-option-8`);
-          expect(e.detail.option.index).to.equal(7);
+          expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-8`);
+          expect(e.detail.chosenOption.index).to.equal(7);
         });
       });
 

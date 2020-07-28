@@ -7,24 +7,24 @@ Select conforms to W3C WAI-ARIA authoring practices specified [here](https://www
 
 ## Instantiation
 
-First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '../path/to/node_modules/@potato/ace/components/select/select'
+@import '<path-to-node_modules>/@potato/ace/components/select/select'
 ```
 
 
 Then import the class into your JavaScript entry point:
 
 ```js
-import '@potato/ace/components/select/select';
+import '<path-to-node_modules>/@potato/ace/components/select/select';
 ```
 
 For the sake of convenience the ES6 class is exported as `Select`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Select as aceSelect from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Select automatically instantiates an instance of itself within each `<ace-template></ace-template>` and adds IDs in the format `ace-template-(n)` to any instances without one, where `(n)` is the instance count.
+After `DOMContentLoaded` is fired, Select automatically instantiates an instance of itself within each `ace-select` element. Select then adds an ID `ace-select-<n>` for any instance without one, where `<n>` is the instance number. Once instantiation is complete a custom event `ace-select-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-Select extends the Listbox class and applies its single-select attributes and functionality to a `<ul>` or `<ol>` nested within it, then hides it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the **Custom events** section below for more details. Select uses a `<button>` as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.
+Select extends the Listbox class and applies its single-select attributes and functionality to a `<ul>` or `<ol>` nested within it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the **Custom events** section below for more details. Select uses a `<button>` as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.
 
 
 ## Usage
@@ -38,7 +38,7 @@ Type-ahead can also be used to select an option by typing one or more characters
 
 ## Styles
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use `!default` so can also be easily overridden by users. The list also inherits Listbox styles detailed in the *SASS* section [here](/listbox).
+The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use `!default` so can also be easily overridden by users. The list also inherits Listbox styles detailed in the *SASS* section [here](/listbox).
 
 ```scss
 @import '../listbox/listbox';
@@ -77,51 +77,48 @@ ace-select {
 
 ## Custom events
 
-Select uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
+Select uses the following custom events, the names of which are available in its exported `EVENTS` object, similar to `ATTRS`, so they may be imported into other modules.
 
 
 ### Ready
 
 `ace-select-ready`
 
-This event is dispatched on `window` when Select finishes initialising and its `detail` object is composed as follows:
+This event is dispatched on `window` when Select finishes initialising. The event name is available as the value of the `READY` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Select
+  'id': // ID of Select [string]
 }
 ```
 
-### Option selected
+### Option chosen
 
-`ace-select-option-selected`
+`ace-select-option-chosen`
 
-This event is dispatched on `window` when a new option is selected and its `detail` object is composed as follows:
+This event is dispatched on `window` when an option is chosen. The event name is available as the value of the `OPTION_CHOSEN` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of the Select
-  'option': {
-    'id': // ID of selected option
-    'index': // Index of selected option
+  'id': // ID of Select [string],
+  'chosenOption': {
+    'id': // ID of chosen option [string],
+    'index': // Index of chosen option [number]
   },
 }
 ```
-
 
 ### Update options
 
 `ace-select-update-options`
 
-This event should be dispatched when a Listbox's options are altered, e.g. when options are added or deleted. The event `detail` object should be composed as follows:
+This event should be dispatched on `window` when options are added or deleted, and causes Select to reinitialise its options. The event name is available as the value of the `UPDATE_OPTIONS` property of the exported `EVENTS` object and its `detail` object should be composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Select
+  'id': // ID of Select [string]
 }
 ```
-
-
 
 
 ## Examples

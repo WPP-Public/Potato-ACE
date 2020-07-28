@@ -2,21 +2,21 @@
 <p>Select is a special type of <a href="/listbox">Listbox</a> component that mimics the native HTML <code>&lt;select&gt;</code> while allowing more styling flexibility.</p>
 <p>Select conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">here</a>.</p>
 <h2>Instantiation</h2>
-<p>First import the styles into your main SASS file, replacing <code>../path/to</code> with the path to <em>node_modules</em> relative to the file:</p>
-<pre><code class="language-scss">@import '../path/to/node_modules/@potato/ace/components/select/select'
+<p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
+<pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select'
 </code></pre>
 <p>Then import the class into your JavaScript entry point:</p>
-<pre><code class="language-js">import '@potato/ace/components/select/select';
+<pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select';
 </code></pre>
 <p>For the sake of convenience the ES6 class is exported as <code>Select</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Select as aceSelect from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>&lt;ace-template&gt;&lt;/ace-template&gt;</code> and adds IDs in the format <code>ace-template-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
-<p>Select extends the Listbox class and applies its single-select attributes and functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it, then hides it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <strong>Custom events</strong> section below for more details. Select uses a <code>&lt;button&gt;</code> as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.</p>
+<p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>ace-select</code> element. Select then adds an ID <code>ace-select-&lt;n&gt;</code> for any instance without one, where <code>&lt;n&gt;</code> is the instance number. Once instantiation is complete a custom event <code>ace-select-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>Select extends the Listbox class and applies its single-select attributes and functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <strong>Custom events</strong> section below for more details. Select uses a <code>&lt;button&gt;</code> as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.</p>
 <h2>Usage</h2>
 <p>The list is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed. The list is aware of it's position in the window and will appear below the trigger if there is enough space, otherwise it will appear above.</p>
 <p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option.</p>
 <p>Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options. Type-ahead can be used on a focussed trigger, which will select the option and update the trigger text, or in a list where it will only select the option but not update the trigger text until <kbd>Enter</kbd> or <kbd>Space</kbd> are pressed to confirm. Pressing <kdb>Esc</kbd> or clicking outside the element closes an open list without confirming a change in selected option.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users. The list also inherits Listbox styles detailed in the <em>SASS</em> section <a href="/listbox">here</a>.</p>
+<p>The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users. The list also inherits Listbox styles detailed in the <em>SASS</em> section <a href="/listbox">here</a>.</p>
 <pre><code class="language-scss">@import '../listbox/listbox';
 
 
@@ -50,30 +50,30 @@ ace-select {
 @import '../../common/utils';
 </code></pre>
 <h2>Custom events</h2>
-<p>Select uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
+<p>Select uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Ready</h3>
 <p><code>ace-select-ready</code></p>
-<p>This event is dispatched on <code>window</code> when Select finishes initialising and its <code>detail</code> object is composed as follows:</p>
+<p>This event is dispatched on <code>window</code> when Select finishes initialising. The event name is available as the value of the <code>READY</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Select
+  'id': // ID of Select [string]
 }
 </code></pre>
-<h3>Option selected</h3>
-<p><code>ace-select-option-selected</code></p>
-<p>This event is dispatched on <code>window</code> when a new option is selected and its <code>detail</code> object is composed as follows:</p>
+<h3>Option chosen</h3>
+<p><code>ace-select-option-chosen</code></p>
+<p>This event is dispatched on <code>window</code> when an option is chosen. The event name is available as the value of the <code>OPTION_CHOSEN</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of the Select
-  'option': {
-    'id': // ID of selected option
-    'index': // Index of selected option
+  'id': // ID of Select [string],
+  'chosenOption': {
+    'id': // ID of chosen option [string],
+    'index': // Index of chosen option [number]
   },
 }
 </code></pre>
 <h3>Update options</h3>
 <p><code>ace-select-update-options</code></p>
-<p>This event should be dispatched when a Listbox's options are altered, e.g. when options are added or deleted. The event <code>detail</code> object should be composed as follows:</p>
+<p>This event should be dispatched on <code>window</code> when options are added or deleted, and causes Select to reinitialise its options. The event name is available as the value of the <code>UPDATE_OPTIONS</code> property of the exported <code>EVENTS</code> object and its <code>detail</code> object should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Select
+  'id': // ID of Select [string]
 }
 </code></pre>
 <h2>Examples</h2>

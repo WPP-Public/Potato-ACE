@@ -1,0 +1,39 @@
+.styled-combobox {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  letter-spacing: .5px;
+
+  &__wrapper {
+    margin: 10px 0;
+    width: 300px;
+  }
+
+  &__input {
+    border: 1px solid rgba(0, 0, 0, .38);
+    border-radius: 4px;
+    font-size: 1em;
+    padding: 12px 16px 14px;
+  }
+
+  &__status {
+    padding: 8px;
+  }
+
+  &__list {
+    border: 1px solid #e5e5e5;
+    padding: 8px 0;
+
+    li {
+      padding: 8px 16px;
+      user-select: none;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, .04);
+      }
+    }
+
+    [ace-combobox-option-selected] {
+      background-color: rgba(0, 0, 0, .04);
+    }
+  }
+}

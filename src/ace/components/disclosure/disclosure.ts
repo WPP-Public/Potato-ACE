@@ -72,14 +72,11 @@ export default class Disclosure extends HTMLElement {
 
     /* INITIALISATION */
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.READY,
-      {
-        'detail': {
-          'id': this.id,
-        }
-      },
-    ));
+    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
   }
 
 
@@ -134,15 +131,12 @@ export default class Disclosure extends HTMLElement {
     this.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
     this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure.toString()));
 
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.CHANGED,
-      {
-        'detail': {
-          'id': this.id,
-          'visible': showDisclosure,
-        }
+    window.dispatchEvent(new CustomEvent(EVENTS.CHANGED, {
+      'detail': {
+        'id': this.id,
+        'visible': showDisclosure,
       }
-    ));
+    }));
   }
 
 
