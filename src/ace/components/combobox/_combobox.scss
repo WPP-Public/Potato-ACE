@@ -1,0 +1,44 @@
+/* VARIABLES */
+$ace-combobox-list-bg-color: #fff !default;
+$ace-combobox-list-z-index: 1 !default;
+$ace-combobox-option-selected-bg-color: #c2ddef !default;
+
+
+/* STYLES */
+[ace-combobox-wrapper] {
+  display: inline-block;
+  position: relative;
+}
+
+[ace-combobox-input] {
+  width: 100%;
+}
+
+[ace-combobox-list] {
+  background: $ace-combobox-list-bg-color;
+  height: auto;
+  left: 0;
+  position: absolute;
+  text-align: left;
+  top: 100%;
+  white-space: nowrap;
+  width: 100%;
+  z-index: $ace-combobox-list-z-index;
+}
+
+[ace-combobox-list-visible="false"] {
+  display: none;
+}
+
+[ace-combobox-option] {
+  &:hover {
+    background-color: $ace-combobox-option-selected-bg-color;
+  }
+}
+
+[ace-combobox-option-selected] {
+  background-color: $ace-combobox-option-selected-bg-color;
+}
+
+
+@import '../../common/utils';

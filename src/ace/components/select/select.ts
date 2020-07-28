@@ -17,7 +17,7 @@ export const ATTRS = {
 
 
 export const EVENTS = {
-  OPTION_SELECTED: `${SELECT}-option-selected`,
+  OPTION_CHOSEN: `${SELECT}-option-chosen`,
   READY: `${SELECT}-ready`,
   UPDATE_OPTIONS: `${SELECT}-update-options`,
 };
@@ -38,7 +38,7 @@ export default class Select extends Listbox {
     /* CLASS METHOD BINDINGS */
     this.cancelOptionChange = this.cancelOptionChange.bind(this);
     this.confirmOptionChange = this.confirmOptionChange.bind(this);
-    this.dispatchOptionSelectedEvent = this.dispatchOptionSelectedEvent.bind(this);
+    this.dispatchOptionChosenEvent = this.dispatchOptionChosenEvent.bind(this);
     this.hideList = this.hideList.bind(this);
     this.selectClickHandler = this.selectClickHandler.bind(this);
     this.selectKeydownHandler = this.selectKeydownHandler.bind(this);
@@ -89,14 +89,11 @@ export default class Select extends Listbox {
     this.updateTriggerText();
 
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.READY,
-      {
-        'detail': {
-          'id': this.id,
-        }
-      },
-    ));
+    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
   }
 
 
@@ -128,27 +125,24 @@ export default class Select extends Listbox {
     this.updateTriggerText();
     this.hideList();
     this.triggerEl.focus();
-    this.dispatchOptionSelectedEvent();
+    this.dispatchOptionChosenEvent();
   }
 
 
   /*
     Show dropdown list
   */
-  private dispatchOptionSelectedEvent(): void {
-    const optionSelectedEl = this.listEl.querySelector('[aria-selected="true"]');
-
-    window.dispatchEvent(
-      new CustomEvent(EVENTS.OPTION_SELECTED, {
-        'detail': {
-          'id': this.id,
-          'option': {
-            'id': optionSelectedEl.id,
-            'index': +optionSelectedEl.getAttribute(LISTBOX_ATTRS.OPTION_INDEX),
-          },
-        }
-      })
-    );
+  private dispatchOptionChosenEvent(): void {
+    const chosenOptionEl = this.listEl.querySelector('[aria-selected="true"]');
+    window.dispatchEvent(new CustomEvent(EVENTS.OPTION_CHOSEN, {
+      'detail': {
+        'chosenOption': {
+          'id': chosenOptionEl.id,
+          'index': +chosenOptionEl.getAttribute(LISTBOX_ATTRS.OPTION_INDEX),
+        },
+        'id': this.id,
+      }
+    }));
   }
 
 

@@ -1,4 +1,12 @@
 {
+  "combobox": {
+    "name": "Combobox",
+    "aliases": [
+      "Search box",
+      "Search input",
+      "List lookup"
+    ]
+  },
   "disclosure": {
     "name": "Disclosure",
     "aliases": [

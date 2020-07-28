@@ -68,7 +68,10 @@ export default class Listbox extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.listEl = this.querySelector('ul') || this.querySelector('ol');
+    this.listEl =
+      this.querySelector(`[${ATTRS.LIST}]`) ||
+      this.querySelector('ul') ||
+      this.querySelector('ol');
     // Create <ul> if neither <ul> nor <ol> present
     if (!this.listEl) {
       this.listEl = document.createElement('ul');
@@ -105,14 +108,11 @@ export default class Listbox extends HTMLElement {
     this.initialiseList();
 
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.READY,
-      {
-        'detail': {
-          'id': this.id,
-        }
-      },
-    ));
+    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
   }
 
 
