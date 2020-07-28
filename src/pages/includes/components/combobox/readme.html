@@ -1,0 +1,653 @@
+<h1>Combobox</h1>
+<p>Combobox is a combination of an input text box and a popup listbox containing options that help the user set the value of the text box.</p>
+<p>Combobox conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#combobox">here</a>.</p>
+<h2>Instantiation</h2>
+<p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
+<pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/combobox'
+</code></pre>
+<p>Then import the class into your JavaScript entry point:</p>
+<pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/combobox';
+</code></pre>
+<p>For the sake of convenience the ES6 class is exported as <code>Combobox</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Combobox as aceCombobox from ...</code>.</p>
+<p>The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
+<p>After <code>DOMContentLoaded</code> is fired, Template automatically instantiates an instance of itself within each <code>&lt;ace-template&gt;</code> element. Template then adds an ID <code>ace-template-&lt;n&gt;</code> for any instance without one, where <code>&lt;n&gt;</code> is the instance number. Once instantiation is complete a custom event <code>ace-template-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>warnings</p>
+<h2>Usage</h2>
+<p>Comboboxes come in three main types depending on autocomplete behaviour; no autocompletion, list autocompletion, and inline and list autocompletion. Futhermore, each of these types can have manual or automatic selection, where no option or the first option is selected respectively when the listbox appears or its options are updated. Manual selection is the default behaviour and users can select the first or last option in the listbox once it appears by pressing <kbd>↑</kbd> or <kbd>↓</kbd> respectively. Automatic selection can be activated by adding an attribute <code>ace-combobox-autoselect</code> to the Combobox.</p>
+<p>The following features apply to all Combobox types:</p>
+<ul>
+<li><kbd>↓</kbd> selects the next option unless no option or the last option is selected in which cases it selects the first option.</li>
+<li><kbd>↑</kbd> selects the previous option unless no option or the first option is selected in which cases it selects the last option.</li>
+<li><kbd>Esc</kbd> hides the listbox without changing the value of the input textbox.</li>
+<li><kbd>Enter</kbd> chooses the selected option changing the input textbox value to match that of the chosen option and dispatching a custom event <code>ace-combobox-option-chosen</code> (see the <strong>Custom events</strong> section below for more details). This is also achieved by clicking on an option. An attribute <code>ace-combobox-no-input-update</code> can be added to the Combobox to dispatch the event without updating the input textbox.</li>
+<li>When the Combobox loses focus the listbox is automatically hidden. If the listbox had a selected option before it was hidden that option is automatically chosen.</li>
+</ul>
+<h3>Basic Combobox</h3>
+<p>The basic Combobox, instantiated by default, has no autocomplete behaviour and therefore contains a list of options that remain unchanged regardless of user input. This type is typically used to suggest recently entered strings, for example recently searched for values. The listbox of a basic Combobox is automatically shown when the Combobox gains focus.</p>
+<h3>List autocompletion Combobox</h3>
+<p>In this type of Combobox the listbox options are filtered to only show options with text that starts with the characters typed by the user. To instantiate a Combobox with list autocompletion add <code>aria-autocomplete=&quot;list&quot;</code> to the <code>&lt;input&gt;</code> element.</p>
+<h3>Inline and list autocompletion Combobox</h3>
+<p>A Combobox with input and list autocompletion behaves the same as that with list autocompletion and additionally changes the input value to match the text of the selected option. For the automatic selection variant the input textbox value is autocompleted as the user types, with the portion of the string not typed by the user highlighted as selected text so it can be overwritten.  To instantiate a Combobox with inline and list autocompletion add <code>aria-autocomplete=&quot;both&quot;</code> to the <code>&lt;input&gt;</code> element.</p>
+<h2>Styles</h2>
+<p>The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users. <code>@import '../../common/utils'</code> imports some shared styles used for making sure the listbox is always visible within the window.</p>
+<pre><code class="language-scss">/* VARIABLES */
+$ace-combobox-list-bg-color: #fff !default;
+$ace-combobox-list-z-index: 1 !default;
+$ace-combobox-option-selected-bg-color: #c2ddef !default;
+
+
+/* STYLES */
+[ace-combobox-wrapper] {
+  display: inline-block;
+  position: relative;
+}
+
+[ace-combobox-input] {
+  width: 100%;
+}
+
+[ace-combobox-list] {
+  background: $ace-combobox-list-bg-color;
+  height: auto;
+  left: 0;
+  position: absolute;
+  text-align: left;
+  top: 100%;
+  white-space: nowrap;
+  width: 100%;
+  z-index: $ace-combobox-list-z-index;
+}
+
+[ace-combobox-list-visible=&quot;false&quot;] {
+  display: none;
+}
+
+[ace-combobox-option] {
+  &amp;:hover {
+    background-color: $ace-combobox-option-selected-bg-color;
+  }
+}
+
+[ace-combobox-option-selected] {
+  background-color: $ace-combobox-option-selected-bg-color;
+}
+
+
+@import '../../common/utils';
+</code></pre>
+<h2>Custom events</h2>
+<p>Combobox uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
+<h3>Ready</h3>
+<p><code>ace-combobox-ready</code></p>
+<p>This event is dispatched on <code>window</code> when Combobox finishes initialising. The event name is available as the value of the <code>READY</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string]
+}
+</code></pre>
+<h3>Options updated</h3>
+<p><code>ace-combobox-options-updated</code></p>
+<p>This event is dispatched on <code>window</code> when the listbox had finished updating its options by giving them the required attributes. The event name is available as the value of the <code>OPTIONS_UPDATED</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string]
+}
+</code></pre>
+<h3>List toggled</h3>
+<p><code>ace-combobox-list-toggled</code></p>
+<p>This event is dispatched on <code>window</code> when the listbox is toggled. The event name is available as the value of the <code>LIST_TOGGLED</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string],
+  'listVisibile': // Whether the listbox is visible or not [boolean]
+}
+</code></pre>
+<h3>Option selected</h3>
+<p><code>ace-combobox-option-selected</code></p>
+<p>This event is dispatched on <code>window</code> when the listbox is toggled. The event name is available as the value of the <code>OPTION_SELECTED</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string],
+  'selectedOptionId': // ID of selected option [string]
+}
+</code></pre>
+<h3>Option chosen</h3>
+<p><code>ace-combobox-option-chosen</code></p>
+<p>This event is dispatched on <code>window</code> when an option is chosen by the user, either by clicking on an option or by pressing <kbd>Enter</kbd> when the listbox has a selected option. The event name is available as the value of the <code>OPTION_CHOSEN</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string],
+  'chosenOptionId': // ID of chosen option [string]
+}
+</code></pre>
+<h3>Hide and show list</h3>
+<p><code>ace-combobox-hide-list</code> &amp; <code>ace-combobox-show-list</code></p>
+<p>These events should be dispatched on <code>window</code> to hide or show the listbox respectively. The event names are available as the values of the <code>HIDE_LIST</code> &amp; <code>SHOW_LIST</code> properties of the exported <code>EVENTS</code> object and their <code>detail</code> objects should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string]
+}
+</code></pre>
+<h3>Select option</h3>
+<p><code>ace-combobox-select-option</code></p>
+<p>This event should be dispatched on <code>window</code> to programatically select an option. The event name is available as the value of the <code>SELECT_OPTION</code> property of the exported <code>EVENTS</code> object and its <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string],
+  'optionId': // ID of option to select [string]
+}
+</code></pre>
+<h3>Update options</h3>
+<p><code>ace-combobox-update-options</code></p>
+<p>This event should be dispatched on <code>window</code> when options are added or deleted, and causes Combobox to reinitialise its options. The event name is available as the value of the <code>UPDATE_OPTIONS</code> property of the exported <code>EVENTS</code> object and its <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Combobox [string]
+}
+</code></pre>
+<h2>Examples</h2>
+<p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
+<h3>Comboboxes with manual selection</h3>
+<p>These are the three types of Comboboxes, all with manual selection.</p>
+<div class="example-block"><h4>No autocomplete</h4>
+<ace-combobox id="ace-combobox-basic">
+  <label>Choose an Avenger:</label>
+  <div ace-combobox-wrapper>
+    <input />
+    <ul aria-label="Avengers">
+      <li>Iron Man</li>
+      <li>Nick Fury</li>
+      <li>Hulk</li>
+      <li>Thor</li>
+      <li>Captain America</li>
+      <li>Black Widow</li>
+      <li>Scarlet Witch</li>
+      <li>Ant-Man</li>
+      <li>Black Panther</li>
+      <li>Spider-man</li>
+      <li>Doctor Strange</li>
+      <li>Captain Marvel</li>
+    </ul>
+  </div>
+</ace-combobox>
+<hr>
+<h4>List autocomplete</h4>
+<ace-combobox id="ace-combobox-ac-list">
+  <label>Choose an Avenger:</label>
+  <div ace-combobox-wrapper>
+    <input aria-autocomplete="list"/>
+    <ul aria-label="Avengers">
+      <li>Iron Man</li>
+      <li>Nick Fury</li>
+      <li>Hulk</li>
+      <li>Thor</li>
+      <li>Captain America</li>
+      <li>Black Widow</li>
+      <li>Scarlet Witch</li>
+      <li>Ant-Man</li>
+      <li>Black Panther</li>
+      <li>Spider-man</li>
+      <li>Doctor Strange</li>
+      <li>Captain Marvel</li>
+    </ul>
+  </div>
+</ace-combobox>
+<hr>
+<h4>Inline and list autocomplete</h4>
+<ace-combobox id="ace-combobox-ac-both">
+  <label>Choose an Avenger:</label>
+  <div ace-combobox-wrapper>
+    <input aria-autocomplete="both"/>
+    <ul aria-label="Avengers">
+      <li>Iron Man</li>
+      <li>Nick Fury</li>
+      <li>Hulk</li>
+      <li>Thor</li>
+      <li>Captain America</li>
+      <li>Black Widow</li>
+      <li>Scarlet Witch</li>
+      <li>Ant-Man</li>
+      <li>Black Panther</li>
+      <li>Spider-man</li>
+      <li>Doctor Strange</li>
+      <li>Captain Marvel</li>
+    </ul>
+  </div>
+</ace-combobox>
+</div>
+<pre><code class="language-html">&lt;h4&gt;No autocomplete&lt;/h4&gt;
+&lt;ace-combobox id=&quot;ace-combobox-basic&quot;&gt;
+  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;div ace-combobox-wrapper&gt;
+    &lt;input /&gt;
+    &lt;ul aria-label=&quot;Avengers&quot;&gt;
+      &lt;li&gt;Iron Man&lt;/li&gt;
+      &lt;li&gt;Nick Fury&lt;/li&gt;
+      &lt;li&gt;Hulk&lt;/li&gt;
+      &lt;li&gt;Thor&lt;/li&gt;
+      &lt;li&gt;Captain America&lt;/li&gt;
+      &lt;li&gt;Black Widow&lt;/li&gt;
+      &lt;li&gt;Scarlet Witch&lt;/li&gt;
+      &lt;li&gt;Ant-Man&lt;/li&gt;
+      &lt;li&gt;Black Panther&lt;/li&gt;
+      &lt;li&gt;Spider-man&lt;/li&gt;
+      &lt;li&gt;Doctor Strange&lt;/li&gt;
+      &lt;li&gt;Captain Marvel&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/ace-combobox&gt;
+
+&lt;hr&gt;
+
+&lt;h4&gt;List autocomplete&lt;/h4&gt;
+&lt;ace-combobox id=&quot;ace-combobox-ac-list&quot;&gt;
+  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;div ace-combobox-wrapper&gt;
+    &lt;input aria-autocomplete=&quot;list&quot;/&gt;
+    &lt;ul aria-label=&quot;Avengers&quot;&gt;
+      &lt;li&gt;Iron Man&lt;/li&gt;
+      &lt;li&gt;Nick Fury&lt;/li&gt;
+      &lt;li&gt;Hulk&lt;/li&gt;
+      &lt;li&gt;Thor&lt;/li&gt;
+      &lt;li&gt;Captain America&lt;/li&gt;
+      &lt;li&gt;Black Widow&lt;/li&gt;
+      &lt;li&gt;Scarlet Witch&lt;/li&gt;
+      &lt;li&gt;Ant-Man&lt;/li&gt;
+      &lt;li&gt;Black Panther&lt;/li&gt;
+      &lt;li&gt;Spider-man&lt;/li&gt;
+      &lt;li&gt;Doctor Strange&lt;/li&gt;
+      &lt;li&gt;Captain Marvel&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/ace-combobox&gt;
+
+&lt;hr&gt;
+
+&lt;h4&gt;Inline and list autocomplete&lt;/h4&gt;
+&lt;ace-combobox id=&quot;ace-combobox-ac-both&quot;&gt;
+  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;div ace-combobox-wrapper&gt;
+    &lt;input aria-autocomplete=&quot;both&quot;/&gt;
+    &lt;ul aria-label=&quot;Avengers&quot;&gt;
+      &lt;li&gt;Iron Man&lt;/li&gt;
+      &lt;li&gt;Nick Fury&lt;/li&gt;
+      &lt;li&gt;Hulk&lt;/li&gt;
+      &lt;li&gt;Thor&lt;/li&gt;
+      &lt;li&gt;Captain America&lt;/li&gt;
+      &lt;li&gt;Black Widow&lt;/li&gt;
+      &lt;li&gt;Scarlet Witch&lt;/li&gt;
+      &lt;li&gt;Ant-Man&lt;/li&gt;
+      &lt;li&gt;Black Panther&lt;/li&gt;
+      &lt;li&gt;Spider-man&lt;/li&gt;
+      &lt;li&gt;Doctor Strange&lt;/li&gt;
+      &lt;li&gt;Captain Marvel&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/ace-combobox&gt;
+</code></pre>
+<h3>Comboboxes with automatic selection</h3>
+<p>Same as previous example but with automatic selection enabled.</p>
+<div class="example-block"><h4>No autocomplete</h4>
+<ace-combobox id="ace-combobox-basic-as" ace-combobox-autoselect="true">
+  <label>Choose an Avenger:</label>
+  <div ace-combobox-wrapper>
+    <input />
+    <ul aria-label="Avengers">
+      <li>Iron Man</li>
+      <li>Nick Fury</li>
+      <li>Hulk</li>
+      <li>Thor</li>
+      <li>Captain America</li>
+      <li>Black Widow</li>
+      <li>Scarlet Witch</li>
+      <li>Ant-Man</li>
+      <li>Black Panther</li>
+      <li>Spider-man</li>
+      <li>Doctor Strange</li>
+      <li>Captain Marvel</li>
+    </ul>
+  </div>
+</ace-combobox>
+<hr>
+<h4>List autocomplete</h4>
+<ace-combobox id="ace-combobox-ac-list-as" ace-combobox-autoselect="true">
+  <label>Choose an Avenger:</label>
+  <div ace-combobox-wrapper>
+    <input aria-autocomplete="list"/>
+    <ul aria-label="Avengers">
+      <li>Iron Man</li>
+      <li>Nick Fury</li>
+      <li>Hulk</li>
+      <li>Thor</li>
+      <li>Captain America</li>
+      <li>Black Widow</li>
+      <li>Scarlet Witch</li>
+      <li>Ant-Man</li>
+      <li>Black Panther</li>
+      <li>Spider-man</li>
+      <li>Doctor Strange</li>
+      <li>Captain Marvel</li>
+    </ul>
+  </div>
+</ace-combobox>
+<hr>
+<h4>Inline and list autocomplete</h4>
+<ace-combobox id="ace-combobox-ac-both-as" ace-combobox-autoselect="true">
+  <label>Choose an Avenger:</label>
+  <div ace-combobox-wrapper>
+    <input aria-autocomplete="both"/>
+    <ul aria-label="Avengers">
+      <li>Iron Man</li>
+      <li>Nick Fury</li>
+      <li>Hulk</li>
+      <li>Thor</li>
+      <li>Captain America</li>
+      <li>Black Widow</li>
+      <li>Scarlet Witch</li>
+      <li>Ant-Man</li>
+      <li>Black Panther</li>
+      <li>Spider-man</li>
+      <li>Doctor Strange</li>
+      <li>Captain Marvel</li>
+    </ul>
+  </div>
+</ace-combobox>
+</div>
+<pre><code class="language-html">&lt;h4&gt;No autocomplete&lt;/h4&gt;
+&lt;ace-combobox id=&quot;ace-combobox-basic-as&quot; ace-combobox-autoselect=&quot;true&quot;&gt;
+  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;div ace-combobox-wrapper&gt;
+    &lt;input /&gt;
+    &lt;ul aria-label=&quot;Avengers&quot;&gt;
+      &lt;li&gt;Iron Man&lt;/li&gt;
+      &lt;li&gt;Nick Fury&lt;/li&gt;
+      &lt;li&gt;Hulk&lt;/li&gt;
+      &lt;li&gt;Thor&lt;/li&gt;
+      &lt;li&gt;Captain America&lt;/li&gt;
+      &lt;li&gt;Black Widow&lt;/li&gt;
+      &lt;li&gt;Scarlet Witch&lt;/li&gt;
+      &lt;li&gt;Ant-Man&lt;/li&gt;
+      &lt;li&gt;Black Panther&lt;/li&gt;
+      &lt;li&gt;Spider-man&lt;/li&gt;
+      &lt;li&gt;Doctor Strange&lt;/li&gt;
+      &lt;li&gt;Captain Marvel&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/ace-combobox&gt;
+
+&lt;hr&gt;
+
+&lt;h4&gt;List autocomplete&lt;/h4&gt;
+&lt;ace-combobox id=&quot;ace-combobox-ac-list-as&quot; ace-combobox-autoselect=&quot;true&quot;&gt;
+  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;div ace-combobox-wrapper&gt;
+    &lt;input aria-autocomplete=&quot;list&quot;/&gt;
+    &lt;ul aria-label=&quot;Avengers&quot;&gt;
+      &lt;li&gt;Iron Man&lt;/li&gt;
+      &lt;li&gt;Nick Fury&lt;/li&gt;
+      &lt;li&gt;Hulk&lt;/li&gt;
+      &lt;li&gt;Thor&lt;/li&gt;
+      &lt;li&gt;Captain America&lt;/li&gt;
+      &lt;li&gt;Black Widow&lt;/li&gt;
+      &lt;li&gt;Scarlet Witch&lt;/li&gt;
+      &lt;li&gt;Ant-Man&lt;/li&gt;
+      &lt;li&gt;Black Panther&lt;/li&gt;
+      &lt;li&gt;Spider-man&lt;/li&gt;
+      &lt;li&gt;Doctor Strange&lt;/li&gt;
+      &lt;li&gt;Captain Marvel&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/ace-combobox&gt;
+
+&lt;hr&gt;
+
+&lt;h4&gt;Inline and list autocomplete&lt;/h4&gt;
+&lt;ace-combobox id=&quot;ace-combobox-ac-both-as&quot; ace-combobox-autoselect=&quot;true&quot;&gt;
+  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;div ace-combobox-wrapper&gt;
+    &lt;input aria-autocomplete=&quot;both&quot;/&gt;
+    &lt;ul aria-label=&quot;Avengers&quot;&gt;
+      &lt;li&gt;Iron Man&lt;/li&gt;
+      &lt;li&gt;Nick Fury&lt;/li&gt;
+      &lt;li&gt;Hulk&lt;/li&gt;
+      &lt;li&gt;Thor&lt;/li&gt;
+      &lt;li&gt;Captain America&lt;/li&gt;
+      &lt;li&gt;Black Widow&lt;/li&gt;
+      &lt;li&gt;Scarlet Witch&lt;/li&gt;
+      &lt;li&gt;Ant-Man&lt;/li&gt;
+      &lt;li&gt;Black Panther&lt;/li&gt;
+      &lt;li&gt;Spider-man&lt;/li&gt;
+      &lt;li&gt;Doctor Strange&lt;/li&gt;
+      &lt;li&gt;Captain Marvel&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/ace-combobox&gt;
+</code></pre>
+<h3>Combobox controlled with custom events</h3>
+<p>The <strong>Add options</strong> button adds options to the initially empty Combobox, while the <strong>Show list</strong> and <strong>Hide list</strong> buttons show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select which option to choose</strong> input and clicking the <strong>Select option</strong> button. All the buttons in this example make use of Combobox's custom events. The extra JavaScript required by this example is also shown below.</p>
+<div class="example-block"><button id="add-options-btn">Add options</button>
+<button id="show-list-btn">Show list</button>
+<button id="hide-list-btn">Hide list</button>
+<p><br><label for="select-option-number-input">Select which option to choose:</label><br>
+<input id="select-option-number-input" type="number" name="option" min="1" max="3"><br>
+<button id="select-option-btn">Select option</button></p>
+<ace-combobox id="ace-combobox-custom-events">
+  <label>Custom events combobox:</label><br>
+  <ul aria-label="Custom events combobox options"></ul>
+</ace-combobox>
+</div>
+<pre><code class="language-html">&lt;button id=&quot;add-options-btn&quot;&gt;Add options&lt;/button&gt;
+&lt;button id=&quot;show-list-btn&quot;&gt;Show list&lt;/button&gt;
+&lt;button id=&quot;hide-list-btn&quot;&gt;Hide list&lt;/button&gt;
+
+&lt;br&gt;&lt;label for=&quot;select-option-number-input&quot;&gt;Select which option to choose:&lt;/label&gt;&lt;br&gt;
+&lt;input id=&quot;select-option-number-input&quot; type=&quot;number&quot; name=&quot;option&quot; min=&quot;1&quot; max=&quot;3&quot;&gt;&lt;br&gt;
+&lt;button id=&quot;select-option-btn&quot;&gt;Select option&lt;/button&gt;
+
+&lt;ace-combobox id=&quot;ace-combobox-custom-events&quot;&gt;
+  &lt;label&gt;Custom events combobox:&lt;/label&gt;&lt;br&gt;
+  &lt;ul aria-label=&quot;Custom events combobox options&quot;&gt;&lt;/ul&gt;
+&lt;/ace-combobox&gt;
+</code></pre>
+<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const comboboxId = 'ace-combobox-custom-events';
+  const optionNumberEl = document.getElementById('select-option-number-input');
+  const comboboxListEl = document.querySelector(`#${comboboxId} [${ATTRS.LIST}]`);
+
+  window.addEventListener('click', (e) =&gt; {
+    switch (e.target.id) {
+      case 'add-options-btn':
+        comboboxListEl.innerHTML = `
+          &lt;li&gt;New Option 1&lt;/li&gt;
+          &lt;li&gt;New Option 2&lt;/li&gt;
+          &lt;li&gt;New Option 3&lt;/li&gt;`;
+        window.dispatchEvent(new CustomEvent(
+          EVENTS.UPDATE_OPTIONS,
+          {'detail': {'id': comboboxId}},
+        ));
+        break;
+      case 'show-list-btn':
+        window.dispatchEvent(new CustomEvent(
+          EVENTS.SHOW_LIST,
+          {'detail': {'id': comboboxId}},
+        ));
+        break;
+      case 'hide-list-btn':
+        window.dispatchEvent(new CustomEvent(
+          EVENTS.HIDE_LIST,
+          {'detail': {'id': comboboxId}},
+        ));
+        break;
+      case 'select-option-btn': {
+        const optionNumber = parseInt(optionNumberEl.value);
+        const option = document.querySelectorAll(`#${comboboxId} li`)[optionNumber-1];
+        if (!option) {
+          return;
+        }
+        window.dispatchEvent(new CustomEvent(
+          EVENTS.SELECT_OPTION,
+          {'detail': {'id': comboboxId, 'optionId': option.id}},
+        ));
+        break;
+      }
+    }
+  });
+});
+</code></pre>
+<h3>Combobox with dynamically updated options</h3>
+<p>This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the <code>ace-combobox-update-options</code> custom event. The <code>aria-live=&quot;polite&quot;</code> element is finally updated to announce how many results were found.</p>
+<p>Custom styles, shown below, have been applied to this example using HTML classes, to make it look like a Google Material component. The extra JavaScript required by this example is also shown below.</p>
+<div class="example-block"><ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
+  <label>Search:</label><br>
+  <div ace-combobox-wrapper class="styled-combobox__wrapper">
+    <input class="styled-combobox__input">
+    <ul aria-label="Search results" class="styled-combobox__list"></ul>
+  </div>
+  <p aria-live="polite" class="styled-combobox__status"></p>
+  <p id="chosen-search-result" aria-live="polite"></p>
+</ace-combobox>
+</div>
+<pre><code class="language-html">&lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update class=&quot;styled-combobox&quot;&gt;
+  &lt;label&gt;Search:&lt;/label&gt;&lt;br&gt;
+  &lt;div ace-combobox-wrapper class=&quot;styled-combobox__wrapper&quot;&gt;
+    &lt;input class=&quot;styled-combobox__input&quot;&gt;
+    &lt;ul aria-label=&quot;Search results&quot; class=&quot;styled-combobox__list&quot;&gt;&lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;p aria-live=&quot;polite&quot; class=&quot;styled-combobox__status&quot;&gt;&lt;/p&gt;
+  &lt;p id=&quot;chosen-search-result&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+&lt;/ace-combobox&gt;
+</code></pre>
+<pre><code class="language-scss">.styled-combobox {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  letter-spacing: .5px;
+
+  &amp;__wrapper {
+    margin: 10px 0;
+    width: 300px;
+  }
+
+  &amp;__input {
+    border: 1px solid rgba(0, 0, 0, .38);
+    border-radius: 4px;
+    font-size: 1em;
+    padding: 12px 16px 14px;
+  }
+
+  &amp;__status {
+    padding: 8px;
+  }
+
+  &amp;__list {
+    border: 1px solid #e5e5e5;
+    padding: 8px 0;
+
+    li {
+      padding: 8px 16px;
+      user-select: none;
+
+      &amp;:hover {
+        background-color: rgba(0, 0, 0, .04);
+      }
+    }
+
+    [ace-combobox-option-selected] {
+      background-color: rgba(0, 0, 0, .04);
+    }
+  }
+}
+</code></pre>
+<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
+import {KEYS} from '../../../common/constants.js';
+import {keyPressedMatches} from '../../../common/functions.js';
+
+const comboboxId = 'search-combobox';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  let optionChosen, searching = false;
+  const comboboxInputEl = document.querySelector(`#${comboboxId} [${ATTRS.INPUT}]`);
+  const comboboxStatusEl = document.querySelector(`#${comboboxId} [aria-live=&quot;polite&quot;]`);
+  const comboboxListEl = document.querySelector(`#${comboboxId} [${ATTRS.LIST}]`);
+  const chosenResultEl = document.getElementById('chosen-search-result');
+
+  // Search when ENTER key pressed
+  comboboxInputEl.addEventListener('keydown', async (e) =&gt; {
+    const keyPressed = e.key || e.which || e.keyCode;
+    if (!keyPressedMatches(keyPressed, KEYS.ENTER)) {
+      return;
+    }
+
+    // If option selected when ENTER pressed prevent search
+    if (optionChosen) {
+      optionChosen = false;
+      return;
+    }
+
+    // Fake search
+    if (searching) {
+      return;
+    }
+    searching = true;
+    // Update status element to inform user there will be a delay
+    comboboxStatusEl.textContent = 'Searching...';
+    // Simulate an API reponse delay
+    const results = await new Promise(resolve =&gt; setTimeout(() =&gt; {
+      const data = [];
+      for (let i=1; i &lt; 6; i++) {
+        data.push({id: `result-${i}`, text: `Result ${i}`});
+      }
+      resolve(data);
+    }, 3000));
+
+    // Add results to DOM
+    comboboxStatusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's' } found`;
+    comboboxListEl.innerHTML = '';
+    results.forEach((result) =&gt; {
+      const resultOption = document.createElement('li');
+      resultOption.textContent = result.text;
+      resultOption.id = result.id;
+      comboboxListEl.appendChild(resultOption);
+    });
+    // Update combobox options
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.UPDATE_OPTIONS,
+      {'detail': {'id': comboboxId}},
+    ));
+    searching = false;
+  });
+
+  // Show list when clicking on input if list has options
+  comboboxInputEl.addEventListener('click', () =&gt; {
+    if (comboboxListEl.childNodes.length === 0) {
+      return;
+    }
+
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.SHOW_LIST,
+      {'detail': {'id': comboboxId}},
+    ));
+  });
+
+  // Show results list when options intialised
+  window.addEventListener(EVENTS.OPTIONS_UPDATED, (e) =&gt; {
+    const detail = e['detail'];
+    if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
+      return;
+    }
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.SHOW_LIST,
+      {'detail': {'id': comboboxId}},
+    ));
+  });
+
+  // Listen for chosen options
+  window.addEventListener(EVENTS.OPTION_CHOSEN, (e) =&gt; {
+    const detail = e['detail'];
+    if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
+      return;
+    }
+    optionChosen = true;
+    chosenResultEl.textContent = `Option with ID '${detail['chosenOptionId']}' chosen.`;
+
+    // Hide list
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.HIDE_LIST,
+      {'detail': {'id': comboboxId}},
+    ));
+  });
+});
+</code></pre>

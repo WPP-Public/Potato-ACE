@@ -5,22 +5,22 @@ Disclosure is a component whose visibility can be changed using trigger buttons 
 
 ## Instantiation
 
-First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '../path/to/node_modules/@potato/ace/components/disclosure/disclosure'
+@import '<path-to-node_modules>/@potato/ace/components/disclosure/disclosure'
 ```
 
 
 Then import the class into your JavaScript entry point:
 
 ```js
-import '@potato/ace/components/disclosure/disclosure';
+import '<path-to-node_modules>/@potato/ace/components/disclosure/disclosure';
 ```
 
 For the sake of convenience the ES6 class is exported as `Disclosure`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Disclosure as aceDisclosure from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Disclosure automatically instantiates an instance of itself within each `<ace-disclosure></ace-disclosure>` and adds IDs in the format `ace-disclosure-(n)` to any instances without one, where `(n)` is the instance count.
+After `DOMContentLoaded` is fired, Disclosure automatically instantiates an instance of itself within each `ace-disclosure` element. Disclosure then adds an ID `ace-disclosure-<n>` for any instance without one, where `<n>` is the instance number. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 Disclosures are hidden by default but can be initially shown by adding the `ace-disclosure-visible="true"` attribute to it. The attribute `ace-disclosure-trigger-for=<disclosure-id>` should be added to triggering elements, where `<disclosure-id>` is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>`s are used for triggers. Disclosures can also be triggered using custom events, as described in the **Custom events** section below.
 
@@ -40,18 +40,18 @@ The following SASS is applied to the component, each declaration of which can be
 
 ## Custom events
 
-Disclosure uses the following custom events, the names of which are exported as properties of `EVENTS`, similar to `ATTRS`, so they may be imported into other modules and dispatched or listened for.
+Disclosure uses the following custom events, the names of which are available in its exported `EVENTS` object, similar to `ATTRS`, so they may be imported into other modules.
 
 
 ### Ready
 
 `ace-disclosure-ready`
 
-This event is dispatched on `window` when Disclosure finishes initialising and its `detail` object is composed as follows:
+This event is dispatched on `window` when Disclosure finishes initialising. The event name is available as the value of the `READY` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Disclosure
+  'id': // ID of Disclosure [string]
 }
 ```
 
@@ -59,25 +59,24 @@ This event is dispatched on `window` when Disclosure finishes initialising and i
 
 `ace-disclosure-changed`
 
-This event is dispatched when a Disclosure visibility is changed and its `detail` object is composed as follows:
+This event is dispatched when a Disclosure visibility is changed. The event name is available as the value of the `CHANGED` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Disclosure
-  'visible': // The new value of the Disclosure's `ace-disclosure-visible` attribute, as a boolean
+  'id': // ID of Disclosure [string],
+  'visible': // Whether the Disclosure is visible or not [boolean]
 }
 ```
-
 
 ### Hide, Show and Toggle
 
 `ace-disclosure-hide`, `ace-disclosure-show` & `ace-disclosure-toggle`
 
-A Disclosure listens for these events then hides, shows or toggles itself respectively. These events should be dispatched on `window` and the `detail` object should be composed as follows:
+These events should be dispatched on `window` to hide, show and toggle Disclosure respectively. The event names are available as the values of the `HIDE`, `SHOW` & `TOGGLE` properties of the exported `EVENTS` object and their `detail` objects should be composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Disclosure
+  'id': // ID of Disclosure [string]
 }
 ```
 

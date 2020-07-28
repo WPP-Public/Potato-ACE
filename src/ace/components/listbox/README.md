@@ -7,24 +7,23 @@ Listbox conforms to W3C WAI-ARIA authoring practices specified [here](https://ww
 
 ## Instantiation
 
-First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '../path/to/node_modules/@potato/ace/components/listbox/listbox'
+@import '<path-to-node_modules>/@potato/ace/components/listbox/listbox'
 ```
 
 
 Then import the class into your JavaScript entry point:
 
 ```js
-import '@potato/ace/components/listbox/listbox';
+import '<path-to-node_modules>/@potato/ace/components/listbox/listbox';
 ```
 
 For the sake of convenience the ES6 class is exported as `Listbox`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Listbox automatically instantiates an instance of itself within each `<ace-listbox></ace-listbox>` and adds IDs in the format `ace-listbox-(n)` to any instances without one, where `(n)` is the instance count.
+After `DOMContentLoaded` is fired, Listbox automatically instantiates an instance of itself within each `ace-listbox` element. Listbox then adds an ID `ace-listbox-<n>` for any instance without an ID, where `<n>` is the instance number. Listbox then adds its functionality to a `<ul>` or `<ol>` nested within it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. See the **Custom events** section below for more details. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched on `window`.
 
-Upon instantiation Listbox adds its functionality to a `<ul>` or `<ol>` nested within it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the **Custom events** section below for more details.
 
 
 ## Usage
@@ -76,18 +75,18 @@ $ace-listbox-selected-option-bg-color: #ccc !default;
 
 ## Custom events
 
-Listbox uses the following custom event, the name of which is exported as a property of `EVENTS`, similar to `ATTRS`, so it may be imported into other modules and dispatched.
+Listbox uses the following custom events, the names of which are available in its exported `EVENTS` object, similar to `ATTRS`, so it may be imported into other modules.
 
 
 ### Ready
 
 `ace-listbox-ready`
 
-This event is dispatched on `window` when Listbox finishes initialising and its `detail` object is composed as follows:
+This event is dispatched on `window` when Listbox finishes initialising. The event name is available as the value of the `READY` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Listbox
+  'id': // ID of Listbox [string]
 }
 ```
 
@@ -95,12 +94,12 @@ This event is dispatched on `window` when Listbox finishes initialising and its 
 
 `ace-listbox-update-options`
 
-This event should be dispatched on `window` when a Listbox's options are altered, e.g. when options are added or deleted. The event `detail` object should be composed as follows:
+This event should be dispatched on `window` when options are added or deleted, and causes Listbox to reinitialise its options. The event name is available as the value of the `UPDATE_OPTIONS` property of the exported `EVENTS` object and its `detail` object should be composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Listbox
-  'noneSelected': <boolean> // (Optional): Initialise single-select listbox without selecting first option 
+  'id': // ID of Listbox [string],
+  'noneSelected': // Whether to initialise a single-select listbox with no selected options or not (optional) [boolean]
 }
 ```
 
