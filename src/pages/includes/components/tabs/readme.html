@@ -1,0 +1,471 @@
+<h1>Tabs</h1>
+<p>Tabs are a set of sections of content called tab panels which are displayed one at a time, each tab panel has a tab element associated with it which controls displaying the panel.</p>
+<p>Tabs conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel">here</a>.</p>
+<h2>Instantiation</h2>
+<p>First import the styles into your main SASS file, replacing <code>../path/to</code> with the path to <em>node_modules</em> relative to the file:</p>
+<pre><code class="language-scss">$ace-tabs-active-tab-colour: #0893a7 !default;
+$ace-tabs-background-colour: #fff !default;
+$ace-tabs-hover-colour: #e6e4e7 !default;
+
+[ace-tabs-tab-visible=&quot;false&quot;] {
+  display: none;
+}
+
+[ace-tabs-vertical] {
+  display: flex;
+}
+
+[ace-tabs-tablist] {
+  display: flex;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+[ace-tabs-tablist-vertical] {
+  flex-direction: column;
+  margin: 0 10px 0 0;
+
+  &amp; [ace-tabs-active-tab] {
+    border-width: 0 2px 0 0;
+  }
+}
+
+[ace-tabs-tab] {
+  background-color: $ace-tabs-background-colour;
+  border: 0 solid $ace-tabs-active-tab-colour;
+  padding: 8px 32px;
+
+  &amp;:hover {
+    background-color: $ace-tabs-hover-colour;
+  }
+
+  &amp;:focus {
+    outline: none;
+  }
+}
+
+[ace-tabs-active-tab] {
+  border-width: 0 0 2px 0;
+}
+</code></pre>
+<p>Import the class into your JavaScript entry point:</p>
+<pre><code class="language-js">import Tabs from '@potato/ace/components/tabs/tabs';
+</code></pre>
+<p>For the sake of convenience the ES6 class is exported as <code>Tabs</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Tabs as aceTabs from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
+<p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>&lt;ace-tabs&gt;&lt;/ace-tabs&gt;</code> and adds IDs in the format <code>ace-tabs-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
+<h2>Usage</h2>
+<!-- ADD USAGE AND INTERACTION INSTRUCTIONS HERE -->
+<p>By default, the first tab is active and so the panel content for the first tab is displayed. If a user clicks on a tab then the content for that tab will be revealed and the previous content hidden. When the tablist is focused, pressing <kbd>←</kbd> or <kbd>→</kbd> (<kbd>↑</kbd> or <kbd>↓</kbd> if tablist is vertical) will select the previous or next tab in the list and activate it. Tabbing while focused on the tablist will then focus the content for the active tab. Pressing <kbd>Home</kbd> when the tablist is focused will activate the first tab in the tablist and <kbd>End</kbd> will activate the last.</p>
+<h2>SASS</h2>
+<p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users.</p>
+<pre><code class="language-scss">$ace-tabs-active-tab-colour: #0893a7 !default;
+$ace-tabs-background-colour: #fff !default;
+$ace-tabs-hover-colour: #e6e4e7 !default;
+
+[ace-tabs-tab-visible=&quot;false&quot;] {
+  display: none;
+}
+
+[ace-tabs-vertical] {
+  display: flex;
+}
+
+[ace-tabs-tablist] {
+  display: flex;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+[ace-tabs-tablist-vertical] {
+  margin: 0 10px 0 0;
+
+  &amp; [ace-tabs-active-tab] {
+    border-width: 0 2px 0 0;
+  }
+}
+
+[ace-tabs-tab] {
+  background-color: $ace-tabs-background-colour;
+  border: 0 solid $ace-tabs-active-tab-colour;
+  padding: 8px 32px;
+
+  &amp;:hover {
+    background-color: $ace-tabs-hover-colour;
+  }
+
+  &amp;:focus {
+    outline: none;
+  }
+}
+
+[ace-tabs-active-tab] {
+  border-width: 0 0 2px 0;
+}
+</code></pre>
+<h2>Custom events</h2>
+<p>Tabs uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
+<h3>Ready</h3>
+<p><code>ace-tabs-ready</code></p>
+<p>This event will be dispatched on <code>window</code> when a <code>ace-tabs</code> element has been initialised and is ready for interaction. Listening to this event can be useful for timing and triggering animations on the tabs element.</p>
+<p>The event <code>detail</code> object wll be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of the tabs element that has been initialised
+}
+</code></pre>
+<h3>Set tab</h3>
+<p><code>ace-tabs-set-tab</code></p>
+<p>Dispatch this event on <code>window</code> to change the currently active tab of a <code>ace-tabs</code> element.
+<br>The event <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of ace-tabs element,
+  'tab': // Index of tab to select (1-based)
+}
+</code></pre>
+<h3>Next tab</h3>
+<p><code>ace-tabs-next-tab</code></p>
+<p>Dispatch this event on <code>window</code> to select the next tab of a <code>ace-tabs</code> element (respects wrapping/no-wrapping).
+<br>The event <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of ace-tabs element
+}
+</code></pre>
+<h3>Previous tab</h3>
+<p><code>ace-tabs-prev-tab</code></p>
+<p>Dispatch this event on <code>window</code> to select the previous tab of a <code>ace-tabs</code> element (respects wrapping/no-wrapping).
+<br>The event <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of ace-tabs element
+}
+</code></pre>
+<h3>Tab changed</h3>
+<p><code>ace-tabs-changed</code></p>
+<p>This event will be dispatched on <code>window</code> when a <code>ace-tabs</code> element changes tabs, either by keyboard/mouse interaction or one of the prviously mentioned events.
+Listening to this event can be useful for timing and triggering animations on the tabs element.</p>
+<p>The event <code>detail</code> object wll be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'tabsId': // ID of the ace-tabs element
+  'activeTab': {
+    'id': // ID of the new active tab
+    'number': // Number of the new active tab (1-based index)
+  },
+  'prevTab': {
+    'id': // ID of the old tab
+    'number': // Number of the old tab (1-based index)
+  }
+}
+</code></pre>
+<h3>Update tabs</h3>
+<p><code>ace-tabs-update</code></p>
+<p>Dispatch this event on <code>window</code> to force a re-initialisation of the tabslist and panels for a specified tabs element. The tabs element whill re-find tabs and panels and reset the active tab to 0 before re-emmitting a <code>ace-tabs-ready</code> event to signify it has reinitialised.</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of the tabs element to update
+}
+</code></pre>
+<h2>Examples</h2>
+<p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
+<h3>Simple Tabs</h3>
+<p>The default tabs, note that the tablist does not have an <code>aria-label</code> and so a warning will printed in the console and it will be assigned the default value <code>ace-tabs-basic-tablist</code>.</p>
+<div class="example-block"><ace-tabs id="ace-tabs-basic">
+  <div ace-tabs-tablist>
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+</div>
+<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-basic&quot;&gt;
+  &lt;div ace-tabs-tablist&gt;
+    &lt;button&gt;Tab 1&lt;/button&gt;
+    &lt;button&gt;Tab 2&lt;/button&gt;
+    &lt;button&gt;Tab 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 1&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 2&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 3&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+</code></pre>
+<h3>No Wrapping Example</h3>
+<p>Simple tabs but won't wrap to first/last element when cycling through tabs using <kbd>←</kbd> and <kbd>→</kbd> keys.</p>
+<div class="example-block"><ace-tabs id="ace-tabs-no-wrap" ace-tabs-no-wrapping>
+  <div ace-tabs-tablist aria-label="no-wrap-tabs-tablist">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+</div>
+<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-no-wrap&quot; ace-tabs-no-wrapping&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;no-wrap-tabs-tablist&quot;&gt;
+    &lt;button&gt;Tab 1&lt;/button&gt;
+    &lt;button&gt;Tab 2&lt;/button&gt;
+    &lt;button&gt;Tab 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 1&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 2&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 3&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+</code></pre>
+<h3>Vertical Tabslist</h3>
+<p>If your tablist is vertical (e.g. when having the tabs appear next to the panel instead of above) add the <code>ace-tabs-vertical</code> attribute which will add <code>aria-orientation=&quot;vertical&quot;</code> to the tabslist element.</p>
+<div class="example-block"><ace-tabs id="ace-tabs-vertical" ace-tabs-vertical>
+  <div ace-tabs-tablist aria-label="vertical-tabs-tablist">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+</div>
+<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-vertical&quot; ace-tabs-vertical&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;vertical-tabs-tablist&quot;&gt;
+    &lt;button&gt;Tab 1&lt;/button&gt;
+    &lt;button&gt;Tab 2&lt;/button&gt;
+    &lt;button&gt;Tab 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 1&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 2&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 3&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+</code></pre>
+<h3>Custom Event Controlled Tabs</h3>
+<p>In some cases you might want to customise tabs to limit the tabs which can be activated by the user at a particular point or create a paginated experience. To achieve this behaviour buttons which emit the <code>ace-tabs-set-tab</code>, <code>ace-tabs-next-tab</code> and <code>ace-tabs-prev-tab</code> can be used.</p>
+<div class="example-block"><ace-tabs id="ace-tabs-custom">
+  <div ace-tabs-tablist aria-label="custom-events-tabs-tablist">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+    <button>Tab 4</button>
+    <button>Tab 5</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+  <div>
+    <h3>Panel 4</h3>
+  </div>
+  <div>
+    <h3>Panel 5</h3>
+  </div>
+</ace-tabs>
+<button id="prev-tab-btn">
+  Prev
+</button>
+<button id="next-tab-btn">
+  Next
+</button>
+<form id="set-tab-form">
+  <label>
+    Select Tab:
+    <input value="1" type="number" name="tab-number" id="tab-number-input" max="5" min="1">
+  </label>
+  <button type="submit">Go</button>
+</form>
+</div>
+<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-custom&quot;&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;custom-events-tabs-tablist&quot;&gt;
+    &lt;button&gt;Tab 1&lt;/button&gt;
+    &lt;button&gt;Tab 2&lt;/button&gt;
+    &lt;button&gt;Tab 3&lt;/button&gt;
+    &lt;button&gt;Tab 4&lt;/button&gt;
+    &lt;button&gt;Tab 5&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 1&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 2&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 3&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 4&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 5&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+
+&lt;button id=&quot;prev-tab-btn&quot;&gt;
+  Prev
+&lt;/button&gt;
+&lt;button id=&quot;next-tab-btn&quot;&gt;
+  Next
+&lt;/button&gt;
+
+&lt;form id=&quot;set-tab-form&quot;&gt;
+  &lt;label&gt;
+    Select Tab:
+    &lt;input value=&quot;1&quot; type=&quot;number&quot; name=&quot;tab-number&quot; id=&quot;tab-number-input&quot; max=&quot;5&quot; min=&quot;1&quot;&gt;
+  &lt;/label&gt;
+  &lt;button type=&quot;submit&quot;&gt;Go&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+<pre><code class="language-js">import {EVENTS} from '/ace/components/tabs/tabs.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const TABS_ID = 'ace-tabs-custom';
+
+  const setTabForm = document.getElementById('set-tab-form');
+
+  window.addEventListener('click', (e) =&gt; {
+    if (e.target.id === 'prev-tab-btn') {
+      window.dispatchEvent(new CustomEvent(EVENTS.SET_PREV_TAB, {detail: {id: TABS_ID}}));
+    } else if (e.target.id === 'next-tab-btn') {
+      window.dispatchEvent(new CustomEvent(EVENTS.SET_NEXT_TAB, {detail: {id: TABS_ID}}));
+    }
+  });
+
+  setTabForm.addEventListener('submit', (e) =&gt; {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    window.dispatchEvent(new CustomEvent(EVENTS.SET_TAB, {detail: {
+      id: TABS_ID,
+      tab: formData.get('tab-number')
+    }}));
+  });
+});
+</code></pre>
+<h3>Update Tabs Element</h3>
+<p>You may want tabs to be added, removed or updated after initial load and so the tabs component can be reloaded by emitting the <code>ace-tabs-update</code> event with the ID of the tabs element to update.</p>
+<div class="example-block"><ace-tabs id="ace-tabs-update">
+  <div ace-tabs-tablist aria-label="update-tabs-tablist">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+<button id="add-tab-btn">
+  Add to end
+</button>
+<button id="remove-tab-btn">
+  Remove last
+</button>
+</div>
+<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-update&quot;&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;update-tabs-tablist&quot;&gt;
+    &lt;button&gt;Tab 1&lt;/button&gt;
+    &lt;button&gt;Tab 2&lt;/button&gt;
+    &lt;button&gt;Tab 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 1&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 2&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 3&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+
+&lt;button id=&quot;add-tab-btn&quot;&gt;
+  Add to end
+&lt;/button&gt;
+&lt;button id=&quot;remove-tab-btn&quot;&gt;
+  Remove last
+&lt;/button&gt;
+</code></pre>
+<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const TABS_ID = 'ace-tabs-update';
+  const TABS_EL = document.getElementById(TABS_ID);
+  const TABSLIST_EL = TABS_EL.querySelector(`[${ATTRS.TABLIST}]`);
+
+  const addTab = () =&gt; {
+    const tabNumber = TABSLIST_EL.children.length + 1;
+
+    TABSLIST_EL.insertAdjacentHTML('beforeend', `
+      &lt;button&gt;Tab ${tabNumber}&lt;/button&gt;
+    `);
+
+    TABS_EL.insertAdjacentHTML('beforeend', `
+      &lt;div&gt;
+        &lt;h3&gt;Panel ${tabNumber}&lt;/h3&gt;
+        &lt;p&gt;Created by JS&lt;/p&gt;
+      &lt;/div&gt;
+    `);
+  };
+
+  const removeTab = () =&gt; {
+    TABSLIST_EL.removeChild(TABSLIST_EL.lastElementChild);
+    TABS_EL.removeChild(TABS_EL.lastElementChild);
+  };
+
+  window.addEventListener('click', (e) =&gt; {
+    const id = e.target.id;
+
+    if (id === 'add-tab-btn') {
+      addTab();
+    } else if (id === 'remove-tab-btn') {
+      removeTab();
+    }
+
+    window.dispatchEvent(new CustomEvent(EVENTS.UPDATE_TABS, {detail: {
+      id: TABS_ID,
+    }}));
+  });
+});
+</code></pre>
