@@ -1,12 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Work+Sans:300,400,500,700,800');
 
-
 // REPEATING ELEMENTS
 * {
   box-sizing: border-box;
-  padding: 0;
 }
-
 
 a {
   font-weight: 700;
@@ -25,7 +22,6 @@ a {
   }
 }
 
-
 article {
   color: $text-color;
   grid-column: 2;
@@ -34,7 +30,6 @@ article {
   padding: 30px;
   width: 100%;
 }
-
 
 // Inline Code
 code {
@@ -47,7 +42,6 @@ code {
     padding: 2px 4px;
   }
 }
-
 
 h1,
 h2,
@@ -91,7 +85,6 @@ h3 {
   line-height: 1.4;
 }
 
-
 kbd {
   background-color: map-get($pot-grey, 1);
   border: 1px solid map-get($pot-grey, 3);
@@ -103,17 +96,35 @@ kbd {
   white-space: nowrap;
 }
 
-
 p {
   margin: 0 0 $buffer-s;
 }
 
+table {
+  border-collapse: collapse;
+}
+
+ol {
+  padding: 0;
+}
 
 ul {
   list-style: none;
   margin: 0;
+  padding: 0;
 }
 
+td,
+th {
+  min-width: 100px;
+  padding: 10px;
+}
+
+tr,
+td,
+th {
+  border: 1px solid map-get($pot-mauve, 7);
+}
 
 // ONE-OFF ELEMENTS
 body {
@@ -124,17 +135,14 @@ body {
   margin: 0;
 }
 
-
 html {
   font-size: 10px;
   height: 100%;
 }
 
-
 main {
   height: 100%;
   margin-top: $header-height;
-
   @include mq(desktop) {
     display: grid;
     grid-template-columns: $sidebar-width 1fr;
