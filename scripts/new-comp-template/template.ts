@@ -68,14 +68,11 @@ export default class Template extends HTMLElement {
 
 
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.READY,
-      {
-        'detail': {
-          'id': this.id,
-        }
-      },
-    ));
+    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
     // CUSTOM EVENT NOTES:
     // Dispatch custom events on 'window'
     // When dispatching custom events include class instance ID in the 'detail' property
@@ -94,7 +91,7 @@ export default class Template extends HTMLElement {
   // /*
   //   Custom event handler
   // */
-  // customEventHandler(e) {
+  // customEventHandler(e: CustomEvent) {
   //   // Check if event has a 'detail' property and if detail has an id that matches this class instance id
   //   const detail = e['detail'];
   //   if (!detail || (detail['id'] !== this.id)) {
