@@ -436,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
     TABS_EL.insertAdjacentHTML('beforeend', `
       <div>
         <h3>Panel ${tabNumber}</h3>
-        <p>Added dynamically</p>
+        <p>Created dynamically</p>
       </div>
     `);
   };
