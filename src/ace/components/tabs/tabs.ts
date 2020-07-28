@@ -18,8 +18,9 @@ export const ATTRS = {
   PANEL: `${TABS}-panel`,
   TAB,
   TABLIST: `${TABS}-tablist`,
-  TABLIST_VERTICAL: `${TABS}-tablist-vertical`,
   VERTICAL: `${TABS}-vertical`,
+  VERTICAL_TAB: `${TABS}-vertical-tab`,
+  VERTICAL_TABLIST: `${TABS}-vertical-tablist`,
   VISIBLE: `${TAB}-visible`
 };
 
@@ -84,7 +85,7 @@ export default class Tabs extends HTMLElement {
     this.nextTabKey = this.vertical ? KEYS.DOWN : KEYS.RIGHT;
 
     if (this.vertical) {
-      this.tablistEl.setAttribute(ATTRS.TABLIST_VERTICAL, '');
+      this.tablistEl.setAttribute(ATTRS.VERTICAL_TABLIST, '');
     }
 
 
@@ -117,10 +118,6 @@ export default class Tabs extends HTMLElement {
     Hides all non-active panels and reveals active panel
   */
   private activatePanel(panelToActivateIndex: number): void {
-    if (panelToActivateIndex === this.activeTabIndex) {
-      return;
-    }
-
     // De-activate the previously selected tab
     const oldTabEl = this.tabEls[this.activeTabIndex];
     oldTabEl.removeAttribute(ATTRS.ACTIVE_TAB);
@@ -131,7 +128,7 @@ export default class Tabs extends HTMLElement {
     const newTabEl = this.tabEls[panelToActivateIndex];
     newTabEl.setAttribute(ATTRS.ACTIVE_TAB, '');
     newTabEl.setAttribute('aria-selected', 'true');
-    newTabEl.setAttribute('tabindex', '');
+    newTabEl.removeAttribute('tabindex');
     this.panelEls.forEach((panelEl, index) => panelEl.setAttribute(ATTRS.VISIBLE, index === panelToActivateIndex ? 'true' : 'false'));
     newTabEl.focus();
 
@@ -208,6 +205,9 @@ export default class Tabs extends HTMLElement {
   private initTab(tab: HTMLElement, index: number): void {
     // Sets appropriate role and attributes for the element
     tab.setAttribute(ATTRS.TAB, '');
+    if (this.vertical) {
+      tab.setAttribute(ATTRS.VERTICAL_TAB, '');
+    }
     tab.setAttribute('role', 'tab');
 
     // If the tab doesn't have a ID then one is generated for it
@@ -216,6 +216,7 @@ export default class Tabs extends HTMLElement {
     // If this is the first tab then set it as the active tab
     if (index === 0) {
       tab.setAttribute('aria-selected', 'true');
+      tab.removeAttribute('tabindex');
     } else {  // Otherwise set it as an inactive tab
       tab.setAttribute('tabindex', '-1');
       tab.setAttribute('aria-selected', 'false');

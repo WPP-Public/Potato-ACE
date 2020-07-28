@@ -10,50 +10,68 @@ Tabs conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w
 First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
 
 ```scss
-$ace-tabs-active-tab-colour: #0893a7 !default;
-$ace-tabs-background-colour: #fff !default;
-$ace-tabs-hover-colour: #e6e4e7 !default;
+/* VARIABLES */
+$ace-tabs-tablist-margin: 16px !default;
+$ace-tabs-tab-bg-colour: transparent !default;
+$ace-tabs-tab-padding-horizontal: 32px !default;
+$ace-tabs-tab-padding-vertical: 8px !default;
+$ace-tabs-tab-hover-bg-colour: #eee !default;
+$ace-tabs-active-tab-border-colour: #3297fd !default;
+$ace-tabs-active-tab-border-width: 2px !default;
 
-[ace-tabs-tab-visible="false"] {
-  display: none;
-}
 
+/* STYLES */
 [ace-tabs-vertical] {
   display: flex;
 }
 
 [ace-tabs-tablist] {
   display: flex;
-  margin-bottom: 10px;
-  overflow-x: auto;
+  margin: 0 0 $ace-tabs-tablist-margin 0;
+  overflow: auto hidden;
   white-space: nowrap;
 }
 
-[ace-tabs-tablist-vertical] {
-  flex-direction: column;
-  margin: 0 10px 0 0;
-
-  & [ace-tabs-active-tab] {
-    border-width: 0 2px 0 0;
-  }
-}
-
 [ace-tabs-tab] {
-  background-color: $ace-tabs-background-colour;
-  border: 0 solid $ace-tabs-active-tab-colour;
-  padding: 8px 32px;
+  background-color: $ace-tabs-tab-bg-colour;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 0 0 $ace-tabs-active-tab-border-width 0;
+  cursor: pointer;
+  padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
 
   &:hover {
-    background-color: $ace-tabs-hover-colour;
+    background-color: $ace-tabs-tab-hover-bg-colour;
   }
 
   &:focus {
+    // TODO: Add keyboard only focus
     outline: none;
   }
 }
 
+[ace-tabs-tab-visible="false"] {
+  display: none;
+}
+
 [ace-tabs-active-tab] {
-  border-width: 0 0 2px 0;
+  border-bottom-color: $ace-tabs-active-tab-border-colour;
+}
+
+
+// Vertical variant
+[ace-tabs-vertical-tablist] {
+  flex-direction: column;
+  margin: 0 $ace-tabs-tablist-margin 0 0;
+  overflow: hidden auto;
+}
+
+[ace-tabs-vertical-tab] {
+  border-width: 0 $ace-tabs-active-tab-border-width 0 0;
+
+  &[ace-tabs-active-tab] {
+    border-right-color: $ace-tabs-active-tab-border-colour;
+  }
 }
 ```
 
@@ -98,7 +116,7 @@ $ace-tabs-hover-colour: #e6e4e7 !default;
   white-space: nowrap;
 }
 
-[ace-tabs-tablist-vertical] {
+[ace-tabs-vertical-tablist] {
   margin: 0 10px 0 0;
 
   & [ace-tabs-active-tab] {
@@ -364,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formData = new FormData(e.target);
     window.dispatchEvent(new CustomEvent(EVENTS.SET_TAB, {detail: {
       id: TABS_ID,
-      tab: formData.get('tab-number')
+      tab: +formData.get('tab-number')
     }}));
   });
 });
@@ -418,7 +436,7 @@ document.addEventListener('DOMContentLoaded', () => {
     TABS_EL.insertAdjacentHTML('beforeend', `
       <div>
         <h3>Panel ${tabNumber}</h3>
-        <p>Created by JS</p>
+        <p>Added dynamically</p>
       </div>
     `);
   };
@@ -430,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('click', (e) => {
     const id = e.target.id;
-
     if (id === 'add-tab-btn') {
       addTab();
     } else if (id === 'remove-tab-btn') {
