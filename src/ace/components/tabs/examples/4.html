@@ -1,0 +1,39 @@
+<ace-tabs id="ace-tabs-custom">
+  <div ace-tabs-tablist aria-label="custom-events-tabs-tablist">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+    <button>Tab 4</button>
+    <button>Tab 5</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+  <div>
+    <h3>Panel 4</h3>
+  </div>
+  <div>
+    <h3>Panel 5</h3>
+  </div>
+</ace-tabs>
+
+<button id="prev-tab-btn">
+  Prev
+</button>
+<button id="next-tab-btn">
+  Next
+</button>
+
+<form id="set-tab-form">
+  <label>
+    Select Tab:
+    <input value="1" type="number" name="tab-number" id="tab-number-input" max="5" min="1">
+  </label>
+  <button type="submit">Go</button>
+</form>

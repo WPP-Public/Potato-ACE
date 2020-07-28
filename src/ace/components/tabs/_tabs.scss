@@ -1,0 +1,45 @@
+$ace-tabs-active-tab-colour: #0893a7 !default;
+$ace-tabs-background-colour: #fff !default;
+$ace-tabs-hover-colour: #e6e4e7 !default;
+
+[ace-tabs-tab-visible="false"] {
+  display: none;
+}
+
+[ace-tabs-vertical] {
+  display: flex;
+}
+
+[ace-tabs-tablist] {
+  display: flex;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+[ace-tabs-tablist-vertical] {
+  flex-direction: column;
+  margin: 0 10px 0 0;
+
+  & [ace-tabs-active-tab] {
+    border-width: 0 2px 0 0;
+  }
+}
+
+[ace-tabs-tab] {
+  background-color: $ace-tabs-background-colour;
+  border: 0 solid $ace-tabs-active-tab-colour;
+  padding: 8px 32px;
+
+  &:hover {
+    background-color: $ace-tabs-hover-colour;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+[ace-tabs-active-tab] {
+  border-width: 0 0 2px 0;
+}

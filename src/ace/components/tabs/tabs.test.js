@@ -1,0 +1,553 @@
+import {ATTRS, EVENTS, TABS} from './tabs';
+
+
+const IDS = {
+  BASIC: 'ace-tabs-basic',
+  CUSTOM_EVENTS: 'ace-tabs-custom',
+  NO_WRAPPING: 'ace-tabs-no-wrap',
+  UPDATE_TABS: 'ace-tabs-update',
+  VERTICAL: 'ace-tabs-vertical'
+};
+
+
+context('Tabs', () => {
+  before(() => {
+    cy.visit(`/tabs`);
+  });
+
+
+  beforeEach(() => {
+    cy.get(TABS)
+      .as('tabs');
+
+    cy.get(`#${IDS.BASIC}`)
+      .as('basic-tabs')
+      .find(`[${ATTRS.TABLIST}]`)
+      .as('basic-tabs-tablist')
+      .find('button')
+      .as('basic-tabs-buttons');
+
+    cy.get(`@basic-tabs`)
+      .find(`div:not([${ATTRS.TABLIST}])`)
+      .as('basic-tabs-panels');
+
+    cy.get(`#${IDS.NO_WRAPPING}`)
+      .as('no-wrapping-tabs')
+      .find(`[${ATTRS.TABLIST}]`)
+      .as('no-wrapping-tabs-tablist')
+      .find('button')
+      .as('no-wrapping-tabs-buttons');
+
+    cy.get(`@no-wrapping-tabs`)
+      .find(`div:not([${ATTRS.TABLIST}])`)
+      .as('no-wrapping-tabs-panels');
+
+
+    cy.get(`#${IDS.VERTICAL}`)
+      .as('vertical-tabs')
+      .find(`[${ATTRS.TABLIST}]`)
+      .as('vertical-tabs-tablist')
+      .find('button')
+      .as('vertical-tabs-buttons');
+
+    cy.get(`@vertical-tabs`)
+      .find(`div:not([${ATTRS.TABLIST}])`)
+      .as('vertical-tabs-panels');
+
+    cy.get(`#${IDS.CUSTOM_EVENTS}`)
+      .as('custom-tabs')
+      .find(`[${ATTRS.TABLIST}]`)
+      .as('custom-tabs-tablist')
+      .find('button')
+      .as('custom-tabs-buttons');
+
+    cy.get(`@custom-tabs`)
+      .find(`div:not([${ATTRS.TABLIST}])`)
+      .as('custom-tabs-panels');
+
+    cy.get(`#${IDS.UPDATE_TABS}`)
+      .as('update-tabs')
+      .find(`[${ATTRS.TABLIST}]`)
+      .as('update-tabs-tablist')
+      .find('button')
+      .as('update-tabs-buttons');
+
+    cy.get(`@update-tabs`)
+      .find(`div:not([${ATTRS.TABLIST}])`)
+      .as('update-tabs-panels');
+  });
+
+
+  describe('Initialisation', () => {
+    it('All tabs should have IDs', () => {
+      cy.get('@tabs').each(tabs => {
+        cy.get(tabs).should('have.attr', 'id');
+      });
+    });
+
+
+    it('Tabs should initialise with correct attributes', () => {
+      cy.get('@basic-tabs-tablist')
+        .should('have.attr', 'role', 'tablist')
+        .should('have.attr', 'aria-label', 'ace-tabs-basic-tablist')
+        .should('have.attr', 'aria-orientation', 'horizontal');
+
+      cy.get('@basic-tabs-buttons').each((tab, index) => {
+        cy.get(tab)
+          .should('have.attr', 'role', 'tab')
+          .should('have.attr', 'aria-controls', `ace-tabs-basic-panel-${index + 1}`);
+
+        if (index === 0) {
+          cy.get(tab)
+            .should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(tab)
+            .should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      cy.get('@basic-tabs-panels').each((panel, index) => {
+        cy.get(panel)
+          .should('have.attr', 'aria-labelledby', `ace-tabs-basic-tab-${index + 1}`);
+      });
+    });
+
+    it('Vertical tabs should initialise with correct attributes', () => {
+      cy.get('@vertical-tabs-tablist')
+        .should('have.attr', 'role', 'tablist')
+        .should('have.attr', 'aria-label', 'vertical-tabs-tablist')
+        .should('have.attr', 'aria-orientation', 'vertical');
+
+      cy.get('@vertical-tabs-buttons').each((tab, index) => {
+        cy.get(tab)
+          .should('have.attr', 'role', 'tab')
+          .should('have.attr', 'aria-controls', `ace-tabs-vertical-panel-${index + 1}`);
+
+        if (index === 0) {
+          cy.get(tab)
+            .should('have.attr', 'aria-selected', 'true');
+        } else {
+          cy.get(tab)
+            .should('have.attr', 'aria-selected', 'false');
+        }
+      });
+
+      cy.get('@vertical-tabs-panels').each((panel, index) => {
+        cy.get(panel)
+          .should('have.attr', 'aria-labelledby', `ace-tabs-vertical-tab-${index + 1}`);
+      });
+    });
+  });
+
+
+  describe('Mouse interaction', () => {
+    beforeEach(() => {
+      cy.reload();
+    });
+
+    it('should activate a tab when clicked', () => {
+      cy.get('@basic-tabs-buttons').each((tab, index) => {
+        cy.get(tab).click();
+        // Tab should now have aria-selected = true
+        cy.get(tab).should('have.attr', 'aria-selected', 'true');
+        // Panel associated with tab should have ace-tab-visible = true
+        cy.get(`#${IDS.BASIC}-panel-${index + 1}`).should('have.attr', ATTRS.VISIBLE, 'true');
+      });
+    });
+  });
+
+
+  describe('Keyboard interaction', () => {
+    beforeEach(() => {
+      cy.reload();
+    });
+
+
+    it('should select the next tab when the right arrow is pressed', () => {
+      cy.get('@basic-tabs-buttons')
+        .first()
+        .click()
+        .type('{rightArrow}')
+        .should('have.attr', 'aria-selected', 'false');
+      // Second tab should now be selected
+      cy.get('@basic-tabs-buttons')
+        .eq(1)
+        .should('have.attr', 'aria-selected', 'true');
+    });
+
+    it('should select the previous tab when the left arrow is pressed', () => {
+      cy.get('@basic-tabs-buttons')
+        .eq(1)
+        .click()
+        .type('{leftArrow}')
+        .should('have.attr', 'aria-selected', 'false');
+      // First tab should now be selected
+      cy.get('@basic-tabs-buttons')
+        .first()
+        .should('have.attr', 'aria-selected', 'true');
+    });
+
+    it('should select the next tab when the down arrow is pressed in a vertical tablist', () => {
+      cy.get('@vertical-tabs-buttons')
+        .first()
+        .click()
+        .type('{downArrow}')
+        .should('have.attr', 'aria-selected', 'false');
+      // Second tab should now be selected
+      cy.get('@vertical-tabs-buttons')
+        .eq(1)
+        .should('have.attr', 'aria-selected', 'true');
+    });
+
+    it('should select the previous tab when the up arrow is pressed in a vertical tablist', () => {
+      cy.get('@vertical-tabs-buttons')
+        .eq(1)
+        .click()
+        .type('{upArrow}')
+        .should('have.attr', 'aria-selected', 'false');
+      // First tab should now be selected
+      cy.get('@vertical-tabs-buttons')
+        .first()
+        .should('have.attr', 'aria-selected', 'true');
+    });
+
+    it('should not select the next tab when the right arrow is pressed on last tab with no wrapping', () => {
+      cy.get('@no-wrapping-tabs-buttons')
+        .last()
+        .click()
+        .type('{rightArrow}')
+        .should('have.attr', 'aria-selected', 'true');
+      // First tab should not be selected
+      cy.get('@no-wrapping-tabs-buttons')
+        .first()
+        .should('have.attr', 'aria-selected', 'false');
+    });
+
+    it('should not select the prev tab when the right arrow is pressed on first tab with no wrapping', () => {
+      cy.get('@no-wrapping-tabs-buttons')
+        .first()
+        .click()
+        .type('{leftArrow}')
+        .should('have.attr', 'aria-selected', 'true');
+      // Last tab should not be selected
+      cy.get('@no-wrapping-tabs-buttons')
+        .last()
+        .should('have.attr', 'aria-selected', 'false');
+    });
+
+    it('should select the first tab when the home key is pressed', () => {
+      cy.get('@basic-tabs-buttons')
+        .last()
+        .click()
+        .type('{home}')
+        .should('have.attr', 'aria-selected', 'false');
+      // Second tab should now be selected
+      cy.get('@basic-tabs-buttons')
+        .first()
+        .should('have.attr', 'aria-selected', 'true');
+    });
+
+    it('should select the last tab when the end key is pressed', () => {
+      cy.get('@basic-tabs-buttons')
+        .first()
+        .click()
+        .type('{end}')
+        .should('have.attr', 'aria-selected', 'false');
+      // Second tab should now be selected
+      cy.get('@basic-tabs-buttons')
+        .last()
+        .should('have.attr', 'aria-selected', 'true');
+    });
+  });
+
+
+  describe('Custom Events', () => {
+    beforeEach(() => {
+      cy.reload();
+    });
+
+
+    it('should emit the correct tab changed event when a new tab is clicked', () => {
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.TABS_CHANGED, (e) => {
+          expect(e.detail.tabsId).to.equal(IDS.BASIC);
+          expect(e.detail.prevTab).to.deep.equal({
+            'id': `${IDS.BASIC}-tab-1`,
+            'number': 1
+          });
+          expect(e.detail.activeTab).to.deep.equal({
+            'id': `${IDS.BASIC}-tab-3`,
+            'number': 3
+          });
+        });
+      });
+
+      cy.get('@basic-tabs-buttons').last().click();
+    });
+
+
+    it('should emit the correct tab changed event when a new tab is selected with the keyboard', () => {
+      //Select the first tab
+      cy.get('@basic-tabs-buttons').first().click();
+
+      // Add event listener
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.TABS_CHANGED, (e) => {
+          expect(e.detail.tabsId).to.equal(IDS.BASIC);
+          expect(e.detail.prevTab).to.deep.equal({
+            'id': `${IDS.BASIC}-tab-1`,
+            'number': 1
+          });
+          expect(e.detail.activeTab).to.deep.equal({
+            'id': `${IDS.BASIC}-tab-2`,
+            'number': 2
+          });
+        });
+      });
+
+      // Select next tab
+      cy.get('@basic-tabs-buttons').first().type('{rightArrow}');
+    });
+
+    it('should emit the correct tab changed event when a new tab is selected with wrapping', () => {
+      // Select the last tab
+      cy.get('@basic-tabs-buttons').last().click();
+
+      // Add event listener
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.TABS_CHANGED, (e) => {
+          expect(e.detail.tabsId).to.equal(IDS.BASIC);
+          expect(e.detail.prevTab).to.deep.equal({
+            'id': `${IDS.BASIC}-tab-3`,
+            'number': 3
+          });
+          expect(e.detail.activeTab).to.deep.equal({
+            'id': `${IDS.BASIC}-tab-1`,
+            'number': 1
+          });
+        });
+      });
+
+      // Select next tab
+      cy.get('@basic-tabs-buttons').last().type('{rightArrow}');
+    });
+
+    it('should emit the correct tab changed event when a new tab is selected with no wrapping', () => {
+      // Select the last tab
+      cy.get('@no-wrapping-tabs-buttons').last().click();
+
+      // Add event listener
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.TABS_CHANGED, (e) => {
+          expect(e.detail.tabsId).to.equal(IDS.NO_WRAPPING);
+          expect(e.detail.prevTab).to.deep.equal({
+            'id': `${IDS.NO_WRAPPING}-tab-3`,
+            'number': 3
+          });
+          expect(e.detail.activeTab).to.deep.equal({
+            'id': `${IDS.NO_WRAPPING}-tab-1`,
+            'number': 3
+          });
+        });
+      });
+
+      // Select next tab
+      cy.get('@no-wrapping-tabs-buttons').last().type('{rightArrow}');
+    });
+
+    it('should activate the correct tab when the next tab event is dispatched', () => {
+      // Add event listener to check tabs changed correctly
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.SET_NEXT_TAB, (e) => {
+          expect(e.detail.id).to.equal(IDS.CUSTOM_EVENTS);
+
+          cy.get('@custom-tabs-buttons').each((tab, index) => {
+            cy.get(tab)
+              .should('have.attr', 'role', 'tab')
+              .should('have.attr', 'aria-controls', `ace-tabs-custom-panel-${index + 1}`);
+
+            if (index === 1) {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'true');
+            } else {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'false');
+            }
+          });
+        });
+      });
+
+      // Dispatch update event for the custom events example
+      cy.window().then((window) => {
+        window.dispatchEvent(new CustomEvent(EVENTS.SET_NEXT_TAB, {
+          'detail': {
+            'id': IDS.CUSTOM_EVENTS
+          },
+        }));
+      });
+    });
+
+    it('should activate the correct tab when the previous tab event is dispatched', () => {
+      // Select the second tab in the tablist
+      cy.get('@custom-tabs-buttons')
+        .eq(1)
+        .click();
+
+      // Add event listener to check tabs changed correctly
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.SET_PREV_TAB, (e) => {
+          expect(e.detail.id).to.equal(IDS.CUSTOM_EVENTS);
+
+          cy.get('@custom-tabs-buttons').each((tab, index) => {
+            cy.get(tab)
+              .should('have.attr', 'role', 'tab')
+              .should('have.attr', 'aria-controls', `ace-tabs-custom-panel-${index + 1}`);
+
+            if (index === 0) {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'true');
+            } else {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'false');
+            }
+          });
+        });
+      });
+
+      // Dispatch update event for the custom events example
+      cy.window().then((window) => {
+        window.dispatchEvent(new CustomEvent(EVENTS.SET_PREV_TAB, {
+          'detail': {
+            'id': IDS.CUSTOM_EVENTS
+          },
+        }));
+      });
+    });
+
+    it('should activate the correct tab when the set tab event is dispatched', () => {
+      // Add event listener to check tabs changed correctly
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.SET_TAB, (e) => {
+          expect(e.detail.id).to.equal(IDS.CUSTOM_EVENTS);
+
+          cy.get('@custom-tabs-buttons').each((tab, index) => {
+            cy.get(tab)
+              .should('have.attr', 'role', 'tab')
+              .should('have.attr', 'aria-controls', `ace-tabs-custom-panel-${index + 1}`);
+
+            if (index === 2) {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'true');
+            } else {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'false');
+            }
+          });
+        });
+      });
+
+      // Dispatch update event for the custom events example
+      cy.window().then((window) => {
+        window.dispatchEvent(new CustomEvent(EVENTS.SET_TAB, {
+          'detail': {
+            'id': IDS.CUSTOM_EVENTS,
+            'tab': 3
+          },
+        }));
+      });
+    });
+
+    it('should correctly re-initialise tabs when update event is dispatched', () => {
+      // Add event listener to check tabs initialised correctly
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.UPDATE_TABS, (e) => {
+          expect(e.detail.id).to.equal(IDS.UPDATE_TABS);
+
+          cy.get('@update-tabs-tablist')
+            .should('have.attr', 'role', 'tablist')
+            .should('have.attr', 'aria-orientation', 'horizontal');
+
+          cy.get('@update-tabs-buttons').each((tab, index) => {
+            cy.get(tab)
+              .should('have.attr', 'role', 'tab')
+              .should('have.attr', 'aria-controls', `ace-tabs-update-panel-${index + 1}`);
+
+            if (index === 0) {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'true');
+            } else {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'false');
+            }
+          });
+
+          cy.get('@update-tabs-panels').each((panel, index) => {
+            cy.get(panel)
+              .should('have.attr', 'aria-labelledby', `ace-tabs-update-tab-${index + 1}`);
+          });
+        });
+
+        // Dispatch update event for the update example
+        cy.window().then((window) => {
+          window.dispatchEvent(new CustomEvent(EVENTS.UPDATE_TABS, {
+            'detail': {
+              'id': IDS.UPDATE_TABS
+            },
+          }));
+        });
+      });
+    });
+
+    it('should correctly update tabs when event is dispatched', () => {
+      // Remove the first button and panel from the tabs
+      cy.document().then((document) => {
+        const tabs = document.getElementById(IDS.UPDATE_TABS);
+        tabs.removeChild(tabs.children[1]);
+
+        const tablist = document.querySelector(`#${IDS.UPDATE_TABS} > [${ATTRS.TABLIST}]`);
+        tablist.removeChild(tablist.children[0]);
+      });
+
+      // Add event listener to check tabs initialised correctly
+      cy.window().then((window) => {
+        window.addEventListener(EVENTS.UPDATE_TABS, (e) => {
+          expect(e.detail.id).to.equal(IDS.UPDATE_TABS);
+
+          cy.get('@update-tabs-buttons').each((tab, index) => {
+            // Since we removed the first index needs to be offset by 1 to match IDs
+            index += 1;
+
+            cy.get(tab)
+              .should('have.attr', 'role', 'tab')
+              .should('have.attr', 'aria-controls', `ace-tabs-update-panel-${index + 1}`);
+
+            if (index === 1) {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'true');
+            } else {
+              cy.get(tab)
+                .should('have.attr', 'aria-selected', 'false');
+            }
+          });
+
+          cy.get('@update-tabs-panels').each((panel, index) => {
+            // Since we removed the first index needs to be offset by 1 to match IDs
+            index += 1;
+
+            cy.get(panel)
+              .should('have.attr', 'aria-labelledby', `ace-tabs-update-tab-${index + 1}`);
+          });
+        });
+
+        // Dispatch update event for the update example
+        cy.window().then((window) => {
+          window.dispatchEvent(new CustomEvent(EVENTS.UPDATE_TABS, {
+            'detail': {
+              'id': IDS.UPDATE_TABS
+            },
+          }));
+        });
+      });
+    });
+  });
+});
