@@ -428,7 +428,7 @@ context('Select', () => {
 
     it('Selecting an option with mouse should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
+        window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
           expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-5`);
           expect(e.detail.chosenOption.index).to.equal(4);
@@ -442,7 +442,7 @@ context('Select', () => {
 
     it('Selecting an option with ENTER should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
+        window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
           expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-4`);
           expect(e.detail.chosenOption.index).to.equal(3);
@@ -461,7 +461,7 @@ context('Select', () => {
 
     it('Selecting an option with SPACE should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
+        window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
           expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-2`);
           expect(e.detail.chosenOption.index).to.equal(1);
@@ -478,7 +478,7 @@ context('Select', () => {
 
     it('Selecting an option with type-ahead on trigger should dispatch custom event with correct details', () => {
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
+        window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
           expect(e.detail.id).to.equal(IDS.SELECT_1);
           expect(e.detail.chosenOption.id).to.equal(`${IDS.SELECT_1}-option-8`);
           expect(e.detail.chosenOption.index).to.equal(7);

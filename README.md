@@ -72,7 +72,7 @@ Potato-A11y uses Cypress as it's testing suite and all tests in `/src` should be
 5. Run the test server (doesn't use browser sync) using the command `npm run start:test`.
 6. Run `npm run test` locally to make sure tests pass and that the new tests are detected.
 
-For an template of a component test file see `/src/ace/template/component.test.js`.
+For a template of a component test file see `/src/ace/template/component.test.js`.
 
 ## Artifacts
 

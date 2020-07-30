@@ -300,7 +300,7 @@ context('Disclosure', () => {
     it('Clicking "toggle" trigger should dispatch "change" custom event with correct details', () => {
       let visible = false;
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.CHANGED, (e) => {
+        window.addEventListener(EVENTS.OUT.CHANGED, (e) => {
           visible = !visible;
           expect(e.detail.id).to.equal(IDS.DISCLOSURE_1);
           expect(e.detail.visible).to.equal(visible);
@@ -316,7 +316,7 @@ context('Disclosure', () => {
     it('Dispatching "toggle" custom event should dispatch "change" custom event with correct details', () => {
       let visible = false;
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.CHANGED, (e) => {
+        window.addEventListener(EVENTS.OUT.CHANGED, (e) => {
           visible = !visible;
           expect(e.detail.id).to.equal(IDS.CUSTOM_EVENT_DISCLOSURE);
           expect(e.detail.visible).to.equal(visible);
@@ -331,7 +331,7 @@ context('Disclosure', () => {
     it('Clicking "show" and "hide" triggers should dispatch "change" custom event with correct details', () => {
       let visible = true;
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.CHANGED, (e) => {
+        window.addEventListener(EVENTS.OUT.CHANGED, (e) => {
           visible = !visible;
           expect(e.detail.id).to.equal(IDS.DISCLOSURE_2);
           expect(e.detail.visible).to.equal(visible);
@@ -346,7 +346,7 @@ context('Disclosure', () => {
     it('Dispatching "show" and "hide" custom events should dispatch "change" custom event with correct details', () => {
       let visible = false;
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.CHANGED, (e) => {
+        window.addEventListener(EVENTS.OUT.CHANGED, (e) => {
           visible = !visible;
           expect(e.detail.id).to.equal(IDS.CUSTOM_EVENT_DISCLOSURE);
           expect(e.detail.visible).to.equal(visible);

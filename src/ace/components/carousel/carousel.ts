@@ -17,7 +17,9 @@ export const ATTRS = {
 };
 
 export const EVENTS = {
-  CHANGED: `${CAROUSEL}-changed`,
+  OUT: {
+    CHANGED: `${CAROUSEL}-changed`,
+  }
 };
 
 
@@ -141,7 +143,7 @@ export default class Carousel extends HTMLElement {
 
     // Dispatch an event that the slide has changed.
     window.dispatchEvent(new CustomEvent(
-      EVENTS.CHANGED,
+      EVENTS.OUT.CHANGED,
       {
         'detail': {
           'currentSlideNumber': this.currentSlideIndex + 1,

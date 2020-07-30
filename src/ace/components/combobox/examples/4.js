@@ -6,9 +6,10 @@ const comboboxId = 'search-combobox';
 
 document.addEventListener('DOMContentLoaded', () => {
   let optionChosen, searching = false;
-  const comboboxInputEl = document.querySelector(`#${comboboxId} [${ATTRS.INPUT}]`);
-  const comboboxStatusEl = document.querySelector(`#${comboboxId} [aria-live="polite"]`);
-  const comboboxListEl = document.querySelector(`#${comboboxId} [${ATTRS.LIST}]`);
+  const comboboxEl = document.getElementById(comboboxId);
+  const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
+  const comboboxStatusEl = comboboxEl.querySelector('[aria-live="polite"]');
+  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
   const chosenResultEl = document.getElementById('chosen-search-result');
 
   // Search when ENTER key pressed
@@ -50,10 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       comboboxListEl.appendChild(resultOption);
     });
     // Update combobox options
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.UPDATE_OPTIONS,
-      {'detail': {'id': comboboxId}},
-    ));
+    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
     searching = false;
   });
 
@@ -62,27 +60,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (comboboxListEl.childNodes.length === 0) {
       return;
     }
-
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.SHOW_LIST,
-      {'detail': {'id': comboboxId}},
-    ));
+    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
   });
 
   // Show results list when options intialised
-  window.addEventListener(EVENTS.OPTIONS_UPDATED, (e) => {
+  window.addEventListener(EVENTS.OUT.OPTIONS_UPDATED, (e) => {
     const detail = e['detail'];
     if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
       return;
     }
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.SHOW_LIST,
-      {'detail': {'id': comboboxId}},
-    ));
+    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
   });
 
   // Listen for chosen options
-  window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
+  window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
     const detail = e['detail'];
     if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
       return;
@@ -91,9 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chosenResultEl.textContent = `Option with ID '${detail['chosenOptionId']}' chosen.`;
 
     // Hide list
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.HIDE_LIST,
-      {'detail': {'id': comboboxId}},
-    ));
+    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
   });
 });

@@ -1,19 +1,10 @@
 import {EVENTS} from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const selectId = 'dynamic-select';
-  const selectListEl = document.querySelector(`#${selectId} ul`);
+  const selectEl = document.getElementById('dynamic-select');
+  const selectListEl = selectEl.querySelector('ul');
 
-  const updateOptions = () => {
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.UPDATE_OPTIONS,
-      {
-        'detail': {
-          'id': selectId,
-        }
-      },
-    ));
-  };
+  const updateOptions = () => selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
   document.getElementById('add-option')
     .addEventListener('click', () => {
