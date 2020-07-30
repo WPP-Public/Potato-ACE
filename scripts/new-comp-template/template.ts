@@ -37,11 +37,12 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Template extends HTMLElement {
+  // private classConst: <typescript-type>;
+  // private classConstWithSetValue = 'value';
+
+
   constructor() {
     super();
-
-
-    /* CLASS CONSTANTS */
 
 
     /* CLASS METHOD BINDINGS */
