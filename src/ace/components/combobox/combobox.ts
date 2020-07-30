@@ -21,15 +21,19 @@ export const ATTRS = {
 
 
 export const EVENTS = {
-  HIDE_LIST: `${COMBOBOX}-hide-list`,
-  LIST_TOGGLED: `${COMBOBOX}-list-toggled`,
-  OPTIONS_UPDATED: `${COMBOBOX}-options-updated`,
-  OPTION_CHOSEN: `${COMBOBOX}-option-chosen`,
-  OPTION_SELECTED: `${COMBOBOX}-option-selected`,
-  READY: `${COMBOBOX}-ready`,
-  SELECT_OPTION: `${COMBOBOX}-select-option`,
-  SHOW_LIST: `${COMBOBOX}-show-list`,
-  UPDATE_OPTIONS: `${COMBOBOX}-update-options`,
+  IN: {
+    HIDE_LIST: `${COMBOBOX}-hide-list`,
+    SELECT_OPTION: `${COMBOBOX}-select-option`,
+    SHOW_LIST: `${COMBOBOX}-show-list`,
+    UPDATE_OPTIONS: `${COMBOBOX}-update-options`,
+  },
+  OUT: {
+    LIST_TOGGLED: `${COMBOBOX}-list-toggled`,
+    OPTIONS_UPDATED: `${COMBOBOX}-options-updated`,
+    OPTION_CHOSEN: `${COMBOBOX}-option-chosen`,
+    OPTION_SELECTED: `${COMBOBOX}-option-selected`,
+    READY: `${COMBOBOX}-ready`,
+  }
 };
 
 
@@ -141,10 +145,10 @@ export default class Combobox extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.customEventsHandler);
-    window.addEventListener(EVENTS.HIDE_LIST, this.customEventsHandler);
-    window.addEventListener(EVENTS.SHOW_LIST, this.customEventsHandler);
-    window.addEventListener(EVENTS.SELECT_OPTION, this.customEventsHandler);
+    this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
+    this.addEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
+    this.addEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
+    this.addEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
     this.listEl.addEventListener('click', this.clickHandler);
     this.inputEl.addEventListener('focus', this.focusHandler);
     this.inputEl.addEventListener('blur', this.focusHandler);
@@ -172,7 +176,7 @@ export default class Combobox extends HTMLElement {
     }
 
     // Dispatch 'Ready' event
-    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
       }
@@ -182,10 +186,10 @@ export default class Combobox extends HTMLElement {
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.customEventsHandler);
-    window.removeEventListener(EVENTS.HIDE_LIST, this.customEventsHandler);
-    window.removeEventListener(EVENTS.SHOW_LIST, this.customEventsHandler);
-    window.removeEventListener(EVENTS.SELECT_OPTION, this.customEventsHandler);
+    this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
+    this.removeEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
+    this.removeEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
+    this.removeEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
     this.listEl.removeEventListener('click', this.clickHandler);
     this.inputEl.removeEventListener('focus', this.focusHandler);
     this.inputEl.removeEventListener('blur', this.focusHandler);
@@ -256,7 +260,7 @@ export default class Combobox extends HTMLElement {
     this.inputEl.setAttribute('aria-activedescendant', optionToSelectId);
     this.selectedOptionIndex = optionToSelectIndex;
 
-    window.dispatchEvent(new CustomEvent(EVENTS.OPTION_SELECTED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTION_SELECTED, {
       'detail': {
         'id': this.id,
         'selectedOptionId': optionToSelectId,
@@ -271,7 +275,7 @@ export default class Combobox extends HTMLElement {
   private chooseOption(optionToChooseIndex: number): void {
     this.changeSelectedOption(optionToChooseIndex);
     const chosenOption = this.options[optionToChooseIndex];
-    window.dispatchEvent(new CustomEvent(EVENTS.OPTION_CHOSEN, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTION_CHOSEN, {
       'detail': {
         'chosenOptionId': chosenOption.id,
         'id': this.id,
@@ -312,6 +316,40 @@ export default class Combobox extends HTMLElement {
     if (optionClicked) {
       const optionClickedIndex = [...this.options].indexOf(optionClicked);
       this.chooseOption(optionClickedIndex);
+    }
+  }
+
+
+  /*
+    Prevent inputEl blur event from triggering when list or a descendant of it is clicked
+  */
+  private customEventsHandler(e: CustomEvent): void {
+    switch(e.type) {
+      case EVENTS.IN.HIDE_LIST:
+        this.hideList();
+        break;
+      case EVENTS.IN.SELECT_OPTION: {
+        const detail = e['detail'];
+        if (!detail || !detail['optionId']) {
+          return;
+        }
+        const option = this.listEl.querySelector(`#${detail['optionId']}`) as HTMLLIElement;
+        if (!option) {
+          return;
+        }
+        const optionIndex = [...this.options].indexOf(option);
+        this.changeSelectedOption(optionIndex);
+        break;
+      }
+      case EVENTS.IN.SHOW_LIST:
+        this.showList();
+        break;
+      case EVENTS.IN.UPDATE_OPTIONS:
+        this.initialiseListOptions();
+        if (this.listAutocompletes) {
+          this.allOptions = [...this.options].map(option => option.cloneNode(true));
+        }
+        break;
     }
   }
 
@@ -375,7 +413,7 @@ export default class Combobox extends HTMLElement {
     this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
     this.listVisible = false;
 
-    window.dispatchEvent(new CustomEvent(EVENTS.LIST_TOGGLED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.LIST_TOGGLED, {
       'detail': {
         'id': this.id,
         'listVisibile': this.listVisible,
@@ -400,7 +438,7 @@ export default class Combobox extends HTMLElement {
       option.setAttribute('role', 'option');
     });
 
-    window.dispatchEvent(new CustomEvent(EVENTS.OPTIONS_UPDATED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTIONS_UPDATED, {
       'detail': {
         'id': this.id,
       }
@@ -518,50 +556,12 @@ export default class Combobox extends HTMLElement {
     this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'true');
     this.listVisible = true;
 
-    window.dispatchEvent(new CustomEvent(EVENTS.LIST_TOGGLED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.LIST_TOGGLED, {
       'detail': {
         'id': this.id,
         'listVisibile': this.listVisible,
       }
     }));
-  }
-
-
-  /*
-    Custom event handler
-  */
-  private customEventsHandler(e: CustomEvent): void {
-    const detail = e['detail'];
-    if (!detail || (detail['id'] !== this.id)) {
-      return;
-    }
-
-    switch(e.type) {
-      case EVENTS.HIDE_LIST:
-        this.hideList();
-        break;
-      case EVENTS.SELECT_OPTION: {
-        if (!detail['optionId']) {
-          return;
-        }
-        const option = this.listEl.querySelector<HTMLLIElement>(`#${detail['optionId']}`);
-        if (!option) {
-          return;
-        }
-        const optionIndex = [...this.options].indexOf(option);
-        this.changeSelectedOption(optionIndex);
-        break;
-      }
-      case EVENTS.SHOW_LIST:
-        this.showList();
-        break;
-      case EVENTS.UPDATE_OPTIONS:
-        this.initialiseListOptions();
-        if (this.listAutocompletes) {
-          this.allOptions = [...this.options].map(option => option.cloneNode(true));
-        }
-        break;
-    }
   }
 }
 

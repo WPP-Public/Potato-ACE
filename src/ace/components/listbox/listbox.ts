@@ -17,8 +17,12 @@ export const ATTRS = {
 
 
 export const EVENTS = {
-  READY: `${LISTBOX}-ready`,
-  UPDATE_OPTIONS: `${LISTBOX}-update-options`,
+  IN: {
+    UPDATE_OPTIONS: `${LISTBOX}-update-options`,
+  },
+  OUT: {
+    READY: `${LISTBOX}-ready`,
+  }
 };
 
 
@@ -97,18 +101,18 @@ export default class Listbox extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
+    this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
     this.listEl.addEventListener('focus', this.focusHandler);
     this.listEl.addEventListener('blur', this.focusHandler);
     this.listEl.addEventListener('keydown', this.keydownHandler);
     this.listEl.addEventListener('click', this.clickHandler);
-    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler);
 
 
     /* INITIALISATION */
     this.initialiseList();
 
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
       }
@@ -118,11 +122,11 @@ export default class Listbox extends HTMLElement {
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
+    this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
     this.listEl.removeEventListener('focus', this.focusHandler);
     this.listEl.removeEventListener('blur', this.focusHandler);
     this.listEl.removeEventListener('keydown', this.keydownHandler);
     this.listEl.removeEventListener('click', this.clickHandler);
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.updateOptionsHandler);
   }
 
 
@@ -443,15 +447,10 @@ export default class Listbox extends HTMLElement {
 
   /*
     Custom event handler for updating list options
-    Run when the EVENTS.UPDATE_OPTIONS event is fired and updates
+    Run when the EVENTS.IN.UPDATE_OPTIONS event is fired and updates
     the listbox options and indices
   */
-  private updateOptionsHandler(e: CustomEvent): void {
-    const detail = e['detail'];
-    if (!detail || (detail['id'] !== this.id)) {
-      return;
-    }
-
+  private updateOptionsHandler(): void {
     this.activeOptionIndex = null;
     this.initialiseList();
   }
