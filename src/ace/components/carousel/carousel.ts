@@ -34,7 +34,6 @@ export default class Carousel extends HTMLElement {
   private slideCount: number;
 
 
-  /* CONSTRUCTOR */
   constructor() {
     super();
 

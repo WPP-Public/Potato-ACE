@@ -47,7 +47,7 @@ export default class Tabs extends HTMLElement {
   private panelEls: NodeListOf<HTMLElement>;
   private prevTabKey = KEYS.LEFT;
   private tabCount = 0;
-  private tabEls: NodeListOf<HTMLElement>;
+  private tabEls: NodeListOf<HTMLButtonElement>;
   private tablistEl: HTMLElement | null = null;
   private vertical = false;
   private wrapping = false;
@@ -159,7 +159,7 @@ export default class Tabs extends HTMLElement {
     Handles a tab being clicked
   */
   private clickHandler(e: MouseEvent): void {
-    const tab = (e.target as HTMLElement).closest('[role=tab]') as HTMLElement;
+    const tab = (e.target as HTMLElement).closest('[role=tab]') as HTMLButtonElement;
     const index = [...this.tabEls].indexOf(tab);
     this.activatePanel(index);
   }

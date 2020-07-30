@@ -33,7 +33,7 @@ export const EVENTS = {
     OPTION_CHOSEN: `${COMBOBOX}-option-chosen`,
     OPTION_SELECTED: `${COMBOBOX}-option-selected`,
     READY: `${COMBOBOX}-ready`,
-  }
+  },
 };
 
 
