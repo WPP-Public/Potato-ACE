@@ -31,27 +31,18 @@ export const searchTimeoutTime = 500;
 
 /* CLASS */
 export default class Listbox extends HTMLElement {
-  public activeOptionIndex: number;
-  private allSelected: boolean;
-  private lastSelectedOptionIndex: number;
-  public listEl: HTMLElement;
+  private allSelected = false;
+  private lastSelectedOptionIndex: number|null = null;
   private multiselectable: boolean;
-  private options: Array<HTMLElement>;
-  private query: string;
-  private searchTimeout: number;
+  private options: NodeListOf<HTMLLIElement>;
+  private query = '';
+  private searchTimeout: number|null = null;
+  activeOptionIndex: number|null = null;
+  listEl: HTMLElement;
+
 
   constructor() {
     super();
-
-
-    /* CLASS CONSTANTS */
-    this.activeOptionIndex = null;
-    this.allSelected = false;
-    this.lastSelectedOptionIndex = null;
-    this.options = [];
-    this.query = '';
-    this.searchTimeout = null;
-
 
     /* CLASS METHOD BINDINGS */
     this.clearListSearch = this.clearListSearch.bind(this);
@@ -76,6 +67,7 @@ export default class Listbox extends HTMLElement {
       this.querySelector(`[${ATTRS.LIST}]`) ||
       this.querySelector('ul') ||
       this.querySelector('ol');
+
     // Create <ul> if neither <ul> nor <ol> present
     if (!this.listEl) {
       this.listEl = document.createElement('ul');
@@ -226,7 +218,7 @@ export default class Listbox extends HTMLElement {
   */
   public initialiseList(): void {
     // Get all child <li> elements
-    this.options = Array.from(this.listEl.querySelectorAll('li'));
+    this.options = this.listEl.querySelectorAll('li');
 
     if (this.options.length === 0) {
       return;
@@ -313,9 +305,7 @@ export default class Listbox extends HTMLElement {
       if (this.multiselectable) {
         if (e.ctrlKey || e.metaKey) {
           e.preventDefault();
-          this.options.forEach(option => {
-            option.setAttribute('aria-selected', (!this.allSelected).toString());
-          });
+          this.options.forEach(option => option.setAttribute('aria-selected', (!this.allSelected).toString()));
           this.allSelected = !this.allSelected;
           return;
         }

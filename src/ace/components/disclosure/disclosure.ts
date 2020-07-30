@@ -31,15 +31,12 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Disclosure extends HTMLElement {
-  private triggerEls: Array<HTMLElement>;
-  private triggerSelector: string;
+  private triggerEls: NodeListOf<Element>;
+  private readonly triggerSelector = `[${ATTRS.TRIGGER}=${this.id}]`;
 
-  /* CONSTRUCTOR */
+
   constructor() {
     super();
-
-    /* CLASS CONSTANTS */
-    this.triggerSelector = `[${ATTRS.TRIGGER}=${this.id}]`;
 
 
     /* CLASS METHOD BINDINGS */
@@ -51,7 +48,7 @@ export default class Disclosure extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.triggerEls = Array.from(document.querySelectorAll(this.triggerSelector));
+    this.triggerEls = document.querySelectorAll(this.triggerSelector);
 
 
     /* GET DOM DATA */

@@ -29,14 +29,13 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Select extends Listbox {
-  private selectedOptionEl: HTMLElement;
-  private triggerEl: HTMLElement;
+  private selectedOptionEl: HTMLLIElement;
+  private triggerEl: HTMLButtonElement;
   private triggerOptionIndex: number;
+
 
   constructor() {
     super();
-
-    /* CLASS CONSTANTS */
 
 
     /* CLASS METHOD BINDINGS */
