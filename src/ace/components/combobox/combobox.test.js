@@ -104,7 +104,7 @@ context(`Combobox`, () => {
 
       it(`Clicking an option should hide list and change input's text to match the option's`, () => {
         cy.window().then((window) => {
-          window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
+          window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
             expect(e.detail.id).to.equal(IDS.BASIC_CB);
             expect(e.detail.chosenOptionId).to.equal(`${IDS.BASIC_CB}-option-4`);
           }, {once: true});
@@ -138,7 +138,7 @@ context(`Combobox`, () => {
 
         it(`ENTER should choose selected option, updating input value to match it's value, and hide the list`, () => {
           cy.window().then((window) => {
-            window.addEventListener(EVENTS.OPTION_CHOSEN, (e) => {
+            window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
               expect(e.detail.id).to.equal(IDS.BASIC_CB);
               expect(e.detail.chosenOptionId).to.equal(`${IDS.BASIC_CB}-option-9`);
             }, {once: true});

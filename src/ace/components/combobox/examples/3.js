@@ -1,9 +1,9 @@
 import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const comboboxId = 'ace-combobox-custom-events';
+  const comboboxEl = document.getElementById('ace-combobox-custom-events');
+  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
   const optionNumberEl = document.getElementById('select-option-number-input');
-  const comboboxListEl = document.querySelector(`#${comboboxId} [${ATTRS.LIST}]`);
 
   window.addEventListener('click', (e) => {
     switch (e.target.id) {
@@ -12,33 +12,28 @@ document.addEventListener('DOMContentLoaded', () => {
           <li>New Option 1</li>
           <li>New Option 2</li>
           <li>New Option 3</li>`;
-        window.dispatchEvent(new CustomEvent(
-          EVENTS.UPDATE_OPTIONS,
-          {'detail': {'id': comboboxId}},
-        ));
+        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
         break;
+
       case 'show-list-btn':
-        window.dispatchEvent(new CustomEvent(
-          EVENTS.SHOW_LIST,
-          {'detail': {'id': comboboxId}},
-        ));
+        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
         break;
+
       case 'hide-list-btn':
-        window.dispatchEvent(new CustomEvent(
-          EVENTS.HIDE_LIST,
-          {'detail': {'id': comboboxId}},
-        ));
+        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
         break;
+
       case 'select-option-btn': {
         const optionNumber = parseInt(optionNumberEl.value);
-        const option = document.querySelectorAll(`#${comboboxId} li`)[optionNumber-1];
+        const option = comboboxEl.querySelectorAll('li')[optionNumber-1];
         if (!option) {
           return;
         }
-        window.dispatchEvent(new CustomEvent(
-          EVENTS.SELECT_OPTION,
-          {'detail': {'id': comboboxId, 'optionId': option.id}},
-        ));
+        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
+          'detail': {
+            'optionId': option.id
+          }
+        }));
         break;
       }
     }

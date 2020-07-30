@@ -1,23 +1,14 @@
 import {EVENTS} from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const listboxId = 'dynamic-listbox';
-  const listboxListEl = document.querySelector(`#${listboxId} ul`);
+  const listboxEl = document.getElementById('dynamic-listbox');
+  const listboxListEl = listboxEl.querySelector('ul');
 
-  const updateOptions = () => {
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.UPDATE_OPTIONS,
-      {
-        'detail': {
-          'id': listboxId,
-        }
-      },
-    ));
-  };
+  const updateOptions = () => listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
   document.getElementById('add-option')
     .addEventListener('click', () => {
-      listboxListEl.innerHTML += '<li>Iron Man</li>';
+      listboxListEl.innerHTML += '<li>New Option</li>';
       updateOptions();
     });
 

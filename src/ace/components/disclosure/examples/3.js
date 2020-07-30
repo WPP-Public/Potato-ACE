@@ -1,6 +1,7 @@
 import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const disclosureEl = document.getElementById('custom-event-triggered-disclosure');
   window.addEventListener('click', (e) => {
     const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
@@ -10,23 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    let eventType = EVENTS.TOGGLE;
-
+    let eventType = EVENTS.IN.TOGGLE;
     if (customEventShowBtnClicked) {
-      eventType = EVENTS.SHOW;
+      eventType = EVENTS.IN.SHOW;
     }
-
     if (customEventHideBtnClicked) {
-      eventType = EVENTS.HIDE;
+      eventType = EVENTS.IN.HIDE;
     }
 
-    window.dispatchEvent(new CustomEvent(
-      eventType,
-      {
-        'detail': {
-          'id': 'custom-event-triggered-disclosure',
-        }
-      },
-    ));
+    disclosureEl.dispatchEvent(new CustomEvent(eventType));
   });
 });

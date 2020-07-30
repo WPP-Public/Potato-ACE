@@ -42,12 +42,15 @@ The following SASS is applied to the component, each declaration of which can be
 
 Disclosure uses the following custom events, the names of which are available in its exported `EVENTS` object, similar to `ATTRS`, so they may be imported into other modules.
 
+### Dispatched events
 
-### Ready
+The following events are dispatched on `window` by Disclosure.
+
+#### Ready
 
 `ace-disclosure-ready`
 
-This event is dispatched on `window` when Disclosure finishes initialising. The event name is available as the value of the `READY` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
+This event is dispatched when Disclosure finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -55,30 +58,30 @@ This event is dispatched on `window` when Disclosure finishes initialising. The 
 }
 ```
 
-### Changed
+
+#### Changed
 
 `ace-disclosure-changed`
 
-This event is dispatched when a Disclosure visibility is changed. The event name is available as the value of the `CHANGED` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
+This event is dispatched when Disclosure's visibility changes. The event name is available as `EVENTS.OUT.CHANGED`, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Disclosure [string],
+  'id': // ID of Disclosure [string]
   'visible': // Whether the Disclosure is visible or not [boolean]
 }
 ```
 
-### Hide, Show and Toggle
+### Listened for events
+
+Disclosure listens for the following events, which should be dispatched by the user's code on the specific `ace-disclosure` element.
+
+
+#### Hide, Show and Toggle
 
 `ace-disclosure-hide`, `ace-disclosure-show` & `ace-disclosure-toggle`
 
-These events should be dispatched on `window` to hide, show and toggle Disclosure respectively. The event names are available as the values of the `HIDE`, `SHOW` & `TOGGLE` properties of the exported `EVENTS` object and their `detail` objects should be composed as follows:
-
-```js
-'detail': {
-  'id': // ID of Disclosure [string]
-}
-```
+These events should be dispatched to hide, show and toggle Disclosure respectively. The event names are available as `EVENTS.IN.HIDE`, `EVENTS.IN.SHOW` & `EVENTS.IN.TOGGLE`.
 
 
 ## Examples
@@ -162,6 +165,7 @@ Example of Disclosure controlled through custom events. The buttons in this exam
 import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const disclosureEl = document.getElementById('custom-event-triggered-disclosure');
   window.addEventListener('click', (e) => {
     const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
@@ -171,24 +175,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    let eventType = EVENTS.TOGGLE;
-
+    let eventType = EVENTS.IN.TOGGLE;
     if (customEventShowBtnClicked) {
-      eventType = EVENTS.SHOW;
+      eventType = EVENTS.IN.SHOW;
     }
-
     if (customEventHideBtnClicked) {
-      eventType = EVENTS.HIDE;
+      eventType = EVENTS.IN.HIDE;
     }
 
-    window.dispatchEvent(new CustomEvent(
-      eventType,
-      {
-        'detail': {
-          'id': 'custom-event-triggered-disclosure',
-        }
-      },
-    ));
+    disclosureEl.dispatchEvent(new CustomEvent(eventType));
   });
 });
 ```

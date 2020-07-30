@@ -27,7 +27,7 @@
 <p>To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color, respectively.</p>
 <pre><code class="language-scss">/* VARIABLES */
 $ace-listbox-active-option-outline: 2px dotted #000 !default;
-$ace-listbox-selected-option-bg-color: #ccc !default;
+$ace-listbox-selected-option-bg-color: #c2ddef !default;
 
 
 /* STYLES */
@@ -46,22 +46,21 @@ $ace-listbox-selected-option-bg-color: #ccc !default;
 }
 </code></pre>
 <h2>Custom events</h2>
-<p>Listbox uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so it may be imported into other modules.</p>
-<h3>Ready</h3>
+<p>Listbox uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
+<h3>Dispatched events</h3>
+<p>The following events are dispatched on <code>window</code> by Listbox.</p>
+<h4>Ready</h4>
 <p><code>ace-listbox-ready</code></p>
-<p>This event is dispatched on <code>window</code> when Listbox finishes initialising. The event name is available as the value of the <code>READY</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Listbox finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Listbox [string]
 }
 </code></pre>
-<h3>Update options</h3>
+<h3>Listened for events</h3>
+<p>Listbox listens for the following events, which should be dispatched by the user's code on the specific <code>ace-listbox</code> element.</p>
+<h4>Update options</h4>
 <p><code>ace-listbox-update-options</code></p>
-<p>This event should be dispatched on <code>window</code> when options are added or deleted, and causes Listbox to reinitialise its options. The event name is available as the value of the <code>UPDATE_OPTIONS</code> property of the exported <code>EVENTS</code> object and its <code>detail</code> object should be composed as follows:</p>
-<pre><code class="language-js">'detail': {
-  'id': // ID of Listbox [string],
-  'noneSelected': // Whether to initialise a single-select listbox with no selected options or not (optional) [boolean]
-}
-</code></pre>
+<p>This event should be dispatched when options are added or deleted, and causes Listbox to reinitialise itself. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Single-select Listbox</h3>
@@ -238,23 +237,14 @@ $ace-listbox-selected-option-bg-color: #ccc !default;
 <pre><code class="language-js">import {EVENTS} from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const listboxId = 'dynamic-listbox';
-  const listboxListEl = document.querySelector(`#${listboxId} ul`);
+  const listboxEl = document.getElementById('dynamic-listbox');
+  const listboxListEl = listboxEl.querySelector('ul');
 
-  const updateOptions = () =&gt; {
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.UPDATE_OPTIONS,
-      {
-        'detail': {
-          'id': listboxId,
-        }
-      },
-    ));
-  };
+  const updateOptions = () =&gt; listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
   document.getElementById('add-option')
     .addEventListener('click', () =&gt; {
-      listboxListEl.innerHTML += '&lt;li&gt;Iron Man&lt;/li&gt;';
+      listboxListEl.innerHTML += '&lt;li&gt;New Option&lt;/li&gt;';
       updateOptions();
     });
 

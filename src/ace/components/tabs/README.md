@@ -16,7 +16,7 @@ $ace-tabs-tab-bg-colour: transparent !default;
 $ace-tabs-tab-padding-horizontal: 32px !default;
 $ace-tabs-tab-padding-vertical: 8px !default;
 $ace-tabs-tab-hover-bg-colour: #eee !default;
-$ace-tabs-active-tab-border-colour: #3297fd !default;
+$ace-tabs-active-tab-border-colour: #c2ddef !default;
 $ace-tabs-active-tab-border-width: 2px !default;
 
 
@@ -116,7 +116,7 @@ $ace-tabs-hover-colour: #e6e4e7 !default;
   white-space: nowrap;
 }
 
-[ace-tabs-vertical-tablist] {
+[ace-tabs-tablist-vertical] {
   margin: 0 10px 0 0;
 
   & [ace-tabs-active-tab] {
@@ -365,25 +365,25 @@ In some cases you might want to customise tabs to limit the tabs which can be ac
 import {EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const TABS_ID = 'ace-tabs-custom';
-
+  const tabsEl = document.getElementById('ace-tabs-custom');
   const setTabForm = document.getElementById('set-tab-form');
 
   window.addEventListener('click', (e) => {
     if (e.target.id === 'prev-tab-btn') {
-      window.dispatchEvent(new CustomEvent(EVENTS.SET_PREV_TAB, {detail: {id: TABS_ID}}));
+      tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.SET_PREV_TAB));
     } else if (e.target.id === 'next-tab-btn') {
-      window.dispatchEvent(new CustomEvent(EVENTS.SET_NEXT_TAB, {detail: {id: TABS_ID}}));
+      tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.SET_NEXT_TAB));
     }
   });
 
   setTabForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    window.dispatchEvent(new CustomEvent(EVENTS.SET_TAB, {detail: {
-      id: TABS_ID,
-      tab: +formData.get('tab-number')
-    }}));
+    tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.SET_TAB, {
+      detail: {
+        tab: +formData.get('tab-number')
+      }
+    }));
   });
 });
 ```
@@ -422,18 +422,16 @@ You may want tabs to be added, removed or updated after initial load and so the 
 import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const TABS_ID = 'ace-tabs-update';
-  const TABS_EL = document.getElementById(TABS_ID);
-  const TABSLIST_EL = TABS_EL.querySelector(`[${ATTRS.TABLIST}]`);
+  const tabsEl = document.getElementById('ace-tabs-update');
+  const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
   const addTab = () => {
-    const tabNumber = TABSLIST_EL.children.length + 1;
-
-    TABSLIST_EL.insertAdjacentHTML('beforeend', `
+    const tabNumber = tablistEl.children.length + 1;
+    tablistEl.insertAdjacentHTML('beforeend', `
       <button>Tab ${tabNumber}</button>
     `);
 
-    TABS_EL.insertAdjacentHTML('beforeend', `
+    tabsEl.insertAdjacentHTML('beforeend', `
       <div>
         <h3>Panel ${tabNumber}</h3>
         <p>Created dynamically</p>
@@ -442,8 +440,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const removeTab = () => {
-    TABSLIST_EL.removeChild(TABSLIST_EL.lastElementChild);
-    TABS_EL.removeChild(TABS_EL.lastElementChild);
+    tablistEl.removeChild(tablistEl.lastElementChild);
+    tabsEl.removeChild(tabsEl.lastElementChild);
   };
 
   window.addEventListener('click', (e) => {
@@ -454,9 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
       removeTab();
     }
 
-    window.dispatchEvent(new CustomEvent(EVENTS.UPDATE_TABS, {detail: {
-      id: TABS_ID,
-    }}));
+    tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_TABS));
   });
 });
 ```

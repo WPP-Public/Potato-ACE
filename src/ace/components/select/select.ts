@@ -17,9 +17,13 @@ export const ATTRS = {
 
 
 export const EVENTS = {
-  OPTION_CHOSEN: `${SELECT}-option-chosen`,
-  READY: `${SELECT}-ready`,
-  UPDATE_OPTIONS: `${SELECT}-update-options`,
+  IN: {
+    UPDATE_OPTIONS: `${SELECT}-update-options`,
+  },
+  OUT: {
+    OPTION_CHOSEN: `${SELECT}-option-chosen`,
+    READY: `${SELECT}-ready`,
+  }
 };
 
 
@@ -79,8 +83,8 @@ export default class Select extends Listbox {
 
     /* ADD EVENT LISTENERS */
     this.addEventListener('keydown', this.selectKeydownHandler);
+    this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
     window.addEventListener('click', this.selectClickHandler);
-    window.addEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
 
 
     /* INITIALISATION */
@@ -89,7 +93,7 @@ export default class Select extends Listbox {
     this.updateTriggerText();
 
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
       }
@@ -100,8 +104,8 @@ export default class Select extends Listbox {
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
     this.removeEventListener('keydown', this.selectKeydownHandler);
+    this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
     window.removeEventListener('click', this.selectClickHandler);
-    window.removeEventListener(EVENTS.UPDATE_OPTIONS, this.selectUpdateOptionsHandler);
 
     super.disconnectedCallback();
   }
@@ -130,11 +134,11 @@ export default class Select extends Listbox {
 
 
   /*
-    Show dropdown list
+    Dispatch option chosen custom event
   */
   private dispatchOptionChosenEvent(): void {
     const chosenOptionEl = this.listEl.querySelector('[aria-selected="true"]');
-    window.dispatchEvent(new CustomEvent(EVENTS.OPTION_CHOSEN, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTION_CHOSEN, {
       'detail': {
         'chosenOption': {
           'id': chosenOptionEl.id,
@@ -236,11 +240,7 @@ export default class Select extends Listbox {
   /*
     Update options custom event handler
   */
-  private selectUpdateOptionsHandler(e: CustomEvent): void {
-    if (!e.detail || (e.detail.id !== this.id)) {
-      return;
-    }
-
+  private selectUpdateOptionsHandler(): void {
     this.activeOptionIndex = null;
     this.initialiseList();
     this.updateTriggerText();

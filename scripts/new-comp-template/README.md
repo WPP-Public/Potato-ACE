@@ -39,6 +39,7 @@ After `DOMContentLoaded` is fired, Template automatically instantiates an instan
 The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by users.
 
 ```scss
+
 ```
 
 
@@ -47,12 +48,15 @@ The following SASS is applied to the component, each declaration of which can be
 <!-- TODO: Remove 'listened for' in following sentence if component only dispatches and does not listen for events -->
 Template uses the following custom events, the names of which are available in its exported `EVENTS` object, similar to `ATTRS`, so they may be imported into other modules.
 
+### Dispatched events
 
-### Ready
+The following events are dispatched on `window` by Template.
+
+#### Ready
 
 `ace-template-ready`
 
-This event is dispatched on `window` when Template finishes initialising. The event name is available as the value of the `READY` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
+This event is dispatched when Template finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -60,19 +64,27 @@ This event is dispatched on `window` when Template finishes initialising. The ev
 }
 ```
 
-<!-- TODO: Replace 'Listened for event' with a descriptive name -->
-### Listened for event
+
+### Listened for events
+
+Template listens for the following events, which should be dispatched by the user's code on the specific `ace-template` element.
+
+
+<!-- TODO: Replace 'Listened for event name' with a descriptive name -->
+#### Listened for event name
 
 <!-- TODO: Replace 'template-event-name' with actual value -->
 `ace-template-event-name`
 
 <!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
-This event should be dispatched on `window` when <!-- TODO: Describe when event should be dispatched -->, and causes Template to  <!-- TODO: Describe what the event causes template to do -->. The event name is available as the value of the <!-- TODO: Add property containing event name in EVENTS object --> property of the exported `EVENTS` object and its `detail` object should be composed as follows:
-<!-- DESCRIBE EACH PROPERTY OF THE 'detail' OBJECT -->
+This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
+
+<!-- TODO: If detail property used add the following and describe each of its properties --> 
+, and its `detail` object should be composed as follows:
 
 ```js
 'detail': {
-  'id': // ID of Template [string]
+  'prop': // Description of prop [prop type]
 }
 ```
 
@@ -94,16 +106,19 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 <!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
 ```html
+
 ```
 
 <!-- IF EXAMPLE HAS CUSTOM STYLES INCLUDE AN EMPTY SCSS CODE BLOCK AS WELL -->
 <!--
 ```scss
+
 ```
 -->
 
 <!-- IF EXAMPLE HAS CUSTOM JS CODE INCLUDE AN EMPTY JS CODE BLOCK AS WELL -->
 <!--
 ```js
+
 ```
 -->
