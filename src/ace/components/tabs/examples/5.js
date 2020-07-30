@@ -1,18 +1,16 @@
 import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const TABS_ID = 'ace-tabs-update';
-  const TABS_EL = document.getElementById(TABS_ID);
-  const TABSLIST_EL = TABS_EL.querySelector(`[${ATTRS.TABLIST}]`);
+  const tabsEl = document.getElementById('ace-tabs-update');
+  const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
   const addTab = () => {
-    const tabNumber = TABSLIST_EL.children.length + 1;
-
-    TABSLIST_EL.insertAdjacentHTML('beforeend', `
+    const tabNumber = tablistEl.children.length + 1;
+    tablistEl.insertAdjacentHTML('beforeend', `
       <button>Tab ${tabNumber}</button>
     `);
 
-    TABS_EL.insertAdjacentHTML('beforeend', `
+    tabsEl.insertAdjacentHTML('beforeend', `
       <div>
         <h3>Panel ${tabNumber}</h3>
         <p>Created dynamically</p>
@@ -21,8 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const removeTab = () => {
-    TABSLIST_EL.removeChild(TABSLIST_EL.lastElementChild);
-    TABS_EL.removeChild(TABS_EL.lastElementChild);
+    tablistEl.removeChild(tablistEl.lastElementChild);
+    tabsEl.removeChild(tabsEl.lastElementChild);
   };
 
   window.addEventListener('click', (e) => {
@@ -33,8 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
       removeTab();
     }
 
-    window.dispatchEvent(new CustomEvent(EVENTS.UPDATE_TABS, {detail: {
-      id: TABS_ID,
-    }}));
+    tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_TABS));
   });
 });

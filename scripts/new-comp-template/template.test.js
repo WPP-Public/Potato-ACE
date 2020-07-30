@@ -130,7 +130,7 @@
 
 //     it('Doing something dispatches custom event with correct details', () => {
 //       cy.window().then((window) => {
-//         window.addEventListener(EVENTS.SOME_EVENT, (e) => {
+//         window.addEventListener(EVENTS.OUT.SOME_EVENT, (e) => {
 //           expect(e.detail.id).to.equal(IDS.TEMPLATE_1);
 //           // TODO: Check other e.detail properties if any
 //         });

@@ -26,12 +26,16 @@ export const ATTRS = {
 
 
 export const EVENTS = {
-  READY: `${TABS}-ready`,
-  SET_NEXT_TAB: `${TABS}-next-tab`,
-  SET_PREV_TAB: `${TABS}-prev-tab`,
-  SET_TAB: `${TABS}-set-tab`,
-  TABS_PANEL_CHANGED: `${TABS}-changed`,
-  UPDATE_TABS: `${TABS}-update`
+  IN: {
+    SET_NEXT_TAB: `${TABS}-next-tab`,
+    SET_PREV_TAB: `${TABS}-prev-tab`,
+    SET_TAB: `${TABS}-set-tab`,
+    UPDATE_TABS: `${TABS}-update`
+  },
+  OUT: {
+    READY: `${TABS}-ready`,
+    TABS_PANEL_CHANGED: `${TABS}-changed`,
+  }
 };
 
 
@@ -90,10 +94,10 @@ export default class Tabs extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
-    window.addEventListener(EVENTS.SET_NEXT_TAB, this.customEventsHander);
-    window.addEventListener(EVENTS.SET_PREV_TAB, this.customEventsHander);
-    window.addEventListener(EVENTS.SET_TAB, this.customEventsHander);
-    window.addEventListener(EVENTS.UPDATE_TABS, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.SET_TAB, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.UPDATE_TABS, this.customEventsHander);
     this.tablistEl.addEventListener('click', this.clickHandler);
     this.tablistEl.addEventListener('keydown', this.keydownHandler);
 
@@ -106,9 +110,9 @@ export default class Tabs extends HTMLElement {
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    window.removeEventListener(EVENTS.SET_NEXT_TAB, this.customEventsHander);
-    window.removeEventListener(EVENTS.SET_PREV_TAB, this.customEventsHander);
-    window.removeEventListener(EVENTS.SET_TAB, this.customEventsHander);
+    window.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
+    window.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
+    window.removeEventListener(EVENTS.IN.SET_TAB, this.customEventsHander);
     this.tablistEl.removeEventListener('click', this.clickHandler);
     this.tablistEl.removeEventListener('keydown', this.keydownHandler);
   }
@@ -135,7 +139,7 @@ export default class Tabs extends HTMLElement {
     const oldTabIndex = this.activeTabIndex;
     this.activeTabIndex = panelToActivateIndex;
 
-    window.dispatchEvent(new CustomEvent(EVENTS.TABS_PANEL_CHANGED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.TABS_PANEL_CHANGED, {
       'detail': {
         'activeTab': {
           'id': newTabEl.id,
@@ -165,21 +169,15 @@ export default class Tabs extends HTMLElement {
     Handles custom events for the tabs element
   */
   private customEventsHander(e: CustomEvent): void {
-    // Check if event has a 'detail' property and if detail has an id that matches this class instance id
-    const detail = e['detail'];
-    if (!detail || (detail['id'] !== this.id)) {
-      return;
-    }
-
     // Depending on event type trigger appropriate action
     switch (e.type) {
-      case EVENTS.SET_NEXT_TAB:
+      case EVENTS.IN.SET_NEXT_TAB:
         this.setTabBasedOnDirection(1);
         break;
-      case EVENTS.SET_PREV_TAB:
+      case EVENTS.IN.SET_PREV_TAB:
         this.setTabBasedOnDirection(-1);
         break;
-      case EVENTS.SET_TAB:
+      case EVENTS.IN.SET_TAB:
         {
           const detail = e['detail'];
           if (!detail) {
@@ -192,7 +190,7 @@ export default class Tabs extends HTMLElement {
           this.activatePanel(tabNumber - 1);
         }
         break;
-      case EVENTS.UPDATE_TABS:
+      case EVENTS.IN.UPDATE_TABS:
         this.updateTabs();
         break;
     }
@@ -324,7 +322,7 @@ export default class Tabs extends HTMLElement {
     this.panelEls.forEach((panelEl, index) => panelEl.setAttribute(ATTRS.VISIBLE, index === this.activeTabIndex ? 'true' : 'false'));
 
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
       }

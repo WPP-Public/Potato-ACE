@@ -79,12 +79,15 @@ ace-select {
 
 Select uses the following custom events, the names of which are available in its exported `EVENTS` object, similar to `ATTRS`, so they may be imported into other modules.
 
+### Dispatched events
 
-### Ready
+The following events are dispatched on `window` by Select.
+
+#### Ready
 
 `ace-select-ready`
 
-This event is dispatched on `window` when Select finishes initialising. The event name is available as the value of the `READY` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
+This event is dispatched when Select finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -92,11 +95,11 @@ This event is dispatched on `window` when Select finishes initialising. The even
 }
 ```
 
-### Option chosen
+#### Option chosen
 
 `ace-select-option-chosen`
 
-This event is dispatched on `window` when an option is chosen. The event name is available as the value of the `OPTION_CHOSEN` property of the exported `EVENTS` object, and its `detail` property is composed as follows:
+This event is dispatched when an option is chosen by the user. The event name is available as `EVENTS.OUT.OPTION_CHOSEN`, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -108,17 +111,16 @@ This event is dispatched on `window` when an option is chosen. The event name is
 }
 ```
 
-### Update options
+### Listened for events
+
+Listbox listens for the following events, which should be dispatched by the user's code on the specific `ace-listbox` element.
+
+
+#### Update options
 
 `ace-select-update-options`
 
-This event should be dispatched on `window` when options are added or deleted, and causes Select to reinitialise its options. The event name is available as the value of the `UPDATE_OPTIONS` property of the exported `EVENTS` object and its `detail` object should be composed as follows:
-
-```js
-'detail': {
-  'id': // ID of Select [string]
-}
-```
+This event should be dispatched when options are added or deleted to the listbox, and causes Select to reinitialise itself. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
 
 
 ## Examples
@@ -200,19 +202,10 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 import {EVENTS} from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const selectId = 'dynamic-select';
-  const selectListEl = document.querySelector(`#${selectId} ul`);
+  const selectEl = document.getElementById('dynamic-select');
+  const selectListEl = selectEl.querySelector('ul');
 
-  const updateOptions = () => {
-    window.dispatchEvent(new CustomEvent(
-      EVENTS.UPDATE_OPTIONS,
-      {
-        'detail': {
-          'id': selectId,
-        }
-      },
-    ));
-  };
+  const updateOptions = () => selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
   document.getElementById('add-option')
     .addEventListener('click', () => {

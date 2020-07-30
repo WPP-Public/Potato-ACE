@@ -237,13 +237,13 @@ context('Carousel', () => {
       };
 
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.CHANGED, listener);
+        window.addEventListener(EVENTS.OUT.CHANGED, listener);
       });
 
       cy.get('@carousel3').invoke('attr', ATTRS.CURRENT_SLIDE, '2');
 
       cy.window().then((window) => {
-        window.removeEventListener(EVENTS.CHANGED, listener);
+        window.removeEventListener(EVENTS.OUT.CHANGED, listener);
       });
 
       cy.get('@carousel3').invoke('attr', ATTRS.CURRENT_SLIDE, '1');
@@ -261,23 +261,23 @@ context('Carousel', () => {
       };
 
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.CHANGED, listener1);
+        window.addEventListener(EVENTS.OUT.CHANGED, listener1);
       });
 
       cy.get('@carousel3ControlsNext').click();
 
       cy.window().then((window) => {
-        window.removeEventListener(EVENTS.CHANGED, listener1);
+        window.removeEventListener(EVENTS.OUT.CHANGED, listener1);
       });
 
       cy.window().then((window) => {
-        window.addEventListener(EVENTS.CHANGED, listener2);
+        window.addEventListener(EVENTS.OUT.CHANGED, listener2);
       });
 
       cy.get('@carousel3ControlsPrev').click();
 
       cy.window().then((window) => {
-        window.removeEventListener(EVENTS.CHANGED, listener2);
+        window.removeEventListener(EVENTS.OUT.CHANGED, listener2);
       });
     });
   });

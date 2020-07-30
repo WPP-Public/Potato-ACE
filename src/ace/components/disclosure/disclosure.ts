@@ -17,11 +17,15 @@ export const ATTRS = {
 
 
 export const EVENTS = {
-  CHANGED: `${DISCLOSURE}-changed`,
-  HIDE: `${DISCLOSURE}-hide`,
-  READY: `${DISCLOSURE}-ready`,
-  SHOW: `${DISCLOSURE}-show`,
-  TOGGLE: `${DISCLOSURE}-toggle`,
+  IN: {
+    HIDE: `${DISCLOSURE}-hide`,
+    SHOW: `${DISCLOSURE}-show`,
+    TOGGLE: `${DISCLOSURE}-toggle`,
+  },
+  OUT: {
+    CHANGED: `${DISCLOSURE}-changed`,
+    READY: `${DISCLOSURE}-ready`,
+  },
 };
 
 
@@ -64,15 +68,15 @@ export default class Disclosure extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
+    this.addEventListener(EVENTS.IN.HIDE, this.customEventsHandler);
+    this.addEventListener(EVENTS.IN.SHOW, this.customEventsHandler);
+    this.addEventListener(EVENTS.IN.TOGGLE, this.customEventsHandler);
     window.addEventListener('click', this.windowClickHandler);
-    window.addEventListener(EVENTS.HIDE, this.customEventsHandler);
-    window.addEventListener(EVENTS.SHOW, this.customEventsHandler);
-    window.addEventListener(EVENTS.TOGGLE, this.customEventsHandler);
 
 
     /* INITIALISATION */
     // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(EVENTS.READY, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
       }
@@ -82,10 +86,10 @@ export default class Disclosure extends HTMLElement {
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
+    this.removeEventListener(EVENTS.IN.HIDE, this.customEventsHandler);
+    this.removeEventListener(EVENTS.IN.SHOW, this.customEventsHandler);
+    this.removeEventListener(EVENTS.IN.TOGGLE, this.customEventsHandler);
     window.removeEventListener('click', this.windowClickHandler);
-    window.removeEventListener(EVENTS.HIDE, this.customEventsHandler);
-    window.removeEventListener(EVENTS.SHOW, this.customEventsHandler);
-    window.removeEventListener(EVENTS.TOGGLE, this.customEventsHandler);
   }
 
 
@@ -93,16 +97,11 @@ export default class Disclosure extends HTMLElement {
     Handles custom events
   */
   private customEventsHandler(e: CustomEvent): void {
-    const detail = e['detail'];
-    if (!detail || (detail['id'] !== this.id) || !e.type) {
-      return;
-    }
-
     let showDisclosure: boolean = null;
-    if (e.type === EVENTS.SHOW) {
+    if (e.type === EVENTS.IN.SHOW) {
       showDisclosure = true;
     }
-    if (e.type === EVENTS.HIDE) {
+    if (e.type === EVENTS.IN.HIDE) {
       showDisclosure = false;
     }
 
@@ -131,7 +130,7 @@ export default class Disclosure extends HTMLElement {
     this.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
     this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure.toString()));
 
-    window.dispatchEvent(new CustomEvent(EVENTS.CHANGED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
         'id': this.id,
         'visible': showDisclosure,

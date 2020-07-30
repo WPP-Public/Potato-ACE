@@ -19,28 +19,28 @@
 </code></pre>
 <h2>Custom events</h2>
 <p>Disclosure uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
-<h3>Ready</h3>
+<h3>Dispatched events</h3>
+<p>The following events are dispatched on <code>window</code> by Disclosure.</p>
+<h4>Ready</h4>
 <p><code>ace-disclosure-ready</code></p>
-<p>This event is dispatched on <code>window</code> when Disclosure finishes initialising. The event name is available as the value of the <code>READY</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Disclosure finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Disclosure [string]
 }
 </code></pre>
-<h3>Changed</h3>
+<h4>Changed</h4>
 <p><code>ace-disclosure-changed</code></p>
-<p>This event is dispatched when a Disclosure visibility is changed. The event name is available as the value of the <code>CHANGED</code> property of the exported <code>EVENTS</code> object, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Disclosure's visibility changes. The event name is available as <code>EVENTS.OUT.CHANGED</code>, and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Disclosure [string],
+  'id': // ID of Disclosure [string]
   'visible': // Whether the Disclosure is visible or not [boolean]
 }
 </code></pre>
-<h3>Hide, Show and Toggle</h3>
+<h3>Listened for events</h3>
+<p>Disclosure listens for the following events, which should be dispatched by the user's code on the specific <code>ace-disclosure</code> element.</p>
+<h4>Hide, Show and Toggle</h4>
 <p><code>ace-disclosure-hide</code>, <code>ace-disclosure-show</code> &amp; <code>ace-disclosure-toggle</code></p>
-<p>These events should be dispatched on <code>window</code> to hide, show and toggle Disclosure respectively. The event names are available as the values of the <code>HIDE</code>, <code>SHOW</code> &amp; <code>TOGGLE</code> properties of the exported <code>EVENTS</code> object and their <code>detail</code> objects should be composed as follows:</p>
-<pre><code class="language-js">'detail': {
-  'id': // ID of Disclosure [string]
-}
-</code></pre>
+<p>These events should be dispatched to hide, show and toggle Disclosure respectively. The event names are available as <code>EVENTS.IN.HIDE</code>, <code>EVENTS.IN.SHOW</code> &amp; <code>EVENTS.IN.TOGGLE</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Disclosure</h3>
@@ -155,6 +155,7 @@
 <pre><code class="language-js">import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
+  const disclosureEl = document.getElementById('custom-event-triggered-disclosure');
   window.addEventListener('click', (e) =&gt; {
     const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
@@ -164,24 +165,15 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
       return;
     }
 
-    let eventType = EVENTS.TOGGLE;
-
+    let eventType = EVENTS.IN.TOGGLE;
     if (customEventShowBtnClicked) {
-      eventType = EVENTS.SHOW;
+      eventType = EVENTS.IN.SHOW;
     }
-
     if (customEventHideBtnClicked) {
-      eventType = EVENTS.HIDE;
+      eventType = EVENTS.IN.HIDE;
     }
 
-    window.dispatchEvent(new CustomEvent(
-      eventType,
-      {
-        'detail': {
-          'id': 'custom-event-triggered-disclosure',
-        }
-      },
-    ));
+    disclosureEl.dispatchEvent(new CustomEvent(eventType));
   });
 });
 </code></pre>
