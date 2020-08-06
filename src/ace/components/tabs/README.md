@@ -10,14 +10,17 @@ Tabs conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w
 First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
 
 ```scss
+@import '../../common/constants';
+
+
 /* VARIABLES */
-$ace-tabs-tablist-margin: 16px !default;
+$ace-tabs-tablist-margin: $ace-spacing-2 !default;
 $ace-tabs-tab-bg-colour: transparent !default;
-$ace-tabs-tab-padding-horizontal: 32px !default;
-$ace-tabs-tab-padding-vertical: 8px !default;
-$ace-tabs-tab-hover-bg-colour: #eee !default;
-$ace-tabs-active-tab-border-colour: #c2ddef !default;
-$ace-tabs-active-tab-border-width: 2px !default;
+$ace-tabs-tab-padding-horizontal: $ace-spacing-4 !default;
+$ace-tabs-tab-padding-vertical: $ace-spacing-2 !default;
+$ace-tabs-tab-hover-bg-colour: $ace-color-hover !default;
+$ace-tabs-active-tab-border-colour: $ace-color-focus !default;
+$ace-tabs-active-tab-border-width: 3px !default;
 
 
 /* STYLES */
