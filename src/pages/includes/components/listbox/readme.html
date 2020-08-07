@@ -238,18 +238,18 @@ $ace-listbox-selected-option-bg-color: #c2ddef !default;
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
   const listboxEl = document.getElementById('dynamic-listbox');
-  const listboxListEl = listboxEl.querySelector('ul');
 
   const updateOptions = () =&gt; listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
   document.getElementById('add-option')
     .addEventListener('click', () =&gt; {
-      listboxListEl.innerHTML += '&lt;li&gt;New Option&lt;/li&gt;';
+      listboxEl.querySelector('ul').innerHTML += '&lt;li&gt;New Option&lt;/li&gt;';
       updateOptions();
     });
 
   document.getElementById('remove-option')
     .addEventListener('click', () =&gt; {
+      const listboxListEl = listboxEl.querySelector('ul');
       const fistOptionEl = listboxListEl.querySelector('li');
       if (!fistOptionEl) {
         return;
