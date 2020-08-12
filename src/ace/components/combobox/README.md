@@ -57,10 +57,13 @@ A Combobox with input and list autocompletion behaves the same as that with list
 The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use `!default` so can also be easily overridden by users. `@import '../../common/utils'` imports some shared styles used for making sure the listbox is always visible within the window.
 
 ```scss
+@import '../../common/constants';
+
+
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
 $ace-combobox-list-z-index: 1 !default;
-$ace-combobox-option-selected-bg-color: #c2ddef !default;
+$ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
