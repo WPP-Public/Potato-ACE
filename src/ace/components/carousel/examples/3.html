@@ -1,34 +1,18 @@
-<ace-carousel id="carousel-3" aria-roledescription="carousel" aria-label="CATrousel" ace-carousel-current-slide="2">
-  <div class="ace-carousel-inner">
-    <div class="ace-carousel-controls">
-      <button ace-carousel-button-previous aria-controls="ace-carousel-slides" aria-label="Previous slide">PREV</button>
-      <button ace-carousel-button-next aria-controls="ace-carousel-slides" aria-label="Next slide">NEXT</button>
+<ace-carousel id="initially-set-slide-carousel" aria-label="CATrousel with initial slide set to 2" ace-carousel-active-slide-number="2">
+  <button ace-carousel-previous-slide>Previous slide</button>
+  <button ace-carousel-next-slide>Next slide</button>
+  <div>
+    <div>
+      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
+      <p>Slide 1</p>
     </div>
-    <div id="ace-carousel-slides" ace-carousel-slides="" aria-live="polite">
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="1 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 1</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="2 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 2</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="3 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 3</p>
-        </div>
-      </div>
+    <div>
+      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
+      <p>Slide 2</p>
+    </div>
+    <div>
+      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
+      <p>Slide 3</p>
     </div>
   </div>
 </ace-carousel>
