@@ -188,7 +188,7 @@ Listening to this event can be useful for timing and triggering animations on th
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Tabs</h3>
 <p>The default tabs, note that the tablist does not have an <code>aria-label</code> and so a warning will printed in the console and it will be assigned the default value <code>ace-tabs-basic-tablist</code>.</p>
-<div class="example-block"><ace-tabs id="ace-tabs-basic">
+<div class="example-block"><ace-tabs>
   <div ace-tabs-tablist>
     <button>Tab 1</button>
     <button>Tab 2</button>
@@ -205,7 +205,7 @@ Listening to this event can be useful for timing and triggering animations on th
   </div>
 </ace-tabs>
 </div>
-<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-basic&quot;&gt;
+<pre><code class="language-html">&lt;ace-tabs&gt;
   &lt;div ace-tabs-tablist&gt;
     &lt;button&gt;Tab 1&lt;/button&gt;
     &lt;button&gt;Tab 2&lt;/button&gt;
@@ -224,8 +224,8 @@ Listening to this event can be useful for timing and triggering animations on th
 </code></pre>
 <h3>No Wrapping Example</h3>
 <p>Simple tabs but won't wrap to first/last element when cycling through tabs using <kbd>←</kbd> and <kbd>→</kbd> keys.</p>
-<div class="example-block"><ace-tabs id="ace-tabs-no-wrap" ace-tabs-no-wrapping>
-  <div ace-tabs-tablist aria-label="no-wrap-tabs-tablist">
+<div class="example-block"><ace-tabs id="non-wrapping-tabs" ace-tabs-non-wrapping>
+  <div ace-tabs-tablist aria-label="Non-wrapping Tabs">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -241,8 +241,8 @@ Listening to this event can be useful for timing and triggering animations on th
   </div>
 </ace-tabs>
 </div>
-<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-no-wrap&quot; ace-tabs-no-wrapping&gt;
-  &lt;div ace-tabs-tablist aria-label=&quot;no-wrap-tabs-tablist&quot;&gt;
+<pre><code class="language-html">&lt;ace-tabs id=&quot;non-wrapping-tabs&quot; ace-tabs-non-wrapping&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;Non-wrapping Tabs&quot;&gt;
     &lt;button&gt;Tab 1&lt;/button&gt;
     &lt;button&gt;Tab 2&lt;/button&gt;
     &lt;button&gt;Tab 3&lt;/button&gt;
@@ -260,8 +260,8 @@ Listening to this event can be useful for timing and triggering animations on th
 </code></pre>
 <h3>Vertical Tabslist</h3>
 <p>If your tablist is vertical (e.g. when having the tabs appear next to the panel instead of above) add the <code>ace-tabs-vertical</code> attribute which will add <code>aria-orientation=&quot;vertical&quot;</code> to the tabslist element.</p>
-<div class="example-block"><ace-tabs id="ace-tabs-vertical" ace-tabs-vertical>
-  <div ace-tabs-tablist aria-label="vertical-tabs-tablist">
+<div class="example-block"><ace-tabs id="vertical-tabs" ace-tabs-vertical>
+  <div ace-tabs-tablist aria-label="Tabs with vertically-oriented tablist">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -277,8 +277,8 @@ Listening to this event can be useful for timing and triggering animations on th
   </div>
 </ace-tabs>
 </div>
-<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-vertical&quot; ace-tabs-vertical&gt;
-  &lt;div ace-tabs-tablist aria-label=&quot;vertical-tabs-tablist&quot;&gt;
+<pre><code class="language-html">&lt;ace-tabs id=&quot;vertical-tabs&quot; ace-tabs-vertical&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;Tabs with vertically-oriented tablist&quot;&gt;
     &lt;button&gt;Tab 1&lt;/button&gt;
     &lt;button&gt;Tab 2&lt;/button&gt;
     &lt;button&gt;Tab 3&lt;/button&gt;
@@ -296,8 +296,8 @@ Listening to this event can be useful for timing and triggering animations on th
 </code></pre>
 <h3>Custom Event Controlled Tabs</h3>
 <p>In some cases you might want to customise tabs to limit the tabs which can be activated by the user at a particular point or create a paginated experience. To achieve this behaviour buttons which emit the <code>ace-tabs-set-tab</code>, <code>ace-tabs-next-tab</code> and <code>ace-tabs-prev-tab</code> can be used.</p>
-<div class="example-block"><ace-tabs id="ace-tabs-custom">
-  <div ace-tabs-tablist aria-label="custom-events-tabs-tablist">
+<div class="example-block"><ace-tabs id="custom-events-tabs">
+  <div ace-tabs-tablist aria-label="Tabs that repond to custom events">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -329,13 +329,13 @@ Listening to this event can be useful for timing and triggering animations on th
 <form id="set-tab-form">
   <label>
     Select Tab:
-    <input value="1" type="number" name="tab-number" id="tab-number-input" max="5" min="1">
+    <input id="set-tab-input" max="5" min="1" name="tab-number" type="number">
   </label>
   <button type="submit">Go</button>
 </form>
 </div>
-<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-custom&quot;&gt;
-  &lt;div ace-tabs-tablist aria-label=&quot;custom-events-tabs-tablist&quot;&gt;
+<pre><code class="language-html">&lt;ace-tabs id=&quot;custom-events-tabs&quot;&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;Tabs that repond to custom events&quot;&gt;
     &lt;button&gt;Tab 1&lt;/button&gt;
     &lt;button&gt;Tab 2&lt;/button&gt;
     &lt;button&gt;Tab 3&lt;/button&gt;
@@ -369,7 +369,7 @@ Listening to this event can be useful for timing and triggering animations on th
 &lt;form id=&quot;set-tab-form&quot;&gt;
   &lt;label&gt;
     Select Tab:
-    &lt;input value=&quot;1&quot; type=&quot;number&quot; name=&quot;tab-number&quot; id=&quot;tab-number-input&quot; max=&quot;5&quot; min=&quot;1&quot;&gt;
+    &lt;input id=&quot;set-tab-input&quot; max=&quot;5&quot; min=&quot;1&quot; name=&quot;tab-number&quot; type=&quot;number&quot;&gt;
   &lt;/label&gt;
   &lt;button type=&quot;submit&quot;&gt;Go&lt;/button&gt;
 &lt;/form&gt;
@@ -377,7 +377,7 @@ Listening to this event can be useful for timing and triggering animations on th
 <pre><code class="language-js">import {EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const tabsEl = document.getElementById('ace-tabs-custom');
+  const tabsEl = document.getElementById('custom-events-tabs');
   const setTabForm = document.getElementById('set-tab-form');
 
   window.addEventListener('click', (e) =&gt; {
@@ -390,10 +390,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
   setTabForm.addEventListener('submit', (e) =&gt; {
     e.preventDefault();
-    const formData = new FormData(e.target);
     tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.SET_TAB, {
       detail: {
-        tab: +formData.get('tab-number')
+        tab: +new FormData(e.target).get('tab-number')
       }
     }));
   });
@@ -401,8 +400,8 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </code></pre>
 <h3>Update Tabs Element</h3>
 <p>You may want tabs to be added, removed or updated after initial load and so the tabs component can be reloaded by emitting the <code>ace-tabs-update</code> event with the ID of the tabs element to update.</p>
-<div class="example-block"><ace-tabs id="ace-tabs-update">
-  <div ace-tabs-tablist aria-label="update-tabs-tablist">
+<div class="example-block"><ace-tabs id="dynamic-tabs">
+  <div ace-tabs-tablist aria-label="Tabs with dynamic tabs">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -424,8 +423,8 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   Remove last
 </button>
 </div>
-<pre><code class="language-html">&lt;ace-tabs id=&quot;ace-tabs-update&quot;&gt;
-  &lt;div ace-tabs-tablist aria-label=&quot;update-tabs-tablist&quot;&gt;
+<pre><code class="language-html">&lt;ace-tabs id=&quot;dynamic-tabs&quot;&gt;
+  &lt;div ace-tabs-tablist aria-label=&quot;Tabs with dynamic tabs&quot;&gt;
     &lt;button&gt;Tab 1&lt;/button&gt;
     &lt;button&gt;Tab 2&lt;/button&gt;
     &lt;button&gt;Tab 3&lt;/button&gt;
@@ -451,7 +450,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const tabsEl = document.getElementById('ace-tabs-update');
+  const tabsEl = document.getElementById('dynamic-tabs');
   const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
   const addTab = () =&gt; {

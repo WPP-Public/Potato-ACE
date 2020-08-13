@@ -1,143 +1,152 @@
 // TODO: Remove 'TODO:' comments
 // TODO: Remove ATTRS and/or EVENTS if not used
-// import {ATTRS, EVENTS, TEMPLATE} from './template-kebab';
+import {ATTRS, EVENTS, TEMPLATE} from './template-kebab';
 
 
-// TODO: Add IDs used to find elements here or remove object
-// const IDS = {
-//   TEMPLATE_1: 'template-kebab-1',
-//   TEMPLATE_VARIANT: 'template-kebab-variant',
-// };
+// TODO: Add IDs used to find elements here
+const IDS = {
+  BASIC_TEMPLATE: 'basic-template',
+  CUSTOM_EVENTS_TEMPLATE: 'custom-events-template',
+  CUSTOM_EVENT_BTN: 'custom-event-1-btn',
+};
 
 
-// context('Template', () => {
-//   before(() => {
-//     cy.visit(`/template-kebab`);
-//   });
+// TODO: Define templateBeforeEach function that will get Template's elements to be tested in most tests.
+// Use combinations of `.get()`, `.find()`, `.first()`, `.last()` and `.eq()`, and store them as aliases using `.as`
+// Call this function in the beforeEach of each variant test block giving it the variant ID, as shown below.
+const getEls = (id) => {
+  return cy.get(`#${id}`)
+    .as('template')
+    .find('foo')
+    .as('templateFoo')
+    .find('bars')
+    .as('templateBars')
+    .first()
+    .as('templateBar1')
+    .get('@template')
+    .find('baz')
+    .as('templateBaz');
+};
 
 
-//   beforeEach(() => {
-//     // TODO: Get all elements to be tested here, using `.get` or `.find` and store them as aliases using `.as`
-//     cy.get(TEMPLATE)
-//       .as('templates')
-//       .first()
-//       .as('template1')
-//       .find('foos')
-//       .as('template1Foos');
+// TODO: Define set of assertions that indicate that Template initialised correctly
+const templateInitChecks = (id) => {
+  const FOO_ID = `${id}-foo`;
+  const BAZ_ID = `${id}-baz`;
+
+  return cy.get('@template')
+    .should('have.id', id)
+    .get('@templateFoo')
+    .should('have.id', FOO_ID)
+    .and('have.attr', ATTRS.FOO, '')
+    .and('have.attr', 'aria-owns', BAZ_ID)
+    .get('@templateBars')
+    .each(($bar, index) => {
+      const selected = index === 0 ? 'true' : 'false';
+      cy.wrap($bar)
+        .should('have.id', `${id}-bar-${index + 1}`)
+        .and('have.attr', ATTRS.BAR, '')
+        .and('have.attr', 'aria-selected', selected);
+    })
+    .get('@templateBaz')
+    .should('have.id', BAZ_ID)
+    .and('have.attr', ATTRS.BAZ, '')
+    .and('have.attr', 'aria-describedby', FOO_ID)
+    .and('not.have.attr', ATTRS.ACTIVE_BAZ);
+};
 
 
-//     cy.get('@template1')
-//       .find('bar')
-//       .as('template1Bar');
+
+// TODO: If there are sets of assertions you make a lot then define them in functions
+const setOfAssertions = () => {
+  return cy.get('@templateFoo')
+    .should('have.attr', ATTRS.SOME_ATTR, 'true')
+    .and('have.attr', 'aria-selected', 'true')
+    .get('@templateBaz')
+    .should('have.attr', ATTRS.SOME_OTHER_ATTR, '');
+};
 
 
-//     // TODO: Get and store specific instances that will be tested later, using IDS:
-//     cy.get(`#${IDS.TEMPLATE_VARIANT}`)
-//       .as('templateVariant')
-//       .find('foos')
-//       .as('templateVariantFoos');
+
+context(`Template`, () => {
+  before(() => cy.visit(`/template-kebab`));
 
 
-//     cy.get('@templateVariant')
-//       .find('bar')
-//       .as('templateVariantBar');
-//   });
+  // TODO: test that at least one Template without an ID will be automatically given one by the autoID function
+  it(`Template without ID should initialise with an ID`, () => {
+    cy.get(TEMPLATE)
+      .first()
+      .should('have.id', `${TEMPLATE}-1`);
+  });
 
 
-//   // TODO: Test that component and children initialise with correctly
-//   describe('Initialisation', () => {
-//     // TODO: Try to include the word 'should' in each test description
-//     it('All Templates should have IDs', () => {
-//       cy.get('@templates').each(template => {
-//         cy.get(template).should('have.attr', 'id');
-//       });
-//     });
+  // TODO: Group tests for different variants together using `context`
+  context(`Basic Template`, () => {
+    const TEMPLATE_ID = IDS.BASIC_TEMPLATE;
 
 
-//     // TODO: Check that the default Template initialises with correct aria and custom attributes
-//     it('Template should initialise with correct attributes', () => {
-//       cy.get('@template1').should('have.attr', ATTRS.TEMPLATE_ATTR, 'value');
-//       cy.get('@template1').should('have.attr', 'aria-attribute', 'value');
-
-//       cy.get('@template1Bar').should('have.attr', ATTRS.BAR_ATTR, 'value');
-//       cy.get('@template1Bar').should('have.attr', 'aria-attribute', 'value');
-
-//       cy.get('@template1Foos').each((foo, index) => {
-//         cy.get(foo).should('have.attr', ATTRS.FOO_ATTR, `index-${index}`);
-//         cy.get(foo).should('have.attr', 'aria-attribute', 'value');
-//       });
-//     });
+    beforeEach(() => getEls(TEMPLATE_ID));
 
 
-//     // TODO: Check each variant of the default Template initialises with correct attributes
-//     it('Variant of Template should initialise with correct attributes', () => {
-//       cy.get('@templateVariant').should('have.attr', ATTRS.TEMPLATE_VARIANT_ATTR, 'value');
-//       cy.get('@templateVariant').should('have.attr', 'attribute', 'value');
-
-//       cy.get('@templateVariantBar').should('have.attr', ATTRS.TEMPLATE_VARIANT_BAR_ATTR, 'value');
-//       cy.get('@templateVariantBar').should('have.attr', 'attribute', 'value');
-
-//       cy.get('@templateVariantFoos').each((foo) => {
-//         cy.get(foo).should('have.attr', ATTRS.TEMPLATE_VARIANT_FOO_ATTR, 'value');
-//         cy.get(foo).should('have.attr', 'attribute', 'value');
-//       });
-//     });
-//   });
+    // TODO: Check that Template and children initialise with correct IDs and a11y attributes
+    it(`Should initialise correctly`, () => templateInitChecks());
 
 
-//   // TODO: Test mouse interaction
-//   describe('Mouse interaction', () => {
-//     beforeEach(() => {
-//       cy.reload();
-//     });
+    // TODO: Undo effects of test, resetting components to initial state, either at the end of each test or in the
+    // `beforeEach()`.
+    it(`Should do something else`, () => {
+      // TODO: If test results in Template dispatching a custom event, add listener to check custom event dispatched correctly
+      const expectedDetail = {
+        foo: 'bar',
+        id: TEMPLATE_ID,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.SOME_EVENT, expectedDetail);
+
+      cy.get('@templateFoo').click();
+      setOfAssertions();
+
+      // TODO: Undo effects of test, resetting components to initial state, e.g.
+      cy.get('@templateFoo')
+        .click()
+        .blur();
+    });
 
 
-//     it('Clicking on something should lead to something', () => {
-//       cy.get('@template1Bar').click();
-//       cy.get('@template1Bar').should('have.attr', ATTRS.BAR_ATTR, 'value');
-//       cy.get('@template1Bar').should('have.attr', 'aria-attribute', 'value');
-//       cy.get('@template1Bar').should('have.focus');
-//       cy.get('body').click();
-//       cy.get('@template1Bar').should('not.have.focus');
-//     });
-//   });
+    describe(`Mouse interactions`, () => {
+      // TODO: Group mouse interaction tests together here
+    });
 
 
-//   // TODO: Test keyboard interaction
-//   describe('Keyboard interaction', () => {
-//     beforeEach(() => {
-//       cy.reload();
-//     });
+    describe(`Keyboard interactions`, () => {
+      // TODO: Group keyboard interaction tests together here
+    });
 
 
-//     it('Pressing something should lead to something', () => {
-//       cy.get('@template1Bar')
-//         .focus()
-//         .type('{key}');
-
-//       cy.get('@template1Bar').should('have.attr', ATTRS.BAR_ATTR, 'value');
-//       cy.get('@template1Bar').should('have.attr', 'aria-attribute', 'value');
-//     });
-//   });
+    // TODO: Group other similar tests together
+  });
 
 
-//   // TODO: Test dispatched custom events
-//   describe('Custom events', () => {
-//     beforeEach(() => {
-//       cy.reload();
-//     });
+  context(`Custom events Template`, () => {
+    const TEMPLATE_ID = IDS.CUSTOM_EVENTS_TEMPLATE;
 
 
-//     it('Doing something dispatches custom event with correct details', () => {
-//       cy.window().then((window) => {
-//         window.addEventListener(EVENTS.OUT.SOME_EVENT, (e) => {
-//           expect(e.detail.id).to.equal(IDS.TEMPLATE_1);
-//           // TODO: Check other e.detail properties if any
-//         });
-//       });
+    beforeEach(() => {
+      getEls(TEMPLATE_ID);
+      // TODO: Check attributes that are unique to this variant
+      cy.get('@template').should('have.attr', ATTRS.VARIANT_ATTR, '');
+      cy.get(`#${IDS.CUSTOM_EVENT_BTN}`).as('customEventBtn');
+    });
 
-//       // TODO: Perform action that dispatches custom event
-//       cy.get('@template1Bar').click();
-//     });
-//   });
-// });
+
+    // TODO: Test dispatched custom events
+    it(`Dipatching custom event 1 should lead to something`, () => {
+      // TODO: Perform action that dispatches custom event
+      cy.get('@customEvent1Btn')
+        .click()
+        // TODO: Check that custom event results in expected behaviour
+        .get('@customEventTemplate').should('have.attr', ATTRS.CUSTOM_EVENT_TRIGGERED, '');
+
+      // TODO: Undo effects of test, resetting components to initial state
+    });
+  });
+});

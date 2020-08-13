@@ -1,9 +1,9 @@
 import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const comboboxEl = document.getElementById('ace-combobox-custom-events');
+  const comboboxEl = document.getElementById('custom-events-combobox');
   const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
-  const optionNumberEl = document.getElementById('select-option-number-input');
+  const selectOptionForm = document.getElementById('select-option-form');
 
   window.addEventListener('click', (e) => {
     switch (e.target.id) {
@@ -22,20 +22,20 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'hide-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
         break;
-
-      case 'select-option-btn': {
-        const optionNumber = parseInt(optionNumberEl.value);
-        const option = comboboxEl.querySelectorAll('li')[optionNumber-1];
-        if (!option) {
-          return;
-        }
-        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
-          'detail': {
-            'optionId': option.id
-          }
-        }));
-        break;
-      }
     }
+  });
+
+  selectOptionForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const optionNumber = +new FormData(e.target).get('option-number');
+    const option = comboboxEl.querySelectorAll('li')[optionNumber - 1];
+    if (!option) {
+      return;
+    }
+    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
+      detail: {
+        optionId: option.id,
+      }
+    }));
   });
 });

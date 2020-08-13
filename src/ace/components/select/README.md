@@ -193,7 +193,8 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 <button id="remove-option">
   Remove option
 </button>
-<ace-select id="dynamic-select">
+<hr>
+<ace-select id="custom-events-select">
   <button>No options yet</button>
 </ace-select>
 ```
@@ -202,7 +203,7 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 import {EVENTS} from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const selectEl = document.getElementById('dynamic-select');
+  const selectEl = document.getElementById('custom-events-select');
   const selectListEl = selectEl.querySelector('ul');
 
   const updateOptions = () => selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
