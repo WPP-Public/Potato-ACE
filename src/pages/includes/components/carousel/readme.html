@@ -16,7 +16,7 @@
 <table>
 <thead>
 <tr>
-<th>Aria</th>
+<th>Attribute</th>
 <th>Element</th>
 <th>Usage</th>
 <th>Editable</th>
@@ -72,7 +72,7 @@
 <td>No</td>
 </tr>
 <tr>
-<td><code>aria-label=&quot;Slide n of N&quot;</code></td>
+<td><code>aria-label=&quot;n of N&quot;</code></td>
 <td><code>div[ace-carousel-slide]</code></td>
 <td>Provides each slide with a distinct label that helps the user understand which of the N slides is displayed.</td>
 <td>Yes</td>
@@ -85,11 +85,11 @@
   display: none;
 }
 
-[ace-carousel-active-slide] {
+[ace-carousel-slide-active] {
   display: block;
 }
 </code></pre>
-<p>The current slide is displayed by adding an <code>ace-carousel-active-slide</code> attribute on the appropriate <code>div[ace-carousel-slide]</code>. You can override this for custom animations. The captions, buttons, and other elements can be customised via CSS.</p>
+<p>The current slide is displayed by adding an <code>ace-carousel-slide-active</code> attribute on the appropriate <code>div[ace-carousel-slide]</code>. You can override this for custom animations. The captions, buttons, and other elements can be customised via CSS.</p>
 <p><em>Note</em>: We will showcase a carousel with controls and captions displayed above and below the image, which is <a href="https://www.w3.org/TR/wai-aria-practices-1.1/examples/carousel/carousel-1.html?moreaccessible">considered more accessible</a>. If you choose to display controls and captions on the image, please take into consideration adding backgrounds via CSS to make them more perceivable.</p>
 <h2>Custom events</h2>
 <p>Carousel uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
@@ -105,280 +105,120 @@
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Carousel</h3>
 <p>This is a simple carousel, which changes slides by clicking &quot;previous&quot; or &quot;next&quot; buttons. When the carousel reaches the first or last slides, the &quot;previous&quot; and &quot;next&quot; buttons respectively get disabled.</p>
-<div class="example-block"><ace-carousel id="carousel-1" aria-roledescription="carousel" aria-label="CATrousel">
-  <div class="ace-carousel-inner">
-    <div class="ace-carousel-controls">
-      <button ace-carousel-button-previous aria-controls="ace-carousel-slides" aria-label="Previous slide">PREV</button>
-      <button ace-carousel-button-next aria-controls="ace-carousel-slides" aria-label="Next slide">NEXT</button>
+<div class="example-block"><ace-carousel aria-label="CATrousel">
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div>
+    <div>
+      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
+      <p>Slide 1</p>
     </div>
-    <div id="ace-carousel-slides" ace-carousel-slides="" aria-live="polite">
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="1 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 1</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="2 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 2</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="3 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 3</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="4 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat4.jpg" alt="Ginger cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 4</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="5 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat5.jpg" alt="White cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 5</p>
-        </div>
-      </div>
+    <div>
+      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
+      <p>Slide 2</p>
+    </div>
+    <div>
+      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
+      <p>Slide 3</p>
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel id=&quot;carousel-1&quot; aria-roledescription=&quot;carousel&quot; aria-label=&quot;CATrousel&quot;&gt;
-  &lt;div class=&quot;ace-carousel-inner&quot;&gt;
-    &lt;div class=&quot;ace-carousel-controls&quot;&gt;
-      &lt;button ace-carousel-button-previous aria-controls=&quot;ace-carousel-slides&quot; aria-label=&quot;Previous slide&quot;&gt;PREV&lt;/button&gt;
-      &lt;button ace-carousel-button-next aria-controls=&quot;ace-carousel-slides&quot; aria-label=&quot;Next slide&quot;&gt;NEXT&lt;/button&gt;
+<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;CATrousel&quot;&gt;
+  &lt;button&gt;Previous slide&lt;/button&gt;
+  &lt;button&gt;Next slide&lt;/button&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
+      &lt;p&gt;Slide 1&lt;/p&gt;
     &lt;/div&gt;
-    &lt;div id=&quot;ace-carousel-slides&quot; ace-carousel-slides=&quot;&quot; aria-live=&quot;polite&quot;&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;1 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 1&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;2 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 2&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;3 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 3&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;4 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat4.jpg&quot; alt=&quot;Ginger cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 4&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;5 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat5.jpg&quot; alt=&quot;White cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 5&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
+      &lt;p&gt;Slide 2&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
+      &lt;p&gt;Slide 3&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
 <h3>Carousel with inifinite rotation</h3>
-<p>With the attribute <code>ace-carousel-infinite=&quot;true&quot;</code>, the &quot;previous&quot; and &quot;next&quot; buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dinamically and tested in dev tools.</p>
-<div class="example-block"><ace-carousel id="carousel-2" aria-roledescription="carousel" aria-label="CATrousel" ace-carousel-infinite="true">
-  <div class="ace-carousel-inner">
-    <div class="ace-carousel-controls">
-      <button ace-carousel-button-previous aria-controls="ace-carousel-slides" aria-label="Previous slide">PREV</button>
-      <button ace-carousel-button-next aria-controls="ace-carousel-slides" aria-label="Next slide">NEXT</button>
+<p>With the attribute <code>ace-carousel-wrapping</code>, the &quot;previous&quot; and &quot;next&quot; buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dynamically and tested in dev tools.</p>
+<div class="example-block"><ace-carousel id="wrapping-carousel" aria-label="A CATrousel with infinite scroll" ace-carousel-wrapping>
+  <button ace-carousel-previous-slide>Previous slide</button>
+  <button ace-carousel-next-slide>Next slide</button>
+  <div>
+    <div>
+      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
+      <p>Slide 1</p>
     </div>
-    <div id="ace-carousel-slides" ace-carousel-slides aria-live="polite">
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="1 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 1</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="2 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 2</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="3 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 3</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="4 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat4.jpg" alt="Ginger cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 4</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="5 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat5.jpg" alt="White cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 5</p>
-        </div>
-      </div>
+    <div>
+      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
+      <p>Slide 2</p>
+    </div>
+    <div>
+      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
+      <p>Slide 3</p>
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel id=&quot;carousel-2&quot; aria-roledescription=&quot;carousel&quot; aria-label=&quot;CATrousel&quot; ace-carousel-infinite=&quot;true&quot;&gt;
-  &lt;div class=&quot;ace-carousel-inner&quot;&gt;
-    &lt;div class=&quot;ace-carousel-controls&quot;&gt;
-      &lt;button ace-carousel-button-previous aria-controls=&quot;ace-carousel-slides&quot; aria-label=&quot;Previous slide&quot;&gt;PREV&lt;/button&gt;
-      &lt;button ace-carousel-button-next aria-controls=&quot;ace-carousel-slides&quot; aria-label=&quot;Next slide&quot;&gt;NEXT&lt;/button&gt;
+<pre><code class="language-html">&lt;ace-carousel id=&quot;wrapping-carousel&quot; aria-label=&quot;A CATrousel with infinite scroll&quot; ace-carousel-wrapping&gt;
+  &lt;button ace-carousel-previous-slide&gt;Previous slide&lt;/button&gt;
+  &lt;button ace-carousel-next-slide&gt;Next slide&lt;/button&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
+      &lt;p&gt;Slide 1&lt;/p&gt;
     &lt;/div&gt;
-    &lt;div id=&quot;ace-carousel-slides&quot; ace-carousel-slides aria-live=&quot;polite&quot;&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;1 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 1&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;2 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 2&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;3 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 3&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;4 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat4.jpg&quot; alt=&quot;Ginger cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 4&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;5 of 5&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat5.jpg&quot; alt=&quot;White cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 5&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
+      &lt;p&gt;Slide 2&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
+      &lt;p&gt;Slide 3&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
 <h3>Carousel with a set current slide</h3>
-<p>With the attribute <code>ace-carousel-current-slide</code>, you can specify which slide to show by number (i.e. 2 will show second slide). This is an observed attribute, which can be set dinamically and tested in dev tools. This attribute is optional.</p>
-<div class="example-block"><ace-carousel id="carousel-3" aria-roledescription="carousel" aria-label="CATrousel" ace-carousel-current-slide="2">
-  <div class="ace-carousel-inner">
-    <div class="ace-carousel-controls">
-      <button ace-carousel-button-previous aria-controls="ace-carousel-slides" aria-label="Previous slide">PREV</button>
-      <button ace-carousel-button-next aria-controls="ace-carousel-slides" aria-label="Next slide">NEXT</button>
+<p>With the attribute <code>ace-carousel-active-slide-number</code> you can specify which slide to show by number (i.e. 2 will show second slide). This is an observed attribute, which can be set dynamically and tested in dev tools.</p>
+<div class="example-block"><ace-carousel id="initially-set-slide-carousel" aria-label="CATrousel with initial slide set to 2" ace-carousel-active-slide-number="2">
+  <button ace-carousel-previous-slide>Previous slide</button>
+  <button ace-carousel-next-slide>Next slide</button>
+  <div>
+    <div>
+      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
+      <p>Slide 1</p>
     </div>
-    <div id="ace-carousel-slides" ace-carousel-slides="" aria-live="polite">
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="1 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 1</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="2 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 2</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="3 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 3</p>
-        </div>
-      </div>
+    <div>
+      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
+      <p>Slide 2</p>
+    </div>
+    <div>
+      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
+      <p>Slide 3</p>
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel id=&quot;carousel-3&quot; aria-roledescription=&quot;carousel&quot; aria-label=&quot;CATrousel&quot; ace-carousel-current-slide=&quot;2&quot;&gt;
-  &lt;div class=&quot;ace-carousel-inner&quot;&gt;
-    &lt;div class=&quot;ace-carousel-controls&quot;&gt;
-      &lt;button ace-carousel-button-previous aria-controls=&quot;ace-carousel-slides&quot; aria-label=&quot;Previous slide&quot;&gt;PREV&lt;/button&gt;
-      &lt;button ace-carousel-button-next aria-controls=&quot;ace-carousel-slides&quot; aria-label=&quot;Next slide&quot;&gt;NEXT&lt;/button&gt;
+<pre><code class="language-html">&lt;ace-carousel id=&quot;initially-set-slide-carousel&quot; aria-label=&quot;CATrousel with initial slide set to 2&quot; ace-carousel-active-slide-number=&quot;2&quot;&gt;
+  &lt;button ace-carousel-previous-slide&gt;Previous slide&lt;/button&gt;
+  &lt;button ace-carousel-next-slide&gt;Next slide&lt;/button&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
+      &lt;p&gt;Slide 1&lt;/p&gt;
     &lt;/div&gt;
-    &lt;div id=&quot;ace-carousel-slides&quot; ace-carousel-slides=&quot;&quot; aria-live=&quot;polite&quot;&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;1 of 3&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 1&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;2 of 3&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 2&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div ace-carousel-slide=&quot;&quot; role=&quot;group&quot; aria-roledescription=&quot;slide&quot; aria-label=&quot;3 of 3&quot;&gt;
-        &lt;div class=&quot;ace-carousel-image&quot;&gt;
-          &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;ace-carousel-caption&quot;&gt;
-          &lt;p&gt;Slide 3&lt;/p&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
+      &lt;p&gt;Slide 2&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
+      &lt;p&gt;Slide 3&lt;/p&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;

@@ -1,282 +1,190 @@
-import {ATTRS, EVENTS} from './carousel';
+import {ATTRS, CAROUSEL, EVENTS} from './carousel';
+
 
 const IDS = {
-  CAROUSEL_1: 'carousel-1',
-  CAROUSEL_2: 'carousel-2',
-  CAROUSEL_3: 'carousel-3'
+  BASIC_CAROUSEL: `${CAROUSEL}-1`,
+  INITIALLY_SET_SLIDE_CAROUSEL: 'initially-set-slide-carousel',
+  WRAPPING_CAROUSEL: 'wrapping-carousel',
 };
 
-const CAROUSEL_ITEMS_LEN = 5;
 
-context('Carousel', () => {
-  before(() => cy.visit('/carousel'));
+const getEls = (id) => {
+  return cy.get(`#${id}`)
+    .as('carousel')
+    .find(`[${ATTRS.PREV}]`)
+    .as('carouselPrevBtn')
+    .get('@carousel')
+    .find(`[${ATTRS.NEXT_BUTTON}]`)
+    .as('carouselNextBtn')
+    .get('@carousel')
+    .find(`[${ATTRS.SLIDES}]`)
+    .as('carouselSlidesWrapper')
+    .find(`[${ATTRS.SLIDE}]`)
+    .as('carouselSlides');
+};
 
-  beforeEach(() => {
-    cy.get(`#${IDS.CAROUSEL_1}`).as('carousel1');
-    cy.get(`#${IDS.CAROUSEL_2}`).as('carousel2');
-    cy.get(`#${IDS.CAROUSEL_3}`).as('carousel3');
 
-    cy.get('@carousel1')
-      .find('.ace-carousel-controls')
-      .find(`[${ATTRS.PREVIOUS_BUTTON}]`)
-      .as('carousel1ControlsPrev');
+const checkSlideActive = (slideNumber) => {
+  return cy.get('@carouselSlides')
+    .then(($slides) => {
+      cy.get('@carouselSlides')
+        .each(($slide, index) => {
+          cy.wrap($slide)
+            .should('have.attr', ATTRS.SLIDE, '')
+            .and('have.attr', 'aria-label', `${index + 1} of ${$slides.length}`)
+            .and('have.attr', 'aria-roledescription', 'slide')
+            .and(`${index === slideNumber - 1 ? '' : 'not.' }have.attr`, ATTRS.SLIDE_ACTIVE, '');
+        });
+    });
+};
 
-    cy.get('@carousel1')
-      .find('.ace-carousel-controls')
-      .find(`[${ATTRS.NEXT_BUTTON}]`)
-      .as('carousel1ControlsNext');
 
-    cy.get('@carousel1')
-      .find(`[${ATTRS.CAROUSEL_SLIDES}]`)
-      .as('carousel1SlideWrapper');
+const carouselInitChecks = (id, activeSlideNumber=1, automatic=false) => {
+  const SLIDES_ID = `${id}-slides`;
 
-    cy.get('@carousel1')
-      .find(`[${ATTRS.CAROUSEL_SLIDE}]`)
-      .as('carousel1Items');
+  return cy.get('@carousel')
+    .should('have.attr', 'aria-roledescription', 'carousel')
+    .and('have.attr', 'role', 'region')
+    .get('@carouselPrevBtn')
+    .should('have.attr', ATTRS.PREV, '')
+    .and('have.attr', 'aria-controls', SLIDES_ID)
+    .get('@carouselNextBtn')
+    .should('have.attr', ATTRS.NEXT_BUTTON, '')
+    .and('have.attr', 'aria-controls', SLIDES_ID)
+    .get('@carouselSlidesWrapper')
+    .should('have.id', SLIDES_ID)
+    .and(`${automatic ? 'not.' : ''}have.attr`, 'aria-live', 'polite')
+    .get('@carouselSlides')
+    .then(() => checkSlideActive(activeSlideNumber));
+};
 
-    cy.get('@carousel2')
-      .find('.ace-carousel-controls')
-      .find(`[${ATTRS.PREVIOUS_BUTTON}]`)
-      .as('carousel2ControlsPrev');
 
-    cy.get('@carousel2')
-      .find('.ace-carousel-controls')
-      .find(`[${ATTRS.NEXT_BUTTON}]`)
-      .as('carousel2ControlsNext');
-
-    cy.get('@carousel2')
-      .find(`[${ATTRS.CAROUSEL_SLIDES}]`)
-      .as('carousel2SlideWrapper');
-
-    cy.get('@carousel2')
-      .find(`[${ATTRS.CAROUSEL_SLIDE}]`)
-      .as('carousel2Items');
-
-    cy.get('@carousel3')
-      .find('.ace-carousel-controls')
-      .find(`[${ATTRS.PREVIOUS_BUTTON}]`)
-      .as('carousel3ControlsPrev');
-
-    cy.get('@carousel3')
-      .find('.ace-carousel-controls')
-      .find(`[${ATTRS.NEXT_BUTTON}]`)
-      .as('carousel3ControlsNext');
-
-    cy.get('@carousel3')
-      .find(`[${ATTRS.CAROUSEL_SLIDES}]`)
-      .as('carousel3SlideWrapper');
-
-    cy.get('@carousel3')
-      .find(`[${ATTRS.CAROUSEL_SLIDE}]`)
-      .as('carousel3Items');
+context(`Carousel`, () => {
+  before(() => {
+    cy.visit(`/carousel`);
   });
 
-  describe('Initialisation', () => {
-    it('Carousels should initialise with correct attributes', () => {
-      cy.get('@carousel1').should('have.attr', 'role', 'region');
-      cy.get('@carousel1').should('have.attr', 'aria-label', 'CATrousel');
-      cy.get('@carousel1').should('have.attr', 'aria-roledescription', 'carousel');
-      cy.get('@carousel1SlideWrapper').should('have.attr', 'aria-live', 'polite');
-      cy.get('@carousel1SlideWrapper').should('have.id', 'ace-carousel-slides');
 
-      cy.get('@carousel2').should('have.attr', 'role', 'region');
-      cy.get('@carousel2').should('have.attr', 'aria-label', 'CATrousel');
-      cy.get('@carousel2').should('have.attr', 'aria-roledescription', 'carousel');
-      cy.get('@carousel2').should('have.attr', ATTRS.INFINITE_ROTATION, 'true');
-      cy.get('@carousel2SlideWrapper').should('have.attr', 'aria-live', 'polite');
-      cy.get('@carousel1SlideWrapper').should('have.id', 'ace-carousel-slides');
-    });
-
-    it('Carousel controls should initialise with correct attributes', () => {
-      cy.get('@carousel1ControlsPrev').should('have.attr', 'aria-controls', 'ace-carousel-slides');
-      cy.get('@carousel1ControlsPrev').should('have.attr', 'aria-label', 'Go to previous slide');
-      cy.get('@carousel1ControlsNext').should('have.attr', 'aria-controls', 'ace-carousel-slides');
-      cy.get('@carousel1ControlsNext').should('have.attr', 'aria-label', 'Go to next slide');
-
-      cy.get('@carousel2ControlsPrev').should('have.attr', 'aria-controls', 'ace-carousel-slides');
-      cy.get('@carousel2ControlsPrev').should('have.attr', 'aria-label', 'Go to last slide');
-      cy.get('@carousel2ControlsNext').should('have.attr', 'aria-controls', 'ace-carousel-slides');
-      cy.get('@carousel2ControlsNext').should('have.attr', 'aria-label', 'Go to next slide');
-    });
-
-    it('Carousel items should initialise with correct attributes', () => {
-      cy.get('@carousel1Items').each((item, index, items) => {
-        // Should only display first item and hide the rest.
-        if (index == 0) {
-          cy.get(item).should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-          cy.get(item).should('have.css', 'display', 'block');
-        } else {
-          cy.get(item).should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-          cy.get(item).should('have.css', 'display', 'none');
-        }
-
-        cy.get(item).should('have.attr', 'role', 'group');
-        cy.get(item).should('have.attr', 'aria-roledescription', 'slide');
-        cy.get(item).should('have.attr', 'aria-label', `${index + 1} of ${items.length}`);
-
-      }).then(items => {
-        expect(items).to.have.length(5);
-      });
-
-      cy.get('@carousel2Items').each((item, index, items) => {
-        // Should only display first item and hide the rest.
-        if (index == 0) {
-          cy.get(item).should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-          cy.get(item).should('have.css', 'display', 'block');
-        } else {
-          cy.get(item).should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-          cy.get(item).should('have.css', 'display', 'none');
-        }
-
-        cy.get(item).should('have.attr', 'role', 'group');
-        cy.get(item).should('have.attr', 'aria-roledescription', 'slide');
-        cy.get(item).should('have.attr', 'aria-label', `${index + 1} of ${items.length}`);
-
-      }).then(items => {
-        expect(items).to.have.length(5);
-      });
-    });
+  it(`Carousel without ID should initialise with an ID`, () => {
+    cy.get(CAROUSEL)
+      .first()
+      .should('have.id', `${CAROUSEL}-1`);
   });
 
-  describe('Interaction', () => {
-    it('Next carousel item should be displayed when clicking "next"', () => {
-      // Check that first item is active.
-      cy.get('@carousel1Items').first().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel1ControlsNext').click();
-      cy.get('@carousel1Items').first().should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel1Items').eq(1).should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel1Items').eq(2).should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
+
+  context(`Basic Carousel`, () => {
+    const CAROUSEL_ID = IDS.BASIC_CAROUSEL;
+
+
+    beforeEach(() => getEls(CAROUSEL_ID));
+
+
+    it(`Should initialise correctly`, () => {
+      carouselInitChecks(CAROUSEL_ID);
+      cy.get('@carouselPrevBtn').should('be.disabled');
     });
 
-    it('Previous carousel item should be displayed when clicking "previous"', () => {
-      cy.get('@carousel1ControlsPrev').click();
-      cy.get('@carousel1Items').first().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel1Items').eq(1).should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-    });
 
-    it('Previous button should be disabled on Carousel 1, first item', () => {
-      // Ensure first item is active.
-      cy.get('@carousel1Items').first().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel1ControlsPrev').should('have.attr', 'disabled');
-      cy.get('@carousel1ControlsPrev').should('have.attr', 'aria-label', 'Go to previous slide');
-    });
-
-    it('Next button should be disabled on Carousel 1, last item', () => {
-      // Go to last item.
-      cy.get('@carousel1').invoke('attr', ATTRS.CURRENT_SLIDE, CAROUSEL_ITEMS_LEN);
-      // Ensure last item is active.
-      cy.get('@carousel1Items').last().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel1ControlsNext').should('have.attr', 'disabled');
-      cy.get('@carousel1ControlsNext').should('have.attr', 'aria-label', 'Go to next slide');
-    });
-
-    it('Previous button should display last item on Carousel 2, first item', () => {
-      // Ensure first item is active.
-      cy.get('@carousel2Items').first().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel2ControlsPrev').should('not.have.attr', 'disabled');
-      cy.get('@carousel2ControlsPrev').should('have.attr', 'aria-label', 'Go to last slide');
-      cy.get('@carousel2ControlsPrev').click();
-      cy.get('@carousel2Items').last().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-    });
-
-    it('Next button should display first item on Carousel 2, last item', () => {
-      // Go to last item.
-      cy.get('@carousel2').invoke('attr', ATTRS.CURRENT_SLIDE, CAROUSEL_ITEMS_LEN);
-      // Ensure last item is active.
-      cy.get('@carousel2Items').last().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel2ControlsNext').should('not.have.attr', 'disabled');
-      cy.get('@carousel2ControlsNext').should('have.attr', 'aria-label', 'Go to first slide');
-      cy.get('@carousel2ControlsNext').click();
-      cy.get('@carousel2Items').first().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-    });
-  });
-
-  describe('Observed attributes', () => {
-    it ('Should activate the correct slide', () => {
-      cy.get('@carousel3').should('have.attr', ATTRS.CURRENT_SLIDE, '2');
-      cy.get('@carousel3Items').first().should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel3Items').eq(1).should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel3Items').last().should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel3').invoke('attr', ATTRS.CURRENT_SLIDE, '1');
-      cy.get('@carousel3Items').first().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel3Items').eq(1).should('not.have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-    });
-
-    it ('Should activate infinite rotation', () => {
-      cy.get('@carousel3ControlsPrev').should('have.attr', 'disabled');
-      cy.get('@carousel3ControlsPrev').should('have.attr', 'aria-label', 'Go to previous slide');
-      cy.get('@carousel3ControlsNext').should('have.attr', 'aria-label', 'Go to next slide');
-      cy.get('@carousel3ControlsNext').click();
-      cy.get('@carousel3ControlsPrev').should('not.have.attr', 'disabled');
-      cy.get('@carousel3').invoke('attr', ATTRS.CURRENT_SLIDE, '3');
-      cy.get('@carousel3ControlsNext').should('have.attr', 'disabled');
-      cy.get('@carousel3ControlsPrev').should('have.attr', 'aria-label', 'Go to previous slide');
-      cy.get('@carousel3ControlsNext').should('have.attr', 'aria-label', 'Go to next slide');
-
-      cy.get('@carousel3').invoke('attr', ATTRS.CURRENT_SLIDE, '1')
-                          .invoke('attr', ATTRS.INFINITE_ROTATION, 'true');
-      cy.get('@carousel3').should('have.attr', ATTRS.INFINITE_ROTATION, 'true');
-      cy.get('@carousel3Items').first().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel3ControlsPrev').should('have.attr', 'aria-label', 'Go to last slide');
-      cy.get('@carousel3ControlsNext').should('have.attr', 'aria-label', 'Go to next slide');
-      cy.get('@carousel3ControlsPrev').click();
-      cy.get('@carousel3Items').last().should('have.attr', ATTRS.ACTIVE_CAROUSEL_SLIDE);
-      cy.get('@carousel3ControlsPrev').should('have.attr', 'aria-label', 'Go to previous slide');
-      cy.get('@carousel3ControlsNext').should('have.attr', 'aria-label', 'Go to first slide');
-      cy.get('@carousel3').invoke('attr', ATTRS.INFINITE_ROTATION, 'false');
-    });
-  });
-
-  describe('Event change', () => {
-    it('Changing the current slide attr should dispatch "change" custom event with correct details', () => {
-      const listener = (e) => {
-        expect(e.detail.id).to.equal(IDS.CAROUSEL_3);
-        expect(e.detail.currentSlideNumber).to.equal(2);
+    it(`Should respond to next and previous slide buttons correctly`, () => {
+      // Test Next button
+      const expectedDetail = {
+        currentSlideNumber: 2,
+        id: CAROUSEL_ID,
       };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@carouselNextBtn')
+        .click()
+        .get('@carouselPrevBtn')
+        .should('not.be.disabled');
+      checkSlideActive(2);
+      cy.get('@carouselNextBtn')
+        .click()
+        .should('be.disabled');
+      checkSlideActive(3);
 
-      cy.window().then((window) => {
-        window.addEventListener(EVENTS.OUT.CHANGED, listener);
-      });
-
-      cy.get('@carousel3').invoke('attr', ATTRS.CURRENT_SLIDE, '2');
-
-      cy.window().then((window) => {
-        window.removeEventListener(EVENTS.OUT.CHANGED, listener);
-      });
-
-      cy.get('@carousel3').invoke('attr', ATTRS.CURRENT_SLIDE, '1');
+      // Test Prev button
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@carouselPrevBtn')
+        .click()
+        .get('@carouselNextBtn')
+        .should('not.be.disabled');
+      checkSlideActive(2);
+      cy.get('@carouselPrevBtn')
+        .click()
+        .should('be.disabled');
+      checkSlideActive(1);
     });
 
-    it('Clicking "next"/"previous" buttons should dispatch "change" custom event with correct details', () => {
-      const listener1 = (e) => {
-        expect(e.detail.id).to.equal(IDS.CAROUSEL_3);
-        expect(e.detail.currentSlideNumber).to.equal(2);
-      };
 
-      const listener2 = (e) => {
-        expect(e.detail.id).to.equal(IDS.CAROUSEL_3);
-        expect(e.detail.currentSlideNumber).to.equal(1);
-      };
-
-      cy.window().then((window) => {
-        window.addEventListener(EVENTS.OUT.CHANGED, listener1);
+    describe(`Observed attributes`, () => {
+      it(`Should activate correct slide when observed attribute changed`, () => {
+        const slideToActivate = 3;
+        const expectedDetail = {
+          currentSlideNumber: slideToActivate,
+          id: CAROUSEL_ID,
+        };
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+          .get('@carousel')
+          .invoke('attr', ATTRS.ACTIVE_SLIDE_NUMBER, slideToActivate)
+          .invoke('attr', ATTRS.ACTIVE_SLIDE_NUMBER, 1);
       });
 
-      cy.get('@carousel3ControlsNext').click();
 
-      cy.window().then((window) => {
-        window.removeEventListener(EVENTS.OUT.CHANGED, listener1);
+      it(`Should activate infinite rotation when observed attribute changed`, () => {
+        cy.get('@carousel')
+          .invoke('attr', ATTRS.WRAPPING, '')
+          .get('@carouselPrevBtn')
+          .should('not.be.disabled')
+          .get('@carousel')
+          .then($carousel => $carousel.removeAttr(ATTRS.WRAPPING))
+          .get('@carouselPrevBtn')
+          .should('be.disabled');
       });
+    });
+  });
 
-      cy.window().then((window) => {
-        window.addEventListener(EVENTS.OUT.CHANGED, listener2);
-      });
 
-      cy.get('@carousel3ControlsPrev').click();
+  context(`Wrapping Carousel`, () => {
+    const CAROUSEL_ID = IDS.WRAPPING_CAROUSEL;
 
-      cy.window().then((window) => {
-        window.removeEventListener(EVENTS.OUT.CHANGED, listener2);
-      });
+
+    beforeEach(() => getEls(CAROUSEL_ID));
+
+
+    it(`Should initialise correctly`, () => {
+      carouselInitChecks(CAROUSEL_ID);
+      cy.get('@carouselPrevBtn').should('not.be.disabled');
+    });
+
+
+    it(`Should respond to next and previous slide buttons correctly`, () => {
+      // Test Next button
+      cy.get('@carouselNextBtn')
+        .click()
+        .click();
+      checkSlideActive(3);
+      cy.get('@carouselNextBtn')
+        .should('not.be.disabled')
+        .click();
+      checkSlideActive(1);
+
+      // Test Prev button
+      cy.get('@carouselPrevBtn')
+        .click();
+      checkSlideActive(3);
+    });
+  });
+
+
+  context(`Carousel with initially set slide`, () => {
+    const CAROUSEL_ID = IDS.INITIALLY_SET_SLIDE_CAROUSEL;
+
+
+    beforeEach(() => getEls(CAROUSEL_ID));
+
+
+    it(`Should initialise correctly`, () => {
+      carouselInitChecks(CAROUSEL_ID, 2);
     });
   });
 });
