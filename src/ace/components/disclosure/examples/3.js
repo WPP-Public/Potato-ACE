@@ -1,11 +1,11 @@
 import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const disclosureEl = document.getElementById('custom-event-triggered-disclosure');
+  const disclosureEl = document.getElementById('custom-events-disclosure');
   window.addEventListener('click', (e) => {
-    const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
-    const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
-    const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
+    const customEventHideBtnClicked = e.target.closest('#custom-events-hide-btn');
+    const customEventShowBtnClicked = e.target.closest('#custom-events-show-btn');
+    const customEventToggleBtnClicked = e.target.closest('#custom-events-toggle-btn');
 
     if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
       return;

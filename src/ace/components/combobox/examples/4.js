@@ -2,6 +2,8 @@ import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
 import {KEYS} from '../../../common/constants.js';
 import {keyPressedMatches} from '../../../common/functions.js';
 
+export const fakeDelay = 3000;
+
 const comboboxId = 'search-combobox';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -39,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data.push({id: `result-${i}`, text: `Result ${i}`});
       }
       resolve(data);
-    }, 3000));
+    }, fakeDelay));
 
     // Add results to DOM
     comboboxStatusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's' } found`;

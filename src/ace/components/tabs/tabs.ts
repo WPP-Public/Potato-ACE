@@ -14,7 +14,7 @@ export const TAB = `${TABS}-tab`;
 export const ATTRS = {
   ACTIVE_TAB: `${TABS}-active-tab`,
   MANUAL_ACTIVATION: `${TABS}-manual-activation`,
-  NO_WRAPPING: `${TABS}-no-wrapping`,
+  NON_WRAPPING: `${TABS}-non-wrapping`,
   PANEL: `${TABS}-panel`,
   TAB,
   TABLIST: `${TABS}-tablist`,
@@ -33,8 +33,8 @@ export const EVENTS = {
     UPDATE_TABS: `${TABS}-update`
   },
   OUT: {
+    CHANGED: `${TABS}-changed`,
     READY: `${TABS}-ready`,
-    TABS_PANEL_CHANGED: `${TABS}-changed`,
   }
 };
 
@@ -79,7 +79,7 @@ export default class Tabs extends HTMLElement {
     /* GET DOM DATA */
     this.automaticActivation = !this.hasAttribute(ATTRS.MANUAL_ACTIVATION);
     this.vertical = this.hasAttribute(ATTRS.VERTICAL);
-    this.wrapping = !this.hasAttribute(ATTRS.NO_WRAPPING);
+    this.wrapping = !this.hasAttribute(ATTRS.NON_WRAPPING);
 
 
     /* SET DOM DATA */
@@ -122,6 +122,10 @@ export default class Tabs extends HTMLElement {
     Hides all non-active panels and reveals active panel
   */
   private activatePanel(panelToActivateIndex: number): void {
+    if (panelToActivateIndex === this.activeTabIndex) {
+      return;
+    }
+
     // De-activate the previously selected tab
     const oldTabEl = this.tabEls[this.activeTabIndex];
     oldTabEl.removeAttribute(ATTRS.ACTIVE_TAB);
@@ -138,8 +142,7 @@ export default class Tabs extends HTMLElement {
 
     const oldTabIndex = this.activeTabIndex;
     this.activeTabIndex = panelToActivateIndex;
-
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.TABS_PANEL_CHANGED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
         'activeTab': {
           'id': newTabEl.id,

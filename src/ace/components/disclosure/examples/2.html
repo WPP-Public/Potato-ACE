@@ -1,27 +1,25 @@
-<button ace-disclosure-trigger-for="disclosure-1">
-  Disclosure 1 Toggle 1
+<button ace-disclosure-trigger-for="basic-disclosure">
+  Disclosure 1 toggle trigger 1
 </button>
-<button ace-disclosure-trigger-for="disclosure-1">
-  Disclosure 1 Toggle 2
+<button ace-disclosure-trigger-for="basic-disclosure">
+  Disclosure 1 toggle trigger 2
 </button>
-<button ace-disclosure-trigger-for="disclosure-2">
-  Disclosure 2 Toggle
+<button ace-disclosure-trigger-for="initially-visible-disclosure">
+  Disclosure 2 toggle trigger
 </button>
-<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-show>
-  Disclosure 2 Show
+<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
+  Disclosure 2 show trigger
 </button>
-<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-hide>
-  Disclosure 2 Hide
+<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-hide>
+  Disclosure 2 hide trigger
 </button>
-<br><br>
-<ace-disclosure id="disclosure-1">
-  <div>
-    Disclosure 1 - Initially hidden diclosure.
-  </div>
+<hr>
+<ace-disclosure id="basic-disclosure">
+  <h2>Disclosure 1</h2>
+  <p>This Disclosure is initially hidden.</p>
 </ace-disclosure>
 
-<ace-disclosure id="disclosure-2" ace-disclosure-visible="true">
-  <div>
-    Disclosure 2 - Initially visible diclosure.
-  </div>
+<ace-disclosure id="initially-visible-disclosure" ace-disclosure-visible="true">
+  <h2>Disclosure 2</h2>
+  <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
 </ace-disclosure>

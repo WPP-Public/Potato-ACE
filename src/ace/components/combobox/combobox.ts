@@ -416,7 +416,7 @@ export default class Combobox extends HTMLElement {
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.LIST_TOGGLED, {
       'detail': {
         'id': this.id,
-        'listVisibile': this.listVisible,
+        'listVisible': this.listVisible,
       }
     }));
   }
@@ -559,7 +559,7 @@ export default class Combobox extends HTMLElement {
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.LIST_TOGGLED, {
       'detail': {
         'id': this.id,
-        'listVisibile': this.listVisible,
+        'listVisible': this.listVisible,
       }
     }));
   }

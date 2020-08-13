@@ -9,9 +9,7 @@ const IDS = {
 const CAROUSEL_ITEMS_LEN = 5;
 
 context('Carousel', () => {
-  before(() => {
-    cy.visit('/carousel');
-  });
+  before(() => cy.visit('/carousel'));
 
   beforeEach(() => {
     cy.get(`#${IDS.CAROUSEL_1}`).as('carousel1');

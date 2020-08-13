@@ -125,7 +125,7 @@ gulp.task('sass', gulp.parallel('docs-sass', 'examples-sass'));
 // Move JS to dist
 gulp.task('js', () => {
   isProd = prodArgGiven();
-  return gulp.src(`${SRC}/**/*.js`, {sourcemaps: isProd})
+  return gulp.src([`${SRC}/**/*.js`, `!**/*.test.js`], {sourcemaps: isProd})
     .pipe(gulpif(isProd, terser()))
     .pipe(gulp.dest(DIST, {sourcemaps: isProd}));
 });
