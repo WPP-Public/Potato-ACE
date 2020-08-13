@@ -6,15 +6,17 @@ import {autoID} from '../../common/functions.js';
 /* CONSTANTS */
 export const CAROUSEL = `${NAME}-carousel`;
 
+
 export const ATTRS = {
-  ACTIVE_CAROUSEL_SLIDE: `${CAROUSEL}-active-slide`,
-  CAROUSEL_SLIDE: `${CAROUSEL}-slide`,
-  CAROUSEL_SLIDES: `${CAROUSEL}-slides`,
-  CURRENT_SLIDE: `${CAROUSEL}-current-slide`,
-  INFINITE_ROTATION: `${CAROUSEL}-infinite`,
-  NEXT_BUTTON: `${CAROUSEL}-button-next`,
-  PREVIOUS_BUTTON: `${CAROUSEL}-button-previous`,
+  ACTIVE_SLIDE_NUMBER: `${CAROUSEL}-active-slide-number`,
+  NEXT_BUTTON: `${CAROUSEL}-next`,
+  PREV: `${CAROUSEL}-previous`,
+  SLIDE: `${CAROUSEL}-slide`,
+  SLIDES: `${CAROUSEL}-slides`,
+  SLIDE_ACTIVE: `${CAROUSEL}-slide-active`,
+  WRAPPING: `${CAROUSEL}-wrapping`,
 };
+
 
 export const EVENTS = {
   OUT: {
@@ -25,12 +27,12 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Carousel extends HTMLElement {
-  private carouselSlideEls: NodeListOf<HTMLElement>;
-  private carouselSlideWrapper: HTMLElement;
   private currentSlideIndex: number;
   private infinite: boolean;
   private nextButton: HTMLElement;
   private prevButton: HTMLElement;
+  private slideEls: NodeListOf<HTMLElement>;
+  private slidesWrapper: HTMLElement;
   private slideCount: number;
 
 
@@ -39,59 +41,64 @@ export default class Carousel extends HTMLElement {
 
 
     /* CLASS METHOD BINDINGS */
-    this.activateCarouselSlide = this.activateCarouselSlide.bind(this);
+    this.activateSlide = this.activateSlide.bind(this);
     this.changeSlide = this.changeSlide.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.getIndexOfSlideToActivate = this.getIndexOfSlideToActivate.bind(this);
-    this.initCarouselSlides = this.initCarouselSlides.bind(this);
+    this.initSlides = this.initSlides.bind(this);
     this.setNavBtnAttributes = this.setNavBtnAttributes.bind(this);
   }
 
 
   static get observedAttributes(): Array<string> {
-    return [ ATTRS.INFINITE_ROTATION, ATTRS.CURRENT_SLIDE ];
+    return [ATTRS.WRAPPING, ATTRS.ACTIVE_SLIDE_NUMBER];
   }
 
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
     // Get button elements.
-    this.nextButton = this.querySelector(`[${ATTRS.NEXT_BUTTON}]`);
-    this.prevButton = this.querySelector(`[${ATTRS.PREVIOUS_BUTTON}]`);
+    this.prevButton = this.querySelector(`[${ATTRS.PREV}]`) || this.querySelector('button');
+    this.nextButton = this.querySelector(`[${ATTRS.NEXT_BUTTON}]`) || this.querySelectorAll('button')[1];
 
     // Get slide wrapper.
-    this.carouselSlideWrapper = this.querySelector(`[${ATTRS.CAROUSEL_SLIDES}]`);
+    this.slidesWrapper = this.querySelector(`[${ATTRS.SLIDES}]`) || this.querySelector('div');
 
 
     /* GET DOM DATA */
-    this.infinite = this.hasAttribute(ATTRS.INFINITE_ROTATION);
-    const currentSlideAttr = +this.getAttribute(ATTRS.CURRENT_SLIDE);
+    this.infinite = this.hasAttribute(ATTRS.WRAPPING);
+    const currentSlideAttr = +this.getAttribute(ATTRS.ACTIVE_SLIDE_NUMBER);
 
 
     /* SET DOM DATA */
-    // Set id for the slide wrapper in order to properly set aria-controls on buttons.
-    this.carouselSlideWrapper.id = ATTRS.CAROUSEL_SLIDES;
-    this.nextButton.setAttribute('aria-controls', ATTRS.CAROUSEL_SLIDES);
-    this.prevButton.setAttribute('aria-controls', ATTRS.CAROUSEL_SLIDES);
-
-    // Set aria attributes and roles.
     this.setAttribute('aria-roledescription', 'carousel');
     this.setAttribute('role', 'region');
-    this.carouselSlideWrapper.setAttribute('aria-live', 'polite');
 
-    // Set default aria labels only if not provided already.
-    if (!this.getAttribute('aria-label')) {
-      this.setAttribute('aria-label', 'Page carousel');
+    const slidesWrapperId = this.slidesWrapper.id || `${this.id}-slides`;
+    this.prevButton.setAttribute(ATTRS.PREV, '');
+    this.prevButton.setAttribute('aria-controls', slidesWrapperId);
+    this.nextButton.setAttribute(ATTRS.NEXT_BUTTON, '');
+    this.nextButton.setAttribute('aria-controls', slidesWrapperId);
+
+    this.slidesWrapper.id = slidesWrapperId;
+    this.slidesWrapper.setAttribute(ATTRS.SLIDES, '');
+    this.slidesWrapper.setAttribute('aria-live', 'polite');
+
+
+    /* INITIALISATION */
+    if (!this.hasAttribute('aria-label') && !this.hasAttribute('aria-labelledby')) {
+      console.warn(`Please provide 'aria-label' or 'aria-labelledby' attribute for #${this.id}`);
     }
 
-    // Initialise carousel slides.
-    this.initCarouselSlides();
+    // Initialise slides.
+    this.initSlides();
 
     // Initialise buttons.
     this.setNavBtnAttributes();
 
-    // Display the first carousel slide or the one set via the attribute.
-    currentSlideAttr ? this.activateCarouselSlide(currentSlideAttr - 1) : this.activateCarouselSlide(0);
+    // Display the first slide or the one set via the attribute.
+    const slideToActivate = currentSlideAttr ? currentSlideAttr - 1 : 0;
+    this.activateSlide(slideToActivate);
 
 
     /* ADD EVENT LISTENERS */
@@ -107,10 +114,14 @@ export default class Carousel extends HTMLElement {
 
   private attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
     if (oldValue !== newValue) {
-      if (name === ATTRS.INFINITE_ROTATION) {
-        this.infinite = (newValue === 'true');
-      } else if (name == ATTRS.CURRENT_SLIDE) {
-        this.activateCarouselSlide(+newValue - 1);
+      if (name === ATTRS.WRAPPING) {
+        this.infinite = (newValue === '');
+      } else if (name == ATTRS.ACTIVE_SLIDE_NUMBER) {
+        const newSlideNumber = +newValue;
+        if (!newSlideNumber || newSlideNumber > this.slideCount) {
+          return;
+        }
+        this.activateSlide(newSlideNumber - 1);
       }
       this.setNavBtnAttributes();
     }
@@ -121,16 +132,22 @@ export default class Carousel extends HTMLElement {
     Displays the correct slide by adding the an attribute, resets the
     buttons, and dispaches an event that announces the slide change.
   */
-  private activateCarouselSlide(slideIndex: number): void {
-    if (!this.carouselSlideEls) return;
-    if (slideIndex > this.carouselSlideEls.length - 1) return;
+  private activateSlide(slideIndex: number): void {
+    if (!this.slideEls) return;
+    if (slideIndex > this.slideEls.length - 1) return;
+
+    const slideNumber = (slideIndex + 1).toString();
+    if (this.getAttribute(ATTRS.ACTIVE_SLIDE_NUMBER) !== slideNumber) {
+      this.setAttribute(ATTRS.ACTIVE_SLIDE_NUMBER, slideNumber);
+      return;
+    }
 
     // Set active attribute to the correct slide.
-    this.carouselSlideEls.forEach((slide, i) => {
+    this.slideEls.forEach((slide, i) => {
       if (i == slideIndex) {
-        slide.setAttribute(ATTRS.ACTIVE_CAROUSEL_SLIDE, '');
+        slide.setAttribute(ATTRS.SLIDE_ACTIVE, '');
       } else {
-        slide.removeAttribute(ATTRS.ACTIVE_CAROUSEL_SLIDE);
+        slide.removeAttribute(ATTRS.SLIDE_ACTIVE);
       }
     });
 
@@ -154,13 +171,11 @@ export default class Carousel extends HTMLElement {
 
 
   /*
-    Changes the slide by getting the direction (next or previous),
-    calls helper function to get the correct index, and activates it.
+    Changes the slide by setting ACTIVE_SLIDE_NUMBER observed attribute.
   */
-  private changeSlide(target: HTMLElement): void {
-    const direction = target.hasAttribute(ATTRS.NEXT_BUTTON) ? 1 : -1;
-    const indexOfSlideToActivate = this.getIndexOfSlideToActivate(direction);
-    this.activateCarouselSlide(indexOfSlideToActivate);
+  private changeSlide(slideIndexToActivate: number): void {
+    const slideNumberToActivate = slideIndexToActivate + 1;
+    this.setAttribute(ATTRS.ACTIVE_SLIDE_NUMBER, slideNumberToActivate.toString());
   }
 
 
@@ -171,10 +186,12 @@ export default class Carousel extends HTMLElement {
   private clickHandler(e: MouseEvent): void {
     const target = (e.target as HTMLElement);
     const nextBtnClicked = target.closest(`[${ATTRS.NEXT_BUTTON}]`);
-    const prevBtnClicked = target.closest(`[${ATTRS.PREVIOUS_BUTTON}]`);
+    const prevBtnClicked = target.closest(`[${ATTRS.PREV}]`);
 
     if (nextBtnClicked || prevBtnClicked) {
-      this.changeSlide(target);
+      const direction = nextBtnClicked ? 1 : -1;
+      const slideIndexToActivate = this.getIndexOfSlideToActivate(direction);
+      this.changeSlide(slideIndexToActivate);
     }
   }
 
@@ -198,15 +215,19 @@ export default class Carousel extends HTMLElement {
   /*
     Inititialises carousel slides with approapriate aria labels.
   */
-  private initCarouselSlides(): void {
-    // Get carousel slides.
-    this.carouselSlideEls = this.querySelectorAll(`[${ATTRS.CAROUSEL_SLIDE}]`);
-    this.slideCount = this.carouselSlideEls.length;
+  private initSlides(): void {
+    // Get slides
+    this.slideEls = this.querySelectorAll(`[${ATTRS.SLIDE}]`);
+    if (this.slideEls.length === 0) {
+      this.slideEls = this.slidesWrapper.querySelectorAll('div');
+    }
+    this.slideCount = this.slideEls.length;
 
-    this.carouselSlideEls.forEach((slide, i) => {
+    this.slideEls.forEach((slide, i) => {
+      slide.setAttribute(ATTRS.SLIDE, '');
       slide.setAttribute('role', 'group');
       slide.setAttribute('aria-roledescription', 'slide');
-      if (!slide.hasAttribute('aria-label')) {
+      if (!slide.hasAttribute('aria-label') && !slide.hasAttribute('aria-labelledby')) {
         slide.setAttribute('aria-label', `${i + 1} of ${this.slideCount}`);
       }
     });
@@ -227,7 +248,7 @@ export default class Carousel extends HTMLElement {
         if (this.infinite) {
           this.prevButton.setAttribute('aria-label', 'Go to last slide');
         } else {
-          this.prevButton.setAttribute('disabled', 'true');
+          this.prevButton.setAttribute('disabled', '');
         }
       }
     }
@@ -240,7 +261,7 @@ export default class Carousel extends HTMLElement {
         if (this.infinite) {
           this.nextButton.setAttribute('aria-label', 'Go to first slide');
         } else {
-          this.nextButton.setAttribute('disabled', 'true');
+          this.nextButton.setAttribute('disabled', '');
         }
       }
     }
