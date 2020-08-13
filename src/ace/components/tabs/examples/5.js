@@ -1,7 +1,7 @@
 import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tabsEl = document.getElementById('ace-tabs-update');
+  const tabsEl = document.getElementById('dynamic-tabs');
   const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
   const addTab = () => {

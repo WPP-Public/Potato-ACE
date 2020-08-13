@@ -218,15 +218,15 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 <button id="remove-option">
   Remove option
 </button>
-<br><br>
-<ace-listbox id="dynamic-listbox"></ace-listbox>
+<hr>
+<ace-listbox id="custom-events-listbox"></ace-listbox>
 ```
 
 ```js
 import {EVENTS} from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const listboxEl = document.getElementById('dynamic-listbox');
+  const listboxEl = document.getElementById('custom-events-listbox');
 
   const updateOptions = () => listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 

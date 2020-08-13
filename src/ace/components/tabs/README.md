@@ -254,7 +254,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 The default tabs, note that the tablist does not have an `aria-label` and so a warning will printed in the console and it will be assigned the default value `ace-tabs-basic-tablist`.
 
 ```html
-<ace-tabs id="ace-tabs-basic">
+<ace-tabs>
   <div ace-tabs-tablist>
     <button>Tab 1</button>
     <button>Tab 2</button>
@@ -277,8 +277,8 @@ The default tabs, note that the tablist does not have an `aria-label` and so a w
 Simple tabs but won't wrap to first/last element when cycling through tabs using <kbd>&#8592;</kbd> and <kbd>&#8594;</kbd> keys.
 
 ```html
-<ace-tabs id="ace-tabs-no-wrap" ace-tabs-no-wrapping>
-  <div ace-tabs-tablist aria-label="no-wrap-tabs-tablist">
+<ace-tabs id="non-wrapping-tabs" ace-tabs-non-wrapping>
+  <div ace-tabs-tablist aria-label="Non-wrapping Tabs">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -300,8 +300,8 @@ Simple tabs but won't wrap to first/last element when cycling through tabs using
 If your tablist is vertical (e.g. when having the tabs appear next to the panel instead of above) add the `ace-tabs-vertical` attribute which will add `aria-orientation="vertical"` to the tabslist element.
 
 ```html
-<ace-tabs id="ace-tabs-vertical" ace-tabs-vertical>
-  <div ace-tabs-tablist aria-label="vertical-tabs-tablist">
+<ace-tabs id="vertical-tabs" ace-tabs-vertical>
+  <div ace-tabs-tablist aria-label="Tabs with vertically-oriented tablist">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -323,8 +323,8 @@ If your tablist is vertical (e.g. when having the tabs appear next to the panel 
 In some cases you might want to customise tabs to limit the tabs which can be activated by the user at a particular point or create a paginated experience. To achieve this behaviour buttons which emit the `ace-tabs-set-tab`, `ace-tabs-next-tab` and `ace-tabs-prev-tab` can be used.
 
 ```html
-<ace-tabs id="ace-tabs-custom">
-  <div ace-tabs-tablist aria-label="custom-events-tabs-tablist">
+<ace-tabs id="custom-events-tabs">
+  <div ace-tabs-tablist aria-label="Tabs that repond to custom events">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -358,7 +358,7 @@ In some cases you might want to customise tabs to limit the tabs which can be ac
 <form id="set-tab-form">
   <label>
     Select Tab:
-    <input value="1" type="number" name="tab-number" id="tab-number-input" max="5" min="1">
+    <input id="set-tab-input" max="5" min="1" name="tab-number" type="number">
   </label>
   <button type="submit">Go</button>
 </form>
@@ -368,7 +368,7 @@ In some cases you might want to customise tabs to limit the tabs which can be ac
 import {EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tabsEl = document.getElementById('ace-tabs-custom');
+  const tabsEl = document.getElementById('custom-events-tabs');
   const setTabForm = document.getElementById('set-tab-form');
 
   window.addEventListener('click', (e) => {
@@ -381,10 +381,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setTabForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
     tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.SET_TAB, {
       detail: {
-        tab: +formData.get('tab-number')
+        tab: +new FormData(e.target).get('tab-number')
       }
     }));
   });
@@ -396,8 +395,8 @@ document.addEventListener('DOMContentLoaded', () => {
 You may want tabs to be added, removed or updated after initial load and so the tabs component can be reloaded by emitting the `ace-tabs-update` event with the ID of the tabs element to update.
 
 ```html
-<ace-tabs id="ace-tabs-update">
-  <div ace-tabs-tablist aria-label="update-tabs-tablist">
+<ace-tabs id="dynamic-tabs">
+  <div ace-tabs-tablist aria-label="Tabs with dynamic tabs">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
@@ -425,7 +424,7 @@ You may want tabs to be added, removed or updated after initial load and so the 
 import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tabsEl = document.getElementById('ace-tabs-update');
+  const tabsEl = document.getElementById('dynamic-tabs');
   const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
   const addTab = () => {

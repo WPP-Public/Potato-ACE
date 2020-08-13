@@ -212,11 +212,17 @@ export default class Select extends Listbox {
 
     // UP or DOWN pressed
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
-      // UP or DOWN on trigger
       if (keydownOnTrigger) {
         e.preventDefault();
         this.showList();
       }
+      return;
+    }
+
+    // SPACE pressed on trigger
+    if (keydownOnTrigger && keyPressedMatches(keyPressed, KEYS.SPACE)) {
+      e.preventDefault();
+      this.showList();
       return;
     }
 
@@ -228,9 +234,8 @@ export default class Select extends Listbox {
     }
 
     // Letter pressed
-    this.keydownHandler(e);
-
     if (keydownOnTrigger) {
+      this.keydownHandler(e);
       this.confirmOptionChange();
     }
   }

@@ -7,3 +7,6 @@ export const getKeycodeAndWhich = (key) => {
     which: KEYS[key]['CODE'],
   };
 };
+
+
+export const getOptionId = (id, index) => {return `${id}-option-${index + 1}`;};

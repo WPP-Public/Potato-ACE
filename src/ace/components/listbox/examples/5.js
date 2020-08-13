@@ -1,7 +1,7 @@
 import {EVENTS} from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const listboxEl = document.getElementById('dynamic-listbox');
+  const listboxEl = document.getElementById('custom-events-listbox');
 
   const updateOptions = () => listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 

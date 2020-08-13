@@ -222,8 +222,8 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 <button id="remove-option">
   Remove option
 </button>
-<br><br>
-<ace-listbox id="dynamic-listbox"></ace-listbox>
+<hr>
+<ace-listbox id="custom-events-listbox"></ace-listbox>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
   Add option
@@ -231,13 +231,13 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 &lt;button id=&quot;remove-option&quot;&gt;
   Remove option
 &lt;/button&gt;
-&lt;br&gt;&lt;br&gt;
-&lt;ace-listbox id=&quot;dynamic-listbox&quot;&gt;&lt;/ace-listbox&gt;
+&lt;hr&gt;
+&lt;ace-listbox id=&quot;custom-events-listbox&quot;&gt;&lt;/ace-listbox&gt;
 </code></pre>
 <pre><code class="language-js">import {EVENTS} from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const listboxEl = document.getElementById('dynamic-listbox');
+  const listboxEl = document.getElementById('custom-events-listbox');
 
   const updateOptions = () =&gt; listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
