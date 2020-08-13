@@ -28,7 +28,7 @@ For some aria attributes and roles, the value can be changed (i.e., `aria-label`
 
 Here's a breakdown of added aria attributes and roles, and which ones can be edited:
 
-| Aria | Element | Usage | Editable |
+| Attribute | Element | Usage | Editable |
 | --- | --- | --- | --- |
 | `role="region"` | `ace-carousel` | Defines the carousel and its controls as a land mark region. | No |
 | `aria-roledescription="carousel"` | `ace-carousel` | Informs assistive technologies to identify the element as a "carousel" rather than a "region." Affects how the assistive technology renders the role but does not affect functionality, such as commands for navigating to landmark regions. | No |
@@ -38,7 +38,7 @@ Here's a breakdown of added aria attributes and roles, and which ones can be edi
 | `aria-live="polite"` | `div[ace-carousel-slides]` | Identifies the container element as a live region in the "polite" state, meaning assistive technology users are informed about changes to the region at the next available opportunity. This causes screen readers to automatically announce the content of slides when the next and previous slide buttons are activated. | No |
 | `role="group" `| `div[ace-carousel-slide]` | Applied to each of the elements that contains the content of a single slide; Enables assistive technology users to perceive the boundaries of a slide. | No |
 | `aria-roledescription="slide"` | `div[ace-carousel-slide]` | Informs assistive technologies to identify the element as a "slide" rather than a "group." | No |
-| `aria-label="Slide n of N"` | `div[ace-carousel-slide]` | Provides each slide with a distinct label that helps the user understand which of the N slides is displayed. | Yes |
+| `aria-label="n of N"` | `div[ace-carousel-slide]` | Provides each slide with a distinct label that helps the user understand which of the N slides is displayed. | Yes |
 
 
 ## Styles
@@ -50,12 +50,12 @@ The following SASS is applied to the component, each declaration of which can be
   display: none;
 }
 
-[ace-carousel-active-slide] {
+[ace-carousel-slide-active] {
   display: block;
 }
 ```
 
-The current slide is displayed by adding an `ace-carousel-active-slide` attribute on the appropriate `div[ace-carousel-slide]`. You can override this for custom animations. The captions, buttons, and other elements can be customised via CSS. 
+The current slide is displayed by adding an `ace-carousel-slide-active` attribute on the appropriate `div[ace-carousel-slide]`. You can override this for custom animations. The captions, buttons, and other elements can be customised via CSS. 
 
 *Note*: We will showcase a carousel with controls and captions displayed above and below the image, which is [considered more accessible](https://www.w3.org/TR/wai-aria-practices-1.1/examples/carousel/carousel-1.html?moreaccessible). If you choose to display controls and captions on the image, please take into consideration adding backgrounds via CSS to make them more perceivable.
 
@@ -88,53 +88,21 @@ Each example contains a live demo and the HTML code that produced it. The code s
 This is a simple carousel, which changes slides by clicking "previous" or "next" buttons. When the carousel reaches the first or last slides, the "previous" and "next" buttons respectively get disabled.
 
 ```html
-<ace-carousel id="carousel-1" aria-roledescription="carousel" aria-label="CATrousel">
-  <div class="ace-carousel-inner">
-    <div class="ace-carousel-controls">
-      <button ace-carousel-button-previous aria-controls="ace-carousel-slides" aria-label="Previous slide">PREV</button>
-      <button ace-carousel-button-next aria-controls="ace-carousel-slides" aria-label="Next slide">NEXT</button>
+<ace-carousel aria-label="CATrousel">
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div>
+    <div>
+      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
+      <p>Slide 1</p>
     </div>
-    <div id="ace-carousel-slides" ace-carousel-slides="" aria-live="polite">
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="1 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 1</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="2 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 2</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="3 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 3</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="4 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat4.jpg" alt="Ginger cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 4</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="5 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat5.jpg" alt="White cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 5</p>
-        </div>
-      </div>
+    <div>
+      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
+      <p>Slide 2</p>
+    </div>
+    <div>
+      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
+      <p>Slide 3</p>
     </div>
   </div>
 </ace-carousel>
@@ -143,56 +111,24 @@ This is a simple carousel, which changes slides by clicking "previous" or "next"
 
 ### Carousel with inifinite rotation
 
-With the attribute `ace-carousel-infinite="true"`, the "previous" and "next" buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dinamically and tested in dev tools.
+With the attribute `ace-carousel-wrapping`, the "previous" and "next" buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dynamically and tested in dev tools.
 
 ```html
-<ace-carousel id="carousel-2" aria-roledescription="carousel" aria-label="CATrousel" ace-carousel-infinite="true">
-  <div class="ace-carousel-inner">
-    <div class="ace-carousel-controls">
-      <button ace-carousel-button-previous aria-controls="ace-carousel-slides" aria-label="Previous slide">PREV</button>
-      <button ace-carousel-button-next aria-controls="ace-carousel-slides" aria-label="Next slide">NEXT</button>
+<ace-carousel id="wrapping-carousel" aria-label="A CATrousel with infinite scroll" ace-carousel-wrapping>
+  <button ace-carousel-previous-slide>Previous slide</button>
+  <button ace-carousel-next-slide>Next slide</button>
+  <div>
+    <div>
+      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
+      <p>Slide 1</p>
     </div>
-    <div id="ace-carousel-slides" ace-carousel-slides aria-live="polite">
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="1 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 1</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="2 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 2</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="3 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 3</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="4 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat4.jpg" alt="Ginger cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 4</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="5 of 5">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat5.jpg" alt="White cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 5</p>
-        </div>
-      </div>
+    <div>
+      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
+      <p>Slide 2</p>
+    </div>
+    <div>
+      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
+      <p>Slide 3</p>
     </div>
   </div>
 </ace-carousel>
@@ -200,40 +136,24 @@ With the attribute `ace-carousel-infinite="true"`, the "previous" and "next" but
 
 ### Carousel with a set current slide
 
-With the attribute `ace-carousel-current-slide`, you can specify which slide to show by number (i.e. 2 will show second slide). This is an observed attribute, which can be set dinamically and tested in dev tools. This attribute is optional.
+With the attribute `ace-carousel-active-slide-number` you can specify which slide to show by number (i.e. 2 will show second slide). This is an observed attribute, which can be set dynamically and tested in dev tools.
 
 ```html
-<ace-carousel id="carousel-3" aria-roledescription="carousel" aria-label="CATrousel" ace-carousel-current-slide="2">
-  <div class="ace-carousel-inner">
-    <div class="ace-carousel-controls">
-      <button ace-carousel-button-previous aria-controls="ace-carousel-slides" aria-label="Previous slide">PREV</button>
-      <button ace-carousel-button-next aria-controls="ace-carousel-slides" aria-label="Next slide">NEXT</button>
+<ace-carousel id="initially-set-slide-carousel" aria-label="CATrousel with initial slide set to 2" ace-carousel-active-slide-number="2">
+  <button ace-carousel-previous-slide>Previous slide</button>
+  <button ace-carousel-next-slide>Next slide</button>
+  <div>
+    <div>
+      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
+      <p>Slide 1</p>
     </div>
-    <div id="ace-carousel-slides" ace-carousel-slides="" aria-live="polite">
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="1 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 1</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="2 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 2</p>
-        </div>
-      </div>
-      <div ace-carousel-slide="" role="group" aria-roledescription="slide" aria-label="3 of 3">
-        <div class="ace-carousel-image">
-          <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-        </div>
-        <div class="ace-carousel-caption">
-          <p>Slide 3</p>
-        </div>
-      </div>
+    <div>
+      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
+      <p>Slide 2</p>
+    </div>
+    <div>
+      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
+      <p>Slide 3</p>
     </div>
   </div>
 </ace-carousel>
