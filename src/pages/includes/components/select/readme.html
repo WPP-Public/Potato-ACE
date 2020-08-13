@@ -172,7 +172,8 @@ ace-select {
 <button id="remove-option">
   Remove option
 </button>
-<ace-select id="dynamic-select">
+<hr>
+<ace-select id="custom-events-select">
   <button>No options yet</button>
 </ace-select>
 </div>
@@ -182,14 +183,15 @@ ace-select {
 &lt;button id=&quot;remove-option&quot;&gt;
   Remove option
 &lt;/button&gt;
-&lt;ace-select id=&quot;dynamic-select&quot;&gt;
+&lt;hr&gt;
+&lt;ace-select id=&quot;custom-events-select&quot;&gt;
   &lt;button&gt;No options yet&lt;/button&gt;
 &lt;/ace-select&gt;
 </code></pre>
 <pre><code class="language-js">import {EVENTS} from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const selectEl = document.getElementById('dynamic-select');
+  const selectEl = document.getElementById('custom-events-select');
   const selectListEl = selectEl.querySelector('ul');
 
   const updateOptions = () =&gt; selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));

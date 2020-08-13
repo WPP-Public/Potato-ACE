@@ -223,7 +223,7 @@ These are the three types of Comboboxes, all with manual selection.
 
 ```html
 <h4>No autocomplete</h4>
-<ace-combobox id="ace-combobox-basic">
+<ace-combobox>
   <label>Choose an Avenger:</label>
   <div ace-combobox-wrapper>
     <input />
@@ -247,7 +247,7 @@ These are the three types of Comboboxes, all with manual selection.
 <hr>
 
 <h4>List autocomplete</h4>
-<ace-combobox id="ace-combobox-ac-list">
+<ace-combobox id="ac-list-combobox">
   <label>Choose an Avenger:</label>
   <div ace-combobox-wrapper>
     <input aria-autocomplete="list"/>
@@ -271,7 +271,7 @@ These are the three types of Comboboxes, all with manual selection.
 <hr>
 
 <h4>Inline and list autocomplete</h4>
-<ace-combobox id="ace-combobox-ac-both">
+<ace-combobox id="ac-both-combobox">
   <label>Choose an Avenger:</label>
   <div ace-combobox-wrapper>
     <input aria-autocomplete="both"/>
@@ -299,7 +299,7 @@ Same as previous example but with automatic selection enabled.
 
 ```html
 <h4>No autocomplete</h4>
-<ace-combobox id="ace-combobox-basic-as" ace-combobox-autoselect="true">
+<ace-combobox id="basic-autoselect-combobox" ace-combobox-autoselect="true">
   <label>Choose an Avenger:</label>
   <div ace-combobox-wrapper>
     <input />
@@ -323,7 +323,7 @@ Same as previous example but with automatic selection enabled.
 <hr>
 
 <h4>List autocomplete</h4>
-<ace-combobox id="ace-combobox-ac-list-as" ace-combobox-autoselect="true">
+<ace-combobox id="ac-list-autoselect-combobox" ace-combobox-autoselect="true">
   <label>Choose an Avenger:</label>
   <div ace-combobox-wrapper>
     <input aria-autocomplete="list"/>
@@ -347,7 +347,7 @@ Same as previous example but with automatic selection enabled.
 <hr>
 
 <h4>Inline and list autocomplete</h4>
-<ace-combobox id="ace-combobox-ac-both-as" ace-combobox-autoselect="true">
+<ace-combobox id="ac-both-autoselect-combobox" ace-combobox-autoselect="true">
   <label>Choose an Avenger:</label>
   <div ace-combobox-wrapper>
     <input aria-autocomplete="both"/>
@@ -377,12 +377,16 @@ The **Add options** button adds options to the initially empty Combobox, while t
 <button id="add-options-btn">Add options</button>
 <button id="show-list-btn">Show list</button>
 <button id="hide-list-btn">Hide list</button>
+<form id="select-option-form">
+  <label>
+    Select option:
+    <input id="select-option-input" max="3" min="1" name="option-number" type="number">
+  </label>
+  <button type="submit">Go</button>
+</form>
+<hr>
 
-<br><label for="select-option-number-input">Select which option to choose:</label><br>
-<input id="select-option-number-input" type="number" name="option" min="1" max="3"><br>
-<button id="select-option-btn">Select option</button>
-
-<ace-combobox id="ace-combobox-custom-events">
+<ace-combobox id="custom-events-combobox">
   <label>Custom events combobox:</label><br>
   <ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
@@ -392,9 +396,9 @@ The **Add options** button adds options to the initially empty Combobox, while t
 import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const comboboxEl = document.getElementById('ace-combobox-custom-events');
+  const comboboxEl = document.getElementById('custom-events-combobox');
   const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
-  const optionNumberEl = document.getElementById('select-option-number-input');
+  const selectOptionForm = document.getElementById('select-option-form');
 
   window.addEventListener('click', (e) => {
     switch (e.target.id) {
@@ -413,21 +417,21 @@ document.addEventListener('DOMContentLoaded', () => {
       case 'hide-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
         break;
-
-      case 'select-option-btn': {
-        const optionNumber = parseInt(optionNumberEl.value);
-        const option = comboboxEl.querySelectorAll('li')[optionNumber-1];
-        if (!option) {
-          return;
-        }
-        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
-          'detail': {
-            'optionId': option.id
-          }
-        }));
-        break;
-      }
     }
+  });
+
+  selectOptionForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const optionNumber = +new FormData(e.target).get('option-number');
+    const option = comboboxEl.querySelectorAll('li')[optionNumber - 1];
+    if (!option) {
+      return;
+    }
+    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
+      detail: {
+        optionId: option.id,
+      }
+    }));
   });
 });
 ```
@@ -499,6 +503,8 @@ import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
 import {KEYS} from '../../../common/constants.js';
 import {keyPressedMatches} from '../../../common/functions.js';
 
+export const fakeDelay = 3000;
+
 const comboboxId = 'search-combobox';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -536,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
         data.push({id: `result-${i}`, text: `Result ${i}`});
       }
       resolve(data);
-    }, 3000));
+    }, fakeDelay));
 
     // Add results to DOM
     comboboxStatusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's' } found`;

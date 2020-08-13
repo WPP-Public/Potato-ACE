@@ -1,7 +1,7 @@
 import {EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tabsEl = document.getElementById('ace-tabs-custom');
+  const tabsEl = document.getElementById('custom-events-tabs');
   const setTabForm = document.getElementById('set-tab-form');
 
   window.addEventListener('click', (e) => {
@@ -14,10 +14,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setTabForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
     tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.SET_TAB, {
       detail: {
-        tab: +formData.get('tab-number')
+        tab: +new FormData(e.target).get('tab-number')
       }
     }));
   });

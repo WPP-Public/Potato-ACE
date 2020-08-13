@@ -94,11 +94,11 @@ Each example contains a live demo and the HTML code that produced it. The code s
 This is a simple button triggered Disclosure.
 
 ```html
-<button ace-disclosure-trigger-for="disclosure">
+<button ace-disclosure-trigger-for="ace-disclosure-1">
   Disclosure Toggle
 </button>
-<br><br>
-<ace-disclosure id="disclosure">
+<hr>
+<ace-disclosure>
   <h2>Disclosure heading</h2>
   <p>Disclosure content</p>
   <img src="/img/logo.svg" width="50px" alt="potato logo"/>
@@ -111,32 +111,30 @@ This is a simple button triggered Disclosure.
 In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute `ace-disclosure-visible="true"`.
 
 ```html
-<button ace-disclosure-trigger-for="disclosure-1">
-  Disclosure 1 Toggle 1
+<button ace-disclosure-trigger-for="basic-disclosure">
+  Disclosure 1 toggle trigger 1
 </button>
-<button ace-disclosure-trigger-for="disclosure-1">
-  Disclosure 1 Toggle 2
+<button ace-disclosure-trigger-for="basic-disclosure">
+  Disclosure 1 toggle trigger 2
 </button>
-<button ace-disclosure-trigger-for="disclosure-2">
-  Disclosure 2 Toggle
+<button ace-disclosure-trigger-for="initially-visible-disclosure">
+  Disclosure 2 toggle trigger
 </button>
-<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-show>
-  Disclosure 2 Show
+<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
+  Disclosure 2 show trigger
 </button>
-<button ace-disclosure-trigger-for="disclosure-2" ace-disclosure-trigger-hide>
-  Disclosure 2 Hide
+<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-hide>
+  Disclosure 2 hide trigger
 </button>
-<br><br>
-<ace-disclosure id="disclosure-1">
-  <div>
-    Disclosure 1 - Initially hidden diclosure.
-  </div>
+<hr>
+<ace-disclosure id="basic-disclosure">
+  <h2>Disclosure 1</h2>
+  <p>This Disclosure is initially hidden.</p>
 </ace-disclosure>
 
-<ace-disclosure id="disclosure-2" ace-disclosure-visible="true">
-  <div>
-    Disclosure 2 - Initially visible diclosure.
-  </div>
+<ace-disclosure id="initially-visible-disclosure" ace-disclosure-visible="true">
+  <h2>Disclosure 2</h2>
+  <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
 </ace-disclosure>
 ```
 
@@ -146,18 +144,19 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 Example of Disclosure controlled through custom events. The buttons in this example are **not** trigger buttons and instead dispatch the Disclosure's custom events. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The extra JavaScript code required by this example is also included below.
 
 ```html
-<button id="custom-event-show-btn">
+<button id="custom-events-show-btn">
   Show disclosure using custom event
 </button>
-<button id="custom-event-hide-btn">
+<button id="custom-events-hide-btn">
   Hide disclosure using custom event
 </button>
-<button id="custom-event-toggle-btn">
+<button id="custom-events-toggle-btn">
   Toggle disclosure using custom event
 </button>
-<br><br>
-<ace-disclosure id="custom-event-triggered-disclosure">
-  <p>Disclosure toggled using custom events.</p>
+<hr>
+<ace-disclosure id="custom-events-disclosure">
+  <h2>Custom event Disclosure</h2>
+  <p>This Disclosure's visibility is controlled using custom events.</p>
 </ace-disclosure>
 ```
 
@@ -165,11 +164,11 @@ Example of Disclosure controlled through custom events. The buttons in this exam
 import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const disclosureEl = document.getElementById('custom-event-triggered-disclosure');
+  const disclosureEl = document.getElementById('custom-events-disclosure');
   window.addEventListener('click', (e) => {
-    const customEventHideBtnClicked = e.target.closest('#custom-event-hide-btn');
-    const customEventShowBtnClicked = e.target.closest('#custom-event-show-btn');
-    const customEventToggleBtnClicked = e.target.closest('#custom-event-toggle-btn');
+    const customEventHideBtnClicked = e.target.closest('#custom-events-hide-btn');
+    const customEventShowBtnClicked = e.target.closest('#custom-events-show-btn');
+    const customEventToggleBtnClicked = e.target.closest('#custom-events-toggle-btn');
 
     if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
       return;
