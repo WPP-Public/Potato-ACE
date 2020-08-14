@@ -1,5 +1,5 @@
 /* FUNCTIONS THAT CAN BE USED BY ANY COMPONENT */
-import {KEYS, Key, UTIL_ATTRS} from './constants.js';
+import {Key, UTIL_ATTRS} from './constants.js';
 
 
 /*
@@ -17,6 +17,33 @@ export const autoID = (component: string): void => {
       elem.id = `${component}-${i}`;
    });
 };
+
+
+/*
+  Search a given container for an element using a given attribute, if not found find element using given selector, set the given attribute on it, then return the element.
+*/
+export const getElByAttrOrSelector = (container: Element, attr: string, selector: string): HTMLElement =>  {
+  let el = container.querySelector(`[${attr}]`);
+  if (!el) {
+    el = container.querySelector(selector);
+    el.setAttribute(attr, '');
+  }
+  return el as  HTMLElement;
+};
+
+
+/*
+  Search a given container for elements using a given attribute, if none found find elements using given selector, set the given attribute on them, then return the elements.
+*/
+export const getElsByAttrOrSelector = (container: Element, attr: string, selector: string): NodeListOf<HTMLElement> =>  {
+  let el = container.querySelectorAll(`[${attr}]`);
+  if (!el.length) {
+    el = container.querySelectorAll(selector);
+    el.forEach(el => el.setAttribute(attr, ''));
+  }
+  return el as NodeListOf<HTMLElement>;
+};
+
 
 
 /*
@@ -54,13 +81,12 @@ export const handleOverflow = (elem: HTMLElement): void => {
 /*
   Increments or decrements a given index based on whether DOWN or UP arrow is pressed respectively, looping around if necessary.
 */
-export const getIndexAfterArrowKeyPress = (startIndex: number, arrowKeyPressed: string | number, total: number): number => {
-  const direction = keyPressedMatches(arrowKeyPressed, KEYS.UP) ? -1 : 1;
-  let optionToSelectIndex = startIndex + direction;
-  if (optionToSelectIndex < 0) {
-    optionToSelectIndex = total - 1;
-  } else if (optionToSelectIndex === total) {
-    optionToSelectIndex = 0;
+export const getIndexOfNextItem = (startIndex: number, direction: -1|1, itemsTotal: number, loopAround=false): number => {
+  let newIndex = startIndex + direction;
+  if (newIndex < 0) {
+    newIndex = loopAround ? itemsTotal - 1 : 0;
+  } else if (newIndex === itemsTotal) {
+    newIndex = loopAround ? 0 : itemsTotal - 1;
   }
-  return optionToSelectIndex;
+  return newIndex;
 };
