@@ -1,6 +1,6 @@
 /* IMPORTS */
 import {KEYS, NAME} from '../../common/constants.js';
-import {autoID, getIndexAfterArrowKeyPress, keyPressedMatches} from '../../common/functions.js';
+import {autoID, getIndexOfNextItem, keyPressedMatches} from '../../common/functions.js';
 
 
 /* COMPONENT NAME */
@@ -512,14 +512,15 @@ export default class Combobox extends HTMLElement {
       e.preventDefault();
 
       // Determine which option to select and select it
+      const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
       const optionsCount = this.options.length;
       let optionToSelectIndex;
       if (this.selectedOptionIndex !== null) {
-        optionToSelectIndex = getIndexAfterArrowKeyPress(this.selectedOptionIndex, keyPressed, optionsCount);
+        optionToSelectIndex = getIndexOfNextItem(this.selectedOptionIndex, direction, optionsCount, true);
       } else if (this.lastChosenOptionIndex !== null) {
-        optionToSelectIndex = getIndexAfterArrowKeyPress(this.lastChosenOptionIndex, keyPressed, optionsCount);
+        optionToSelectIndex = getIndexOfNextItem(this.lastChosenOptionIndex, direction, optionsCount, true);
       } else {
-        optionToSelectIndex = keyPressedMatches(keyPressed, KEYS.DOWN) ? 0 : optionsCount - 1;
+        optionToSelectIndex = direction === 1 ? 0 : optionsCount - 1;
       }
       this.changeSelectedOption(optionToSelectIndex);
 

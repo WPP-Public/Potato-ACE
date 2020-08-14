@@ -85,141 +85,288 @@
   display: none;
 }
 
-[ace-carousel-slide-active] {
+[ace-carousel-slide-selected] {
   display: block;
 }
 </code></pre>
 <p>The current slide is displayed by adding an <code>ace-carousel-slide-active</code> attribute on the appropriate <code>div[ace-carousel-slide]</code>. You can override this for custom animations. The captions, buttons, and other elements can be customised via CSS.</p>
 <p><em>Note</em>: We will showcase a carousel with controls and captions displayed above and below the image, which is <a href="https://www.w3.org/TR/wai-aria-practices-1.1/examples/carousel/carousel-1.html?moreaccessible">considered more accessible</a>. If you choose to display controls and captions on the image, please take into consideration adding backgrounds via CSS to make them more perceivable.</p>
 <h2>Custom events</h2>
-<p>Carousel uses the following custom events, the names of which are exported as properties of <code>EVENTS</code>, similar to <code>ATTRS</code>, so they may be imported into other modules and dispatched or listened for.</p>
-<h3>Changed</h3>
-<p><code>ace-carousel-changed</code></p>
-<p>This event is dispatched when a Carousel visibility is changed and its <code>detail</code> object is composed as follows:</p>
+<p>Carousel uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
+<h3>Dispatched events</h3>
+<p>The following events are dispatched on <code>window</code> by Carousel.</p>
+<h4>Ready</h4>
+<p><code>ace-carousel-ready</code></p>
+<p>This event is dispatched when Carousel finishes initialising, after page load or response to the <code>ace-carousel-update</code> event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'currentSlideNumber': // The number of the current slide being shown
-  'id': // ID of Carousel
+  'id': // ID of Carousel [string]
 }
 </code></pre>
+<h4>Changed</h4>
+<p><code>ace-carousel-changed</code></p>
+<p>This event is dispatched when the Carousel selected slide is changed. The event name is available as <code>EVENTS.OUT.CHANGED</code>, and its <code>detail</code> property is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'currentlySelectedSlide': // The current selected slide number [number]
+  'id': // ID of Carousel [string]
+  'previouslySelectedSlide': // The previously selected slide number [number]
+}
+</code></pre>
+<h3>Listened for events</h3>
+<p>Carousel listens for the following events, which should be dispatched by the user's code on the specific <code>ace-carousel</code> element.</p>
+<h4>Set previous slide</h4>
+<p><code>ace-carousel-set-prev-slide</code></p>
+<p>This event should be dispatched to select the previous slide, or the last slide if the Carousel has the attribute <code>ace-carousel-infinite</code> and the first slide is selected. The event name is available as <code>EVENTS.IN.SET_PREV_SLIDE</code>.</p>
+<h4>Set next slide</h4>
+<p><code>ace-carousel-set-next-slide</code></p>
+<p>This event should be dispatched to select the next slide, or the first slide if the Carousel has the attribute <code>ace-carousel-infinite</code> and the last slide is selected. The event name is available as <code>EVENTS.IN.SET_NEXT_SLIDE</code>.</p>
+<h4>Update</h4>
+<p><code>ace-carousel-set-next-slide</code></p>
+<p>This event should be dispatched if the Carousel mark-up has been changed, for example after adding or removing slides, and causes the Carousel to re-initialise. The event name is available as <code>EVENTS.IN.UPDATE</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Carousel</h3>
 <p>This is a simple carousel, which changes slides by clicking &quot;previous&quot; or &quot;next&quot; buttons. When the carousel reaches the first or last slides, the &quot;previous&quot; and &quot;next&quot; buttons respectively get disabled.</p>
-<div class="example-block"><ace-carousel aria-label="CATrousel">
+<div class="example-block"><ace-carousel aria-label="Basic carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
     <div>
-      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-      <p>Slide 1</p>
+      <h2>Potato</h2>
+      <h3>made better</h3>
+      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
+      <a href="https://p.ota.to">get to know us</a>
+      <br><br>
+      <img src="/img/logo.svg" height="120px" alt="default plain Spuddy">
     </div>
     <div>
-      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-      <p>Slide 2</p>
+      <h2>Making new tech count</h2>
+      <h3>Uncovering the potential of emerging technology.</h3>
+      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
+      <a href="https://p.ota.to/work/making-new-tech-count">learn more</a>
+      <br><br>
+      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
     </div>
     <div>
-      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-      <p>Slide 3</p>
+      <h2>Making digital for real life</h2>
+      <h3>Shaping the physical world through interactions with digital experiences.</h3>
+      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
+      <a href="https://p.ota.to/work/making-digital-for-real-life">learn more</a>
+      <br><br>
+      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;CATrousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Basic carousel&quot;&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
   &lt;div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
-      &lt;p&gt;Slide 1&lt;/p&gt;
+      &lt;h2&gt;Potato&lt;/h2&gt;
+      &lt;h3&gt;made better&lt;/h3&gt;
+      &lt;p&gt;We exist to design, develop and launch purposeful and effective digital products.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to&quot;&gt;get to know us&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;120px&quot; alt=&quot;default plain Spuddy&quot;&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
-      &lt;p&gt;Slide 2&lt;/p&gt;
+      &lt;h2&gt;Making new tech count&lt;/h2&gt;
+      &lt;h3&gt;Uncovering the potential of emerging technology.&lt;/h3&gt;
+      &lt;p&gt;Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to/work/making-new-tech-count&quot;&gt;learn more&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/carousel/spuddy-goggles.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with virtual reality goggles&quot;&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
-      &lt;p&gt;Slide 3&lt;/p&gt;
+      &lt;h2&gt;Making digital for real life&lt;/h2&gt;
+      &lt;h3&gt;Shaping the physical world through interactions with digital experiences.&lt;/h3&gt;
+      &lt;p&gt;We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to/work/making-digital-for-real-life&quot;&gt;learn more&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/carousel/spuddy-phone.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with headphones and camera&quot;&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Carousel with inifinite rotation</h3>
-<p>With the attribute <code>ace-carousel-wrapping</code>, the &quot;previous&quot; and &quot;next&quot; buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dynamically and tested in dev tools.</p>
-<div class="example-block"><ace-carousel id="wrapping-carousel" aria-label="A CATrousel with infinite scroll" ace-carousel-wrapping>
+<h3>Carousel with inifinite rotation and initially set slide</h3>
+<p>With the attribute <code>ace-carousel-infinite</code>, the &quot;previous&quot; and &quot;next&quot; buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dynamically and tested in dev tools. Also note that this Carousel has attribute <code>ace-carousel-active-slide=&quot;2&quot;</code> which causes it to set the second slide as active upon initialising.</p>
+<div class="example-block"><ace-carousel id="infinite-carousel" aria-label="A carousel with infinite scroll and an initially selected slide" ace-carousel-infinite ace-carousel-selected-slide="2">
   <button ace-carousel-previous-slide>Previous slide</button>
   <button ace-carousel-next-slide>Next slide</button>
   <div>
     <div>
-      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-      <p>Slide 1</p>
+      <h2>Potato</h2>
+      <h3>made better</h3>
+      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
+      <a href="https://p.ota.to">get to know us</a>
+      <br><br>
+      <img src="/img/logo.svg" height="120px" alt="default plain Spuddy">
     </div>
     <div>
-      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-      <p>Slide 2</p>
+      <h2>Making new tech count</h2>
+      <h3>Uncovering the potential of emerging technology.</h3>
+      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
+      <a href="https://p.ota.to/work/making-new-tech-count">learn more</a>
+      <br><br>
+      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
     </div>
     <div>
-      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-      <p>Slide 3</p>
+      <h2>Making digital for real life</h2>
+      <h3>Shaping the physical world through interactions with digital experiences.</h3>
+      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
+      <a href="https://p.ota.to/work/making-digital-for-real-life">learn more</a>
+      <br><br>
+      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel id=&quot;wrapping-carousel&quot; aria-label=&quot;A CATrousel with infinite scroll&quot; ace-carousel-wrapping&gt;
+<pre><code class="language-html">&lt;ace-carousel id=&quot;infinite-carousel&quot; aria-label=&quot;A carousel with infinite scroll and an initially selected slide&quot; ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot;&gt;
   &lt;button ace-carousel-previous-slide&gt;Previous slide&lt;/button&gt;
   &lt;button ace-carousel-next-slide&gt;Next slide&lt;/button&gt;
   &lt;div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
-      &lt;p&gt;Slide 1&lt;/p&gt;
+      &lt;h2&gt;Potato&lt;/h2&gt;
+      &lt;h3&gt;made better&lt;/h3&gt;
+      &lt;p&gt;We exist to design, develop and launch purposeful and effective digital products.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to&quot;&gt;get to know us&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;120px&quot; alt=&quot;default plain Spuddy&quot;&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
-      &lt;p&gt;Slide 2&lt;/p&gt;
+      &lt;h2&gt;Making new tech count&lt;/h2&gt;
+      &lt;h3&gt;Uncovering the potential of emerging technology.&lt;/h3&gt;
+      &lt;p&gt;Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to/work/making-new-tech-count&quot;&gt;learn more&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/carousel/spuddy-goggles.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with virtual reality goggles&quot;&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
-      &lt;p&gt;Slide 3&lt;/p&gt;
+      &lt;h2&gt;Making digital for real life&lt;/h2&gt;
+      &lt;h3&gt;Shaping the physical world through interactions with digital experiences.&lt;/h3&gt;
+      &lt;p&gt;We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to/work/making-digital-for-real-life&quot;&gt;learn more&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/carousel/spuddy-phone.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with headphones and camera&quot;&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Carousel with a set current slide</h3>
-<p>With the attribute <code>ace-carousel-active-slide-number</code> you can specify which slide to show by number (i.e. 2 will show second slide). This is an observed attribute, which can be set dynamically and tested in dev tools.</p>
-<div class="example-block"><ace-carousel id="initially-set-slide-carousel" aria-label="CATrousel with initial slide set to 2" ace-carousel-active-slide-number="2">
+<h3>Custom event triggered Carousel</h3>
+<p>This Carousel is controlled through custom events.</p>
+<div class="example-block"><p>These buttons dispatch custom events</p>
+<button id="prev-slide-btn">Prev slide</button>
+<button id="next-slide-btn">Next slide</button>
+<button id="add-slide-btn">Add slide to end</button>
+<button id="remove-slide-btn">Remove last slide</button>
+<hr>
+<ace-carousel id="custom-events-carousel" aria-label="Carousel controlled through custom events">
   <button ace-carousel-previous-slide>Previous slide</button>
   <button ace-carousel-next-slide>Next slide</button>
   <div>
     <div>
-      <img src="/img/carousel/cat1.jpg" alt="Grumpy cat">
-      <p>Slide 1</p>
+      <h2>Potato</h2>
+      <h3>made better</h3>
+      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
+      <a href="https://p.ota.to">get to know us</a>
+      <br><br>
+      <img src="/img/logo.svg" height="120px" alt="default plain Spuddy">
     </div>
     <div>
-      <img src="/img/carousel/cat2.jpg" alt="Tabby cat">
-      <p>Slide 2</p>
+      <h2>Making new tech count</h2>
+      <h3>Uncovering the potential of emerging technology.</h3>
+      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
+      <a href="https://p.ota.to/work/making-new-tech-count">learn more</a>
+      <br><br>
+      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
     </div>
     <div>
-      <img src="/img/carousel/cat3.jpg" alt="British shorthair cat">
-      <p>Slide 3</p>
+      <h2>Making digital for real life</h2>
+      <h3>Shaping the physical world through interactions with digital experiences.</h3>
+      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
+      <a href="https://p.ota.to/work/making-digital-for-real-life">learn more</a>
+      <br><br>
+      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel id=&quot;initially-set-slide-carousel&quot; aria-label=&quot;CATrousel with initial slide set to 2&quot; ace-carousel-active-slide-number=&quot;2&quot;&gt;
+<pre><code class="language-html">&lt;p&gt;These buttons dispatch custom events&lt;/p&gt;
+&lt;button id=&quot;prev-slide-btn&quot;&gt;Prev slide&lt;/button&gt;
+&lt;button id=&quot;next-slide-btn&quot;&gt;Next slide&lt;/button&gt;
+&lt;button id=&quot;add-slide-btn&quot;&gt;Add slide to end&lt;/button&gt;
+&lt;button id=&quot;remove-slide-btn&quot;&gt;Remove last slide&lt;/button&gt;
+
+&lt;hr&gt;
+
+&lt;ace-carousel id=&quot;custom-events-carousel&quot; aria-label=&quot;Carousel controlled through custom events&quot;&gt;
   &lt;button ace-carousel-previous-slide&gt;Previous slide&lt;/button&gt;
   &lt;button ace-carousel-next-slide&gt;Next slide&lt;/button&gt;
   &lt;div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat1.jpg&quot; alt=&quot;Grumpy cat&quot;&gt;
-      &lt;p&gt;Slide 1&lt;/p&gt;
+      &lt;h2&gt;Potato&lt;/h2&gt;
+      &lt;h3&gt;made better&lt;/h3&gt;
+      &lt;p&gt;We exist to design, develop and launch purposeful and effective digital products.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to&quot;&gt;get to know us&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;120px&quot; alt=&quot;default plain Spuddy&quot;&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat2.jpg&quot; alt=&quot;Tabby cat&quot;&gt;
-      &lt;p&gt;Slide 2&lt;/p&gt;
+      &lt;h2&gt;Making new tech count&lt;/h2&gt;
+      &lt;h3&gt;Uncovering the potential of emerging technology.&lt;/h3&gt;
+      &lt;p&gt;Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to/work/making-new-tech-count&quot;&gt;learn more&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/carousel/spuddy-goggles.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with virtual reality goggles&quot;&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;img src=&quot;/img/carousel/cat3.jpg&quot; alt=&quot;British shorthair cat&quot;&gt;
-      &lt;p&gt;Slide 3&lt;/p&gt;
+      &lt;h2&gt;Making digital for real life&lt;/h2&gt;
+      &lt;h3&gt;Shaping the physical world through interactions with digital experiences.&lt;/h3&gt;
+      &lt;p&gt;We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.&lt;/p&gt;
+      &lt;a href=&quot;https://p.ota.to/work/making-digital-for-real-life&quot;&gt;learn more&lt;/a&gt;
+      &lt;br&gt;&lt;br&gt;
+      &lt;img src=&quot;/img/carousel/spuddy-phone.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with headphones and camera&quot;&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
+</code></pre>
+<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const carouselEl = document.getElementById('custom-events-carousel');
+  const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
+
+  const addSlide = () =&gt; {
+    const headingEl = document.createElement('h2');
+    headingEl.textContent = `Dynamically added Slide`;
+    const p = document.createElement('p');
+    p.textContent = `This slide was added dynamically, after the carousel was initialised.`;
+    const newSlideEl = document.createElement('div');
+    newSlideEl.appendChild(headingEl);
+    newSlideEl.appendChild(p);
+    slidesWrapper.appendChild(newSlideEl);
+    carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+  };
+
+  window.addEventListener('click', (e) =&gt; {
+    const targetId = e.target.id;
+    switch(targetId) {
+      case 'prev-slide-btn':
+      case 'next-slide-btn': {
+        const event = EVENTS.IN[`SET_${targetId === 'prev-slide-btn' ? 'PREV' : 'NEXT'}_SLIDE`];
+        carouselEl.dispatchEvent(new CustomEvent(event));
+        break;
+      }
+      case 'add-slide-btn':
+      case 'remove-slide-btn':
+        if (targetId === 'add-slide-btn') {
+          addSlide();
+        } else {
+          slidesWrapper.removeChild(slidesWrapper.lastElementChild);
+        }
+        carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+        break;
+    }
+  });
+});
 </code></pre>

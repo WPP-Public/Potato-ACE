@@ -43,10 +43,10 @@ The following SASS is applied to the component, each declaration of which can be
 ```
 
 
-<!-- TODO: If one event used remove plural from following heading and sentence  -->
 ## Custom events
-<!-- TODO: Remove 'listened for' in following sentence if component only dispatches and does not listen for events -->
+
 Template uses the following custom events, the names of which are available in its exported `EVENTS` object, similar to `ATTRS`, so they may be imported into other modules.
+
 
 ### Dispatched events
 
