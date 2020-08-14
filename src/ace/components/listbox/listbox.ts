@@ -1,6 +1,6 @@
 /* IMPORTS */
 import {KEYS, NAME} from '../../common/constants.js';
-import {autoID, getIndexAfterArrowKeyPress, keyPressedMatches} from '../../common/functions.js';
+import {autoID, getIndexOfNextItem, keyPressedMatches} from '../../common/functions.js';
 
 
 /* COMPONENT NAME */
@@ -249,7 +249,8 @@ export default class Listbox extends HTMLElement {
 
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
       e.preventDefault();
-      const optionToMakeActiveIndex = getIndexAfterArrowKeyPress(this.activeOptionIndex, keyPressed, this.options.length);
+      const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
+      const optionToMakeActiveIndex = getIndexOfNextItem(this.activeOptionIndex, direction, this.options.length, true);
       this.updateActiveOption(optionToMakeActiveIndex);
 
       if (this.multiselectable && e.shiftKey) {
