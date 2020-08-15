@@ -1,6 +1,12 @@
 /* IMPORTS */
 import {KEYS, NAME} from '../../common/constants.js';
-import {autoID, keyPressedMatches} from '../../common/functions.js';
+import {
+    autoID,
+    getElByAttrOrSelector,
+    getElsByAttrOrSelector,
+    getIndexOfNextItem,
+    keyPressedMatches
+} from '../../common/functions.js';
 
 
 /* TEMPLATE NAME */
@@ -8,32 +14,33 @@ export const TABS = `${NAME}-tabs`;
 
 
 /* CONSTANTS */
+export const TABLIST = `${TABS}-tablist`;
 export const TAB = `${TABS}-tab`;
 
 
 export const ATTRS = {
-  ACTIVE_TAB: `${TABS}-active-tab`,
-  MANUAL_ACTIVATION: `${TABS}-manual-activation`,
-  NON_WRAPPING: `${TABS}-non-wrapping`,
+  INFINITE: `${TABS}-infinite`,
+  MANUAL: `${TABS}-manual`,
   PANEL: `${TABS}-panel`,
+  PANEL_VISIBLE: `${TAB}-visible`,
+  SELECTED_TAB: `${TABS}-selected-tab`,
   TAB,
-  TABLIST: `${TABS}-tablist`,
+  TABLIST,
+  TABLIST_VERTICAL: `${TABLIST}-vertical`,
+  TAB_SELECTED: `${TAB}-selected`,
+  TAB_VERTICAL: `${TAB}-vertical`,
   VERTICAL: `${TABS}-vertical`,
-  VERTICAL_TAB: `${TABS}-vertical-tab`,
-  VERTICAL_TABLIST: `${TABS}-vertical-tablist`,
-  VISIBLE: `${TAB}-visible`
 };
 
 
 export const EVENTS = {
   IN: {
-    SET_NEXT_TAB: `${TABS}-next-tab`,
-    SET_PREV_TAB: `${TABS}-prev-tab`,
-    SET_TAB: `${TABS}-set-tab`,
-    UPDATE_TABS: `${TABS}-update`
+    SET_NEXT_TAB: `${TABS}-set-next-tab`,
+    SET_PREV_TAB: `${TABS}-set-prev-tab`,
+    UPDATE: `${TABS}-update`
   },
   OUT: {
-    CHANGED: `${TABS}-changed`,
+    CHANGED: `${TAB}-changed`,
     READY: `${TABS}-ready`,
   }
 };
@@ -41,70 +48,96 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Tabs extends HTMLElement {
-  private activeTabIndex = 0;
-  private automaticActivation = true;
+  private activeTabIndex: number;
+  private infinite: boolean;
+  private initialised = false;
+  private manualSelection = true;
   private nextTabKey = KEYS.RIGHT;
-  private panelEls: NodeListOf<HTMLElement>;
+  private panelEls: NodeListOf<Element>;
   private prevTabKey = KEYS.LEFT;
-  private tabCount = 0;
+  private selectedTabIndex: number;
+  private tabCount: number;
   private tabEls: NodeListOf<HTMLButtonElement>;
-  private tablistEl: HTMLElement | null = null;
-  private vertical = false;
-  private wrapping = false;
+  private tablistEl: HTMLElement;
+  private vertical: boolean;
+
 
   constructor() {
     super();
 
 
     /* CLASS METHOD BINDINGS */
-    this.initTab = this.initTab.bind(this);
-    this.activatePanel = this.activatePanel.bind(this);
-    this.setTabBasedOnDirection = this.setTabBasedOnDirection.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
-    this.keydownHandler = this.keydownHandler.bind(this);
     this.customEventsHander = this.customEventsHander.bind(this);
-    this.updateTabs = this.updateTabs.bind(this);
+    this.initTabs = this.initTabs.bind(this);
+    this.keydownHandler = this.keydownHandler.bind(this);
+    this.selectTab = this.selectTab.bind(this);
+    this.setOrientation = this.setOrientation.bind(this);
+    this.setSelectedTab = this.setSelectedTab.bind(this);
+  }
+
+
+  static get observedAttributes(): Array<string> {
+    return [ATTRS.SELECTED_TAB, ATTRS.INFINITE, ATTRS.VERTICAL];
+  }
+
+
+  private attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
+    if (!this.initialised || oldValue === newValue) {
+      return;
+    }
+
+    switch (name) {
+      case ATTRS.SELECTED_TAB: {
+        const selectedTabNumber = +newValue;
+        if (selectedTabNumber) {
+          this.selectTab(selectedTabNumber - 1);
+        }
+        break;
+      }
+      case ATTRS.INFINITE:
+        this.infinite = (newValue === '');
+        break;
+      case ATTRS.VERTICAL:
+        this.vertical = (newValue === '');
+        this.setOrientation();
+        break;
+    }
   }
 
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.tablistEl = this.querySelector(`[${ATTRS.TABLIST}]`);
-    if (!this.tablistEl && this.childNodes.length > 0) {
-      // If a ace-tabs-tablist element is not found take the first child
-      this.tablistEl = this.firstChild as HTMLElement;
-    }
+    this.tablistEl = getElByAttrOrSelector(this, ATTRS.TABLIST, `${TABS} > div`);
 
 
     /* GET DOM DATA */
-    this.automaticActivation = !this.hasAttribute(ATTRS.MANUAL_ACTIVATION);
+    const initialSelectedTabNumber = +this.getAttribute(ATTRS.SELECTED_TAB) || 1;
+    this.selectedTabIndex = initialSelectedTabNumber - 1;
+    this.activeTabIndex = this.selectedTabIndex;
+
+
+    this.infinite = this.hasAttribute(ATTRS.INFINITE);
+    this.manualSelection = this.hasAttribute(ATTRS.MANUAL);
     this.vertical = this.hasAttribute(ATTRS.VERTICAL);
-    this.wrapping = !this.hasAttribute(ATTRS.NON_WRAPPING);
 
 
     /* SET DOM DATA */
+    this.setAttribute(ATTRS.SELECTED_TAB, initialSelectedTabNumber.toString());
     this.tablistEl.setAttribute('role', 'tablist');
-    this.tablistEl.setAttribute('aria-orientation', this.vertical ? 'vertical' : 'horizontal');
-    this.prevTabKey = this.vertical ? KEYS.UP : KEYS.LEFT;
-    this.nextTabKey = this.vertical ? KEYS.DOWN : KEYS.RIGHT;
-
-    if (this.vertical) {
-      this.tablistEl.setAttribute(ATTRS.VERTICAL_TABLIST, '');
-    }
 
 
     /* ADD EVENT LISTENERS */
     this.addEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
     this.addEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
-    this.addEventListener(EVENTS.IN.SET_TAB, this.customEventsHander);
-    this.addEventListener(EVENTS.IN.UPDATE_TABS, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
     this.tablistEl.addEventListener('click', this.clickHandler);
     this.tablistEl.addEventListener('keydown', this.keydownHandler);
 
 
     /* INITIALISATION */
-    this.updateTabs();
-    this.activatePanel(this.activeTabIndex);
+    this.initTabs();
+    this.initialised = true;
   }
 
 
@@ -112,124 +145,99 @@ export default class Tabs extends HTMLElement {
     /* REMOVE EVENT LISTENERS */
     window.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
     window.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
-    window.removeEventListener(EVENTS.IN.SET_TAB, this.customEventsHander);
     this.tablistEl.removeEventListener('click', this.clickHandler);
     this.tablistEl.removeEventListener('keydown', this.keydownHandler);
   }
 
 
   /*
-    Hides all non-active panels and reveals active panel
+    Handles clicked on tabs
   */
-  private activatePanel(panelToActivateIndex: number): void {
-    if (panelToActivateIndex === this.activeTabIndex) {
+  private clickHandler(e: MouseEvent): void {
+    const tabClicked = (e.target as HTMLElement).closest(`[${ATTRS.TAB}]`) as HTMLButtonElement;
+    if (!tabClicked) {
+      return;
+    }
+    const tabIndex = [...this.tabEls].indexOf(tabClicked);
+    this.setSelectedTab(tabIndex);
+  }
+
+
+  /*
+    Handler for listened for custom events
+  */
+  private customEventsHander(e: CustomEvent): void {
+    switch (e.type) {
+      case EVENTS.IN.SET_PREV_TAB:
+      case EVENTS.IN.SET_NEXT_TAB: {
+        const direction = (e.type === EVENTS.IN.SET_PREV_TAB) ? -1 : 1;
+        const newTabIndex = getIndexOfNextItem(this.selectedTabIndex, direction, this.tabCount, this.infinite);
+        this.setSelectedTab(newTabIndex);
+        break;
+      }
+      case EVENTS.IN.UPDATE:
+        this.initTabs();
+        break;
+    }
+  }
+
+
+  /*
+    Initialises Tabs attributes. Should be run whenever the Tabs markup changes
+  */
+  private initTabs(): void {
+    this.tabEls = this.tablistEl.querySelectorAll('button');
+    this.tabCount = this.tabEls.length;
+
+    // If ATTRS.PANEL not given then take all children except first (which is the tablist)
+    this.panelEls = getElsByAttrOrSelector(this, ATTRS.PANEL, `${TABS} > :not(:first-child)`);
+
+    // Check number of tabs matches number of panels
+    if (this.panelEls.length !== this.tabCount) {
+      console.warn(`Number of tabs doesn't match number of panels`);
       return;
     }
 
-    // De-activate the previously selected tab
-    const oldTabEl = this.tabEls[this.activeTabIndex];
-    oldTabEl.removeAttribute(ATTRS.ACTIVE_TAB);
-    oldTabEl.setAttribute('aria-selected', 'false');
-    oldTabEl.setAttribute('tabindex', '-1');
+    // If last tab was previously selected and was deleted select the new last tab
+    if (this.selectedTabIndex >= this.tabCount) {
+      this.selectedTabIndex = this.tabCount - 1;
+    }
 
-    // Activate the newly selected tab
-    const newTabEl = this.tabEls[panelToActivateIndex];
-    newTabEl.setAttribute(ATTRS.ACTIVE_TAB, '');
-    newTabEl.setAttribute('aria-selected', 'true');
-    newTabEl.removeAttribute('tabindex');
-    this.panelEls.forEach((panelEl, index) => panelEl.setAttribute(ATTRS.VISIBLE, index === panelToActivateIndex ? 'true' : 'false'));
-    newTabEl.focus();
+    // Initialise tab and panel attributes
+    this.tabEls.forEach((tabEl, index) => {
+      const tabId = tabEl.id || `${this.id}-tab-${index + 1}`;
+      const correspondingPanel = this.panelEls[index];
+      const correspondingPanelId = correspondingPanel.id || `${this.id}-panel-${index + 1}`;
 
-    const oldTabIndex = this.activeTabIndex;
-    this.activeTabIndex = panelToActivateIndex;
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+      // Set panel attributes
+      correspondingPanel.id = correspondingPanelId;
+      correspondingPanel.setAttribute(ATTRS.PANEL, '');
+      correspondingPanel.setAttribute(ATTRS.PANEL_VISIBLE, index === this.selectedTabIndex ? 'true' : 'false');
+      correspondingPanel.setAttribute('aria-labelledby', tabId);
+      correspondingPanel.setAttribute('role', 'tabpanel');
+      correspondingPanel.setAttribute('tabindex', '0');
+
+      // Set tab attributes
+      tabEl.id = tabId;
+      tabEl.setAttribute(ATTRS.TAB, '');
+      tabEl.setAttribute('aria-controls', correspondingPanelId);
+      tabEl.setAttribute('aria-selected',  index === this.selectedTabIndex ? 'true' : 'false');
+      tabEl.setAttribute('role', 'tab');
+      if (index === this.selectedTabIndex) {
+        tabEl.setAttribute(ATTRS.TAB_SELECTED, '');
+        tabEl.removeAttribute('tabindex');
+      } else {
+        tabEl.setAttribute('tabindex', '-1');
+      }
+    });
+
+    this.setOrientation();
+
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
-        'activeTab': {
-          'id': newTabEl.id,
-          'number': this.activeTabIndex + 1
-        },
-        'prevTab': {
-          'id': oldTabEl.id,
-          'number': oldTabIndex + 1
-        },
-        'tabsId': this.id
+        'id': this.id,
       }
     }));
-  }
-
-
-  /*
-    Handles a tab being clicked
-  */
-  private clickHandler(e: MouseEvent): void {
-    const tab = (e.target as HTMLElement).closest('[role=tab]') as HTMLButtonElement;
-    const index = [...this.tabEls].indexOf(tab);
-    this.activatePanel(index);
-  }
-
-
-  /*
-    Handles custom events for the tabs element
-  */
-  private customEventsHander(e: CustomEvent): void {
-    // Depending on event type trigger appropriate action
-    switch (e.type) {
-      case EVENTS.IN.SET_NEXT_TAB:
-        this.setTabBasedOnDirection(1);
-        break;
-      case EVENTS.IN.SET_PREV_TAB:
-        this.setTabBasedOnDirection(-1);
-        break;
-      case EVENTS.IN.SET_TAB:
-        {
-          const detail = e['detail'];
-          if (!detail) {
-            return;
-          }
-          const tabNumber = detail['tab'];
-          if (tabNumber < 0 || tabNumber > this.tabCount || typeof tabNumber !== 'number') {
-            return;
-          }
-          this.activatePanel(tabNumber - 1);
-        }
-        break;
-      case EVENTS.IN.UPDATE_TABS:
-        this.updateTabs();
-        break;
-    }
-  }
-
-
-  /*
-    Adds all the relevant attributes to a tab element and its corresponding panel
-  */
-  private initTab(tab: HTMLElement, index: number): void {
-    // Sets appropriate role and attributes for the element
-    tab.setAttribute(ATTRS.TAB, '');
-    if (this.vertical) {
-      tab.setAttribute(ATTRS.VERTICAL_TAB, '');
-    }
-    tab.setAttribute('role', 'tab');
-
-    // If the tab doesn't have a ID then one is generated for it
-    tab.id = tab.id || `${this.id}-tab-${index + 1}`;
-
-    // If this is the first tab then set it as the active tab
-    if (index === 0) {
-      tab.setAttribute('aria-selected', 'true');
-      tab.removeAttribute('tabindex');
-    } else {  // Otherwise set it as an inactive tab
-      tab.setAttribute('tabindex', '-1');
-      tab.setAttribute('aria-selected', 'false');
-    }
-
-    // Set the corresponding panel attributes and assign ID if needed
-    this.panelEls[index].setAttribute('role', 'tabpanel');
-    this.panelEls[index].setAttribute('tabindex', '0');
-    const panelId = this.panelEls[index].id || `${this.id}-panel-${index + 1}`;
-    this.panelEls[index].id = panelId;
-    tab.setAttribute('aria-controls', panelId);
-    this.panelEls[index].setAttribute('aria-labelledby', tab.id);
   }
 
 
@@ -238,105 +246,126 @@ export default class Tabs extends HTMLElement {
   */
   private keydownHandler(e: KeyboardEvent): void {
     const keyPressed = e.key || e.which || e.keyCode;
+    const homeKeyPressed = keyPressedMatches(keyPressed, KEYS.HOME);
+    const endKeyPressed = keyPressedMatches(keyPressed, KEYS.END);
+    const prevTabKeyPressed = keyPressedMatches(keyPressed, this.prevTabKey);
+    const prevNextKeyPressed = keyPressedMatches(keyPressed, this.nextTabKey);
 
-    // LEFT/UP key pressed
-    if (keyPressedMatches(keyPressed, this.prevTabKey)) {
+    // SPACE or ENTER key pressed
+    if (this.manualSelection && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
       e.preventDefault();
-      this.setTabBasedOnDirection(-1);
+      this.setSelectedTab(this.activeTabIndex);
       return;
     }
 
-    // RIGHT/DOWN key pressed
-    if (keyPressedMatches(keyPressed, this.nextTabKey)) {
-      e.preventDefault();
-      this.setTabBasedOnDirection(1);
+    // LEFT/UP/RIGHT/DOWN/HOME/END key pressed
+    if (!homeKeyPressed && !endKeyPressed && !prevTabKeyPressed && !prevNextKeyPressed) {
       return;
     }
-
-    // HOME key pressed
-    if (keyPressedMatches(keyPressed, KEYS.HOME)) {
-      e.preventDefault();
-      // Activates the first tab in the tablist
-      if (this.automaticActivation) {
-        this.activatePanel(0);
-      }
-      return;
+    e.preventDefault();
+    let desiredSlideIndex = homeKeyPressed ? 0 : this.tabCount - 1;
+    if (prevTabKeyPressed || prevNextKeyPressed) {
+      const direction = prevTabKeyPressed ? -1 : 1;
+      const startingPoint = this.manualSelection ? this.activeTabIndex : this.selectedTabIndex;
+      desiredSlideIndex = getIndexOfNextItem(startingPoint, direction, this.tabCount, this.infinite);
     }
-
-    // END key pressed
-    if (keyPressedMatches(keyPressed, KEYS.END)) {
-      e.preventDefault();
-      // Activates the last tab in the tablist
-      if (this.automaticActivation) {
-        this.activatePanel(this.tabCount - 1);
-      }
-      return;
+    if (this.manualSelection) {
+      this.tabEls[this.activeTabIndex].setAttribute('tabindex', '-1');
+      this.activeTabIndex = desiredSlideIndex;
+      const desiredSlideEl = this.tabEls[desiredSlideIndex];
+      desiredSlideEl.removeAttribute('tabindex');
+      desiredSlideEl.focus();
+    } else {
+      this.setSelectedTab(desiredSlideIndex);
     }
-  }
-
-
-  private setTabBasedOnDirection(direction: -1|1): void {
-    let indexOfTabToActivate = this.activeTabIndex + direction;
-    if (indexOfTabToActivate < 0) {
-      if (!this.wrapping) {
-        return;
-      }
-      indexOfTabToActivate = this.tabCount - 1;
-    } else if (indexOfTabToActivate === this.tabCount) {
-      if (!this.wrapping) {
-        return;
-      }
-      indexOfTabToActivate = 0;
-    }
-
-    this.activatePanel(indexOfTabToActivate);
   }
 
 
   /*
-    Updates the tab element, reinitialises tabs and panels
+    Select a tab by revealing the tab's panel and hiding all other panels
   */
-  private updateTabs(): void {
-    this.tabEls = this.tablistEl.querySelectorAll('button');
-    this.tabCount = this.tabEls.length;
-    let panelEls = this.querySelectorAll(`${ATTRS.PANEL}`);
-    if (!panelEls.length && this.childNodes.length > 1) {
-      panelEls = this.querySelectorAll(`${TABS} > :not([${ATTRS.TABLIST}])`);
-    }
-    this.panelEls = panelEls as NodeListOf<HTMLElement>;
-
-    // Check number of tabs matches number of panels
-    if (this.tabCount !== this.panelEls.length) {
-      console.error(`Number of tabs doesn't match number of panels!`);
+  private selectTab(tabToSelectIndex: number): void {
+    if (tabToSelectIndex === this.selectedTabIndex) {
       return;
     }
 
-    // Initialise tabs and tablist attributes
-    this.tabEls.forEach(this.initTab);
-
-    // Check the tablist is labelled otherwise print a warning and assign a default value
-    const isTablistLabelled = this.querySelector('label') || this.tablistEl.hasAttribute('aria-label');
-    if (!isTablistLabelled) {
-      console.warn(`Please provide a <label> or 'aria-labelledby' attribute for the tablist in #${this.id}`);
-      this.tablistEl.setAttribute('aria-label', `${this.id}-tablist`);
+    if (!this.tabEls || tabToSelectIndex < 0 || tabToSelectIndex >= this.tabCount) {
+      return;
     }
 
-    // Hide non-selected panel
-    this.panelEls.forEach((panelEl, index) => panelEl.setAttribute(ATTRS.VISIBLE, index === this.activeTabIndex ? 'true' : 'false'));
+    // De-select previously selected tab and panel
+    const oldTabIndex = this.selectedTabIndex;
+    const oldTabEl = this.tabEls[oldTabIndex];
+    const oldPanelEl = this.panelEls[oldTabIndex];
+    oldTabEl.removeAttribute(ATTRS.TAB_SELECTED);
+    oldTabEl.setAttribute('aria-selected', 'false');
+    oldTabEl.setAttribute('tabindex', '-1');
+    oldPanelEl.setAttribute(ATTRS.PANEL_VISIBLE, 'false');
 
-    // Dispatch 'ready' event
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
+    // Select tab and panel
+    const tabToSelectEl = this.tabEls[tabToSelectIndex];
+    const panelToSelectEl = this.panelEls[tabToSelectIndex];
+    tabToSelectEl.setAttribute(ATTRS.TAB_SELECTED, '');
+    tabToSelectEl.setAttribute('aria-selected', 'true');
+    tabToSelectEl.removeAttribute('tabindex');
+    panelToSelectEl.setAttribute(ATTRS.PANEL_VISIBLE, 'true');
+
+    this.selectedTabIndex = tabToSelectIndex;
+
+    tabToSelectEl.focus();
+
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
+        'currentlySelectedTab': {
+          'id': tabToSelectEl.id,
+          'number': tabToSelectIndex + 1
+        },
         'id': this.id,
+        'previouslySelectedTab': {
+          'id': oldTabEl.id,
+          'number': oldTabIndex + 1
+        },
       }
     }));
+  }
+
+
+  /*
+    Set orientation attributes based on whether Tabs is horizontal or vertical
+  */
+  private setOrientation(): void {
+    this.prevTabKey = this.vertical ? KEYS.UP : KEYS.LEFT;
+    this.nextTabKey = this.vertical ? KEYS.DOWN : KEYS.RIGHT;
+
+    this.tablistEl.setAttribute('aria-orientation', this.vertical ? 'vertical' : 'horizontal');
+    if (this.vertical) {
+      this.tablistEl.setAttribute(ATTRS.TABLIST_VERTICAL, '');
+    } else {
+      this.tablistEl.removeAttribute(ATTRS.TABLIST_VERTICAL);
+    }
+
+    this.tabEls.forEach((tab) => {
+      if (this.vertical) {
+        tab.setAttribute(ATTRS.TAB_VERTICAL, '');
+      } else {
+        tab.removeAttribute(ATTRS.TAB_VERTICAL);
+      }
+    });
+  }
+
+
+  /*
+    Changes the selected tab by changing the observed attribute ATTRS.SELECTED_TAB
+  */
+  private setSelectedTab(panelToSelectIndex: number): void {
+    this.activeTabIndex = panelToSelectIndex;
+    this.setAttribute(ATTRS.SELECTED_TAB, (panelToSelectIndex + 1).toString());
   }
 }
 
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-  // Use autoID to automatically increment the IDs of class instances
   autoID(TABS);
   customElements.define(TABS, Tabs);
 });

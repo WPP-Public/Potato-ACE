@@ -7,8 +7,8 @@ $ace-tabs-tab-bg-colour: transparent !default;
 $ace-tabs-tab-padding-horizontal: $ace-spacing-4 !default;
 $ace-tabs-tab-padding-vertical: $ace-spacing-2 !default;
 $ace-tabs-tab-hover-bg-colour: $ace-color-hover !default;
-$ace-tabs-active-tab-border-colour: $ace-color-focus !default;
-$ace-tabs-active-tab-border-width: 3px !default;
+$ace-tabs-selected-tab-border-colour: $ace-color-focus !default;
+$ace-tabs-selected-tab-border-width: 3px !default;
 
 
 /* STYLES */
@@ -27,7 +27,7 @@ $ace-tabs-active-tab-border-width: 3px !default;
   background-color: $ace-tabs-tab-bg-colour;
   border-color: transparent;
   border-style: solid;
-  border-width: 0 0 $ace-tabs-active-tab-border-width 0;
+  border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
   cursor: pointer;
   padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
 
@@ -37,6 +37,7 @@ $ace-tabs-active-tab-border-width: 3px !default;
 
   &:focus {
     // TODO: Add keyboard only focus
+    background-color: $ace-tabs-tab-hover-bg-colour;
     outline: none;
   }
 }
@@ -45,22 +46,22 @@ $ace-tabs-active-tab-border-width: 3px !default;
   display: none;
 }
 
-[ace-tabs-active-tab] {
-  border-bottom-color: $ace-tabs-active-tab-border-colour;
+[ace-tabs-tab-selected] {
+  border-bottom-color: $ace-tabs-selected-tab-border-colour;
 }
 
 
 // Vertical variant
-[ace-tabs-vertical-tablist] {
+[ace-tabs-tablist-vertical] {
   flex-direction: column;
   margin: 0 $ace-tabs-tablist-margin 0 0;
   overflow: hidden auto;
 }
 
-[ace-tabs-vertical-tab] {
-  border-width: 0 $ace-tabs-active-tab-border-width 0 0;
+[ace-tabs-tab-vertical] {
+  border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
 
-  &[ace-tabs-active-tab] {
-    border-right-color: $ace-tabs-active-tab-border-colour;
+  &[ace-tabs-tab-selected] {
+    border-right-color: $ace-tabs-selected-tab-border-colour;
   }
 }

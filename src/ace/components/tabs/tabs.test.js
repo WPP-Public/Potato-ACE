@@ -2,14 +2,15 @@ import {ATTRS, EVENTS, TABS} from './tabs';
 
 
 const IDS = {
-  // ADD_TAB_BTN: 'add-tab-btn',
+  ADD_TAB_BTN: 'add-tab-btn',
   BASIC_TABS: `${TABS}-1`,
   CUSTOM_EVENTS_TABS: 'custom-events-tabs',
-  // DYNAMIC_TABS: 'dynamic-tabs',
+  DYNAMIC_TABS: 'dynamic-tabs',
+  INFINITE_TABS: 'infinite-tabs',
+  MANUAL_TABS: 'manual-tabs',
   NEXT_TAB_BTN: 'next-tab-btn',
-  NON_WRAPPING_TABS: 'non-wrapping-tabs',
   PREV_TAB_BTN: 'prev-tab-btn',
-  // REMOVE_TAB_BTN: 'remove-tab-btn',
+  REMOVE_TAB_BTN: 'remove-tab-btn',
   SET_TAB_FORM: 'set-tab-form',
   VERTICAL_TABS: 'vertical-tabs',
 };
@@ -18,7 +19,7 @@ const IDS = {
 const tabsBeforeEach = (id) => {
   return cy.get(`#${id}`)
     .as('tabs')
-    .find(`div:not([${ATTRS.TABLIST}])`)
+    .find(`div:not(:first-child)`)
     .as('tabsPanels')
     .get('@tabs')
     .find(`[${ATTRS.TABLIST}]`)
@@ -29,60 +30,76 @@ const tabsBeforeEach = (id) => {
     .as('tabsButton1')
 
     // Reset state before test
+    .get('@tabsButtons')
+    .eq(id === IDS.INFINITE_TABS ? 1 : 0)
     .click()
     .blur();
 };
 
 
-const tabsInitChecks = (id, vertical=false) => {
-  const PANEL_ID_BASE = `${id}-panel`;
-  const TABLIST_ID_BASE = `${id}-tab`;
-
-  return cy.get('@tabsTablist')
-    .should('have.attr', 'role', 'tablist')
+const tabsInitChecks = (id, selectedTabNumber=1, vertical=false) => {
+  const selectedTabIndex = selectedTabNumber - 1;
+  return cy.get('@tabs')
+    .should('have.attr', ATTRS.SELECTED_TAB, selectedTabNumber)
+    .get('@tabsTablist')
+    .should('have.attr', ATTRS.TABLIST, '')
+    .and(`${vertical ? '' : 'not.'}have.attr`, ATTRS.TABLIST_VERTICAL, '')
     .and('have.attr', 'aria-orientation', vertical ? 'vertical' : 'horizontal')
+    .and('have.attr', 'role', 'tablist')
     .get('@tabsButtons')
     .each(($tab, index) => {
+      const TAB_ID = `${id}-tab-${index + 1}`;
+      const PANEL_ID = `${id}-panel-${index + 1}`;
       cy.wrap($tab)
-        .should('have.attr', 'aria-controls', `${PANEL_ID_BASE}-${index + 1}`)
-        .and('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
-        .and('have.id', `${TABLIST_ID_BASE}-${index + 1}`)
-        .and('have.attr', 'role', 'tab');
-    })
-    .get('@tabsPanels')
-    .each(($panel, index) => {
-      cy.wrap($panel)
-        .should('have.id', `${PANEL_ID_BASE}-${index + 1}`)
-        .and('have.attr', 'aria-labelledby', `${TABLIST_ID_BASE}-${index + 1}`);
+        .should('have.attr', ATTRS.TAB, '')
+        .and(`${vertical ? '' : 'not.'}have.attr`, ATTRS.TAB_VERTICAL, '')
+        .and('have.attr', 'aria-controls', PANEL_ID)
+        .and('have.attr', 'aria-selected', index === selectedTabIndex ? 'true' : 'false')
+        .and('have.attr', 'role', 'tab')
+        .and(`${index === selectedTabIndex ? 'not.' : ''}have.attr`, 'tabindex',  '-1')
+        .and('have.id', TAB_ID)
+        // check corresponding panel
+        .get(`#${PANEL_ID}`)
+        .should('have.attr', ATTRS.PANEL, '')
+        .and('have.attr', 'aria-labelledby', TAB_ID)
+        .and('have.attr', 'role', 'tabpanel');
     });
 };
 
 
-const checkTabActive = (index) => {
+const checkTabSelected = (tabNumber) => {
+  const tabIndex = tabNumber - 1;
   return cy.get('@tabsButtons')
     .each(($button, buttonIndex) => {
-      cy.wrap($button).should('have.attr', 'aria-selected', buttonIndex === index ? 'true' : 'false');
+      cy.wrap($button)
+        .should('have.attr', 'aria-selected', buttonIndex === tabIndex ? 'true' : 'false')
+        .and(`${buttonIndex === tabIndex ? '' : 'not.'}have.attr`, ATTRS.TAB_SELECTED, '');
+        if (buttonIndex === tabIndex) {
+          cy.wrap($button).should('not.have.attr', 'tabindex');
+        } else {
+          cy.wrap($button).should('have.attr', 'tabindex', '-1');
+        }
     })
     .get('@tabsPanels')
     .each(($panel, panelIndex) => {
-      cy.wrap($panel).should('have.attr', ATTRS.VISIBLE, panelIndex === index ? 'true' : 'false');
+      cy.wrap($panel).should('have.attr', ATTRS.PANEL_VISIBLE, panelIndex === tabIndex ? 'true' : 'false');
     });
 };
 
 
-const getExpectedDetailObj = (id, prevTabIndex, newTabIndex) => {
-  const expectedDetailBase = {
-    activeTab: {
-      id: `${id}-tab-${newTabIndex + 1}`,
-      number: newTabIndex + 1,
+const getExpectedDetailObj = (id, prevTabNumber, newTabNumber) => {
+  const expectedDetail = {
+    currentlySelectedTab: {
+      id: `${id}-tab-${newTabNumber}`,
+      number: newTabNumber,
     },
-    prevTab: {
-      id: `${id}-tab-${prevTabIndex + 1}`,
-      number: prevTabIndex + 1
+    id,
+    previouslySelectedTab: {
+      id: `${id}-tab-${prevTabNumber}`,
+      number: prevTabNumber,
     },
-    tabsId: id,
   };
-  return expectedDetailBase;
+  return expectedDetail;
 };
 
 
@@ -107,119 +124,210 @@ context(`Tabs`, () => {
     it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID));
 
 
-    it('Should only activate correct tab panel when tab button is clicked', () => {
-      let newIndex = 0;
-      const tabSequence = [2, 0, 1];
+    it(`Should only select correct tab panel when tab button is clicked`, () => {
+      let newTabNumber = 1;
+      const tabSequence = [3, 1, 2];
       tabSequence.forEach((index) => {
-        const oldIndex = newIndex;
-        newIndex = index;
-        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
+        const oldTabNumber = newTabNumber;
+        newTabNumber = index;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
           .get('@tabsButtons')
-          .eq(newIndex)
+          .eq(newTabNumber - 1)
           .click();
-        checkTabActive(newIndex);
+        checkTabSelected(newTabNumber);
       });
     });
 
 
     describe(`Keyboard interactions`, () => {
-      it(`Should select previous tab, or last tab if first tab active, when LEFT pressed`, () => {
-        let newIndex = 0;
-        const tabSequence = [2, 1, 0];
-        tabSequence.forEach((index) => {
-          const oldIndex = newIndex;
-          newIndex = index;
-          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
-            .get('@tabsButton1')
-            .focus()
-            .type('{leftArrow}');
-          checkTabActive(newIndex);
-        });
+      beforeEach(() => {
+        cy.get('@tabsButtons')
+          .eq(1)
+          .as('tabsButton2')
+          .click();
       });
 
 
-      it(`Should select next tab, or first tab if last tab active, when RIGHT pressed`, () => {
-        let newIndex = 0;
-        const tabSequence = [1, 2, 0];
-        tabSequence.forEach((index) => {
-          const oldIndex = newIndex;
-          newIndex = index;
-          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
-            .get('@tabsButton1')
-            .focus()
-            .type('{rightArrow}');
-          checkTabActive(newIndex);
-        });
+      it(`Should select previous tab when LEFT pressed`, () => {
+        // Check that LEFT works
+        const newTabNumber = 1;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+          .get('@tabsButton2')
+          .focus()
+          .type('{leftarrow}');
+        checkTabSelected(newTabNumber);
+
+        // Check that wrapping not working
+        cy.get('@tabsButton1')
+          .focus()
+          .type('{leftarrow}');
+        checkTabSelected(newTabNumber);
+      });
+
+
+      it(`Should select next tab when RIGHT pressed`, () => {
+        // Check that RIGHT works
+        const newTabNumber = 3;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+          .get('@tabsButton2')
+          .focus()
+          .type('{rightarrow}');
+        checkTabSelected(newTabNumber);
+
+        // Check that wrapping not working
+        cy.get('@tabsButton1')
+          .focus()
+          .type('{rightarrow}');
+        checkTabSelected(newTabNumber);
       });
 
 
       it(`Should select the first or last tab when HOME or END pressed`, () => {
         cy.get('@tabsButton1').type('{end}');
-        checkTabActive(2);
+        checkTabSelected(3);
 
         cy.get('@tabsButton1').type('{home}');
-        checkTabActive(0);
+        checkTabSelected(1);
+      });
+    });
+
+
+    describe(`Observed attributes`, () => {
+      it(`Should set correct tab when observed attribute changed`, () => {
+        const tabNumber = 3;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
+          .get('@tabs')
+          .invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
+        checkTabSelected(tabNumber);
+
+        cy.get('@tabs').invoke('attr', ATTRS.SELECTED_TAB, 1);
+      });
+
+
+      it(`Should activate wrapping when observed attribute added`, () => {
+        cy.get('@tabs')
+          .invoke('attr', ATTRS.INFINITE, '')
+          .get('@tabsButton1')
+          .focus()
+          .type('{leftarrow}');
+        checkTabSelected(3);
+
+        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.INFINITE));
+      });
+
+
+      it(`Should switch orientation to vertical when observed attribute added`, () => {
+        cy.get('@tabs')
+          .invoke('attr', ATTRS.VERTICAL, '')
+          .get('@tabsTablist')
+          .should('have.attr', ATTRS.TABLIST_VERTICAL, '')
+          .and('have.attr', 'aria-orientation', 'vertical')
+          .get('@tabsButtons')
+          .each(($tab) => {
+            cy.wrap($tab).should('have.attr', ATTRS.TAB_VERTICAL, '');
+          })
+          .get('@tabsButton1')
+          .focus()
+          .type('{rightarrow}');
+        checkTabSelected(1);
+
+        cy.get('@tabsButton1').type('{downarrow}');
+        checkTabSelected(2);
+
+        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.VERTICAL));
       });
     });
   });
 
 
-  context(`Non-wrapping Tabs`, () => {
-    const TABS_ID = IDS.NON_WRAPPING_TABS;
+  context(`Infinite Tabs with initially set selected tab`, () => {
+    const TABS_ID = IDS.INFINITE_TABS;
 
 
     beforeEach(() => tabsBeforeEach(TABS_ID));
 
 
     it(`Should initialise correctly`, () => {
-      tabsInitChecks(TABS_ID);
-      cy.get('@tabs').should('have.attr', ATTRS.NON_WRAPPING, '');
+      tabsInitChecks(TABS_ID, 2);
+      cy.get('@tabs').should('have.attr', ATTRS.INFINITE, '');
     });
 
 
     describe(`Keyboard interactions`, () => {
-      it(`Should select previous tab when LEFT pressed`, () => {
-        let newIndex = 0;
-        cy.get('@tabsButton1')
-          .focus()
-          .type('{leftArrow}');
-        checkTabActive(newIndex);
-
-        newIndex = 2;
-        cy.get('@tabsButtons')
-          .eq(newIndex)
-          .click();
-
-        const tabSequence = [1, 0];
+      it(`Should select previous tab, or last tab if first tab selected, when LEFT pressed`, () => {
+        let newTabNumber = 2;
+        const tabSequence = [1, 3, 2];
         tabSequence.forEach((index) => {
-          const oldIndex = newIndex;
-          newIndex = index;
-          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
+          const oldTabNumber = newTabNumber;
+          newTabNumber = index;
+          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
             .get('@tabsButton1')
             .focus()
-            .type('{leftArrow}');
-          checkTabActive(newIndex);
+            .type('{leftarrow}');
+          checkTabSelected(newTabNumber);
         });
       });
 
 
-      it(`Should select next tab when RIGHT pressed`, () => {
-        let newIndex = 0;
-        const tabSequence = [1, 2];
+      it(`Should select next tab, or first tab if last tab selected, when RIGHT pressed`, () => {
+        let newTabNumber = 2;
+        const tabSequence = [3, 1, 2];
         tabSequence.forEach((index) => {
-          const oldIndex = newIndex;
-          newIndex = index;
-          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
+          const oldTabNumber = newTabNumber;
+          newTabNumber = index;
+          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
             .get('@tabsButton1')
             .focus()
-            .type('{rightArrow}');
-          checkTabActive(newIndex);
+            .type('{rightarrow}');
+          checkTabSelected(newTabNumber);
         });
+      });
+    });
 
-        cy.get('@tabsButton1')
+
+    describe(`Observed attributes`, () => {
+      it(`Should select correct tab when observed attribute changed`, () => {
+        const tabNumber = 3;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, tabNumber))
+          .get('@tabs')
+          .invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
+        checkTabSelected(tabNumber);
+
+        cy.get('@tabs').invoke('attr', ATTRS.SELECTED_TAB, 2);
+      });
+
+
+      it(`Should deactivate wrapping when observed attribute removed`, () => {
+        cy.get('@tabs')
+          .then($tabs => $tabs.removeAttr(ATTRS.INFINITE))
+          .get('@tabsButton1')
           .focus()
-          .type('{rightArrow}');
-        checkTabActive(2);
+          .type('{leftarrow}{leftarrow}');
+        checkTabSelected(1);
+
+        cy.get('@tabs').invoke('attr', ATTRS.INFINITE, '');
+      });
+
+
+      it(`Should switch orientation to vertical when observed attribute added`, () => {
+        cy.get('@tabs')
+          .invoke('attr', ATTRS.VERTICAL, '')
+          .get('@tabsTablist')
+          .should('have.attr', ATTRS.TABLIST_VERTICAL, '')
+          .and('have.attr', 'aria-orientation', 'vertical')
+          .get('@tabsButtons')
+          .each(($tab) => {
+            cy.wrap($tab).should('have.attr', ATTRS.TAB_VERTICAL, '');
+          })
+          .get('@tabsButton1')
+          .focus()
+          .type('{rightarrow}');
+        checkTabSelected(2);
+
+        cy.get('@tabsButton1').type('{downarrow}');
+        checkTabSelected(3);
+
+        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.VERTICAL));
       });
     });
   });
@@ -232,52 +340,64 @@ context(`Tabs`, () => {
     beforeEach(() => tabsBeforeEach(TABS_ID));
 
 
-    it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID, true));
+    it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID, 1, true));
 
 
-    it('Should only activate correct tab panel when tab button is clicked', () => {
-      let newIndex = 0;
-      const tabSequence = [1, 0, 2];
+    it(`Should only select correct tab panel when tab button is clicked`, () => {
+      let newTabNumber = 1;
+      const tabSequence = [2, 1, 3];
       tabSequence.forEach((index) => {
-        const oldIndex = newIndex;
-        newIndex = index;
-        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
+        const oldTabNumber = newTabNumber;
+        newTabNumber = index;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
           .get('@tabsButtons')
-          .eq(newIndex)
+          .eq(newTabNumber - 1)
           .click();
-        checkTabActive(newIndex);
+        checkTabSelected(newTabNumber);
       });
     });
 
 
     describe(`Keyboard interactions`, () => {
-      it(`Should select previous tab, or last tab if first tab active, when UP pressed`, () => {
-        let newIndex = 0;
-        const tabSequence = [2, 1, 0];
-        tabSequence.forEach((index) => {
-          const oldIndex = newIndex;
-          newIndex = index;
-          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
-            .get('@tabsButton1')
-            .focus()
-            .type('{upArrow}');
-          checkTabActive(newIndex);
-        });
+      beforeEach(() => {
+        cy.get('@tabsButtons')
+          .eq(1)
+          .as('tabsButton2')
+          .click();
       });
 
 
-      it(`Should select next tab, or first tab if last tab active, when DOWN pressed`, () => {
-        let newIndex = 0;
-        const tabSequence = [1, 2, 0];
-        tabSequence.forEach((index) => {
-          const oldIndex = newIndex;
-          newIndex = index;
-          cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldIndex, newIndex))
-            .get('@tabsButton1')
-            .focus()
-            .type('{downArrow}');
-          checkTabActive(newIndex);
-        });
+      it(`Should select previous tab when UP pressed`, () => {
+        // Check that UP works
+        const newTabNumber = 1;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+          .get('@tabsButton2')
+          .focus()
+          .type('{uparrow}');
+        checkTabSelected(newTabNumber);
+
+        // Check that vertical selection buttons not working
+        cy.get('@tabsButton1')
+          .focus()
+          .type('{uparrow}');
+        checkTabSelected(newTabNumber);
+      });
+
+
+      it(`Should select next tab when DOWN pressed`, () => {
+        // Check that DOWN works
+        const newTabNumber = 3;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+          .get('@tabsButton2')
+          .focus()
+          .type('{downarrow}');
+        checkTabSelected(newTabNumber);
+
+        // Check that vertical selection buttons not working
+        cy.get('@tabsButton1')
+          .focus()
+          .type('{downarrow}');
+        checkTabSelected(newTabNumber);
       });
 
 
@@ -285,21 +405,244 @@ context(`Tabs`, () => {
         cy.get('@tabsButton1')
           .focus()
           .type('{end}');
-        checkTabActive(2);
+        checkTabSelected(3);
 
         cy.get('@tabsButton1')
           .focus()
           .type('{home}');
-        checkTabActive(0);
+        checkTabSelected(1);
       });
 
 
       it(`Should not change tab when LEFT or RIGHT pressed`, () => {
-        cy.get('@tabsButton1').type('{leftArrow}');
-        checkTabActive(0);
+        cy.get('@tabsButton1').type('{leftarrow}');
+        checkTabSelected(1);
 
-        cy.get('@tabsButton1').type('{rightArrow}');
-        checkTabActive(0);
+        cy.get('@tabsButton1').type('{rightarrow}');
+        checkTabSelected(1);
+      });
+    });
+
+
+    describe(`Observed attributes`, () => {
+      it(`Should select correct tab when observed attribute changed`, () => {
+        const tabNumber = 2;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
+          .get('@tabs')
+          .invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
+        checkTabSelected(tabNumber);
+
+        cy.get('@tabs').invoke('attr', ATTRS.SELECTED_TAB, 1);
+      });
+
+
+      it(`Should de-activate wrapping when observed attribute added`, () => {
+        cy.get('@tabs')
+          .invoke('attr', ATTRS.NON_WRAPPING, '')
+          .get('@tabsButton1')
+          .focus()
+          .type('{leftarrow}');
+        checkTabSelected(1);
+
+        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.NON_WRAPPING));
+      });
+
+
+      it(`Should switch orientation to horizontal when observed attribute removed`, () => {
+        cy.get('@tabs')
+          .then($tabs => $tabs.removeAttr(ATTRS.VERTICAL))
+          .get('@tabsTablist')
+          .should('not.have.attr', ATTRS.TABLIST_VERTICAL, '')
+          .and('have.attr', 'aria-orientation', 'horizontal')
+          .get('@tabsButtons')
+          .each(($tab) => {
+            cy.wrap($tab).should('not.have.attr', ATTRS.TAB_VERTICAL, '');
+          })
+          .get('@tabsButton1')
+          .focus()
+          .type('{downarrow}');
+        checkTabSelected(1);
+
+        cy.get('@tabsButton1').type('{rightarrow}');
+        checkTabSelected(2);
+
+        cy.get('@tabs').invoke('attr', ATTRS.VERTICAL, '');
+      });
+    });
+  });
+
+
+  context(`Manual selection Tabs`, () => {
+    const TABS_ID = IDS.MANUAL_TABS;
+
+
+    beforeEach(() => tabsBeforeEach(TABS_ID));
+
+
+    it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID));
+
+
+    it(`Should only select correct tab panel when tab button is clicked`, () => {
+      let newTabNumber = 1;
+      const tabSequence = [3, 1, 2];
+      tabSequence.forEach((index) => {
+        const oldTabNumber = newTabNumber;
+        newTabNumber = index;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
+          .get('@tabsButtons')
+          .eq(newTabNumber - 1)
+          .click();
+        checkTabSelected(newTabNumber);
+      });
+    });
+
+
+    it(`Should remember focussable tab after tablist loses focus`, () => {
+      cy.get('@tabsButton1')
+        .focus()
+        .type('{leftarrow}')
+        .get('@tabsPanels')
+        .eq(0)
+        .click()
+        .get('@tabsButtons')
+        .eq(2)
+        .as('button3')
+        .should('not.have.attr', 'tabindex')
+        .get('@button3')
+        .focus()
+        .type('{leftarrow}')
+        .get('@tabsButtons')
+        .eq(1)
+        .should('not.have.attr', 'tabindex');
+    });
+
+
+    describe(`Keyboard interactions`, () => {
+      beforeEach(() => {
+        cy.get('@tabsButtons')
+          .eq(1)
+          .as('tabsButton2')
+          .get('@tabsButtons')
+          .eq(2)
+          .as('tabsButton3');
+      });
+
+
+      it(`Should activate previous and next tab without selecting them when LEFT or RIGHT is pressed`, () => {
+        // Check that LEFT works
+        cy.get('@tabsButton1')
+          .focus()
+          .type('{leftarrow}')
+          .should('not.have.focus')
+          .and('have.attr', ATTRS.TAB_SELECTED, '')
+          .and('have.attr', 'tabindex', '-1')
+          .get('@tabsButton3')
+          .should('have.focus')
+          .and('not.have.attr', 'tabindex')
+          .get('@tabsPanels')
+          .eq(0)
+          .should('have.attr', ATTRS.PANEL)
+          .and('not.have.attr', ATTRS.TAB_SELECTED)
+          .get('@tabsButton3')
+          // Check that RIGHT works
+          .type('{leftarrow}{leftarrow}{rightarrow}')
+          .get('@tabsButton3')
+          .should('not.have.focus')
+          .get('@tabsButton2')
+          .should('have.focus')
+          .get('@tabsButton1')
+          .should('have.attr', ATTRS.TAB_SELECTED, '')
+          .and('have.attr', 'tabindex', '-1')
+          .should('not.have.focus');
+      });
+
+
+      it(`Should select active tab when when SPACE or ENTER is pressed`, () => {
+        cy.get('@tabsButton2')
+          .click()
+          .focus()
+          .type('{leftarrow} ');
+        checkTabSelected(1);
+
+        cy.get('@tabsButton1')
+          .focus()
+          .type('{rightarrow}{rightarrow}{enter}');
+        checkTabSelected(3);
+      });
+
+
+      it(`Should activate the first or last tab when HOME or END pressed without selecting it`, () => {
+        cy.get('@tabsButton2')
+          .click()
+          .type('{end}')
+          .should('not.have.focus')
+          .and('have.attr', ATTRS.TAB_SELECTED, '')
+          .and('have.attr', 'tabindex', '-1')
+          .get('@tabsPanels')
+          .eq(0)
+          .should('have.attr', ATTRS.PANEL)
+          .and('not.have.attr', ATTRS.TAB_SELECTED)
+          .get('@tabsButton3')
+          .should('have.focus')
+          .and('not.have.attr', 'tabindex')
+          .get('@tabsButton3')
+          .type('{home}')
+          .should('not.have.focus')
+          .and('have.attr', 'tabindex', '-1')
+          .get('@tabsButton1')
+          .should('have.focus')
+          .and('not.have.attr', 'tabindex')
+          .get('@tabsButton2')
+          .should('not.have.focus')
+          .and('have.attr', ATTRS.TAB_SELECTED, '')
+          .and('have.attr', 'tabindex', '-1');
+      });
+    });
+
+
+    describe(`Observed attributes`, () => {
+      it(`Should set correct tab when observed attribute changed`, () => {
+        const tabNumber = 3;
+        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
+          .get('@tabs')
+          .invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
+        checkTabSelected(tabNumber);
+
+        cy.get('@tabs').invoke('attr', ATTRS.SELECTED_TAB, 1);
+      });
+
+
+      it(`Should deactivate wrapping when observed attribute removed`, () => {
+        cy.get('@tabs')
+          .then($tabs => $tabs.removeAttr(ATTRS.INFINITE))
+          .get('@tabsButton1')
+          .focus()
+          .type('{leftarrow}{leftarrow}');
+        checkTabSelected(1);
+
+        cy.get('@tabs').invoke('attr', ATTRS.INFINITE, '');
+      });
+
+
+      it(`Should switch orientation to vertical when observed attribute added`, () => {
+        cy.get('@tabs')
+          .invoke('attr', ATTRS.VERTICAL, '')
+          .get('@tabsTablist')
+          .should('have.attr', ATTRS.TABLIST_VERTICAL, '')
+          .and('have.attr', 'aria-orientation', 'vertical')
+          .get('@tabsButtons')
+          .each(($tab) => {
+            cy.wrap($tab).should('have.attr', ATTRS.TAB_VERTICAL, '');
+          })
+          .get('@tabsButton1')
+          .focus()
+          .type('{rightarrow}');
+        checkTabSelected(1);
+
+        cy.get('@tabsButton1').type('{downarrow} ');
+        checkTabSelected(2);
+
+        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.VERTICAL));
       });
     });
   });
@@ -308,48 +651,63 @@ context(`Tabs`, () => {
   context(`Custom events Tabs`, () => {
     const TABS_ID = IDS.CUSTOM_EVENTS_TABS;
 
-
-    beforeEach(() => {
-      tabsBeforeEach(TABS_ID);
-
-      cy.get(`#${IDS.PREV_TAB_BTN}`)
-        .as('prevTabBtn')
-        .get(`#${IDS.NEXT_TAB_BTN}`)
-        .as('nextTabBtn')
-        .get(`#${IDS.SET_TAB_FORM}`)
-        .as('setTabForm')
-        .find('input')
-        .as('setTabInput');
-    });
+    beforeEach(() => tabsBeforeEach(TABS_ID));
 
 
     it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID));
 
 
-    it('Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched', () => {
-      cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 0, 1))
-        .get('@nextTabBtn')
-        .click()
+    it(`Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched`, () => {
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, 2))
+        .get(`#${IDS.NEXT_TAB_BTN}`)
         .click()
         .click();
-      checkTabActive(3);
+      checkTabSelected(3);
 
-      cy.get('@prevTabBtn')
+      cy.get(`#${IDS.PREV_TAB_BTN}`)
+        .click()
         .click()
         .click();
-      checkTabActive(1);
+      checkTabSelected(1);
     });
 
 
-    it('Should respond correctly when SET_TAB custom event dispatched', () => {
-      const newIndex = 2;
-      cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 0, newIndex))
-        .get('@setTabInput')
+    it(`Should update Tabs when a tab is added or removed and the UPDATE custom event is dispatched`, () => {
+      // Test Tabs update properly when new tab added
+      const tabNumber = 3;
+      const ADDED_TAB_ID = `${TABS_ID}-tab-${tabNumber}`;
+      const ADDED_PANEL_ID = `${TABS_ID}-panel-${tabNumber}`;
+
+      cy.addCustomEventListener(EVENTS.OUT.READY, {id: TABS_ID})
+        .get(`#${IDS.ADD_TAB_BTN}`)
+        .click()
+        // Check Panel attributes
+        .get('@tabs')
+        .find(`[${ATTRS.PANEL}]`)
+        .eq(tabNumber - 1)
+        .should('have.attr', ATTRS.PANEL_VISIBLE, 'false')
+        .and('have.attr', 'aria-labelledby', ADDED_TAB_ID)
+        .and('have.attr', 'role', 'tabpanel')
+        .and('have.attr', 'tabIndex', '0')
+        .and('have.id', ADDED_PANEL_ID)
+        // Check Tab attributes
+        .get('@tabs')
+        .find(`[${ATTRS.TAB}]`)
+        .eq(tabNumber - 1)
+        .and('have.attr', 'aria-controls', ADDED_PANEL_ID)
+        .and('have.attr', 'aria-selected', 'false')
+        .should('have.attr', 'role', 'tab')
+        .and('have.id', ADDED_TAB_ID)
+        .click();
+      checkTabSelected(tabNumber);
+
+      // Test Tabs update properly when new tab removed
+      cy.get(`#${IDS.REMOVE_TAB_BTN}`).click();
+      checkTabSelected(tabNumber);
+      cy.get('@tabsButton1')
         .focus()
-        .type(newIndex + 1)
-        .get('@setTabForm')
-        .submit();
-      checkTabActive(newIndex);
+        .type('{leftarrow}');
+      checkTabSelected(tabNumber - 1);
     });
   });
 });

@@ -1,21 +1,24 @@
 import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tabsEl = document.getElementById('dynamic-tabs');
+  const tabsEl = document.getElementById('custom-events-tabs');
   const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
   const addTab = () => {
     const tabNumber = tablistEl.children.length + 1;
-    tablistEl.insertAdjacentHTML('beforeend', `
-      <button>Tab ${tabNumber}</button>
-    `);
+    const newTab = document.createElement('button');
+    newTab.textContent = `Tab ${tabNumber}`;
+    tablistEl.appendChild(newTab);
 
-    tabsEl.insertAdjacentHTML('beforeend', `
-      <div>
-        <h3>Panel ${tabNumber}</h3>
-        <p>Created dynamically</p>
-      </div>
-    `);
+    const heading = document.createElement('h3');
+    heading.textContent = `Panel ${tabNumber}`;
+    const p = document.createElement('p');
+    p.textContent = `This tab was added dynamically, after the carousel was initialised`;
+    const newPanel = document.createElement('div');
+    newPanel.setAttribute(ATTRS.PANEL, '');
+    newPanel.appendChild(heading);
+    newPanel.appendChild(p);
+    tabsEl.appendChild(newPanel);
   };
 
   const removeTab = () => {
@@ -24,13 +27,23 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   window.addEventListener('click', (e) => {
-    const id = e.target.id;
-    if (id === 'add-tab-btn') {
-      addTab();
-    } else if (id === 'remove-tab-btn') {
-      removeTab();
+    const targetId = e.target.id;
+    switch(targetId) {
+      case 'prev-tab-btn':
+      case 'next-tab-btn': {
+        const event = EVENTS.IN[`SET_${targetId === 'prev-tab-btn' ? 'PREV' : 'NEXT'}_TAB`];
+        tabsEl.dispatchEvent(new CustomEvent(event));
+        break;
+      }
+      case 'add-tab-btn':
+      case 'remove-tab-btn':
+        if (targetId === 'add-tab-btn') {
+          addTab();
+        } else {
+          removeTab();
+        }
+        tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+        break;
     }
-
-    tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_TABS));
   });
 });
