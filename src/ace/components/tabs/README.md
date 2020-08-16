@@ -271,6 +271,53 @@ The Tabs in this example are selected when the user pressed the <kbd>Space</kbd>
 </ace-tabs>
 ```
 
+### Deep linked Tabs
+
+The Tabs components in these examples contain the attribute `ace-tabs-deep-linked` and are deep-linked, meaning the page URL is dynamically updated whenever the selected tab changes to include a search parameter for each deep-linked Tabs component, with the ID and selected tab number as the key and value respectively. If upon page load the URL contains a search parameter for a deep-linked Tabs component the tab with that value is automatically selected. Note that deep-linked tabs  value 
+
+This is a useful feature for sharing specific tabs with others.
+
+```html
+<h3>Deep-linked</h3>
+
+<ace-tabs id="deep-linked-tabs-1" ace-tabs-deep-linked>
+  <div aria-label="Deep-linked Tabs">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+
+<hr>
+
+<h3>Deep-linked vertical Tabs with initially set tab 2</h3>
+
+<ace-tabs id="deep-linked-tabs-2" ace-tabs-deep-linked ace-tabs-vertical ace-tabs-selected-tab="2">
+  <div aria-label="Deep-linked, vertical Tabs with initially set tab">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+```
 
 ### Custom Event Controlled Tabs
 
