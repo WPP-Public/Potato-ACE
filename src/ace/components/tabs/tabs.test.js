@@ -5,6 +5,8 @@ const IDS = {
   ADD_TAB_BTN: 'add-tab-btn',
   BASIC_TABS: `${TABS}-1`,
   CUSTOM_EVENTS_TABS: 'custom-events-tabs',
+  DEEP_LINKED_INITIALLY_SET_TABS: 'deep-linked-tabs-2',
+  DEEP_LINKED_TABS: 'deep-linked-tabs-1',
   DYNAMIC_TABS: 'dynamic-tabs',
   INFINITE_TABS: 'infinite-tabs',
   MANUAL_TABS: 'manual-tabs',
@@ -644,6 +646,75 @@ context(`Tabs`, () => {
 
         cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.VERTICAL));
       });
+    });
+  });
+
+
+  context(`Deep-linked Tabs`, () => {
+    const TABS_1_ID = IDS.DEEP_LINKED_TABS;
+    const TABS_2_ID = IDS.DEEP_LINKED_INITIALLY_SET_TABS;
+
+    beforeEach(() => {
+      tabsBeforeEach(TABS_1_ID);
+      cy.get(`#${TABS_2_ID}`)
+        .as('tabs2')
+        .find(`[${ATTRS.TABLIST}]`)
+        .as('tabs2Tablist')
+        .find('button')
+        .as('tabs2Buttons')
+        .first()
+        .as('tabs2Button1');
+    });
+
+
+    it(`Should update URL correctly when selected tab changes`, () => {
+      tabsInitChecks(TABS_1_ID);
+      cy.get('@tabsButtons')
+        .eq(1)
+        .click()
+        .get('@tabs2Buttons')
+        .eq(2)
+        .click();
+
+      cy.url()
+        .should('contain', `${TABS_1_ID}=2`)
+        .and('contain', `${TABS_2_ID}=3`);
+    });
+
+
+    it(`Selected tab is set based on the URL correctly, regardless of selected tab number attribute`, () => {
+      cy.visit(`/tabs?${TABS_1_ID}=2&${TABS_2_ID}=3`)
+        .get('@tabs')
+        .should('have.attr', ATTRS.SELECTED_TAB, '2')
+        .get('@tabs2')
+        .should('have.attr', ATTRS.SELECTED_TAB, '3');
+    });
+
+
+    it(`Selected tab is set to first tab or tab number attribute value if search param value is invalid`, () => {
+      // No values
+      cy.visit(`/tabs?${TABS_1_ID}=&${TABS_2_ID}=`)
+        .get('@tabs')
+        .should('have.attr', ATTRS.SELECTED_TAB, '1')
+        .get('@tabs2')
+        .should('have.attr', ATTRS.SELECTED_TAB, '2');
+      // Strings
+      cy.visit(`/tabs?${TABS_1_ID}=x&${TABS_2_ID}=x`)
+        .get('@tabs')
+        .should('have.attr', ATTRS.SELECTED_TAB, '1')
+        .get('@tabs2')
+        .should('have.attr', ATTRS.SELECTED_TAB, '2');
+      // Out of range values
+      cy.visit(`/tabs?${TABS_1_ID}=0&${TABS_2_ID}=0`)
+        .get('@tabs')
+        .should('have.attr', ATTRS.SELECTED_TAB, '1')
+        .get('@tabs2')
+        .should('have.attr', ATTRS.SELECTED_TAB, '2');
+      cy.visit(`/tabs?${TABS_1_ID}=100&${TABS_2_ID}=100`)
+        .get('@tabs')
+        .should('have.attr', ATTRS.SELECTED_TAB, '1')
+        .get('@tabs2')
+        .should('have.attr', ATTRS.SELECTED_TAB, '2');
     });
   });
 
