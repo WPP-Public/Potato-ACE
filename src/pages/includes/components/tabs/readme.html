@@ -11,7 +11,6 @@
 <p>For the sake of convenience the ES6 class is exported as <code>Tabs</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Tabs as aceTabs from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
 <p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>&lt;ace-tabs&gt;&lt;/ace-tabs&gt;</code> and adds IDs in the format <code>ace-tabs-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
 <h2>Usage</h2>
-<!-- ADD USAGE AND INTERACTION INSTRUCTIONS HERE -->
 <p>By default, the first tab is selected and so the panel content for the first tab is displayed. If a user clicks on a tab then the content for that tab will be revealed and the previous content hidden. When the tablist is focused, pressing <kbd>←</kbd> or <kbd>→</kbd> (<kbd>↑</kbd> or <kbd>↓</kbd> if tablist is vertical) will select the previous or next tab in the list and select it. Tabbing while focused on the tablist will then focus the content for the selected tab. Pressing <kbd>Home</kbd> when the tablist is focused will select the first tab in the tablist and <kbd>End</kbd> will select the last.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users.</p>
@@ -252,6 +251,85 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 </div>
 <pre><code class="language-html">&lt;ace-tabs id=&quot;manual-tabs&quot; ace-tabs-infinite ace-tabs-manual&gt;
   &lt;div aria-label=&quot;Tabs with manual activation&quot;&gt;
+    &lt;button&gt;Tab 1&lt;/button&gt;
+    &lt;button&gt;Tab 2&lt;/button&gt;
+    &lt;button&gt;Tab 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 1&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 2&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 3&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+</code></pre>
+<h3>Deep linked Tabs</h3>
+<p>The Tabs components in these examples contain the attribute <code>ace-tabs-deep-linked</code> and are deep-linked, meaning the page URL is dynamically updated whenever the selected tab changes to include a search parameter for each deep-linked Tabs component, with the ID and selected tab number as the key and value respectively. If upon page load the URL contains a search parameter for a deep-linked Tabs component the tab with that value is automatically selected. Note that deep-linked tabs  value</p>
+<p>This is a useful feature for sharing specific tabs with others.</p>
+<div class="example-block"><h3>Deep-linked</h3>
+<ace-tabs id="deep-linked-tabs-1" ace-tabs-deep-linked>
+  <div aria-label="Deep-linked Tabs">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+<hr>
+<h3>Deep-linked vertical Tabs with initially set tab 2</h3>
+<ace-tabs id="deep-linked-tabs-2" ace-tabs-deep-linked ace-tabs-vertical ace-tabs-selected-tab="2">
+  <div aria-label="Deep-linked, vertical Tabs with initially set tab">
+    <button>Tab 1</button>
+    <button>Tab 2</button>
+    <button>Tab 3</button>
+  </div>
+  <div>
+    <h3>Panel 1</h3>
+  </div>
+  <div>
+    <h3>Panel 2</h3>
+  </div>
+  <div>
+    <h3>Panel 3</h3>
+  </div>
+</ace-tabs>
+</div>
+<pre><code class="language-html">&lt;h3&gt;Deep-linked&lt;/h3&gt;
+
+&lt;ace-tabs id=&quot;deep-linked-tabs-1&quot; ace-tabs-deep-linked&gt;
+  &lt;div aria-label=&quot;Deep-linked Tabs&quot;&gt;
+    &lt;button&gt;Tab 1&lt;/button&gt;
+    &lt;button&gt;Tab 2&lt;/button&gt;
+    &lt;button&gt;Tab 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 1&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 2&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;h3&gt;Panel 3&lt;/h3&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+
+&lt;hr&gt;
+
+&lt;h3&gt;Deep-linked vertical Tabs with initially set tab 2&lt;/h3&gt;
+
+&lt;ace-tabs id=&quot;deep-linked-tabs-2&quot; ace-tabs-deep-linked ace-tabs-vertical ace-tabs-selected-tab=&quot;2&quot;&gt;
+  &lt;div aria-label=&quot;Deep-linked, vertical Tabs with initially set tab&quot;&gt;
     &lt;button&gt;Tab 1&lt;/button&gt;
     &lt;button&gt;Tab 2&lt;/button&gt;
     &lt;button&gt;Tab 3&lt;/button&gt;

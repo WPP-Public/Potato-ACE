@@ -19,6 +19,7 @@ export const TAB = `${TABS}-tab`;
 
 
 export const ATTRS = {
+  DEEP_LINKED: `${TABS}-deep-linked`,
   INFINITE: `${TABS}-infinite`,
   MANUAL: `${TABS}-manual`,
   PANEL: `${TABS}-panel`,
@@ -49,6 +50,7 @@ export const EVENTS = {
 /* CLASS */
 export default class Tabs extends HTMLElement {
   private activeTabIndex: number;
+  private deepLinked: boolean;
   private infinite: boolean;
   private initialised = false;
   private manualSelection = true;
@@ -69,11 +71,13 @@ export default class Tabs extends HTMLElement {
     /* CLASS METHOD BINDINGS */
     this.clickHandler = this.clickHandler.bind(this);
     this.customEventsHander = this.customEventsHander.bind(this);
+    this.determineStartingSelectedTab = this.determineStartingSelectedTab.bind(this);
     this.initTabs = this.initTabs.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
     this.selectTab = this.selectTab.bind(this);
     this.setOrientation = this.setOrientation.bind(this);
     this.setSelectedTab = this.setSelectedTab.bind(this);
+    this.setTabNumberInUrl = this.setTabNumberInUrl.bind(this);
   }
 
 
@@ -112,18 +116,13 @@ export default class Tabs extends HTMLElement {
 
 
     /* GET DOM DATA */
-    const initialSelectedTabNumber = +this.getAttribute(ATTRS.SELECTED_TAB) || 1;
-    this.selectedTabIndex = initialSelectedTabNumber - 1;
-    this.activeTabIndex = this.selectedTabIndex;
-
-
+    this.deepLinked = this.hasAttribute(ATTRS.DEEP_LINKED);
     this.infinite = this.hasAttribute(ATTRS.INFINITE);
     this.manualSelection = this.hasAttribute(ATTRS.MANUAL);
     this.vertical = this.hasAttribute(ATTRS.VERTICAL);
 
 
     /* SET DOM DATA */
-    this.setAttribute(ATTRS.SELECTED_TAB, initialSelectedTabNumber.toString());
     this.tablistEl.setAttribute('role', 'tablist');
 
 
@@ -183,6 +182,37 @@ export default class Tabs extends HTMLElement {
 
 
   /*
+    Determines what the starting selected tab index should be based on valid search parameter if deep-linked, or valid observed attribute or defaults to 0;
+  */
+  private determineStartingSelectedTab(): void {
+    let urlStartingTabNumber;
+    let startingSelectedTabNumber = +this.getAttribute(ATTRS.SELECTED_TAB) || 1;
+
+    // If Tabs previously initialised (updating) and index is greater than max, default to last tab (means last tab was selected and subsequently deleted)
+    if (startingSelectedTabNumber > this.tabCount && this.initialised) {
+      startingSelectedTabNumber = this.tabCount;
+    }
+
+    // if Tabs deep-linked and not initialised yet, get starting tab number from URL
+    if (this.deepLinked && !this.initialised) {
+      const params = new URLSearchParams(location.search);
+      urlStartingTabNumber = +params.get(this.id);
+      if (urlStartingTabNumber > 0 && urlStartingTabNumber <= this.tabCount) {
+        startingSelectedTabNumber = urlStartingTabNumber;
+      }
+    }
+
+    this.setAttribute(ATTRS.SELECTED_TAB, startingSelectedTabNumber.toString());
+    this.selectedTabIndex = startingSelectedTabNumber - 1;
+    this.activeTabIndex = this.selectedTabIndex;
+    // Initial tab number search param value invalid then set it to the correct value
+    if (this.deepLinked && urlStartingTabNumber !== startingSelectedTabNumber) {
+      this.setTabNumberInUrl();
+    }
+  }
+
+
+  /*
     Initialises Tabs attributes. Should be run whenever the Tabs markup changes
   */
   private initTabs(): void {
@@ -198,10 +228,7 @@ export default class Tabs extends HTMLElement {
       return;
     }
 
-    // If last tab was previously selected and was deleted select the new last tab
-    if (this.selectedTabIndex >= this.tabCount) {
-      this.selectedTabIndex = this.tabCount - 1;
-    }
+    this.determineStartingSelectedTab();
 
     // Initialise tab and panel attributes
     this.tabEls.forEach((tabEl, index) => {
@@ -285,11 +312,13 @@ export default class Tabs extends HTMLElement {
     Select a tab by revealing the tab's panel and hiding all other panels
   */
   private selectTab(tabToSelectIndex: number): void {
-    if (tabToSelectIndex === this.selectedTabIndex) {
-      return;
-    }
-
-    if (!this.tabEls || tabToSelectIndex < 0 || tabToSelectIndex >= this.tabCount) {
+    if (
+      tabToSelectIndex === this.selectedTabIndex ||
+      !this.tabEls ||
+      !this.panelEls ||
+      tabToSelectIndex < 0 ||
+      tabToSelectIndex >= this.tabCount
+    ) {
       return;
     }
 
@@ -311,6 +340,8 @@ export default class Tabs extends HTMLElement {
     panelToSelectEl.setAttribute(ATTRS.PANEL_VISIBLE, 'true');
 
     this.selectedTabIndex = tabToSelectIndex;
+
+    this.setTabNumberInUrl();
 
     tabToSelectEl.focus();
 
@@ -360,6 +391,21 @@ export default class Tabs extends HTMLElement {
   private setSelectedTab(panelToSelectIndex: number): void {
     this.activeTabIndex = panelToSelectIndex;
     this.setAttribute(ATTRS.SELECTED_TAB, (panelToSelectIndex + 1).toString());
+  }
+
+
+  /*
+    Set the search parameter value in the URL
+  */
+  private setTabNumberInUrl(): void {
+    if (!this.deepLinked) {
+      return;
+    }
+
+    const tabNumber = (this.selectedTabIndex + 1).toString();
+    const params = new URLSearchParams(location.search);
+    params.set(this.id, tabNumber);
+    window.history.replaceState({}, '', `${location.pathname}?${params}`);
   }
 }
 
