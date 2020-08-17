@@ -1,4 +1,4 @@
-.component-list {
+.component-grid {
   display: grid;
   gap: $buffer-m;
 
@@ -11,7 +11,7 @@
   }
 
   &__component {
-    @include bordered($color: $interactive-color, $padding: 0);
+    @include bordered($color: map-get($pot-blue, 5), $padding: 0);
 
     &:hover,
     &:focus {
@@ -22,7 +22,6 @@
   &__component-link {
     display: block;
     height: 100%;
-    max-width: 350px;
     padding: $buffer-s;
     width: 100%;
 
@@ -32,7 +31,7 @@
     }
   }
 
-  &__component-img {
+  &__component-vid {
     display: block;
     width: 100%;
   }

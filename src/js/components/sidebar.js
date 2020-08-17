@@ -25,7 +25,6 @@ export default class Sidebar extends HTMLElement {
 
   connectedCallback() {
     this.sidebarBtn = document.querySelector(`[${ATTRS.SIDEBAR_BTN}]`);
-
     this.sidebarBtn.addEventListener('keydown', this.keydownHandler);
     this.sidebarBtn.addEventListener('click', this.clickHandler);
     this.addEventListener('animationend', this.animEndHandler);
