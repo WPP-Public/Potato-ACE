@@ -12,12 +12,14 @@ export const ATTRS = {
   TRIGGER: `${DISCLOSURE}-trigger-for`,
   TRIGGER_HIDE: `${DISCLOSURE}-trigger-hide`,
   TRIGGER_SHOW: `${DISCLOSURE}-trigger-show`,
+  USER_ANIMATED: `${DISCLOSURE}-user-animated`,
   VISIBLE: `${DISCLOSURE}-visible`,
 };
 
 
 export const EVENTS = {
   IN: {
+    DONE_ANIMATING: `${DISCLOSURE}-animation-done`,
     HIDE: `${DISCLOSURE}-hide`,
     SHOW: `${DISCLOSURE}-show`,
     TOGGLE: `${DISCLOSURE}-toggle`,
@@ -25,6 +27,7 @@ export const EVENTS = {
   OUT: {
     CHANGED: `${DISCLOSURE}-changed`,
     READY: `${DISCLOSURE}-ready`,
+    START_ANIMATING: `${DISCLOSURE}-start-animating`,
   },
 };
 
@@ -33,6 +36,9 @@ export const EVENTS = {
 export default class Disclosure extends HTMLElement {
   private triggerEls: NodeListOf<Element>;
   private readonly triggerSelector = `[${ATTRS.TRIGGER}=${this.id}]`;
+  private userAnimated: boolean;
+  private animationDone = false;
+  private awaitingAnimation = false;
 
 
   constructor() {
@@ -53,6 +59,7 @@ export default class Disclosure extends HTMLElement {
 
     /* GET DOM DATA */
     const visible = this.hasAttribute(ATTRS.VISIBLE);
+    this.userAnimated = this.hasAttribute(ATTRS.USER_ANIMATED);
 
 
     /* SET DOM DATA */
@@ -65,6 +72,7 @@ export default class Disclosure extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
+    this.addEventListener(EVENTS.IN.DONE_ANIMATING, this.customEventsHandler);
     this.addEventListener(EVENTS.IN.HIDE, this.customEventsHandler);
     this.addEventListener(EVENTS.IN.SHOW, this.customEventsHandler);
     this.addEventListener(EVENTS.IN.TOGGLE, this.customEventsHandler);
@@ -94,11 +102,21 @@ export default class Disclosure extends HTMLElement {
   */
   private customEventsHandler(e: CustomEvent): void {
     let showDisclosure: boolean = null;
-    if (e.type === EVENTS.IN.SHOW) {
-      showDisclosure = true;
-    }
-    if (e.type === EVENTS.IN.HIDE) {
-      showDisclosure = false;
+    switch(e.type) {
+      case EVENTS.IN.DONE_ANIMATING:
+        if (!this.awaitingAnimation) {
+          return;
+        }
+        this.awaitingAnimation = false;
+        this.animationDone = true;
+        showDisclosure = e.detail.show;
+        break;
+      case EVENTS.IN.SHOW:
+        showDisclosure = true;
+        break;
+      case EVENTS.IN.HIDE:
+        showDisclosure = false;
+        break;
     }
 
     this.setDisclosure(showDisclosure);
@@ -119,10 +137,30 @@ export default class Disclosure extends HTMLElement {
       return;
     }
 
-    // if showDisclosure not defined toggle state
+    // If showDisclosure not defined, toggle state
     if (showDisclosure === null || showDisclosure === undefined) {
       showDisclosure = !currentlyShown;
     }
+
+    // User animated disclosures
+    if (this.userAnimated) {
+      // If animation in progress, return
+      if (this.awaitingAnimation) {
+        return;
+      }
+
+      if (!this.animationDone) {
+        this.awaitingAnimation = true;
+        window.dispatchEvent(new CustomEvent(EVENTS.OUT.START_ANIMATING, {
+          'detail': {
+            'id': this.id,
+            'show': showDisclosure,
+          }
+        }));
+        return;
+      }
+    }
+
     this.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
     this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', showDisclosure.toString()));
 
@@ -132,6 +170,8 @@ export default class Disclosure extends HTMLElement {
         'visible': showDisclosure,
       }
     }));
+
+    this.animationDone = false;
   }
 
 

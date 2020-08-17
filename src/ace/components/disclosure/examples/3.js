@@ -1,24 +1,14 @@
 import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const disclosureEl = document.getElementById('custom-events-disclosure');
-  window.addEventListener('click', (e) => {
-    const customEventHideBtnClicked = e.target.closest('#custom-events-hide-btn');
-    const customEventShowBtnClicked = e.target.closest('#custom-events-show-btn');
-    const customEventToggleBtnClicked = e.target.closest('#custom-events-toggle-btn');
+  const DISCLOSURE_ID = 'user-animated-disclosure';
+  const disclosureEl = document.getElementById(DISCLOSURE_ID);
 
-    if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
-      return;
+  window.addEventListener(EVENTS.OUT.START_ANIMATING, async (e) => {
+    if (e.detail.id === DISCLOSURE_ID) {
+      // TODO: remove this fake delay after it has been reviewed
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.DONE_ANIMATING, {'detail': {'show': e.detail.show}}));
     }
-
-    let eventType = EVENTS.IN.TOGGLE;
-    if (customEventShowBtnClicked) {
-      eventType = EVENTS.IN.SHOW;
-    }
-    if (customEventHideBtnClicked) {
-      eventType = EVENTS.IN.HIDE;
-    }
-
-    disclosureEl.dispatchEvent(new CustomEvent(eventType));
   });
 });

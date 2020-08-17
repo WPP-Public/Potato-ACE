@@ -138,6 +138,39 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 </ace-disclosure>
 ```
 
+### User-animated Disclosure
+
+The disclosure in this example is animated by the user. When the animation is complete the user must dispatch the event `ace-disclosure-animation-done` for Disclosure to update the accessibility attributes correctly.
+
+```html
+<button ace-disclosure-trigger-for="user-animated-disclosure">
+  Disclosure toggle
+</button>
+<hr>
+<ace-disclosure ace-disclosure-user-animated id="user-animated-disclosure">
+  <h2>User animated Disclosure</h2>
+  <p>Disclosure content</p>
+  <img src="/img/logo.svg" width="50px" alt="Potato logo"/>
+</ace-disclosure>
+```
+
+```js
+import {EVENTS} from '/ace/components/disclosure/disclosure.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const DISCLOSURE_ID = 'user-animated-disclosure';
+  const disclosureEl = document.getElementById(DISCLOSURE_ID);
+
+  window.addEventListener(EVENTS.OUT.START_ANIMATING, async (e) => {
+    if (e.detail.id === DISCLOSURE_ID) {
+      // TODO: remove this fake delay after it has been reviewed
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.DONE_ANIMATING, {'detail': {'show': e.detail.show}}));
+    }
+  });
+});
+```
+
 
 ### Custom event triggered Disclosure
 
@@ -154,7 +187,7 @@ Example of Disclosure controlled through custom events. The buttons in this exam
   Toggle disclosure using custom event
 </button>
 <hr>
-<ace-disclosure id="custom-events-disclosure">
+<ace-disclosure ace-disclosure-user-animated id="custom-events-disclosure">
   <h2>Custom event Disclosure</h2>
   <p>This Disclosure's visibility is controlled using custom events.</p>
 </ace-disclosure>
@@ -165,6 +198,7 @@ import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const disclosureEl = document.getElementById('custom-events-disclosure');
+
   window.addEventListener('click', (e) => {
     const customEventHideBtnClicked = e.target.closest('#custom-events-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-events-show-btn');

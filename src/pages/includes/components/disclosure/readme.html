@@ -118,6 +118,43 @@
   &lt;p&gt;This Disclosure is initially visible becasue it has the attribute &lt;code&gt;ace-disclosure-visible=&quot;true&quot;&lt;/code&gt;.&lt;/p&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
+<h3>User-animated Disclosure</h3>
+<p>The disclosure in this example is animated by the user. When the animation is complete the user must dispatch the event <code>ace-disclosure-animation-done</code> for Disclosure to update the accessibility attributes correctly.</p>
+<div class="example-block"><button ace-disclosure-trigger-for="user-animated-disclosure">
+  Disclosure toggle
+</button>
+<hr>
+<ace-disclosure ace-disclosure-user-animated id="user-animated-disclosure">
+  <h2>User animated Disclosure</h2>
+  <p>Disclosure content</p>
+  <img src="/img/logo.svg" width="50px" alt="Potato logo"/>
+</ace-disclosure>
+</div>
+<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;user-animated-disclosure&quot;&gt;
+  Disclosure toggle
+&lt;/button&gt;
+&lt;hr&gt;
+&lt;ace-disclosure ace-disclosure-user-animated id=&quot;user-animated-disclosure&quot;&gt;
+  &lt;h2&gt;User animated Disclosure&lt;/h2&gt;
+  &lt;p&gt;Disclosure content&lt;/p&gt;
+  &lt;img src=&quot;/img/logo.svg&quot; width=&quot;50px&quot; alt=&quot;Potato logo&quot;/&gt;
+&lt;/ace-disclosure&gt;
+</code></pre>
+<pre><code class="language-js">import {EVENTS} from '/ace/components/disclosure/disclosure.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const DISCLOSURE_ID = 'user-animated-disclosure';
+  const disclosureEl = document.getElementById(DISCLOSURE_ID);
+
+  window.addEventListener(EVENTS.OUT.START_ANIMATING, async (e) =&gt; {
+    if (e.detail.id === DISCLOSURE_ID) {
+      // TODO: remove this fake delay after it has been reviewed
+      await new Promise(resolve =&gt; setTimeout(resolve, 2000));
+      disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.DONE_ANIMATING, {'detail': {'show': e.detail.show}}));
+    }
+  });
+});
+</code></pre>
 <h3>Custom event triggered Disclosure</h3>
 <p>Example of Disclosure controlled through custom events. The buttons in this example are <strong>not</strong> trigger buttons and instead dispatch the Disclosure's custom events. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="custom-events-show-btn">
@@ -130,7 +167,7 @@
   Toggle disclosure using custom event
 </button>
 <hr>
-<ace-disclosure id="custom-events-disclosure">
+<ace-disclosure ace-disclosure-user-animated id="custom-events-disclosure">
   <h2>Custom event Disclosure</h2>
   <p>This Disclosure's visibility is controlled using custom events.</p>
 </ace-disclosure>
@@ -145,7 +182,7 @@
   Toggle disclosure using custom event
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-disclosure id=&quot;custom-events-disclosure&quot;&gt;
+&lt;ace-disclosure ace-disclosure-user-animated id=&quot;custom-events-disclosure&quot;&gt;
   &lt;h2&gt;Custom event Disclosure&lt;/h2&gt;
   &lt;p&gt;This Disclosure's visibility is controlled using custom events.&lt;/p&gt;
 &lt;/ace-disclosure&gt;
@@ -154,6 +191,7 @@
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
   const disclosureEl = document.getElementById('custom-events-disclosure');
+
   window.addEventListener('click', (e) =&gt; {
     const customEventHideBtnClicked = e.target.closest('#custom-events-hide-btn');
     const customEventShowBtnClicked = e.target.closest('#custom-events-show-btn');
