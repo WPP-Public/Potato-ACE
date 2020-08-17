@@ -73,11 +73,11 @@ gulp.task('css', () => {
 // ///////////
 // IMGS
 // ///////////
-// Copy component gifs to ./dist/img directory
-gulp.task('gif', () => {
-  return gulp.src(`${COMPS_DIR}/**/media/*.gif`)
+// Copy component mp4s to ./dist/img directory
+gulp.task('vid', () => {
+  return gulp.src(`${COMPS_DIR}/**/media/*.mp4`)
     .pipe(flatten())
-    .pipe(gulp.dest(`${DIST}/img/components`));
+    .pipe(gulp.dest(`${DIST}/vids/components`));
 });
 
 // Copy images to dist
@@ -212,14 +212,14 @@ gulp.task('serve', () => {
   });
 
 
-  // GIFS
-  // Run gulp 'gif' task if gif changes
-  gulp.watch(`${COMPS_DIR}/**/media/*.gif`).on('change', gulp.series('img', browserSync.reload));
+  // MP4S
+  // Run gulp 'vid' task if .mp4 files changes
+  gulp.watch(`${COMPS_DIR}/**/media/*.mp4`).on('change', gulp.series('vid', browserSync.reload));
 
 
   // IMGS
   // Run gulp 'img' task if image changes
-  gulp.watch(`${SRC}/img/**/*`).on('change', gulp.series('gif', browserSync.reload));
+  gulp.watch(`${SRC}/img/**/*`).on('change', gulp.series('img', browserSync.reload));
 
 
   // PUG
@@ -244,6 +244,11 @@ gulp.task('serve', () => {
   // TS
   // Build ts files if they change and copy them to dist
   gulp.watch([`**/*.ts`, `!**/*.d.ts`]).on('change', gulp.series('ts', browserSync.reload));
+
+
+  // JS
+  // Build js files if they change and copy them to dist
+  gulp.watch([`${SRC}/js/**/*.js`, `!${COMPS_DIR}/**/*.js`]).on('change', gulp.series('js', browserSync.reload));
 });
 
 
@@ -258,7 +263,7 @@ gulp.task('build', gulp.series(
   gulp.parallel(
     'ts',
     'css',
-    'gif',
+    'vid',
     'img',
     'pug',
     'sass'
