@@ -1,5 +1,4 @@
-components/**/examples/
 components/components.json
-components/**/*.gif
-components/**/*.mov
+components/**/examples/
+components/**/*.mp4
 components/**/*.test.js

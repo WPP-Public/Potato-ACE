@@ -1,10 +1,17 @@
 mixin component(key, component)
-  li(class="component-list__component")
-    a(href=`/${key}` class="component-list__component-link")
-      h2=component.name
-      if component.aliases
-        p
-          strong=`Alias${component.aliases.length > 1 ? 'es' : ''}: `
-          =`${component.aliases.join(', ')}.`
-
-      img(alt=`${component.name} in action` class="component-list__component-img" src=`/img/components/${key}.gif`)
+  li(class="component-grid__component")
+    component-video
+      a(href=`/${key}` class="component-grid__component-link")
+        h2=component.name
+        if component.aliases
+          p
+            strong=`Alias${component.aliases.length > 1 ? 'es' : ''}: `
+            =`${component.aliases.join(', ')}.`
+        video(
+            aria-label=`${component.name} in action`
+            class="component-grid__component-vid"
+            loop
+            muted
+            src=`/vids/components/${key}.mp4`
+            type="video/mp4"
+        )
