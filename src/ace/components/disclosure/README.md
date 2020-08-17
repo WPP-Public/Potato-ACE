@@ -187,7 +187,7 @@ Example of Disclosure controlled through custom events. The buttons in this exam
   Toggle disclosure using custom event
 </button>
 <hr>
-<ace-disclosure ace-disclosure-user-animated id="custom-events-disclosure">
+<ace-disclosure id="custom-events-disclosure">
   <h2>Custom event Disclosure</h2>
   <p>This Disclosure's visibility is controlled using custom events.</p>
 </ace-disclosure>
