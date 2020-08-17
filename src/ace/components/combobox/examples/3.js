@@ -8,17 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {
     switch (e.target.id) {
       case 'add-options-btn':
-        comboboxListEl.innerHTML = `
-          <li>New Option 1</li>
-          <li>New Option 2</li>
-          <li>New Option 3</li>`;
+        for (let i = 0; i < 3; i++) {
+          const newOption = document.createElement('li');
+          newOption.textContent = 'New Option';
+          comboboxListEl.appendChild(newOption);
+        }
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
         break;
-
       case 'show-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
         break;
-
       case 'hide-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
         break;

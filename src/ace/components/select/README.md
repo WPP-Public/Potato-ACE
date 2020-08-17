@@ -194,10 +194,10 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
   Remove option
 </button>
 <hr>
-<span id="select-label-2">Choose an Avenger:</span>
+<span id="select-label-3">Choose an Avenger:</span>
 <ace-select id="custom-events-select">
   <button>No options available</button>
-  <ul aria-labelledby="select-label-2"></ul>
+  <ul aria-labelledby="select-label-3"></ul>
 </ace-select>
 ```
 

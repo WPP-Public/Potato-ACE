@@ -407,9 +407,9 @@ ace-combobox {
   <button type="submit">Go</button>
 </form>
 <hr>
+<span id="combobox-label-7">Custom events controlled Combobox:</span>
 <ace-combobox id="custom-events-combobox">
-  <label>Custom events combobox:</label><br>
-  <input />
+  <input aria-labelledby="combobox-label-7">
   <ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
 </div>
@@ -424,10 +424,9 @@ ace-combobox {
   &lt;button type=&quot;submit&quot;&gt;Go&lt;/button&gt;
 &lt;/form&gt;
 &lt;hr&gt;
-
+&lt;span id=&quot;combobox-label-7&quot;&gt;Custom events controlled Combobox:&lt;/span&gt;
 &lt;ace-combobox id=&quot;custom-events-combobox&quot;&gt;
-  &lt;label&gt;Custom events combobox:&lt;/label&gt;&lt;br&gt;
-  &lt;input /&gt;
+  &lt;input aria-labelledby=&quot;combobox-label-7&quot;&gt;
   &lt;ul aria-label=&quot;Custom events combobox options&quot;&gt;&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
@@ -441,17 +440,16 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   window.addEventListener('click', (e) =&gt; {
     switch (e.target.id) {
       case 'add-options-btn':
-        comboboxListEl.innerHTML = `
-          &lt;li&gt;New Option 1&lt;/li&gt;
-          &lt;li&gt;New Option 2&lt;/li&gt;
-          &lt;li&gt;New Option 3&lt;/li&gt;`;
+        for (let i = 0; i &lt; 3; i++) {
+          const newOption = document.createElement('li');
+          newOption.textContent = 'New Option';
+          comboboxListEl.appendChild(newOption);
+        }
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
         break;
-
       case 'show-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
         break;
-
       case 'hide-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
         break;
@@ -476,20 +474,20 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <h3>Combobox with dynamically updated options</h3>
 <p>This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the <code>ace-combobox-update-options</code> custom event. The <code>aria-live=&quot;polite&quot;</code> element is finally updated to announce how many results were found.</p>
 <p>Custom styles, shown below, have been applied to this example using HTML classes, to make it look like a Google Material component. The extra JavaScript required by this example is also shown below.</p>
-<div class="example-block"><ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
-  <label>Search:</label><br>
+<div class="example-block"><label id="combobox-label-8">Search:</label>
+<ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <div class="styled-combobox__wrapper">
-    <input class="styled-combobox__input">
+    <input aria-labelledby="combobox-label-8" class="styled-combobox__input">
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>
   <p aria-live="polite" class="styled-combobox__status"></p>
   <p id="chosen-search-result" aria-live="polite"></p>
 </ace-combobox>
 </div>
-<pre><code class="language-html">&lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update class=&quot;styled-combobox&quot;&gt;
-  &lt;label&gt;Search:&lt;/label&gt;&lt;br&gt;
+<pre><code class="language-html">&lt;label id=&quot;combobox-label-8&quot;&gt;Search:&lt;/label&gt;
+&lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update class=&quot;styled-combobox&quot;&gt;
   &lt;div class=&quot;styled-combobox__wrapper&quot;&gt;
-    &lt;input class=&quot;styled-combobox__input&quot;&gt;
+    &lt;input aria-labelledby=&quot;combobox-label-8&quot; class=&quot;styled-combobox__input&quot;&gt;
     &lt;ul aria-label=&quot;Search results&quot; class=&quot;styled-combobox__list&quot;&gt;&lt;/ul&gt;
   &lt;/div&gt;
   &lt;p aria-live=&quot;polite&quot; class=&quot;styled-combobox__status&quot;&gt;&lt;/p&gt;
@@ -526,12 +524,12 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
       user-select: none;
 
       &amp;:hover {
-        background-color: rgba(0, 0, 0, .04);
+        background-color: rgba(0, 0, 0, .1);
       }
     }
 
     [ace-combobox-option-selected] {
-      background-color: rgba(0, 0, 0, .04);
+      background-color: rgba(0, 0, 0, .1);
     }
   }
 }

@@ -379,10 +379,9 @@ The **Add options** button adds options to the initially empty Combobox, while t
   <button type="submit">Go</button>
 </form>
 <hr>
-
+<span id="combobox-label-7">Custom events controlled Combobox:</span>
 <ace-combobox id="custom-events-combobox">
-  <label>Custom events combobox:</label><br>
-  <input />
+  <input aria-labelledby="combobox-label-7">
   <ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
 ```
@@ -398,17 +397,16 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (e) => {
     switch (e.target.id) {
       case 'add-options-btn':
-        comboboxListEl.innerHTML = `
-          <li>New Option 1</li>
-          <li>New Option 2</li>
-          <li>New Option 3</li>`;
+        for (let i = 0; i < 3; i++) {
+          const newOption = document.createElement('li');
+          newOption.textContent = 'New Option';
+          comboboxListEl.appendChild(newOption);
+        }
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
         break;
-
       case 'show-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
         break;
-
       case 'hide-list-btn':
         comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
         break;
@@ -440,10 +438,10 @@ Custom styles, shown below, have been applied to this example using HTML classes
 
 
 ```html
+<label id="combobox-label-8">Search:</label>
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
-  <label>Search:</label><br>
   <div class="styled-combobox__wrapper">
-    <input class="styled-combobox__input">
+    <input aria-labelledby="combobox-label-8" class="styled-combobox__input">
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>
   <p aria-live="polite" class="styled-combobox__status"></p>
@@ -482,12 +480,12 @@ Custom styles, shown below, have been applied to this example using HTML classes
       user-select: none;
 
       &:hover {
-        background-color: rgba(0, 0, 0, .04);
+        background-color: rgba(0, 0, 0, .1);
       }
     }
 
     [ace-combobox-option-selected] {
-      background-color: rgba(0, 0, 0, .04);
+      background-color: rgba(0, 0, 0, .1);
     }
   }
 }
