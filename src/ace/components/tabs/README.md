@@ -2,7 +2,7 @@
 
 Tabs are a set of sections of content called tab panels which are displayed one at a time, each tab panel has a tab element associated with it which controls displaying the panel.
 
-Tabs conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel).
+Tabs conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel).
 
 
 ## Instantiation

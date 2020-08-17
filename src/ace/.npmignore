@@ -2,3 +2,4 @@ components/**/examples/
 components/components.json
 components/**/*.gif
 components/**/*.mov
+components/**/*.test.js

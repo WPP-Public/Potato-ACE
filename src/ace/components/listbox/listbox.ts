@@ -39,6 +39,7 @@ export default class Listbox extends HTMLElement {
   private searchTimeout: number|null = null;
   activeOptionIndex: number|null = null;
   listEl: HTMLElement;
+  private initialised = false;
 
 
   constructor() {
@@ -68,10 +69,10 @@ export default class Listbox extends HTMLElement {
       this.querySelector('ul') ||
       this.querySelector('ol');
 
-    // Create <ul> if neither <ul> nor <ol> present
+    // Error if no <ul> nor <ol> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
     if (!this.listEl) {
-      this.listEl = document.createElement('ul');
-      this.appendChild(this.listEl);
+      console.error(`ACE: ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' requires a <ul> or <ol> ancestor element.`);
+      return;
     }
 
 
@@ -101,9 +102,32 @@ export default class Listbox extends HTMLElement {
 
 
     /* INITIALISATION */
+    // Check that list is labelled
+    const listLabelElId = this.listEl.getAttribute('aria-labelledby');
+    const labelEl = document.getElementById(listLabelElId);
+    if (!listLabelElId) {
+      console.warn(`ACE: List element of ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' requires an 'aria-labelledby' attribute.`);
+    } else if (!labelEl) {
+      console.warn(`ACE: List element of ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
+    } else if (!labelEl.textContent.length) {
+      console.warn(`ACE: Tabs with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
+    }
+
     this.initialiseList();
+    this.initialised = true;
+
+    this.options.forEach(option => option.setAttribute('aria-selected', 'false'));
+    // If single-select list set first option to active
+    if (!this.multiselectable && this.options.length) {
+      this.makeOptionSelected(0);
+      this.scrollOptionIntoView(0);
+    }
 
     // Dispatch 'ready' event
+    if (this.constructor !== Listbox) {
+      return;
+    }
+
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
@@ -226,18 +250,21 @@ export default class Listbox extends HTMLElement {
 
     // Set option attributes and IDs
     this.options.forEach((option, i) => {
-      option.setAttribute('role', 'option');
-      option.setAttribute('aria-selected', 'false');
       option.setAttribute(ATTRS.OPTION_INDEX, i.toString());
-      // If no ID given create an ID from parent ID and index
-      option.id = option.id || `${this.id}-option-${i + 1}`;
+      option.setAttribute('aria-selected', option.getAttribute('aria-selected') || 'false');
+      option.setAttribute('role', 'option');
+      option.id = `${this.id}-option-${i + 1}`;
     });
 
-    // If single-select list set first option to active
-    if (!this.multiselectable) {
-      this.makeOptionSelected(0);
-      this.scrollOptionIntoView(0);
+    if (!this.initialised || this.constructor !== Listbox) {
+      return;
     }
+
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
   }
 
 
@@ -368,11 +395,10 @@ export default class Listbox extends HTMLElement {
     An "active" option is one that is selected. For multi-select listboxes there could be multiple "active" options.
     For more info on the difference between "active" and "selected" visit https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
   */
-  private makeOptionSelected(index: number): void {
+  public makeOptionSelected(index: number): void {
     // If single select list and an item is currently selected
     if (!this.multiselectable && (this.lastSelectedOptionIndex !== null)) {
-      this.options[this.lastSelectedOptionIndex]
-        .setAttribute('aria-selected', 'false');
+      this.options[this.lastSelectedOptionIndex].setAttribute('aria-selected', 'false');
     }
 
     this.options[index].setAttribute('aria-selected', 'true');
@@ -384,12 +410,11 @@ export default class Listbox extends HTMLElement {
     Scroll option at given index into view
   */
   private scrollOptionIntoView(index: number): void {
-    this.options[index]
-      .scrollIntoView({
-        behaviour: 'smooth',
-        block: 'nearest',
-        inline: 'start',
-      } as ScrollIntoViewOptions);
+    this.options[index].scrollIntoView({
+      behaviour: 'smooth',
+      block: 'nearest',
+      inline: 'start',
+    } as ScrollIntoViewOptions);
   }
 
 

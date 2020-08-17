@@ -57,7 +57,6 @@ export default class Select extends Listbox {
 
 
     /* GET DOM ELEMENTS */
-    this.listEl = this.querySelector('ul') || this.querySelector('ol');
     this.triggerEl = this.querySelector('button');
     // Create <button> if not present
     if (!this.triggerEl) {
@@ -67,13 +66,16 @@ export default class Select extends Listbox {
 
 
     /* GET DOM DATA */
+    const listLabelElId = this.listEl.getAttribute('aria-labelledby');
 
 
     /* SET DOM DATA */
     // Set trigger attrs
-    this.triggerEl.id = this.triggerEl.id || `${this.id}-trigger`;
+    const triggerId = this.triggerEl.id || `${this.id}-trigger`;
+    this.triggerEl.id = triggerId;
     this.triggerEl.setAttribute(ATTRS.TRIGGER, '');
     this.triggerEl.setAttribute('aria-haspopup', 'listbox');
+    this.triggerEl.setAttribute('aria-labelledby', `${listLabelElId} ${triggerId}`);
 
     // Set list attrs
     this.listEl.setAttribute(ATTRS.LIST, '');
@@ -91,7 +93,7 @@ export default class Select extends Listbox {
     this.hideList();
     this.updateTriggerText();
 
-    // Dispatch 'ready' event
+
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
@@ -247,7 +249,16 @@ export default class Select extends Listbox {
   private selectUpdateOptionsHandler(): void {
     this.activeOptionIndex = null;
     this.initialiseList();
+    if (!this.listEl.querySelector('[aria-selected="true"]')) {
+      this.makeOptionSelected(0);
+    }
     this.updateTriggerText();
+
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
   }
 
 
@@ -266,10 +277,10 @@ export default class Select extends Listbox {
     Update the trigger text
   */
   private updateTriggerText(): void {
-    const activeOption = this.listEl.querySelector('[aria-selected="true"]');
-    if (activeOption !== null) {
-      this.triggerEl.textContent = activeOption.textContent;
-      this.triggerOptionIndex = +activeOption.getAttribute(LISTBOX_ATTRS.OPTION_INDEX);
+    const activeOptionEl = this.listEl.querySelector('[aria-selected="true"]');
+    if (activeOptionEl) {
+      this.triggerEl.textContent = activeOptionEl.textContent.trim();
+      this.triggerOptionIndex = +activeOptionEl.getAttribute(LISTBOX_ATTRS.OPTION_INDEX);
     }
   }
 }
