@@ -30,7 +30,7 @@
     "url": "git@gitlab.com:potato/own-things/potato-material.git"
   },
   "author": "Ahmed Abuelgasim",
-  "license": "ISC",
+  "license": "MIT",
   "private": true,
   "devDependencies": {
     "@types/node": "^14.0.4",
