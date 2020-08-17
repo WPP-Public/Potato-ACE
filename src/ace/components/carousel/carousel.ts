@@ -91,7 +91,11 @@ export default class Carousel extends HTMLElement {
     /* GET DOM ELEMENTS */
     this.prevButton = getElByAttrOrSelector(this, ATTRS.PREV_BTN, 'button');
     this.nextButton = getElByAttrOrSelector(this, ATTRS.NEXT_BTN, 'button:nth-of-type(2)');
-    this.slidesWrapper = getElByAttrOrSelector(this, ATTRS.SLIDES, 'div');
+    this.slidesWrapper = getElByAttrOrSelector(this, ATTRS.SLIDES, `#${this.id} > div`);
+    if (!this.slidesWrapper) {
+      console.error(`ACE: Carousel with ID '${this.id}' requires an child <div> or an ancestor with attribute '${ATTRS.SLIDES}', to be used as a slides container.`);
+      return;
+    }
 
 
     /* GET DOM DATA */
@@ -110,10 +114,14 @@ export default class Carousel extends HTMLElement {
     this.setAttribute('role', 'region');
 
     const slidesWrapperId = this.slidesWrapper.id || `${this.id}-slides`;
-    this.prevButton.setAttribute(ATTRS.PREV_BTN, '');
-    this.prevButton.setAttribute('aria-controls', slidesWrapperId);
-    this.nextButton.setAttribute(ATTRS.NEXT_BTN, '');
-    this.nextButton.setAttribute('aria-controls', slidesWrapperId);
+    if (this.prevButton) {
+      this.prevButton.setAttribute(ATTRS.PREV_BTN, '');
+      this.prevButton.setAttribute('aria-controls', slidesWrapperId);
+    }
+    if (this.nextButton) {
+      this.nextButton.setAttribute(ATTRS.NEXT_BTN, '');
+      this.nextButton.setAttribute('aria-controls', slidesWrapperId);
+    }
 
     this.slidesWrapper.id = slidesWrapperId;
     this.slidesWrapper.setAttribute(ATTRS.SLIDES, '');
@@ -128,9 +136,18 @@ export default class Carousel extends HTMLElement {
 
 
     /* INITIALISATION */
-    const carouselNotLabelled = !this.hasAttribute('aria-label') && !this.hasAttribute('aria-labelledby');
-    if (carouselNotLabelled) {
-      console.warn(`Please provide 'aria-label' or 'aria-labelledby' attribute for carousel with ID ${this.id}`);
+    // Check if Carousel labelled
+    const carouselHasLabel = this.hasAttribute('aria-label');
+    const carouselLabelElId = this.getAttribute('aria-labelledby');
+    if (carouselLabelElId) {
+      const labelEl = document.getElementById(carouselLabelElId);
+      if (!labelEl) {
+        console.warn(`ACE: Carousel with ID '${this.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
+      } else if (!labelEl.textContent.length) {
+        console.warn(`ACE: Carousel with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
+      }
+    } else if (!carouselHasLabel) {
+      console.warn(`Carousel with ID '${this.id}' requires an 'aria-label' or an 'aria-labelledby' attribute.`);
     }
 
     this.initSlides();

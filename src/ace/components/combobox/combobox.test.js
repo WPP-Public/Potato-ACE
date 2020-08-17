@@ -53,6 +53,7 @@ const comboboxInitChecks = () => {
         .should('have.id', INPUT_ID)
         .and('have.attr', 'aria-expanded', 'false')
         .and('have.attr', 'aria-haspopup', 'true')
+        .and('have.attr', 'aria-multiline', 'false')
         .and('have.attr', 'aria-owns', LIST_ID)
         .and('have.attr', 'role', 'combobox')
         .and('have.attr', 'type', 'text')
@@ -522,7 +523,7 @@ context(`Combobox`, () => {
 
       it(`Should initialise with correct attributes`, () => {
         cy.get('@combobox')
-          .should('have.attr', ATTRS.AUTOSELECT, 'true')
+          .should('have.attr', ATTRS.AUTOSELECT, '')
           .get('@comboboxInput')
           .should('have.attr', 'aria-autocomplete', 'none');
       });
@@ -602,7 +603,7 @@ context(`Combobox`, () => {
 
       it(`Should initialise with correct attributes`, () => {
         cy.get('@combobox')
-          .should('have.attr', ATTRS.AUTOSELECT, 'true')
+          .should('have.attr', ATTRS.AUTOSELECT, '')
           .get('@comboboxInput')
           .should('have.attr', 'aria-autocomplete', 'list');
       });
@@ -635,7 +636,7 @@ context(`Combobox`, () => {
 
       it(`Should initialise with correct attributes`, () => {
         cy.get('@combobox')
-          .should('have.attr', ATTRS.AUTOSELECT, 'true')
+          .should('have.attr', ATTRS.AUTOSELECT, '')
           .get('@comboboxInput')
           .should('have.attr', 'aria-autocomplete', 'both');
       });
@@ -685,13 +686,11 @@ context(`Combobox`, () => {
       // Test SHOW_LIST event
       cy.window().then((window) => {
         window.addEventListener(EVENTS.OUT.LIST_TOGGLED, (e) => {
-          console.log(e.detail);
           const listVisible = true;
           const expectedDetail = {
             id: COMBOBOX_ID,
             listVisible,
           };
-          console.log(expectedDetail);
           expect(e.detail).to.deep.equal(expectedDetail);
           expect(comboboxList.attr(ATTRS.LIST_VISIBLE)).to.equal(listVisible.toString());
         }, {once: true});

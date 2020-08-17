@@ -6,19 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateOptions = () => selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
-  document.getElementById('add-option')
-    .addEventListener('click', () => {
-      selectListEl.innerHTML += '<li>New Option</li>';
-      updateOptions();
-    });
+  document.getElementById('add-option').addEventListener('click', () => {
+    const optionEl = document.createElement('li');
+    optionEl.textContent = 'New Option';
+    selectListEl.appendChild(optionEl);
+    updateOptions();
+  });
 
-  document.getElementById('remove-option')
-    .addEventListener('click', () => {
-      const fistOptionEl = selectListEl.querySelector('li');
-      if (!fistOptionEl) {
-        return;
-      }
-      selectListEl.removeChild(fistOptionEl);
-      updateOptions();
-    });
+  document.getElementById('remove-option').addEventListener('click', () => {
+    const lastOptionEl = selectListEl.querySelector('li:last-child');
+    if (!lastOptionEl) {
+      return;
+    }
+    selectListEl.removeChild(lastOptionEl);
+    updateOptions();
+  });
 });

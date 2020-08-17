@@ -2,7 +2,7 @@
 
 Select is a special type of [Listbox](/listbox) component that mimics the native HTML `<select>` while allowing more styling flexibility.
 
-Select conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/examples/listbox/listbox-collapsible.html).
+Select conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/examples/listbox/listbox-collapsible.html).
 
 
 ## Instantiation
@@ -133,9 +133,9 @@ Each example contains a live demo and the HTML code that produced it. The code s
 The default Select.
 
 ```html
+<span id="select-label-1">Choose an Avenger:</span>
 <ace-select>
-  <button></button>
-  <ul>
+  <ul aria-labelledby="select-label-1">
     <li>Select an option</li>
     <li>Iron Man</li>
     <li>Nick Fury</li>
@@ -158,23 +158,23 @@ The default Select.
 A Select with options containing images.
 
 ```html
+<span id="select-label-2">Choose an Avenger:</span>
 <ace-select>
-  <button></button>
-  <ul>
+  <ul aria-labelledby="select-label-2">
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Iron Man
     </li>
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Hulk
     </li>
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Thor
     </li>
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Captain America
     </li>
   </ul>
@@ -194,8 +194,10 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
   Remove option
 </button>
 <hr>
+<span id="select-label-2">Choose an Avenger:</span>
 <ace-select id="custom-events-select">
-  <button>No options yet</button>
+  <button>No options available</button>
+  <ul aria-labelledby="select-label-2"></ul>
 </ace-select>
 ```
 
@@ -208,20 +210,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const updateOptions = () => selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
-  document.getElementById('add-option')
-    .addEventListener('click', () => {
-      selectListEl.innerHTML += '<li>New Option</li>';
-      updateOptions();
-    });
+  document.getElementById('add-option').addEventListener('click', () => {
+    const optionEl = document.createElement('li');
+    optionEl.textContent = 'New Option';
+    selectListEl.appendChild(optionEl);
+    updateOptions();
+  });
 
-  document.getElementById('remove-option')
-    .addEventListener('click', () => {
-      const fistOptionEl = selectListEl.querySelector('li');
-      if (!fistOptionEl) {
-        return;
-      }
-      selectListEl.removeChild(fistOptionEl);
-      updateOptions();
-    });
+  document.getElementById('remove-option').addEventListener('click', () => {
+    const lastOptionEl = selectListEl.querySelector('li:last-child');
+    if (!lastOptionEl) {
+      return;
+    }
+    selectListEl.removeChild(lastOptionEl);
+    updateOptions();
+  });
 });
 ```

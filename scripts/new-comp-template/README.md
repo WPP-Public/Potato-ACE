@@ -3,7 +3,7 @@
 <!-- DESCRIBE COMPONENT AND ITS FUNCTIONALITY HERE -->
 
 <!-- TODO: Replace '<w3c-component-name>' -->
-Template conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>).
+Template conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>).
 
 
 ## Instantiation

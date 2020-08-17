@@ -1,6 +1,6 @@
 <h1>Listbox</h1>
 <p>Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard.</p>
-<p>Listbox conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">here</a>.</p>
+<p>Listbox conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Instantiation</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/listbox/listbox'
@@ -65,8 +65,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Single-select Listbox</h3>
 <p>A single-select Listbox with a nested <code>&lt;ul&gt;</code> list.</p>
-<div class="example-block"><ace-listbox id="single-select-listbox">
-  <ul>
+<div class="example-block"><span id="listbox-label-1">Choose an Avenger:</span>
+<ace-listbox id="single-select-listbox">
+  <ul aria-labelledby="listbox-label-1">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -82,8 +83,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   </ul>
 </ace-listbox>
 </div>
-<pre><code class="language-html">&lt;ace-listbox id=&quot;single-select-listbox&quot;&gt;
-  &lt;ul&gt;
+<pre><code class="language-html">&lt;span id=&quot;listbox-label-1&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;ace-listbox id=&quot;single-select-listbox&quot;&gt;
+  &lt;ul aria-labelledby=&quot;listbox-label-1&quot;&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
     &lt;li&gt;Hulk&lt;/li&gt;
@@ -100,8 +102,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 &lt;/ace-listbox&gt;
 </code></pre>
 <p>A single-select listbox with a nested <code>&lt;ol&gt;</code> list.</p>
-<div class="example-block"><ace-listbox>
-  <ol>
+<div class="example-block"><span id="listbox-label-2">Choose an Avenger:</span>
+<ace-listbox>
+  <ol aria-labelledby="listbox-label-2">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -117,8 +120,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   </ol>
 </ace-listbox>
 </div>
-<pre><code class="language-html">&lt;ace-listbox&gt;
-  &lt;ol&gt;
+<pre><code class="language-html">&lt;span id=&quot;listbox-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;ace-listbox&gt;
+  &lt;ol aria-labelledby=&quot;listbox-label-2&quot;&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
     &lt;li&gt;Hulk&lt;/li&gt;
@@ -136,8 +140,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 </code></pre>
 <h3>Multi-select Listbox</h3>
 <p>A multi-select Listbox.</p>
-<div class="example-block"><ace-listbox ace-listbox-multiselect id="multi-select-listbox">
-  <ul>
+<div class="example-block"><span id="listbox-label-3">Choose an Avenger:</span>
+<ace-listbox ace-listbox-multiselect id="multi-select-listbox">
+  <ul aria-labelledby="listbox-label-3">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -153,8 +158,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   </ul>
 </ace-listbox>
 </div>
-<pre><code class="language-html">&lt;ace-listbox ace-listbox-multiselect id=&quot;multi-select-listbox&quot;&gt;
-  &lt;ul&gt;
+<pre><code class="language-html">&lt;span id=&quot;listbox-label-3&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;ace-listbox ace-listbox-multiselect id=&quot;multi-select-listbox&quot;&gt;
+  &lt;ul aria-labelledby=&quot;listbox-label-3&quot;&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
     &lt;li&gt;Hulk&lt;/li&gt;
@@ -172,43 +178,45 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 </code></pre>
 <h3>Listbox with options containing images</h3>
 <p>A Listbox with options containing images.</p>
-<div class="example-block"><ace-listbox>
-  <ul>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+<div class="example-block"><span id="listbox-label-4">Choose an Avenger:</span>
+<ace-listbox>
+  <ul aria-labelledby="listbox-label-4">
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Iron Man
     </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Hulk
     </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Thor
     </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Captain America
     </li>
   </ul>
 </ace-listbox>
 </div>
-<pre><code class="language-html">&lt;ace-listbox&gt;
-  &lt;ul&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+<pre><code class="language-html">&lt;span id=&quot;listbox-label-4&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;ace-listbox&gt;
+  &lt;ul aria-labelledby=&quot;listbox-label-4&quot;&gt;
+    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Iron Man
     &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Hulk
     &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Thor
     &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Captain America
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -223,7 +231,10 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   Remove option
 </button>
 <hr>
-<ace-listbox id="custom-events-listbox"></ace-listbox>
+<span id="listbox-label-5">Choose an Avenger:</span>
+<ace-listbox id="custom-events-listbox">
+  <ul aria-labelledby="listbox-label-5"></ul>
+</ace-listbox>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
   Add option
@@ -232,7 +243,10 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   Remove option
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-listbox id=&quot;custom-events-listbox&quot;&gt;&lt;/ace-listbox&gt;
+&lt;span id=&quot;listbox-label-5&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;ace-listbox id=&quot;custom-events-listbox&quot;&gt;
+  &lt;ul aria-labelledby=&quot;listbox-label-5&quot;&gt;&lt;/ul&gt;
+&lt;/ace-listbox&gt;
 </code></pre>
 <pre><code class="language-js">import {EVENTS} from '/ace/components/listbox/listbox.js';
 

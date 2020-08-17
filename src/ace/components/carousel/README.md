@@ -1,6 +1,9 @@
 # Carousel
 
-A carousel presents a set of items, referred to as slides, by sequentially displaying a subset of one or more slides. Typically, one slide is displayed at a time, and users can activate a next or previous slide control that hides the current slide and "rotates" the next or previous slide into view. In some implementations, rotation automatically starts when the page loads, and it may also automatically stop once all the slides have been displayed. While a slide may contain any type of content, image carousels where each slide contains nothing more than a single image are common. Carousel conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel).
+A carousel presents a set of items, referred to as slides, by sequentially displaying a subset of one or more slides. Typically, one slide is displayed at a time, and users can activate a next or previous slide control that hides the current slide and "rotates" the next or previous slide into view. In some implementations, rotation automatically starts when the page loads, and it may also automatically stop once all the slides have been displayed. While a slide may contain any type of content, image carousels where each slide contains nothing more than a single image are common.
+
+Carousel conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel).
+
 
 ## Instantiation
 
@@ -135,29 +138,24 @@ This is a simple carousel, which changes slides by clicking "previous" or "next"
 <ace-carousel aria-label="Basic carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
+  <br><br>
   <div>
     <div>
       <h2>Potato</h2>
-      <h3>made better</h3>
       <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <a href="https://p.ota.to">get to know us</a>
-      <br><br>
-      <img src="/img/logo.svg" height="120px" alt="default plain Spuddy">
+      <p><a href="https://p.ota.to">Get to know us</a></p>
+      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
     </div>
     <div>
       <h2>Making new tech count</h2>
-      <h3>Uncovering the potential of emerging technology.</h3>
       <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <a href="https://p.ota.to/work/making-new-tech-count">learn more</a>
-      <br><br>
+      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
       <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
     </div>
     <div>
       <h2>Making digital for real life</h2>
-      <h3>Shaping the physical world through interactions with digital experiences.</h3>
       <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <a href="https://p.ota.to/work/making-digital-for-real-life">learn more</a>
-      <br><br>
+      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
       <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
     </div>
   </div>
@@ -170,32 +168,27 @@ This is a simple carousel, which changes slides by clicking "previous" or "next"
 With the attribute `ace-carousel-infinite`, the "previous" and "next" buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dynamically and tested in dev tools. Also note that this Carousel has attribute `ace-carousel-active-slide="2"` which causes it to set the second slide as active upon initialising.
 
 ```html
-<ace-carousel id="infinite-carousel" aria-label="A carousel with infinite scroll and an initially selected slide" ace-carousel-infinite ace-carousel-selected-slide="2">
-  <button ace-carousel-previous-slide>Previous slide</button>
-  <button ace-carousel-next-slide>Next slide</button>
+<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="A carousel with infinite scroll and an initially selected slide" id="infinite-carousel">
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <br><br>
   <div>
     <div>
       <h2>Potato</h2>
-      <h3>made better</h3>
       <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <a href="https://p.ota.to">get to know us</a>
-      <br><br>
-      <img src="/img/logo.svg" height="120px" alt="default plain Spuddy">
+      <p><a href="https://p.ota.to">Get to know us</a></p>
+      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
     </div>
     <div>
       <h2>Making new tech count</h2>
-      <h3>Uncovering the potential of emerging technology.</h3>
       <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <a href="https://p.ota.to/work/making-new-tech-count">learn more</a>
-      <br><br>
+      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
       <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
     </div>
     <div>
       <h2>Making digital for real life</h2>
-      <h3>Shaping the physical world through interactions with digital experiences.</h3>
       <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <a href="https://p.ota.to/work/making-digital-for-real-life">learn more</a>
-      <br><br>
+      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
       <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
     </div>
   </div>
@@ -212,35 +205,28 @@ This Carousel is controlled through custom events.
 <button id="next-slide-btn">Next slide</button>
 <button id="add-slide-btn">Add slide to end</button>
 <button id="remove-slide-btn">Remove last slide</button>
-
 <hr>
-
-<ace-carousel id="custom-events-carousel" aria-label="Carousel controlled through custom events">
-  <button ace-carousel-previous-slide>Previous slide</button>
-  <button ace-carousel-next-slide>Next slide</button>
+<ace-carousel aria-label="Carousel controlled through custom events" id="custom-events-carousel">
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <br><br>
   <div>
     <div>
       <h2>Potato</h2>
-      <h3>made better</h3>
       <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <a href="https://p.ota.to">get to know us</a>
-      <br><br>
-      <img src="/img/logo.svg" height="120px" alt="default plain Spuddy">
+      <p><a href="https://p.ota.to">Get to know us</a></p>
+      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
     </div>
     <div>
       <h2>Making new tech count</h2>
-      <h3>Uncovering the potential of emerging technology.</h3>
       <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <a href="https://p.ota.to/work/making-new-tech-count">learn more</a>
-      <br><br>
+      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
       <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
     </div>
     <div>
       <h2>Making digital for real life</h2>
-      <h3>Shaping the physical world through interactions with digital experiences.</h3>
       <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <a href="https://p.ota.to/work/making-digital-for-real-life">learn more</a>
-      <br><br>
+      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
       <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
     </div>
   </div>

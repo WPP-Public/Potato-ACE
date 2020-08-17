@@ -1,6 +1,6 @@
 <h1>Combobox</h1>
 <p>Combobox is a combination of an input text box and a popup listbox containing options that help the user set the value of the text box.</p>
-<p>Combobox conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#combobox">here</a>.</p>
+<p>Combobox conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#combobox">W3C WAI-ARIA authoring practices</a> ARIA 1.0 pattern.</p>
 <h2>Instantiation</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/combobox'
@@ -39,7 +39,7 @@ $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
-[ace-combobox-wrapper] {
+ace-combobox {
   display: inline-block;
   position: relative;
 }
@@ -139,277 +139,259 @@ $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 <h3>Comboboxes with manual selection</h3>
 <p>These are the three types of Comboboxes, all with manual selection.</p>
 <div class="example-block"><h4>No autocomplete</h4>
+<span id="combobox-label-1">Choose an Avenger:</span>
 <ace-combobox>
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input />
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+  <input aria-labelledby="combobox-label-1"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 <hr>
 <h4>List autocomplete</h4>
+<span id="combobox-label-2">Choose an Avenger:</span>
 <ace-combobox id="ac-list-combobox">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="list"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+  <input aria-autocomplete="list" aria-labelledby="combobox-label-2"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 <hr>
 <h4>Inline and list autocomplete</h4>
+<span id="combobox-label-3">Choose an Avenger:</span>
 <ace-combobox id="ac-both-combobox">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="both"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+  <input aria-autocomplete="both" aria-labelledby="combobox-label-3"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 </div>
 <pre><code class="language-html">&lt;h4&gt;No autocomplete&lt;/h4&gt;
+&lt;span id=&quot;combobox-label-1&quot;&gt;Choose an Avenger:&lt;/span&gt;
+
 &lt;ace-combobox&gt;
-  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;div ace-combobox-wrapper&gt;
-    &lt;input /&gt;
-    &lt;ul aria-label=&quot;Avengers&quot;&gt;
-      &lt;li&gt;Iron Man&lt;/li&gt;
-      &lt;li&gt;Nick Fury&lt;/li&gt;
-      &lt;li&gt;Hulk&lt;/li&gt;
-      &lt;li&gt;Thor&lt;/li&gt;
-      &lt;li&gt;Captain America&lt;/li&gt;
-      &lt;li&gt;Black Widow&lt;/li&gt;
-      &lt;li&gt;Scarlet Witch&lt;/li&gt;
-      &lt;li&gt;Ant-Man&lt;/li&gt;
-      &lt;li&gt;Black Panther&lt;/li&gt;
-      &lt;li&gt;Spider-man&lt;/li&gt;
-      &lt;li&gt;Doctor Strange&lt;/li&gt;
-      &lt;li&gt;Captain Marvel&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+  &lt;input aria-labelledby=&quot;combobox-label-1&quot;/&gt;
+  &lt;ul aria-label=&quot;Avengers&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
 
 &lt;h4&gt;List autocomplete&lt;/h4&gt;
+&lt;span id=&quot;combobox-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
+
 &lt;ace-combobox id=&quot;ac-list-combobox&quot;&gt;
-  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;div ace-combobox-wrapper&gt;
-    &lt;input aria-autocomplete=&quot;list&quot;/&gt;
-    &lt;ul aria-label=&quot;Avengers&quot;&gt;
-      &lt;li&gt;Iron Man&lt;/li&gt;
-      &lt;li&gt;Nick Fury&lt;/li&gt;
-      &lt;li&gt;Hulk&lt;/li&gt;
-      &lt;li&gt;Thor&lt;/li&gt;
-      &lt;li&gt;Captain America&lt;/li&gt;
-      &lt;li&gt;Black Widow&lt;/li&gt;
-      &lt;li&gt;Scarlet Witch&lt;/li&gt;
-      &lt;li&gt;Ant-Man&lt;/li&gt;
-      &lt;li&gt;Black Panther&lt;/li&gt;
-      &lt;li&gt;Spider-man&lt;/li&gt;
-      &lt;li&gt;Doctor Strange&lt;/li&gt;
-      &lt;li&gt;Captain Marvel&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+  &lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;combobox-label-2&quot;/&gt;
+  &lt;ul aria-label=&quot;Avengers&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
 
 &lt;h4&gt;Inline and list autocomplete&lt;/h4&gt;
+&lt;span id=&quot;combobox-label-3&quot;&gt;Choose an Avenger:&lt;/span&gt;
+
 &lt;ace-combobox id=&quot;ac-both-combobox&quot;&gt;
-  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;div ace-combobox-wrapper&gt;
-    &lt;input aria-autocomplete=&quot;both&quot;/&gt;
-    &lt;ul aria-label=&quot;Avengers&quot;&gt;
-      &lt;li&gt;Iron Man&lt;/li&gt;
-      &lt;li&gt;Nick Fury&lt;/li&gt;
-      &lt;li&gt;Hulk&lt;/li&gt;
-      &lt;li&gt;Thor&lt;/li&gt;
-      &lt;li&gt;Captain America&lt;/li&gt;
-      &lt;li&gt;Black Widow&lt;/li&gt;
-      &lt;li&gt;Scarlet Witch&lt;/li&gt;
-      &lt;li&gt;Ant-Man&lt;/li&gt;
-      &lt;li&gt;Black Panther&lt;/li&gt;
-      &lt;li&gt;Spider-man&lt;/li&gt;
-      &lt;li&gt;Doctor Strange&lt;/li&gt;
-      &lt;li&gt;Captain Marvel&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+  &lt;input aria-autocomplete=&quot;both&quot; aria-labelledby=&quot;combobox-label-3&quot;/&gt;
+  &lt;ul aria-label=&quot;Avengers&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
 <h3>Comboboxes with automatic selection</h3>
 <p>Same as previous example but with automatic selection enabled.</p>
 <div class="example-block"><h4>No autocomplete</h4>
-<ace-combobox id="basic-autoselect-combobox" ace-combobox-autoselect="true">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input />
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+<span id="combobox-label-4">Choose an Avenger:</span>
+<ace-combobox ace-combobox-autoselect id="basic-autoselect-combobox">
+  <input aria-labelledby="combobox-label-4"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 <hr>
 <h4>List autocomplete</h4>
-<ace-combobox id="ac-list-autoselect-combobox" ace-combobox-autoselect="true">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="list"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+<span id="combobox-label-5">Choose an Avenger:</span>
+<ace-combobox ace-combobox-autoselect id="ac-list-autoselect-combobox">
+  <input aria-autocomplete="list" aria-labelledby="combobox-label-5"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 <hr>
 <h4>Inline and list autocomplete</h4>
-<ace-combobox id="ac-both-autoselect-combobox" ace-combobox-autoselect="true">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="both"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+<span id="combobox-label-6">Choose an Avenger:</span>
+<ace-combobox ace-combobox-autoselect id="ac-both-autoselect-combobox">
+  <input aria-autocomplete="both" aria-labelledby="combobox-label-6"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 </div>
 <pre><code class="language-html">&lt;h4&gt;No autocomplete&lt;/h4&gt;
-&lt;ace-combobox id=&quot;basic-autoselect-combobox&quot; ace-combobox-autoselect=&quot;true&quot;&gt;
-  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;div ace-combobox-wrapper&gt;
-    &lt;input /&gt;
-    &lt;ul aria-label=&quot;Avengers&quot;&gt;
-      &lt;li&gt;Iron Man&lt;/li&gt;
-      &lt;li&gt;Nick Fury&lt;/li&gt;
-      &lt;li&gt;Hulk&lt;/li&gt;
-      &lt;li&gt;Thor&lt;/li&gt;
-      &lt;li&gt;Captain America&lt;/li&gt;
-      &lt;li&gt;Black Widow&lt;/li&gt;
-      &lt;li&gt;Scarlet Witch&lt;/li&gt;
-      &lt;li&gt;Ant-Man&lt;/li&gt;
-      &lt;li&gt;Black Panther&lt;/li&gt;
-      &lt;li&gt;Spider-man&lt;/li&gt;
-      &lt;li&gt;Doctor Strange&lt;/li&gt;
-      &lt;li&gt;Captain Marvel&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+&lt;span id=&quot;combobox-label-4&quot;&gt;Choose an Avenger:&lt;/span&gt;
+
+&lt;ace-combobox ace-combobox-autoselect id=&quot;basic-autoselect-combobox&quot;&gt;
+  &lt;input aria-labelledby=&quot;combobox-label-4&quot;/&gt;
+  &lt;ul aria-label=&quot;Avengers&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
 
 &lt;h4&gt;List autocomplete&lt;/h4&gt;
-&lt;ace-combobox id=&quot;ac-list-autoselect-combobox&quot; ace-combobox-autoselect=&quot;true&quot;&gt;
-  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;div ace-combobox-wrapper&gt;
-    &lt;input aria-autocomplete=&quot;list&quot;/&gt;
-    &lt;ul aria-label=&quot;Avengers&quot;&gt;
-      &lt;li&gt;Iron Man&lt;/li&gt;
-      &lt;li&gt;Nick Fury&lt;/li&gt;
-      &lt;li&gt;Hulk&lt;/li&gt;
-      &lt;li&gt;Thor&lt;/li&gt;
-      &lt;li&gt;Captain America&lt;/li&gt;
-      &lt;li&gt;Black Widow&lt;/li&gt;
-      &lt;li&gt;Scarlet Witch&lt;/li&gt;
-      &lt;li&gt;Ant-Man&lt;/li&gt;
-      &lt;li&gt;Black Panther&lt;/li&gt;
-      &lt;li&gt;Spider-man&lt;/li&gt;
-      &lt;li&gt;Doctor Strange&lt;/li&gt;
-      &lt;li&gt;Captain Marvel&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+&lt;span id=&quot;combobox-label-5&quot;&gt;Choose an Avenger:&lt;/span&gt;
+
+&lt;ace-combobox ace-combobox-autoselect id=&quot;ac-list-autoselect-combobox&quot;&gt;
+  &lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;combobox-label-5&quot;/&gt;
+  &lt;ul aria-label=&quot;Avengers&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
 
 &lt;h4&gt;Inline and list autocomplete&lt;/h4&gt;
-&lt;ace-combobox id=&quot;ac-both-autoselect-combobox&quot; ace-combobox-autoselect=&quot;true&quot;&gt;
-  &lt;label&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;div ace-combobox-wrapper&gt;
-    &lt;input aria-autocomplete=&quot;both&quot;/&gt;
-    &lt;ul aria-label=&quot;Avengers&quot;&gt;
-      &lt;li&gt;Iron Man&lt;/li&gt;
-      &lt;li&gt;Nick Fury&lt;/li&gt;
-      &lt;li&gt;Hulk&lt;/li&gt;
-      &lt;li&gt;Thor&lt;/li&gt;
-      &lt;li&gt;Captain America&lt;/li&gt;
-      &lt;li&gt;Black Widow&lt;/li&gt;
-      &lt;li&gt;Scarlet Witch&lt;/li&gt;
-      &lt;li&gt;Ant-Man&lt;/li&gt;
-      &lt;li&gt;Black Panther&lt;/li&gt;
-      &lt;li&gt;Spider-man&lt;/li&gt;
-      &lt;li&gt;Doctor Strange&lt;/li&gt;
-      &lt;li&gt;Captain Marvel&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/div&gt;
+&lt;span id=&quot;combobox-label-6&quot;&gt;Choose an Avenger:&lt;/span&gt;
+
+&lt;ace-combobox ace-combobox-autoselect id=&quot;ac-both-autoselect-combobox&quot;&gt;
+  &lt;input aria-autocomplete=&quot;both&quot; aria-labelledby=&quot;combobox-label-6&quot;/&gt;
+  &lt;ul aria-label=&quot;Avengers&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
 <h3>Combobox controlled with custom events</h3>
@@ -427,6 +409,7 @@ $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 <hr>
 <ace-combobox id="custom-events-combobox">
   <label>Custom events combobox:</label><br>
+  <input />
   <ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
 </div>
@@ -444,6 +427,7 @@ $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 &lt;ace-combobox id=&quot;custom-events-combobox&quot;&gt;
   &lt;label&gt;Custom events combobox:&lt;/label&gt;&lt;br&gt;
+  &lt;input /&gt;
   &lt;ul aria-label=&quot;Custom events combobox options&quot;&gt;&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
@@ -494,7 +478,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <p>Custom styles, shown below, have been applied to this example using HTML classes, to make it look like a Google Material component. The extra JavaScript required by this example is also shown below.</p>
 <div class="example-block"><ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <label>Search:</label><br>
-  <div ace-combobox-wrapper class="styled-combobox__wrapper">
+  <div class="styled-combobox__wrapper">
     <input class="styled-combobox__input">
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>
@@ -504,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </div>
 <pre><code class="language-html">&lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update class=&quot;styled-combobox&quot;&gt;
   &lt;label&gt;Search:&lt;/label&gt;&lt;br&gt;
-  &lt;div ace-combobox-wrapper class=&quot;styled-combobox__wrapper&quot;&gt;
+  &lt;div class=&quot;styled-combobox__wrapper&quot;&gt;
     &lt;input class=&quot;styled-combobox__input&quot;&gt;
     &lt;ul aria-label=&quot;Search results&quot; class=&quot;styled-combobox__list&quot;&gt;&lt;/ul&gt;
   &lt;/div&gt;
