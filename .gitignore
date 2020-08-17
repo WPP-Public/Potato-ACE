@@ -49,7 +49,6 @@ src/pages/**/*/index.html
 /package/
 
 # Transpiled js files
-src/js/*.js
 !src/js/*.min.js
 src/**/*.d.ts
 src/ace/**/*.js
