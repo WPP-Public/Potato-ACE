@@ -23,15 +23,6 @@ a {
   }
 }
 
-article {
-  color: $text-color;
-  grid-column: 2;
-  margin: 0 auto;
-  max-width: 900px;
-  padding: 30px;
-  width: 100%;
-}
-
 // Inline Code
 code {
   :not(pre) > & {
@@ -39,7 +30,7 @@ code {
     border-radius: $border-radius;
     color: map-get($pot-grey, 1);
     font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     padding: 2px 4px;
   }
 }
@@ -134,24 +125,33 @@ th {
 }
 
 // ONE-OFF ELEMENTS
-body {
-  font-family: 'Work Sans', sans-serif;
-  font-size: 1.5rem;
-  height: 100%;
-  line-height: 1.5em;
-  margin: 0;
-}
-
 html {
   font-size: 10px;
   height: 100%;
 }
 
+body {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 1.6rem;
+  height: 100%;
+  line-height: 1.5em;
+  margin: 0;
+}
+
 main {
   height: 100%;
   margin-top: $header-height;
+
   @include mq(desktop) {
     display: grid;
-    grid-template-columns: $sidebar-width 1fr;
+    grid-template-columns: $sidebar-width minmax(0, 1fr);
   }
+}
+
+article {
+  color: $text-color;
+  grid-column: 2/3;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 30px;
 }
