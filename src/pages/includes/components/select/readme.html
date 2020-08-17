@@ -1,6 +1,6 @@
 <h1>Select</h1>
 <p>Select is a special type of <a href="/listbox">Listbox</a> component that mimics the native HTML <code>&lt;select&gt;</code> while allowing more styling flexibility.</p>
-<p>Select conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">here</a>.</p>
+<p>Select conforms to the <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Instantiation</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select'
@@ -80,9 +80,9 @@ ace-select {
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Select</h3>
 <p>The default Select.</p>
-<div class="example-block"><ace-select>
-  <button></button>
-  <ul>
+<div class="example-block"><span id="select-label-1">Choose an Avenger:</span>
+<ace-select>
+  <ul aria-labelledby="select-label-1">
     <li>Select an option</li>
     <li>Iron Man</li>
     <li>Nick Fury</li>
@@ -99,9 +99,9 @@ ace-select {
   </ul>
 </ace-select>
 </div>
-<pre><code class="language-html">&lt;ace-select&gt;
-  &lt;button&gt;&lt;/button&gt;
-  &lt;ul&gt;
+<pre><code class="language-html">&lt;span id=&quot;select-label-1&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;ace-select&gt;
+  &lt;ul aria-labelledby=&quot;select-label-1&quot;&gt;
     &lt;li&gt;Select an option&lt;/li&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
@@ -120,45 +120,45 @@ ace-select {
 </code></pre>
 <h3>Select with options containing images</h3>
 <p>A Select with options containing images.</p>
-<div class="example-block"><ace-select>
-  <button></button>
-  <ul>
+<div class="example-block"><span id="select-label-2">Choose an Avenger:</span>
+<ace-select>
+  <ul aria-labelledby="select-label-2">
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Iron Man
     </li>
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Hulk
     </li>
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Thor
     </li>
     <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Captain America
     </li>
   </ul>
 </ace-select>
 </div>
-<pre><code class="language-html">&lt;ace-select&gt;
-  &lt;button&gt;&lt;/button&gt;
-  &lt;ul&gt;
+<pre><code class="language-html">&lt;span id=&quot;select-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;ace-select&gt;
+  &lt;ul aria-labelledby=&quot;select-label-2&quot;&gt;
     &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Iron Man
     &lt;/li&gt;
     &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Hulk
     &lt;/li&gt;
     &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Thor
     &lt;/li&gt;
     &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
+      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
       Captain America
     &lt;/li&gt;
   &lt;/ul&gt;
@@ -173,8 +173,10 @@ ace-select {
   Remove option
 </button>
 <hr>
+<span id="select-label-2">Choose an Avenger:</span>
 <ace-select id="custom-events-select">
-  <button>No options yet</button>
+  <button>No options available</button>
+  <ul aria-labelledby="select-label-2"></ul>
 </ace-select>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
@@ -184,8 +186,10 @@ ace-select {
   Remove option
 &lt;/button&gt;
 &lt;hr&gt;
+&lt;span id=&quot;select-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
 &lt;ace-select id=&quot;custom-events-select&quot;&gt;
-  &lt;button&gt;No options yet&lt;/button&gt;
+  &lt;button&gt;No options available&lt;/button&gt;
+  &lt;ul aria-labelledby=&quot;select-label-2&quot;&gt;&lt;/ul&gt;
 &lt;/ace-select&gt;
 </code></pre>
 <pre><code class="language-js">import {EVENTS} from '/ace/components/select/select.js';
@@ -196,20 +200,20 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
   const updateOptions = () =&gt; selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
-  document.getElementById('add-option')
-    .addEventListener('click', () =&gt; {
-      selectListEl.innerHTML += '&lt;li&gt;New Option&lt;/li&gt;';
-      updateOptions();
-    });
+  document.getElementById('add-option').addEventListener('click', () =&gt; {
+    const optionEl = document.createElement('li');
+    optionEl.textContent = 'New Option';
+    selectListEl.appendChild(optionEl);
+    updateOptions();
+  });
 
-  document.getElementById('remove-option')
-    .addEventListener('click', () =&gt; {
-      const fistOptionEl = selectListEl.querySelector('li');
-      if (!fistOptionEl) {
-        return;
-      }
-      selectListEl.removeChild(fistOptionEl);
-      updateOptions();
-    });
+  document.getElementById('remove-option').addEventListener('click', () =&gt; {
+    const lastOptionEl = selectListEl.querySelector('li:last-child');
+    if (!lastOptionEl) {
+      return;
+    }
+    selectListEl.removeChild(lastOptionEl);
+    updateOptions();
+  });
 });
 </code></pre>

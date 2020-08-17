@@ -189,7 +189,7 @@ context(`Select`, () => {
 
     describe(`Keyboard interactions`, () => {
       describe(`On trigger`, () => {
-        it('Pressing DOWN key on trigger should show list without changing selected option', () => {
+        it(`Pressing DOWN key on trigger should show list without changing selected option`, () => {
           cy.get('@selectTrigger')
             .focus()
             .type('{downarrow}')
@@ -201,7 +201,7 @@ context(`Select`, () => {
         });
 
 
-        it('Pressing UP key on trigger should show list without changing selected option', () => {
+        it(`Pressing UP key on trigger should show list without changing selected option`, () => {
           cy.get('@selectTrigger')
             .focus()
             .type('{uparrow}')
@@ -213,7 +213,7 @@ context(`Select`, () => {
         });
 
 
-        it('Pressing SPACE key on trigger should show list', () => {
+        it(`Pressing SPACE key on trigger should show list`, () => {
           cy.get('@selectTrigger')
             .focus()
             .type(' ')
@@ -254,7 +254,7 @@ context(`Select`, () => {
 
 
       describe(`On list`, () => {
-        it('Pressing ESC key on list should close list without choosing selected option', () => {
+        it(`Pressing ESC key on list should close list without choosing selected option`, () => {
           cy.get('@selectTrigger')
             .click()
             .get('@selectList')
@@ -275,7 +275,7 @@ context(`Select`, () => {
         });
 
 
-        it('Pressing SPACE key on list should choose selected option', () => {
+        it(`Pressing SPACE key on list should choose selected option`, () => {
           const optionIndex = 1;
           const expectedDetail = {
             chosenOption: {
@@ -325,7 +325,7 @@ context(`Select`, () => {
   });
 
 
-  context('Select with dynamic options', () => {
+  context( `Select with dynamic options`, () => {
     const SELECT_ID = IDS.CUSTOM_EVENTS_SELECT;
 
 
@@ -341,7 +341,7 @@ context(`Select`, () => {
         .click()
         .click()
         .click()
-        .get(`@select`)
+        .get('@select')
         .find('li')
         .as('selectOptions');
       optionsInitChecks(SELECT_ID);
@@ -352,11 +352,11 @@ context(`Select`, () => {
       initChecks();
       cy.get('@selectOptions')
         .eq(0)
-        .then(($firstOption) => cy.get('@selectTrigger').should('have.text', $firstOption.text()))
+        .then($firstOption => cy.get('@selectTrigger').should('have.text', $firstOption.text()))
         .get('@selectOptions')
         .each(($option, index) => {
           cy.wrap($option)
-            .should('have.attr', LB_ATTRS.OPTION_INDEX, `${index}`)
+            .should('have.attr', LB_ATTRS.OPTION_INDEX, index)
             .and('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
             .and('have.attr', 'role', 'option')
             .and('not.have.attr', LB_ATTRS.ACTIVE_OPTION);

@@ -13,6 +13,7 @@
   position: fixed;
   top: $header-height;
   width: $sidebar-width;
+  z-index: $sidebar-z-index;
 
   @include mq($until: $sidebar-switch-bp) {
     padding: $buffer-l;
@@ -20,7 +21,6 @@
     transform: translateX(100%);
     visibility: hidden;
     width: 100%;
-    z-index: $sidebar-z-index;
 
     &[sidebar-visible] {
       animation: slide-in $animation;

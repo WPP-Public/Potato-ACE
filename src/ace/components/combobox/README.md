@@ -2,7 +2,7 @@
 
 Combobox is a combination of an input text box and a popup listbox containing options that help the user set the value of the text box.
 
-Combobox conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#combobox).
+Combobox conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#combobox) ARIA 1.0 pattern.
 
 
 ## Instantiation
@@ -67,7 +67,7 @@ $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
-[ace-combobox-wrapper] {
+ace-combobox {
   display: inline-block;
   position: relative;
 }
@@ -223,73 +223,70 @@ These are the three types of Comboboxes, all with manual selection.
 
 ```html
 <h4>No autocomplete</h4>
+<span id="combobox-label-1">Choose an Avenger:</span>
+
 <ace-combobox>
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input />
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+  <input aria-labelledby="combobox-label-1"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 
 <hr>
 
 <h4>List autocomplete</h4>
+<span id="combobox-label-2">Choose an Avenger:</span>
+
 <ace-combobox id="ac-list-combobox">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="list"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+  <input aria-autocomplete="list" aria-labelledby="combobox-label-2"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 
 <hr>
 
 <h4>Inline and list autocomplete</h4>
+<span id="combobox-label-3">Choose an Avenger:</span>
+
 <ace-combobox id="ac-both-combobox">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="both"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+  <input aria-autocomplete="both" aria-labelledby="combobox-label-3"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 ```
 
@@ -299,73 +296,70 @@ Same as previous example but with automatic selection enabled.
 
 ```html
 <h4>No autocomplete</h4>
-<ace-combobox id="basic-autoselect-combobox" ace-combobox-autoselect="true">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input />
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+<span id="combobox-label-4">Choose an Avenger:</span>
+
+<ace-combobox ace-combobox-autoselect id="basic-autoselect-combobox">
+  <input aria-labelledby="combobox-label-4"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 
 <hr>
 
 <h4>List autocomplete</h4>
-<ace-combobox id="ac-list-autoselect-combobox" ace-combobox-autoselect="true">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="list"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+<span id="combobox-label-5">Choose an Avenger:</span>
+
+<ace-combobox ace-combobox-autoselect id="ac-list-autoselect-combobox">
+  <input aria-autocomplete="list" aria-labelledby="combobox-label-5"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 
 <hr>
 
 <h4>Inline and list autocomplete</h4>
-<ace-combobox id="ac-both-autoselect-combobox" ace-combobox-autoselect="true">
-  <label>Choose an Avenger:</label>
-  <div ace-combobox-wrapper>
-    <input aria-autocomplete="both"/>
-    <ul aria-label="Avengers">
-      <li>Iron Man</li>
-      <li>Nick Fury</li>
-      <li>Hulk</li>
-      <li>Thor</li>
-      <li>Captain America</li>
-      <li>Black Widow</li>
-      <li>Scarlet Witch</li>
-      <li>Ant-Man</li>
-      <li>Black Panther</li>
-      <li>Spider-man</li>
-      <li>Doctor Strange</li>
-      <li>Captain Marvel</li>
-    </ul>
-  </div>
+<span id="combobox-label-6">Choose an Avenger:</span>
+
+<ace-combobox ace-combobox-autoselect id="ac-both-autoselect-combobox">
+  <input aria-autocomplete="both" aria-labelledby="combobox-label-6"/>
+  <ul aria-label="Avengers">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
 </ace-combobox>
 ```
 
@@ -388,6 +382,7 @@ The **Add options** button adds options to the initially empty Combobox, while t
 
 <ace-combobox id="custom-events-combobox">
   <label>Custom events combobox:</label><br>
+  <input />
   <ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
 ```
@@ -447,7 +442,7 @@ Custom styles, shown below, have been applied to this example using HTML classes
 ```html
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <label>Search:</label><br>
-  <div ace-combobox-wrapper class="styled-combobox__wrapper">
+  <div class="styled-combobox__wrapper">
     <input class="styled-combobox__input">
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>

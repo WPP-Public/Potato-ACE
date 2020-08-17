@@ -1,6 +1,6 @@
 /* IMPORTS */
 import {KEYS, NAME} from '../../common/constants.js';
-import {autoID, getIndexOfNextItem, keyPressedMatches} from '../../common/functions.js';
+import {autoID, getElByAttrOrSelector, getIndexOfNextItem, keyPressedMatches} from '../../common/functions.js';
 
 
 /* COMPONENT NAME */
@@ -16,7 +16,6 @@ export const ATTRS = {
   NO_INPUT_UPDATE: `${COMBOBOX}-no-input-update`,
   OPTION: `${COMBOBOX}-option`,
   OPTION_SELECTED: `${COMBOBOX}-option-selected`,
-  WRAPPER: `${COMBOBOX}-wrapper`,
 };
 
 
@@ -43,7 +42,6 @@ export default class Combobox extends HTMLElement {
   private allOptions: Array<Node>;
   private inputAutocompletes: boolean;
   private inputEl: HTMLInputElement;
-  private labelEl: HTMLLabelElement;
   private lastChosenOptionIndex: number = null;
   private listAutocompletes: boolean;
   private listAutoselects: boolean;
@@ -53,7 +51,6 @@ export default class Combobox extends HTMLElement {
   private options: NodeListOf<HTMLLIElement>;
   private selectedOptionIndex: number = null;
   private query = '';
-  private wrapperEl: HTMLElement;
 
 
   constructor() {
@@ -79,31 +76,16 @@ export default class Combobox extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.labelEl = this.querySelector('label');
-
-    // Create wrapper element if not provided
-    this.wrapperEl = this.querySelector(`[${ATTRS.WRAPPER}]`);
-    if (!this.wrapperEl) {
-      this.wrapperEl = document.createElement('div');
-      this.appendChild(this.wrapperEl);
-    }
-
-    // Create <input> if not provided
-    this.inputEl = this.querySelector(`[${ATTRS.INPUT}]`) || this.querySelector('input');
+    this.inputEl = getElByAttrOrSelector(this, ATTRS.INPUT, 'input') as HTMLInputElement;
+    this.listEl =  getElByAttrOrSelector(this, ATTRS.LIST, 'ul') as HTMLUListElement;
+    // Error if no <input> nor <ul> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
     if (!this.inputEl) {
-      this.inputEl = document.createElement('input');
-      this.wrapperEl.appendChild(this.inputEl);
-    } else if (!this.wrapperEl.contains(this.inputEl)) {
-      this.wrapperEl.appendChild(this.inputEl);
+      console.error(`ACE: Combobox with ID '${this.id}' requires an <input> ancestor element, which has an 'aria-label' or an 'aria-labelledby' attribute.`);
+      return;
     }
-
-    // Create <ul> if not provided
-    this.listEl = this.querySelector(`[${ATTRS.LIST}]`) || this.querySelector('ul');
     if (!this.listEl) {
-      this.listEl = document.createElement('ul');
-      this.wrapperEl.appendChild(this.listEl);
-    } else if (!this.wrapperEl.contains(this.listEl)) {
-      this.wrapperEl.appendChild(this.listEl);
+      console.error(`ACE: Combobox with ID '${this.id}' requires a <ul> ancestor element, which has an 'aria-label' describing its options.`);
+      return;
     }
 
 
@@ -118,8 +100,6 @@ export default class Combobox extends HTMLElement {
 
 
     /* SET DOM DATA */
-    this.wrapperEl.setAttribute(ATTRS.WRAPPER, '');
-
     // Set listEl attributes
     this.listEl.id = this.listEl.id || `${this.id}-list`;
     this.listEl.setAttribute(ATTRS.LIST, '');
@@ -133,15 +113,11 @@ export default class Combobox extends HTMLElement {
       this.inputEl.setAttribute('aria-autocomplete', 'none');
     }
     this.inputEl.setAttribute('aria-expanded', 'false');
+    this.inputEl.setAttribute('aria-multiline', 'false');
     this.inputEl.setAttribute('aria-haspopup', 'true');
     this.inputEl.setAttribute('aria-owns', this.listEl.id);
     this.inputEl.setAttribute('role', 'combobox');
     this.inputEl.setAttribute('type', 'text');
-
-    // Set labelEl attributes
-    if (this.labelEl) {
-      this.labelEl.setAttribute('for', this.inputEl.id);
-    }
 
 
     /* ADD EVENT LISTENERS */
@@ -158,14 +134,23 @@ export default class Combobox extends HTMLElement {
 
 
     /* INITIALISATION */
-    // Warn user if neither <label> element nor aria-labelledby attribute provided for input
-    if (!this.labelEl && !this.inputEl.hasAttribute('aria-labelledby')) {
-      console.warn(`Please provide a <label> or 'aria-labelledby' attribute for #${this.inputEl.id}`);
+    // Check that input is labelled
+    const inputHasLabel = this.inputEl.hasAttribute('aria-label');
+    const inputLabelElId = this.inputEl.getAttribute('aria-labelledby');
+    if (inputLabelElId) {
+      const labelEl = document.getElementById(inputLabelElId);
+      if (!labelEl) {
+        console.warn(`ACE: Input element of Combobox with ID '${this.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
+      } else if (!labelEl.textContent.length) {
+        console.warn(`ACE: Input element of Combobox with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
+      }
+    } else if (!inputHasLabel) {
+      console.warn(`ACE: Input element of Combobox with ID '${this.id}' requires an 'aria-label' or an 'aria-labelledby' attribute.`);
     }
 
-    // Warn user if neither aria-label nor aria-labelledby provided for listEl
-    if (!this.listEl.hasAttribute('aria-label') && !this.listEl.hasAttribute('aria-labelledby')) {
-      console.warn(`Please provide 'aria-label' or 'aria-labelledby' attribute for #${this.listEl.id}`);
+    // Check that list is labelled
+    if (!this.listEl.hasAttribute('aria-label')) {
+      console.warn(`ACE: List element of Combobox with ID '${this.id}' requires an 'aria-label' attribute describing its options.`);
     }
 
     this.initialiseListOptions();
