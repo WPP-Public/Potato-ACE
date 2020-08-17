@@ -1,5 +1,5 @@
 <h1>Disclosure</h1>
-<p>Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to W3C WAI-ARIA authoring practices specified <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">here</a>.</p>
+<p>Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Instantiation</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/disclosure'
@@ -46,23 +46,23 @@
 <h3>Simple Disclosure</h3>
 <p>This is a simple button triggered Disclosure.</p>
 <div class="example-block"><button ace-disclosure-trigger-for="ace-disclosure-1">
-  Disclosure Toggle
+  Disclosure toggle
 </button>
 <hr>
-<ace-disclosure>
+<ace-disclosure id="ace-disclosure-1">
   <h2>Disclosure heading</h2>
   <p>Disclosure content</p>
-  <img src="/img/logo.svg" width="50px" alt="potato logo"/>
+  <img src="/img/logo.svg" width="50px" alt="Potato logo"/>
 </ace-disclosure>
 </div>
 <pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;ace-disclosure-1&quot;&gt;
-  Disclosure Toggle
+  Disclosure toggle
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-disclosure&gt;
+&lt;ace-disclosure id=&quot;ace-disclosure-1&quot;&gt;
   &lt;h2&gt;Disclosure heading&lt;/h2&gt;
   &lt;p&gt;Disclosure content&lt;/p&gt;
-  &lt;img src=&quot;/img/logo.svg&quot; width=&quot;50px&quot; alt=&quot;potato logo&quot;/&gt;
+  &lt;img src=&quot;/img/logo.svg&quot; width=&quot;50px&quot; alt=&quot;Potato logo&quot;/&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
 <h3>Initially visible Disclosure</h3>
@@ -87,7 +87,7 @@
   <h2>Disclosure 1</h2>
   <p>This Disclosure is initially hidden.</p>
 </ace-disclosure>
-<ace-disclosure id="initially-visible-disclosure" ace-disclosure-visible="true">
+<ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
   <h2>Disclosure 2</h2>
   <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
 </ace-disclosure>
@@ -113,7 +113,7 @@
   &lt;p&gt;This Disclosure is initially hidden.&lt;/p&gt;
 &lt;/ace-disclosure&gt;
 
-&lt;ace-disclosure id=&quot;initially-visible-disclosure&quot; ace-disclosure-visible=&quot;true&quot;&gt;
+&lt;ace-disclosure ace-disclosure-visible=&quot;true&quot; id=&quot;initially-visible-disclosure&quot;&gt;
   &lt;h2&gt;Disclosure 2&lt;/h2&gt;
   &lt;p&gt;This Disclosure is initially visible becasue it has the attribute &lt;code&gt;ace-disclosure-visible=&quot;true&quot;&lt;/code&gt;.&lt;/p&gt;
 &lt;/ace-disclosure&gt;

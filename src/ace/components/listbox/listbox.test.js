@@ -556,19 +556,24 @@ context(`Listbox`, () => {
 
 
     it(`Should repond to custom events correctly`, () => {
+      const selectedOptionIndex = 2;
       cy.get('@addOptionBtn')
         .click()
         .click()
         .click()
         .get('@listbox')
         .find('li')
+        .as('listboxOptions')
+        .eq(selectedOptionIndex)
+        .click()
+        .get('@listboxOptions')
         .each(($option, index) => {
           cy.wrap($option)
             .should('have.attr', ATTRS.OPTION_INDEX, `${index}`)
             .and('have.id', `${LISTBOX_ID}-option-${(index + 1)}`)
+            .and('have.attr', 'aria-selected', (index === selectedOptionIndex) ? 'true' : 'false')
             .and('have.attr', 'role', 'option')
-            .and('have.attr', 'aria-selected', (index === 0) ? 'true' : 'false')
-            .and('not.have.attr', ATTRS.ACTIVE_OPTION);
+            .and(`${index === selectedOptionIndex ? '' : 'not.'}have.attr`, ATTRS.ACTIVE_OPTION);
         });
     });
   });

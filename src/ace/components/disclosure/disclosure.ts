@@ -72,7 +72,6 @@ export default class Disclosure extends HTMLElement {
 
 
     /* INITIALISATION */
-    // Dispatch 'ready' event
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,

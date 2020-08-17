@@ -1,6 +1,6 @@
 # Disclosure
 
-Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
+Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
 
 
 ## Instantiation
@@ -95,13 +95,13 @@ This is a simple button triggered Disclosure.
 
 ```html
 <button ace-disclosure-trigger-for="ace-disclosure-1">
-  Disclosure Toggle
+  Disclosure toggle
 </button>
 <hr>
-<ace-disclosure>
+<ace-disclosure id="ace-disclosure-1">
   <h2>Disclosure heading</h2>
   <p>Disclosure content</p>
-  <img src="/img/logo.svg" width="50px" alt="potato logo"/>
+  <img src="/img/logo.svg" width="50px" alt="Potato logo"/>
 </ace-disclosure>
 ```
 
@@ -132,7 +132,7 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
   <p>This Disclosure is initially hidden.</p>
 </ace-disclosure>
 
-<ace-disclosure id="initially-visible-disclosure" ace-disclosure-visible="true">
+<ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
   <h2>Disclosure 2</h2>
   <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
 </ace-disclosure>

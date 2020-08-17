@@ -2,7 +2,7 @@
 
 Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard.
 
-Listbox conforms to W3C WAI-ARIA authoring practices specified [here](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox).
+Listbox conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox).
 
 
 ## Instantiation
@@ -116,8 +116,9 @@ Each example contains a live demo and the HTML code that produced it. The code s
 A single-select Listbox with a nested `<ul>` list.
 
 ```html
+<span id="listbox-label-1">Choose an Avenger:</span>
 <ace-listbox id="single-select-listbox">
-  <ul>
+  <ul aria-labelledby="listbox-label-1">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -137,8 +138,9 @@ A single-select Listbox with a nested `<ul>` list.
 A single-select listbox with a nested `<ol>` list.
 
 ```html
+<span id="listbox-label-2">Choose an Avenger:</span>
 <ace-listbox>
-  <ol>
+  <ol aria-labelledby="listbox-label-2">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -160,8 +162,9 @@ A single-select listbox with a nested `<ol>` list.
 A multi-select Listbox.
 
 ```html
+<span id="listbox-label-3">Choose an Avenger:</span>
 <ace-listbox ace-listbox-multiselect id="multi-select-listbox">
-  <ul>
+  <ul aria-labelledby="listbox-label-3">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -184,22 +187,23 @@ A multi-select Listbox.
 A Listbox with options containing images.
 
 ```html
+<span id="listbox-label-4">Choose an Avenger:</span>
 <ace-listbox>
-  <ul>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+  <ul aria-labelledby="listbox-label-4">
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Iron Man
     </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Hulk
     </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Thor
     </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" width="60px">&nbsp;
+    <li style="align-items: center; display: flex; padding: 4px;">
+      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
       Captain America
     </li>
   </ul>
@@ -219,7 +223,10 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
   Remove option
 </button>
 <hr>
-<ace-listbox id="custom-events-listbox"></ace-listbox>
+<span id="listbox-label-5">Choose an Avenger:</span>
+<ace-listbox id="custom-events-listbox">
+  <ul aria-labelledby="listbox-label-5"></ul>
+</ace-listbox>
 ```
 
 ```js

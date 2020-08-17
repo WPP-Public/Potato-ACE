@@ -112,7 +112,11 @@ export default class Tabs extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.tablistEl = getElByAttrOrSelector(this, ATTRS.TABLIST, `${TABS} > div`);
+    this.tablistEl = getElByAttrOrSelector(this, ATTRS.TABLIST, `#${this.id} > div`);
+    if (!this.tablistEl) {
+      console.error(`ACE: Tabs with ID '${this.id}' requires a child <div> or an ancestor with attribute '${ATTRS.TABLIST}', to be used as a 'tablist'.`);
+      return;
+    }
 
 
     /* GET DOM DATA */
@@ -135,6 +139,20 @@ export default class Tabs extends HTMLElement {
 
 
     /* INITIALISATION */
+    // Check if Tabs labelled
+    const tablistHasLabel = this.tablistEl.hasAttribute('aria-label');
+    const tablistLabelElId = this.tablistEl.getAttribute('aria-labelledby');
+    if (tablistLabelElId) {
+      const labelEl = document.getElementById(tablistLabelElId);
+      if (!labelEl) {
+        console.warn(`ACE: Tabs with ID '${this.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
+      } else if (!labelEl.textContent.length) {
+        console.warn(`ACE: Tabs with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
+      }
+    } else if (!tablistHasLabel) {
+      console.warn(`ACE: Tabs with ID '${this.id}' requires an 'aria-label' or an 'aria-labelledby' attribute.`);
+    }
+
     this.initTabs();
     this.initialised = true;
   }
@@ -224,7 +242,7 @@ export default class Tabs extends HTMLElement {
 
     // Check number of tabs matches number of panels
     if (this.panelEls.length !== this.tabCount) {
-      console.warn(`Number of tabs doesn't match number of panels`);
+      console.warn(`ACE: Number of tabs doesn't match number of panels for Tabs component with ID '${this.id}'.`);
       return;
     }
 
