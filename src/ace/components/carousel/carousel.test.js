@@ -99,7 +99,7 @@ context(`Carousel`, () => {
 
     it(`Should respond to next and previous slide buttons correctly`, () => {
       // Test Next button
-      cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
         .get('@carouselNextBtn')
         .click()
         .get('@carouselPrevBtn')
@@ -111,7 +111,7 @@ context(`Carousel`, () => {
       checkSlideSelected(3);
 
       // Test Prev button
-      cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(CAROUSEL_ID, 3, 2))
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 3, 2))
         .get('@carouselPrevBtn')
         .click()
         .get('@carouselNextBtn')
@@ -127,7 +127,7 @@ context(`Carousel`, () => {
     describe(`Observed attributes`, () => {
       it(`Should select correct slide when observed attribute changed`, () => {
         const slideToSelect = 3;
-        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
+        cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
           .get('@carousel')
           .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect)
           .invoke('attr', ATTRS.SELECTED_SLIDE, 1);
@@ -184,7 +184,7 @@ context(`Carousel`, () => {
     describe(`Observed attributes`, () => {
       it(`Should select correct slide when observed attribute changed`, () => {
         const slideToSelect = 3;
-        cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(CAROUSEL_ID, 2, slideToSelect))
+        cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 2, slideToSelect))
           .get('@carousel')
           .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect)
           .invoke('attr', ATTRS.SELECTED_SLIDE, 2);
@@ -219,12 +219,12 @@ context(`Carousel`, () => {
 
 
     it(`Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched`, () => {
-      cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
         .get(`#${IDS.NEXT_SLIDE_BTN}`)
         .click();
       checkSlideSelected(2);
 
-      cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(CAROUSEL_ID, 2, 1))
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 2, 1))
         .get(`#${IDS.PREV_SLIDE_BTN}`)
         .click();
       checkSlideSelected(1);
@@ -257,7 +257,7 @@ context(`Carousel`, () => {
     describe(`Observed attributes`, () => {
       it(`Should set correct slide when observed attribute changed`, () => {
         const slideToSelect = 3;
-        cy.addCustomEventListener(EVENTS.OUT.CHANGED,  getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
+        cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED,  getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
           .get('@carousel')
           .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect)
           .invoke('attr', ATTRS.SELECTED_SLIDE, 1);

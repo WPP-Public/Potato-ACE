@@ -5,7 +5,7 @@ Listbox is a list of options that allows users to select one (single-select) or 
 Listbox conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox).
 
 
-## Instantiation
+## Setup
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -13,17 +13,17 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/listbox/listbox'
 ```
 
-
 Then import the class into your JavaScript entry point:
 
 ```js
 import '<path-to-node_modules>/@potato/ace/components/listbox/listbox';
 ```
 
-For the sake of convenience the ES6 class is exported as `Listbox`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Listbox as aceListbox from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
+For convenience the ES6 class is exported as `Listbox` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Listbox automatically instantiates an instance of itself within each `ace-listbox` element. Listbox then adds an ID `ace-listbox-<n>` for any instance without an ID, where `<n>` is the instance number. Listbox then adds its functionality to a `<ul>` or `<ol>` nested within it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. See the **Custom events** section below for more details. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched on `window`.
+After the event `DOMContentLoaded` is fired on `document`, an instance of Listbox is instantiated within each `<ace-listbox>` element, and an ID `ace-listbox-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
+Listbox must have a nested list and will use a `<ul>` or `<ol>` with attribute `ace-listbox-list`. If no descendant has this attribute then the first decendant `<ul>` or `<ol>` will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using `aria-labelledby`. The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-listbox-update-options` is dispatched on the Listbox instance afterwards.
 
 
 ## Usage

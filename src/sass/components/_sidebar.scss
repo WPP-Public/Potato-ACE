@@ -42,6 +42,11 @@
     }
   }
 
+  &__list,
+  &__sublist {
+    list-style: none;
+  }
+
   &__list-item:not(:first-of-type) {
     margin-top: $buffer-m;
 

@@ -1,15 +1,17 @@
 <h1>Tabs</h1>
-<p>Tabs are a set of sections of content called tab panels which are displayed one at a time, each tab panel has a tab element associated with it which controls displaying the panel.</p>
+<p>Tabs is a set of sections of content known as panels, of which only is displayed at a time, each with an associated button, or tab, used to display the panel.</p>
 <p>Tabs conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Instantiation</h2>
-<p>First import the styles into your main SASS file, replacing <code>../path/to</code> with the path to <em>node_modules</em> relative to the file:</p>
-<pre><code class="language-scss">@import '../path/to/node_modules/@potato/ace/components/carousel/carousel'
+<h2>Setup</h2>
+<p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
+<pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/tabs/tabs'
 </code></pre>
-<p>Import the class into your JavaScript entry point:</p>
-<pre><code class="language-js">import Tabs from '@potato/ace/components/tabs/tabs';
+<p>Then import the class into your JavaScript entry point:</p>
+<pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/tabs/tabs';
 </code></pre>
-<p>For the sake of convenience the ES6 class is exported as <code>Tabs</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Tabs as aceTabs from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>&lt;ace-tabs&gt;&lt;/ace-tabs&gt;</code> and adds IDs in the format <code>ace-tabs-(n)</code> to any instances without one, where <code>(n)</code> is the instance count.</p>
+<p>For convenience the ES6 class is exported as <code>Tabs</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Tabs is instantiated within each <code>&lt;ace-tabs&gt;</code> element, and an ID <code>ace-tabs-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-tabs-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>The buttons that display the panels, known as tabs, must be nested within a tablist element with attribute <code>ace-tabs-tablist</code>. If no descendant has this attribute then the first child <code>&lt;div&gt;</code> will be used and given this attribute. It is strongly recommended that this tablist element be provided with an accessible label using <code>aria-label</code> or <code>aria-labelledby</code>.</p>
+<p>Tabs must also have nested panel elements and will use any descendant with attribute <code>ace-tabs-panel</code>. If no descendants have this attribute then all child elements except the first one (tablist) will be used and given this attribute.</p>
 <h2>Usage</h2>
 <p>By default, the first tab is selected and so the panel content for the first tab is displayed. If a user clicks on a tab then the content for that tab will be revealed and the previous content hidden. When the tablist is focused, pressing <kbd>←</kbd> or <kbd>→</kbd> (<kbd>↑</kbd> or <kbd>↓</kbd> if tablist is vertical) will select the previous or next tab in the list and select it. Tabbing while focused on the tablist will then focus the content for the selected tab. Pressing <kbd>Home</kbd> when the tablist is focused will select the first tab in the tablist and <kbd>End</kbd> will select the last.</p>
 <h2>Styles</h2>

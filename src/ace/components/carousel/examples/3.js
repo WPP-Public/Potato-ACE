@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newSlideEl.appendChild(headingEl);
     newSlideEl.appendChild(p);
     slidesWrapper.appendChild(newSlideEl);
-    carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+    carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
   };
 
   window.addEventListener('click', (e) => {
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           slidesWrapper.removeChild(slidesWrapper.lastElementChild);
         }
-        carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+        carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
         break;
     }
   });

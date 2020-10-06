@@ -110,7 +110,7 @@ export default class Listbox extends HTMLElement {
     } else if (!labelEl) {
       console.warn(`ACE: List element of ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
     } else if (!labelEl.textContent.length) {
-      console.warn(`ACE: Tabs with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
+      console.warn(`ACE: ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
     }
 
     this.initialiseList();

@@ -1,4 +1,4 @@
 components/components.json
 components/**/examples/
-components/**/*.mp4
+components/**/media/*
 components/**/*.test.js

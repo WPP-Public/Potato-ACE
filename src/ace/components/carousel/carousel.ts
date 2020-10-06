@@ -14,7 +14,7 @@ export const CAROUSEL = `${NAME}-carousel`;
 export const ATTRS = {
   INFINITE: `${CAROUSEL}-infinite`,
   NEXT_BTN: `${CAROUSEL}-next-btn`,
-  PREV_BTN: `${CAROUSEL}-previous-btn`,
+  PREV_BTN: `${CAROUSEL}-prev-btn`,
   SELECTED_SLIDE: `${CAROUSEL}-selected-slide`,
   SLIDE: `${CAROUSEL}-slide`,
   SLIDES: `${CAROUSEL}-slides`,
@@ -26,11 +26,11 @@ export const EVENTS = {
   IN: {
     SET_NEXT_SLIDE: `${CAROUSEL}-set-next-slide`,
     SET_PREV_SLIDE: `${CAROUSEL}-set-prev-slide`,
-    UPDATE: `${CAROUSEL}-update`,
+    UPDATE_SLIDES: `${CAROUSEL}-update-slides`,
   },
   OUT: {
-    CHANGED: `${CAROUSEL}-changed`,
     READY: `${CAROUSEL}-ready`,
+    SELECTED_SLIDE_CHANGED: `${CAROUSEL}-slide-changed`,
   }
 };
 
@@ -89,16 +89,28 @@ export default class Carousel extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    this.prevButton = getElByAttrOrSelector(this, ATTRS.PREV_BTN, 'button');
-    this.nextButton = getElByAttrOrSelector(this, ATTRS.NEXT_BTN, 'button:nth-of-type(2)');
+    this.prevButton =
+      this.querySelector(`button[${ATTRS.PREV_BTN}]`) ||
+      this.querySelector('button');
+    this.nextButton =
+      this.querySelector(`button[${ATTRS.NEXT_BTN}]`) ||
+      this.querySelector('button:nth-of-type(2)');
+
+    if (!this.prevButton || !this.nextButton) {
+      console.error(`ACE: Carousel with ID '${this.id}' requires two descendant <button> elements, needed to display the previous and next slides.`);
+      return;
+    }
+
     this.slidesWrapper = getElByAttrOrSelector(this, ATTRS.SLIDES, `#${this.id} > div`);
     if (!this.slidesWrapper) {
-      console.error(`ACE: Carousel with ID '${this.id}' requires an child <div> or an ancestor with attribute '${ATTRS.SLIDES}', to be used as a slides container.`);
-      return;
+      this.slidesWrapper = document.createElement('div');
+      this.appendChild(this.slidesWrapper);
     }
 
 
     /* GET DOM DATA */
+    this.infinite = this.hasAttribute(ATTRS.INFINITE);
+
     let initiallySelectedSlideNumber = +this.getAttribute(ATTRS.SELECTED_SLIDE);
     if (!initiallySelectedSlideNumber) {
       initiallySelectedSlideNumber = 1;
@@ -106,33 +118,30 @@ export default class Carousel extends HTMLElement {
     }
     this.selectedSlideIndex = initiallySelectedSlideNumber - 1;
 
-    this.infinite = this.hasAttribute(ATTRS.INFINITE);
-
 
     /* SET DOM DATA */
     this.setAttribute('aria-roledescription', 'carousel');
     this.setAttribute('role', 'region');
 
     const slidesWrapperId = this.slidesWrapper.id || `${this.id}-slides`;
-    if (this.prevButton) {
-      this.prevButton.setAttribute(ATTRS.PREV_BTN, '');
-      this.prevButton.setAttribute('aria-controls', slidesWrapperId);
-    }
-    if (this.nextButton) {
-      this.nextButton.setAttribute(ATTRS.NEXT_BTN, '');
-      this.nextButton.setAttribute('aria-controls', slidesWrapperId);
-    }
+    this.prevButton.setAttribute(ATTRS.PREV_BTN, '');
+    this.prevButton.setAttribute('aria-controls', slidesWrapperId);
+    this.nextButton.setAttribute(ATTRS.NEXT_BTN, '');
+    this.nextButton.setAttribute('aria-controls', slidesWrapperId);
 
     this.slidesWrapper.id = slidesWrapperId;
     this.slidesWrapper.setAttribute(ATTRS.SLIDES, '');
     this.slidesWrapper.setAttribute('aria-live', 'polite');
+    if (this.slidesWrapper.getAttribute('aria-atomic') === 'true') {
+      this.slidesWrapper.setAttribute('aria-atomic', 'false');
+    }
 
 
     /* ADD EVENT LISTENERS */
     this.addEventListener('click', this.clickHandler);
     this.addEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
     this.addEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
-    this.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
 
 
     /* INITIALISATION */
@@ -160,7 +169,7 @@ export default class Carousel extends HTMLElement {
     this.removeEventListener('click', this.clickHandler);
     this.removeEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
     this.removeEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
-    this.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+    this.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
   }
 
 
@@ -193,10 +202,9 @@ export default class Carousel extends HTMLElement {
         this.setSelectedSlide(newSlideIndex);
         break;
       }
-      case EVENTS.IN.UPDATE: {
+      case EVENTS.IN.UPDATE_SLIDES:
         this.initSlides();
         break;
-      }
     }
   }
 
@@ -253,7 +261,7 @@ export default class Carousel extends HTMLElement {
 
     this.setNavBtnAttributes();
 
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.SELECTED_SLIDE_CHANGED, {
       'detail': {
         'currentlySelectedSlide': slideToSelectIndex + 1,
         'id': this.id,
@@ -278,29 +286,25 @@ export default class Carousel extends HTMLElement {
     it is going to take.
   */
   private setNavBtnAttributes(): void {
-    if (this.prevButton) {
-      this.prevButton.setAttribute('aria-label', 'Go to previous slide');
-      this.prevButton.removeAttribute('disabled');
+    this.prevButton.setAttribute('aria-label', 'Go to previous slide');
+    this.prevButton.removeAttribute('disabled');
 
-      if (this.selectedSlideIndex === 0) {
-        if (this.infinite) {
-          this.prevButton.setAttribute('aria-label', 'Go to last slide');
-        } else {
-          this.prevButton.setAttribute('disabled', '');
-        }
+    if (this.selectedSlideIndex === 0) {
+      if (this.infinite) {
+        this.prevButton.setAttribute('aria-label', 'Go to last slide');
+      } else {
+        this.prevButton.setAttribute('disabled', '');
       }
     }
 
-    if(this.nextButton) {
-      this.nextButton.setAttribute('aria-label', 'Go to next slide');
-      this.nextButton.removeAttribute('disabled');
+    this.nextButton.setAttribute('aria-label', 'Go to next slide');
+    this.nextButton.removeAttribute('disabled');
 
-      if (this.selectedSlideIndex === this.slideCount - 1) {
-        if (this.infinite) {
-          this.nextButton.setAttribute('aria-label', 'Go to first slide');
-        } else {
-          this.nextButton.setAttribute('disabled', '');
-        }
+    if (this.selectedSlideIndex === this.slideCount - 1) {
+      if (this.infinite) {
+        this.nextButton.setAttribute('aria-label', 'Go to first slide');
+      } else {
+        this.nextButton.setAttribute('disabled', '');
       }
     }
   }
