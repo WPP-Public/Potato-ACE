@@ -78,7 +78,7 @@ export default class Combobox extends HTMLElement {
     /* GET DOM ELEMENTS */
     this.inputEl = getElByAttrOrSelector(this, ATTRS.INPUT, 'input') as HTMLInputElement;
     this.listEl =  getElByAttrOrSelector(this, ATTRS.LIST, 'ul') as HTMLUListElement;
-    // Error if no <input> nor <ul> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
+    // Error if no <input> nor <ul> present because they can't be automatically generated as they require an 'aria-label' or an 'aria-labelledby' attribute from the user
     if (!this.inputEl) {
       console.error(`ACE: Combobox with ID '${this.id}' requires an <input> ancestor element, which has an 'aria-label' or an 'aria-labelledby' attribute.`);
       return;

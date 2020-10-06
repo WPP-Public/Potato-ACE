@@ -1,15 +1,16 @@
 <h1>Listbox</h1>
 <p>Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard.</p>
 <p>Listbox conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Instantiation</h2>
+<h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/listbox/listbox'
 </code></pre>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/listbox/listbox';
 </code></pre>
-<p>For the sake of convenience the ES6 class is exported as <code>Listbox</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Listbox as aceListbox from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Listbox automatically instantiates an instance of itself within each <code>ace-listbox</code> element. Listbox then adds an ID <code>ace-listbox-&lt;n&gt;</code> for any instance without an ID, where <code>&lt;n&gt;</code> is the instance number. Listbox then adds its functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. See the <strong>Custom events</strong> section below for more details. Once instantiation is complete a custom event <code>ace-listbox-ready</code> is dispatched on <code>window</code>.</p>
+<p>For convenience the ES6 class is exported as <code>Listbox</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Listbox is instantiated within each <code>&lt;ace-listbox&gt;</code> element, and an ID <code>ace-listbox-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-listbox-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>Listbox must have a nested list and will use a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> with attribute <code>ace-listbox-list</code>. If no descendant has this attribute then the first decendant <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using <code>aria-labelledby</code>. The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-listbox-update-options</code> is dispatched on the Listbox instance afterwards.</p>
 <h2>Usage</h2>
 <p>There are two main types of Listboxes, single-select and multi-select. A single-select Listbox allows selection of only a single option at a time, and are instantiated by default. A Multi-select Listbox allows selection of multiple options, and are instantiated in Listboxes with an <code>ace-listbox-multiselect</code> attribute.</p>
 <p>Listbox options can be active and/or selected. Only a single option can be active at once and only when the Listbox list has focus. The active option is given the <code>ace-listbox-active-option</code> attribute and its ID is stored as the Listbox's <code>aria-activedescendant</code> attribute. Both these attributes are removed when the Listbox list loses focus as no option is active at that point.</p>

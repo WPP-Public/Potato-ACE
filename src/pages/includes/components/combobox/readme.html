@@ -1,34 +1,35 @@
 <h1>Combobox</h1>
-<p>Combobox is a combination of an input text box and a popup listbox containing options that help the user set the value of the text box.</p>
-<p>Combobox conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#combobox">W3C WAI-ARIA authoring practices</a> ARIA 1.0 pattern.</p>
-<h2>Instantiation</h2>
+<p>Combobox is a combination of a text box and a pop-up listbox containing options that help the user set the value of the text box.</p>
+<p>Combobox conforms to the ARIA 1.0 pattern of <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#combobox">W3C's WAI-ARIA authoring practices</a>.</p>
+<h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/combobox'
 </code></pre>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/combobox';
 </code></pre>
-<p>For the sake of convenience the ES6 class is exported as <code>Combobox</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Combobox as aceCombobox from ...</code>.</p>
-<p>The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Combobox automatically instantiates an instance of itself within each <code>&lt;ace-combobox&gt;</code> element. Combobox then adds an ID <code>ace-combobox-&lt;n&gt;</code> for any instance without one, where <code>&lt;n&gt;</code> is the instance number. Once instantiation is complete a custom event <code>ace-combobox-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>For convenience the ES6 class is exported as <code>Combobox</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Combobox is instantiated within each <code>&lt;ace-combobox&gt;</code> element, and an ID <code>ace-combobox-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-combobox-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>Combobox must have a nested input box and will use a <code>&lt;input&gt;</code> with attribute <code>ace-combobox-input</code>. If no descendant has this attribute then the first decendant <code>&lt;input&gt;</code> will be used and given the attribute. It is strongly recommended that this <code>&lt;input&gt;</code> is given an accessible label using either <code>aria-label</code> or <code>aria-labelledby</code>. Similarly, Combobox must have a nested list and will use a <code>&lt;ul&gt;</code> with attribute <code>ace-combobox-list</code>. If no descendant has this attribute then the first decendant <code>&lt;ul&gt;</code> will be used and given the attribute. It is strongly recommended that the <code>&lt;ul&gt;</code> is given an accessible label using <code>aria-label</code>, describing its options.</p>
+<p>The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-combobox-update-options</code> is dispatched on the Combobox instance afterwards.</p>
 <h2>Usage</h2>
-<p>Comboboxes come in three main types depending on autocomplete behaviour; no autocompletion, list autocompletion, and inline and list autocompletion. Futhermore, each of these types can have manual or automatic selection, where no option or the first option is selected respectively when the listbox appears or its options are updated. Manual selection is the default behaviour and users can select the first or last option in the listbox once it appears by pressing <kbd>↑</kbd> or <kbd>↓</kbd> respectively. Automatic selection can be activated by adding an attribute <code>ace-combobox-autoselect</code> to the Combobox.</p>
+<p>Comboboxes come in three main types depending on auto-complete behaviour; no auto-completion, list auto-completion, and inline and list auto-completion. Futhermore, each of these types can have manual or automatic selection, where no option or the first option is selected respectively when the listbox appears or its options are updated. Manual selection is the default behaviour and users can select the first or last option in the listbox once it appears by pressing <kbd>↑</kbd> or <kbd>↓</kbd> respectively. Automatic selection can be activated by adding an attribute <code>ace-combobox-autoselect</code> to the Combobox.</p>
 <p>The following features apply to all Combobox types:</p>
 <ul>
 <li><kbd>↓</kbd> selects the next option unless no option or the last option is selected in which cases it selects the first option.</li>
 <li><kbd>↑</kbd> selects the previous option unless no option or the first option is selected in which cases it selects the last option.</li>
 <li><kbd>Esc</kbd> hides the listbox without changing the value of the input textbox.</li>
-<li><kbd>Enter</kbd> chooses the selected option changing the input textbox value to match that of the chosen option and dispatching a custom event <code>ace-combobox-option-chosen</code> (see the <strong>Custom events</strong> section below for more details). This is also achieved by clicking on an option. An attribute <code>ace-combobox-no-input-update</code> can be added to the Combobox to dispatch the event without updating the input textbox.</li>
+<li><kbd>Enter</kbd> chooses the selected option changing the input textbox value to match that of the chosen option and dispatching a custom event <code>ace-combobox-option-chosen</code>. This is also achieved by clicking on an option. An attribute <code>ace-combobox-no-input-update</code> can be added to the Combobox to dispatch the event without updating the input textbox.</li>
 <li>When the Combobox loses focus the listbox is automatically hidden. If the listbox had a selected option before it was hidden that option is automatically chosen.</li>
 </ul>
 <h3>Basic Combobox</h3>
-<p>The basic Combobox, instantiated by default, has no autocomplete behaviour and therefore contains a list of options that remain unchanged regardless of user input. This type is typically used to suggest recently entered strings, for example recently searched for values. The listbox of a basic Combobox is automatically shown when the Combobox gains focus.</p>
-<h3>List autocompletion Combobox</h3>
-<p>In this type of Combobox the listbox options are filtered to only show options with text that starts with the characters typed by the user. To instantiate a Combobox with list autocompletion add <code>aria-autocomplete=&quot;list&quot;</code> to the <code>&lt;input&gt;</code> element.</p>
-<h3>Inline and list autocompletion Combobox</h3>
-<p>A Combobox with input and list autocompletion behaves the same as that with list autocompletion and additionally changes the input value to match the text of the selected option. For the automatic selection variant the input textbox value is autocompleted as the user types, with the portion of the string not typed by the user highlighted as selected text so it can be overwritten.  To instantiate a Combobox with inline and list autocompletion add <code>aria-autocomplete=&quot;both&quot;</code> to the <code>&lt;input&gt;</code> element.</p>
+<p>The basic Combobox, instantiated by default, has no auto-complete behaviour and therefore contains a list of options that remain unchanged regardless of user input. This type is typically used to suggest recently entered strings, for example recently searched for values. The listbox of a basic Combobox is automatically shown when the Combobox gains focus.</p>
+<h3>List auto-completion Combobox</h3>
+<p>In this type of Combobox the listbox options are filtered to only show options with text that starts with the characters typed by the user. To instantiate a Combobox with list auto-completion add <code>aria-autocomplete=&quot;list&quot;</code> to the <code>&lt;input&gt;</code> element.</p>
+<h3>Inline and list auto-completion Combobox</h3>
+<p>A Combobox with input and list auto-completion behaves the same as that with list auto-completion and additionally changes the input value to match the text of the selected option. For the automatic selection variant the input textbox value is auto-completed as the user types, with the portion of the string not typed by the user highlighted as selected text so it can be overwritten.  To instantiate a Combobox with inline and list auto-completion add <code>aria-autocomplete=&quot;both&quot;</code> to the <code>&lt;input&gt;</code> element.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users. <code>@import '../../common/utils'</code> imports some shared styles used for making sure the listbox is always visible within the window.</p>
+<p>The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users. <code>@import '../../common/constants'</code> imports shared styles used for making sure the that the entire listbox is always visible within a window.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
 
@@ -138,7 +139,7 @@ ace-combobox {
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Comboboxes with manual selection</h3>
 <p>These are the three types of Comboboxes, all with manual selection.</p>
-<div class="example-block"><h4>No autocomplete</h4>
+<div class="example-block"><h4>No auto-complete</h4>
 <span id="combobox-label-1">Choose an Avenger:</span>
 <ace-combobox>
   <input aria-labelledby="combobox-label-1"/>
@@ -158,7 +159,7 @@ ace-combobox {
   </ul>
 </ace-combobox>
 <hr>
-<h4>List autocomplete</h4>
+<h4>List auto-complete</h4>
 <span id="combobox-label-2">Choose an Avenger:</span>
 <ace-combobox id="ac-list-combobox">
   <input aria-autocomplete="list" aria-labelledby="combobox-label-2"/>
@@ -178,7 +179,7 @@ ace-combobox {
   </ul>
 </ace-combobox>
 <hr>
-<h4>Inline and list autocomplete</h4>
+<h4>Inline and list auto-complete</h4>
 <span id="combobox-label-3">Choose an Avenger:</span>
 <ace-combobox id="ac-both-combobox">
   <input aria-autocomplete="both" aria-labelledby="combobox-label-3"/>
@@ -198,7 +199,7 @@ ace-combobox {
   </ul>
 </ace-combobox>
 </div>
-<pre><code class="language-html">&lt;h4&gt;No autocomplete&lt;/h4&gt;
+<pre><code class="language-html">&lt;h4&gt;No auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-1&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox&gt;
@@ -221,7 +222,7 @@ ace-combobox {
 
 &lt;hr&gt;
 
-&lt;h4&gt;List autocomplete&lt;/h4&gt;
+&lt;h4&gt;List auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox id=&quot;ac-list-combobox&quot;&gt;
@@ -244,7 +245,7 @@ ace-combobox {
 
 &lt;hr&gt;
 
-&lt;h4&gt;Inline and list autocomplete&lt;/h4&gt;
+&lt;h4&gt;Inline and list auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-3&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox id=&quot;ac-both-combobox&quot;&gt;
@@ -267,7 +268,7 @@ ace-combobox {
 </code></pre>
 <h3>Comboboxes with automatic selection</h3>
 <p>Same as previous example but with automatic selection enabled.</p>
-<div class="example-block"><h4>No autocomplete</h4>
+<div class="example-block"><h4>No auto-complete</h4>
 <span id="combobox-label-4">Choose an Avenger:</span>
 <ace-combobox ace-combobox-autoselect id="basic-autoselect-combobox">
   <input aria-labelledby="combobox-label-4"/>
@@ -287,7 +288,7 @@ ace-combobox {
   </ul>
 </ace-combobox>
 <hr>
-<h4>List autocomplete</h4>
+<h4>List auto-complete</h4>
 <span id="combobox-label-5">Choose an Avenger:</span>
 <ace-combobox ace-combobox-autoselect id="ac-list-autoselect-combobox">
   <input aria-autocomplete="list" aria-labelledby="combobox-label-5"/>
@@ -307,7 +308,7 @@ ace-combobox {
   </ul>
 </ace-combobox>
 <hr>
-<h4>Inline and list autocomplete</h4>
+<h4>Inline and list auto-complete</h4>
 <span id="combobox-label-6">Choose an Avenger:</span>
 <ace-combobox ace-combobox-autoselect id="ac-both-autoselect-combobox">
   <input aria-autocomplete="both" aria-labelledby="combobox-label-6"/>
@@ -327,7 +328,7 @@ ace-combobox {
   </ul>
 </ace-combobox>
 </div>
-<pre><code class="language-html">&lt;h4&gt;No autocomplete&lt;/h4&gt;
+<pre><code class="language-html">&lt;h4&gt;No auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-4&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox ace-combobox-autoselect id=&quot;basic-autoselect-combobox&quot;&gt;
@@ -350,7 +351,7 @@ ace-combobox {
 
 &lt;hr&gt;
 
-&lt;h4&gt;List autocomplete&lt;/h4&gt;
+&lt;h4&gt;List auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-5&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox ace-combobox-autoselect id=&quot;ac-list-autoselect-combobox&quot;&gt;
@@ -373,7 +374,7 @@ ace-combobox {
 
 &lt;hr&gt;
 
-&lt;h4&gt;Inline and list autocomplete&lt;/h4&gt;
+&lt;h4&gt;Inline and list auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-6&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox ace-combobox-autoselect id=&quot;ac-both-autoselect-combobox&quot;&gt;
@@ -395,7 +396,7 @@ ace-combobox {
 &lt;/ace-combobox&gt;
 </code></pre>
 <h3>Combobox controlled with custom events</h3>
-<p>The <strong>Add options</strong> button adds options to the initially empty Combobox, while the <strong>Show list</strong> and <strong>Hide list</strong> buttons show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select which option to choose</strong> input and clicking the <strong>Select option</strong> button. All the buttons in this example make use of Combobox's custom events. The extra JavaScript required by this example is also shown below.</p>
+<p>The <strong>Add options</strong> button adds options to the initially empty Combobox, while the <strong>Show list</strong> and <strong>Hide list</strong> buttons show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select which option to choose</strong> input and clicking the <strong>Select option</strong> button. All the buttons in this example make use of Combobox's custom events. The extra JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button id="add-options-btn">Add options</button>
 <button id="show-list-btn">Show list</button>
 <button id="hide-list-btn">Hide list</button>
@@ -473,7 +474,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </code></pre>
 <h3>Combobox with dynamically updated options</h3>
 <p>This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the <code>ace-combobox-update-options</code> custom event. The <code>aria-live=&quot;polite&quot;</code> element is finally updated to announce how many results were found.</p>
-<p>Custom styles, shown below, have been applied to this example using HTML classes, to make it look like a Google Material component. The extra JavaScript required by this example is also shown below.</p>
+<p>Custom styles, shown below, have been applied to this example using HTML classes, to make it look like a Google Material component. The extra JavaScript used by this example is also shown below.</p>
 <div class="example-block"><label id="combobox-label-8">Search:</label>
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <div class="styled-combobox__wrapper">

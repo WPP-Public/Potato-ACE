@@ -5,7 +5,7 @@ Select is a special type of [Listbox](/listbox) component that mimics the native
 Select conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/examples/listbox/listbox-collapsible.html).
 
 
-## Instantiation
+## Setup
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -13,18 +13,17 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/select/select'
 ```
 
-
 Then import the class into your JavaScript entry point:
 
 ```js
 import '<path-to-node_modules>/@potato/ace/components/select/select';
 ```
 
-For the sake of convenience the ES6 class is exported as `Select`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Select as aceSelect from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
+For convenience the ES6 class is exported as `Select` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Select automatically instantiates an instance of itself within each `ace-select` element. Select then adds an ID `ace-select-<n>` for any instance without one, where `<n>` is the instance number. Once instantiation is complete a custom event `ace-select-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document`, an instance of Select is instantiated within each `<ace-select>` element, and an ID `ace-select-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-select-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-Select extends the Listbox class and applies its single-select attributes and functionality to a `<ul>` or `<ol>` nested within it. If neither are present a `<ul>` is added automatically, which can be populated with options dynamically. Please see the **Custom events** section below for more details. Select uses a `<button>` as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.
+Select must have a nested button to show the hidden list of options, so if one is not present Select will create a `<button>` to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a nested list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-select-update-options` is dispatched on the Select instance afterwards.
 
 
 ## Usage

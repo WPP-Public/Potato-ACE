@@ -1,16 +1,16 @@
 <h1>Select</h1>
 <p>Select is a special type of <a href="/listbox">Listbox</a> component that mimics the native HTML <code>&lt;select&gt;</code> while allowing more styling flexibility.</p>
 <p>Select conforms to the <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Instantiation</h2>
+<h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select'
 </code></pre>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select';
 </code></pre>
-<p>For the sake of convenience the ES6 class is exported as <code>Select</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Select as aceSelect from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Select automatically instantiates an instance of itself within each <code>ace-select</code> element. Select then adds an ID <code>ace-select-&lt;n&gt;</code> for any instance without one, where <code>&lt;n&gt;</code> is the instance number. Once instantiation is complete a custom event <code>ace-select-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>Select extends the Listbox class and applies its single-select attributes and functionality to a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> nested within it. If neither are present a <code>&lt;ul&gt;</code> is added automatically, which can be populated with options dynamically. Please see the <strong>Custom events</strong> section below for more details. Select uses a <code>&lt;button&gt;</code> as a trigger to show the hidden list, which if absent is also automatcally added with no text. If the list contains options, the button text is automatically updated to match that of the first option in the Listbox as it is the selected option.</p>
+<p>For convenience the ES6 class is exported as <code>Select</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Select is instantiated within each <code>&lt;ace-select&gt;</code> element, and an ID <code>ace-select-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-select-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>Select must have a nested button to show the hidden list of options, so if one is not present Select will create a <code>&lt;button&gt;</code> to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a nested list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-select-update-options</code> is dispatched on the Select instance afterwards.</p>
 <h2>Usage</h2>
 <p>The list is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed. The list is aware of it's position in the window and will appear below the trigger if there is enough space, otherwise it will appear above.</p>
 <p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option.</p>

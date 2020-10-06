@@ -1,52 +1,44 @@
 # Carousel
 
-A carousel presents a set of items, referred to as slides, by sequentially displaying a subset of one or more slides. Typically, one slide is displayed at a time, and users can activate a next or previous slide control that hides the current slide and "rotates" the next or previous slide into view. In some implementations, rotation automatically starts when the page loads, and it may also automatically stop once all the slides have been displayed. While a slide may contain any type of content, image carousels where each slide contains nothing more than a single image are common.
+Carousel is a set of slides, only one of which is displayed at a time, and buttons used to display the previous or next slide.
 
-Carousel conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel).
+Carousel conforms to [W3C's WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel).
 
 
-## Instantiation
+## Setup
 
-First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '../path/to/node_modules/@potato/ace/components/carousel/carousel'
+@import '<path-to-node_modules>/@potato/ace/components/carousel/carousel'
 ```
 
 Then import the class into your JavaScript entry point:
 
 ```js
-import '@potato/ace/components/carousel/carousel';
+import '<path-to-node_modules>/@potato/ace/components/carousel/carousel';
 ```
 
-For the sake of convenience the ES6 class is exported as `Carousel`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Carousel as aceCarousel from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
+For convenience the ES6 class is exported as `Carousel` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Carousel automatically instantiates an instance of itself within each `<ace-carousel></ace-carousel>` and adds IDs in the format `ace-carousel-(n)` to any instances without one, where `(n)` is the instance count.
+After the event `DOMContentLoaded` is fired on `document`, an instance of Carousel is instantiated within each `<ace-carousel>` element, and an ID `ace-carousel-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-carousel-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-### ARIA atributes and roles
+It is strongly recommended that Carousel be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "carousel" should not be included in the label as Carousel has `aria-roledescription="carousel"` which will be read out by screen readers.
 
-For some aria attributes and roles, the value can be changed (i.e., `aria-label`), whereas for others, the value will be replaced with the correct one (i.e., `role="slide"`).
+Carousel must have nested buttons to display the previous and next slide and will use `<button>` elements with attributes `ace-carousel-prev-btn` and `ace-carousel-next-btn` respectively. For better accesssbility these buttons should be the first and second focusable descendants. If no descendants have these attributes then the first and second decendant `<button>` element will be used and given this attribute.
 
-*Note*: If these aria attributes and roles are not provided, they will be automatically added with the appropriate value. Aria labels are added with a default value **only** if they haven't been provided. If you addd aria labels, please ensure the text is descriptive enough. You can find out more about aria attributes and roles in the [ARIA carousel specification](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel). `alt` text is not added by default, but is recommended for images.
+All Carousel slides must be nested within an element with attribute `ace-carousel-slides`. If no descendant has this attribute, the first child `<div>` will be used if present, otherwise Carousel will append a child `<div>` to itself and use it. Slides do not have to be present upon instantiation and can be dynamically added, or removed, later as long as custom event `ace-carousel-update-slides` is dispatched on the Carousel instance afterwards.
 
-Here's a breakdown of added aria attributes and roles, and which ones can be edited:
+## Usage
 
-| Attribute | Element | Usage | Editable |
-| --- | --- | --- | --- |
-| `role="region"` | `ace-carousel` | Defines the carousel and its controls as a land mark region. | No |
-| `aria-roledescription="carousel"` | `ace-carousel` | Informs assistive technologies to identify the element as a "carousel" rather than a "region." Affects how the assistive technology renders the role but does not affect functionality, such as commands for navigating to landmark regions. | No |
-| `aria-label="Page carousel"` | `ace-carousel` | Provides a label that describes the content in the carousel region. | Yes |
-| `aria-label="Go to previous/next/first/last slide"` | `button` | Defines the accessible name for the next and previous slide buttons. In a carousel with infinite rotation, the labels specify the first and last slide. | No |
-| `aria-controls="ace-carousel-slides"` | `button` | Identifies the content on the page that the button controls; Refers to the div that contains all the slides. | No |
-| `aria-live="polite"` | `div[ace-carousel-slides]` | Identifies the container element as a live region in the "polite" state, meaning assistive technology users are informed about changes to the region at the next available opportunity. This causes screen readers to automatically announce the content of slides when the next and previous slide buttons are activated. | No |
-| `role="group" `| `div[ace-carousel-slide]` | Applied to each of the elements that contains the content of a single slide; Enables assistive technology users to perceive the boundaries of a slide. | No |
-| `aria-roledescription="slide"` | `div[ace-carousel-slide]` | Informs assistive technologies to identify the element as a "slide" rather than a "group." | No |
-| `aria-label="n of N"` | `div[ace-carousel-slide]` | Provides each slide with a distinct label that helps the user understand which of the N slides is displayed. | Yes |
+A Carousel displayed slide can be changed using the previous and next slide buttons, through custom events, or by changing the value of its attribute `ace-carousel-selected-slide` to the slide's number e.g. `2` will display the second slide and `3` the third. This attribute can be set before instantiation to display a specific slide on page load, but if omitted Carousel will add it and set its value to `1` thereby displaying the first slide. The attribute's value is also dynamically updated when the displayed slide is changed using the other methods.
+
+By default the previous and next slide buttons are disabled when the first and last slide is displayed respectively. Giving the Carousel the attribute `ace-carousel-infinite` allows infinite scrolling through slides, where clicking the previous button with the first slide displayed displays the last slide and clicking the next button with the last slide displayed displays the first slide. This is also an observed attribute that can be added or removed to dynamically enable or disable this behaviour.
 
 
 ## Styles
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.
+The following SASS is applied to Carousel, each declaration of which can be overridden by a single class selector.
 
 ```scss
 [ace-carousel-slide] {
@@ -57,10 +49,6 @@ The following SASS is applied to the component, each declaration of which can be
   display: block;
 }
 ```
-
-The current slide is displayed by adding an `ace-carousel-slide-active` attribute on the appropriate `div[ace-carousel-slide]`. You can override this for custom animations. The captions, buttons, and other elements can be customised via CSS. 
-
-*Note*: We will showcase a carousel with controls and captions displayed above and below the image, which is [considered more accessible](https://www.w3.org/TR/wai-aria-practices-1.1/examples/carousel/carousel-1.html?moreaccessible). If you choose to display controls and captions on the image, please take into consideration adding backgrounds via CSS to make them more perceivable.
 
 
 ## Custom events
@@ -76,7 +64,7 @@ The following events are dispatched on `window` by Carousel.
 
 `ace-carousel-ready`
 
-This event is dispatched when Carousel finishes initialising, after page load or response to the `ace-carousel-update` event being dispatched. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
+This event is dispatched when Carousel finishes initialising, after page load or in response to the `ace-carousel-update-slides` custom event being dispatched. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -86,9 +74,9 @@ This event is dispatched when Carousel finishes initialising, after page load or
 
 #### Changed
 
-`ace-carousel-changed`
+`ace-carousel-slide-changed`
 
-This event is dispatched when the Carousel selected slide is changed. The event name is available as `EVENTS.OUT.CHANGED`, and its `detail` property is composed as follows:
+This event is dispatched when the displayed slide is changed. The event name is available as `EVENTS.OUT.SELECTED_SLIDE_CHANGED`, and its `detail` property is composed as follows:
 
 
 ```js
@@ -108,21 +96,21 @@ Carousel listens for the following events, which should be dispatched by the use
 
 `ace-carousel-set-prev-slide`
 
-This event should be dispatched to select the previous slide, or the last slide if the Carousel has the attribute `ace-carousel-infinite` and the first slide is selected. The event name is available as `EVENTS.IN.SET_PREV_SLIDE`.
+This event should be dispatched to display the previous slide, or the last slide if the Carousel has the attribute `ace-carousel-infinite` and its first slide is displayed. The event name is available as `EVENTS.IN.SET_PREV_SLIDE`.
 
 
 #### Set next slide
 
 `ace-carousel-set-next-slide`
 
-This event should be dispatched to select the next slide, or the first slide if the Carousel has the attribute `ace-carousel-infinite` and the last slide is selected. The event name is available as `EVENTS.IN.SET_NEXT_SLIDE`.
+This event should be dispatched to display the next slide, or the first slide if the Carousel has the attribute `ace-carousel-infinite` and its the last slide is displayed. The event name is available as `EVENTS.IN.SET_NEXT_SLIDE`.
 
 
-#### Update
+#### Update slides
 
-`ace-carousel-set-next-slide`
+`ace-carousel-update-slides`
 
-This event should be dispatched if the Carousel mark-up has been changed, for example after adding or removing slides, and causes the Carousel to re-initialise. The event name is available as `EVENTS.IN.UPDATE`.
+This event should be dispatched if slides have been added or removed and causes the Carousel to initialise them. The event name is available as `EVENTS.IN.UPDATE_SLIDES`.
 
 
 ## Examples
@@ -132,7 +120,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 ### Simple Carousel
 
-This is a simple carousel, which changes slides by clicking "previous" or "next" buttons. When the carousel reaches the first or last slides, the "previous" and "next" buttons respectively get disabled.
+Simple Carousel with 3 slides.
 
 ```html
 <ace-carousel aria-label="Basic carousel">
@@ -163,9 +151,9 @@ This is a simple carousel, which changes slides by clicking "previous" or "next"
 ```
 
 
-### Carousel with inifinite rotation and initially set slide
+### Infinite Carousel with initially displayed second slide
 
-With the attribute `ace-carousel-infinite`, the "previous" and "next" buttons are not disabled anymore. Instead they reset from the last and first slide respectively. This is an observed attribute, which can be set dynamically and tested in dev tools. Also note that this Carousel has attribute `ace-carousel-active-slide="2"` which causes it to set the second slide as active upon initialising.
+Carousel with infinite rotation that displays the second slide upon page load.
 
 ```html
 <ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="A carousel with infinite scroll and an initially selected slide" id="infinite-carousel">
@@ -195,9 +183,9 @@ With the attribute `ace-carousel-infinite`, the "previous" and "next" buttons ar
 </ace-carousel>
 ```
 
-### Custom event triggered Carousel
+### Carousel controlled by custom events
 
-This Carousel is controlled through custom events.
+The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-carousel-set-next-slide` and `ace-carousel-update-slides` custom events on the Carousel. The extra JavaScript used by this example is also shown below.
 
 ```html
 <p>These buttons dispatch custom events</p>
@@ -249,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     newSlideEl.appendChild(headingEl);
     newSlideEl.appendChild(p);
     slidesWrapper.appendChild(newSlideEl);
-    carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+    carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
   };
 
   window.addEventListener('click', (e) => {
@@ -268,7 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           slidesWrapper.removeChild(slidesWrapper.lastElementChild);
         }
-        carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+        carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
         break;
     }
   });

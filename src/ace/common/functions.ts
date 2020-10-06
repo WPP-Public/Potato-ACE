@@ -7,14 +7,21 @@ import {Key, UTIL_ATTRS} from './constants.js';
 */
 export const autoID = (component: string): void => {
   let i = 0;
-  document.querySelectorAll(component)
+  document
+    .querySelectorAll(component)
     .forEach((elem) => {
       if (elem.id) {
         return;
      }
 
-      i++;
-      elem.id = `${component}-${i}`;
+      let newId;
+      // Ensure ID is unique
+      do {
+        i++;
+        newId = `${component}-${i}`;
+      } while (document.getElementById(newId));
+
+      elem.id = newId;
    });
 };
 
@@ -23,12 +30,14 @@ export const autoID = (component: string): void => {
   Search a given container for an element using a given attribute, if not found find element using given selector, set the given attribute on it, then return the element.
 */
 export const getElByAttrOrSelector = (container: Element, attr: string, selector: string): HTMLElement =>  {
-  let el = container.querySelector(`[${attr}]`);
+  let el = container.querySelector(`[${attr}]`) as HTMLElement;
   if (!el) {
     el = container.querySelector(selector);
-    el.setAttribute(attr, '');
+    if (el) {
+      el.setAttribute(attr, '');
+    }
   }
-  return el as  HTMLElement;
+  return el;
 };
 
 

@@ -1,27 +1,31 @@
 # Tabs
 
-Tabs are a set of sections of content called tab panels which are displayed one at a time, each tab panel has a tab element associated with it which controls displaying the panel.
+Tabs is a set of sections of content known as panels, of which only is displayed at a time, each with an associated button, or tab, used to display the panel.
 
 Tabs conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel).
 
 
-## Instantiation
+## Setup
 
-First import the styles into your main SASS file, replacing `../path/to` with the path to *node_modules* relative to the file:
+First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '../path/to/node_modules/@potato/ace/components/carousel/carousel'
+@import '<path-to-node_modules>/@potato/ace/components/tabs/tabs'
 ```
 
-Import the class into your JavaScript entry point:
+Then import the class into your JavaScript entry point:
 
 ```js
-import Tabs from '@potato/ace/components/tabs/tabs';
+import '<path-to-node_modules>/@potato/ace/components/tabs/tabs';
 ```
 
-For the sake of convenience the ES6 class is exported as `Tabs`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Tabs as aceTabs from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
+For convenience the ES6 class is exported as `Tabs` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Select automatically instantiates an instance of itself within each `<ace-tabs></ace-tabs>` and adds IDs in the format `ace-tabs-(n)` to any instances without one, where `(n)` is the instance count.
+After the event `DOMContentLoaded` is fired on `document`, an instance of Tabs is instantiated within each `<ace-tabs>` element, and an ID `ace-tabs-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-tabs-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+
+The buttons that display the panels, known as tabs, must be nested within a tablist element with attribute `ace-tabs-tablist`. If no descendant has this attribute then the first child `<div>` will be used and given this attribute. It is strongly recommended that this tablist element be provided with an accessible label using `aria-label` or `aria-labelledby`.
+
+Tabs must also have nested panel elements and will use any descendant with attribute `ace-tabs-panel`. If no descendants have this attribute then all child elements except the first one (tablist) will be used and given this attribute.
 
 
 ## Usage

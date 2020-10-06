@@ -2,8 +2,9 @@
   "carousel": {
     "name": "Carousel",
     "aliases": [
+      "Image rotator",
       "Slide show",
-      "Image rotator"
+      "Slider"
     ]
   },
   "combobox": {

@@ -1,9 +1,11 @@
 # Disclosure
 
-Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
+Disclosure is a component whose visibility can be changed using trigger buttons and custom events.
+
+Disclosure conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
 
 
-## Instantiation
+## Setup
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -11,18 +13,19 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/disclosure/disclosure'
 ```
 
-
 Then import the class into your JavaScript entry point:
 
 ```js
 import '<path-to-node_modules>/@potato/ace/components/disclosure/disclosure';
 ```
 
-For the sake of convenience the ES6 class is exported as `Disclosure`. To avoid name clashes the `as` keyword can be used when importing, e.g. `import Disclosure as aceDisclosure from ...`. The attribute names used by the class are also exported as properties of `ATTRS`.
+For convenience the ES6 class is exported as `Disclosure` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After `DOMContentLoaded` is fired, Disclosure automatically instantiates an instance of itself within each `ace-disclosure` element. Disclosure then adds an ID `ace-disclosure-<n>` for any instance without one, where `<n>` is the instance number. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document`, an instance of Disclosure is instantiated within each `<ace-disclosure>` element, and an ID `ace-disclosure-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-Disclosures are hidden by default but can be initially shown by adding the `ace-disclosure-visible="true"` attribute to it. The attribute `ace-disclosure-trigger-for=<disclosure-id>` should be added to triggering elements, where `<disclosure-id>` is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>`s are used for triggers. Disclosures can also be triggered using custom events, as described in the **Custom events** section below.
+## Usage
+
+Disclosures are hidden by default but can be initially shown by adding the `ace-disclosure-visible="true"` attribute to it. The attribute `ace-disclosure-trigger-for` should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>` elements are used for triggers. Disclosures can also be triggered using custom events, as described in the **Custom events** section below.
 
 Triggers will by default toggle the visibiility of the Disclosure, but the `ace-disclosure-show-trigger` or `ace-disclosure-hide-trigger` attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.
 

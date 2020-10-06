@@ -1,15 +1,17 @@
 <h1>Disclosure</h1>
-<p>Disclosure is a component whose visibility can be changed using trigger buttons and custom events. Disclosure conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Instantiation</h2>
+<p>Disclosure is a component whose visibility can be changed using trigger buttons and custom events.</p>
+<p>Disclosure conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">W3C WAI-ARIA authoring practices</a>.</p>
+<h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/disclosure'
 </code></pre>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/disclosure';
 </code></pre>
-<p>For the sake of convenience the ES6 class is exported as <code>Disclosure</code>. To avoid name clashes the <code>as</code> keyword can be used when importing, e.g. <code>import Disclosure as aceDisclosure from ...</code>. The attribute names used by the class are also exported as properties of <code>ATTRS</code>.</p>
-<p>After <code>DOMContentLoaded</code> is fired, Disclosure automatically instantiates an instance of itself within each <code>ace-disclosure</code> element. Disclosure then adds an ID <code>ace-disclosure-&lt;n&gt;</code> for any instance without one, where <code>&lt;n&gt;</code> is the instance number. Once instantiation is complete a custom event <code>ace-disclosure-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>Disclosures are hidden by default but can be initially shown by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for=&lt;disclosure-id&gt;</code> should be added to triggering elements, where <code>&lt;disclosure-id&gt;</code> is that of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code>s are used for triggers. Disclosures can also be triggered using custom events, as described in the <strong>Custom events</strong> section below.</p>
+<p>For convenience the ES6 class is exported as <code>Disclosure</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Disclosure is instantiated within each <code>&lt;ace-disclosure&gt;</code> element, and an ID <code>ace-disclosure-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-disclosure-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<h2>Usage</h2>
+<p>Disclosures are hidden by default but can be initially shown by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for</code> should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code> elements are used for triggers. Disclosures can also be triggered using custom events, as described in the <strong>Custom events</strong> section below.</p>
 <p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>ace-disclosure-show-trigger</code> or <code>ace-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.</p>
