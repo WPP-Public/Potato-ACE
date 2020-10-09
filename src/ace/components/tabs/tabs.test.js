@@ -3,7 +3,6 @@ import {ATTRS, EVENTS, TABS} from './tabs';
 
 const IDS = {
   ADD_TAB_BTN: 'add-tab-btn',
-  SIMPLE_TABS: `${TABS}-1`,
   CUSTOM_EVENTS_TABS: 'custom-events-tabs',
   DEEP_LINKED_INITIALLY_SET_TABS: 'deep-linked-tabs-2',
   DEEP_LINKED_TABS: 'deep-linked-tabs-1',
@@ -14,6 +13,7 @@ const IDS = {
   PREV_TAB_BTN: 'prev-tab-btn',
   REMOVE_TAB_BTN: 'remove-tab-btn',
   SET_TAB_FORM: 'set-tab-form',
+  SIMPLE_TABS: `${TABS}-1`,
   VERTICAL_TABS: 'vertical-tabs',
 };
 
@@ -502,19 +502,21 @@ context(`Tabs`, () => {
     it(`Should remember focussable tab after tablist loses focus`, () => {
       cy.get('@tabsButton1')
         .focus()
-        .type('{leftarrow}')
+        .type('{rightarrow}')
+        .should('have.attr', 'tabindex', '-1')
+        .get('@tabsButtons')
+        .eq(1)
+        .as('tabsButton2')
+        .should('not.have.attr', 'tabindex')
         .get('@tabsPanels')
         .eq(0)
         .click()
+        .get('@tabsButton2')
+        .focus()
+        .type('{rightarrow}')
+        .should('have.attr', 'tabindex', '-1')
         .get('@tabsButtons')
         .eq(2)
-        .as('button3')
-        .should('not.have.attr', 'tabindex')
-        .get('@button3')
-        .focus()
-        .type('{leftarrow}')
-        .get('@tabsButtons')
-        .eq(1)
         .should('not.have.attr', 'tabindex');
     });
 
@@ -531,10 +533,10 @@ context(`Tabs`, () => {
 
 
       it(`Should activate previous and next tab without selecting them when LEFT or RIGHT is pressed`, () => {
-        // Check that LEFT works
+        // Check that RIGHT works
         cy.get('@tabsButton1')
           .focus()
-          .type('{leftarrow}')
+          .type('{rightarrow}{rightarrow}')
           .should('not.have.focus')
           .and('have.attr', ATTRS.TAB_SELECTED, '')
           .and('have.attr', 'tabindex', '-1')
@@ -546,8 +548,8 @@ context(`Tabs`, () => {
           .should('have.attr', ATTRS.PANEL)
           .and('not.have.attr', ATTRS.TAB_SELECTED)
           .get('@tabsButton3')
-          // Check that RIGHT works
-          .type('{leftarrow}{leftarrow}{rightarrow}')
+          // Check that LEFT works
+          .type('{leftarrow}')
           .get('@tabsButton3')
           .should('not.have.focus')
           .get('@tabsButton2')

@@ -152,7 +152,7 @@ Simple Carousel with 3 slides.
 Carousel with infinite rotation that displays the second slide upon page load.
 
 ```html
-<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Get to know Potato">
+<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Get to know Potato" id="infinite-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
