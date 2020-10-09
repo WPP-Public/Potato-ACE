@@ -284,11 +284,12 @@ context(`Select`, () => {
             },
             id: SELECT_ID,
           };
+
           cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
             .get('@selectTrigger')
             .focus()
             .click()
-            .type('{downarrow} ');
+            .type('{downarrow} {esc}');
           checkOptionChosen(optionIndex);
         });
 
