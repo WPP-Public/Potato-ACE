@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const headingEl = document.createElement('h2');
     headingEl.textContent = `Dynamically added Slide`;
     const p = document.createElement('p');
-    p.textContent = `This slide was added dynamically, after the carousel was initialised.`;
+    p.textContent = `This slide was added dynamically, after this Carousel was initialised.`;
     const newSlideEl = document.createElement('div');
     newSlideEl.appendChild(headingEl);
     newSlideEl.appendChild(p);

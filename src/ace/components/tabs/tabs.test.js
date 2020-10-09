@@ -3,7 +3,7 @@ import {ATTRS, EVENTS, TABS} from './tabs';
 
 const IDS = {
   ADD_TAB_BTN: 'add-tab-btn',
-  BASIC_TABS: `${TABS}-1`,
+  SIMPLE_TABS: `${TABS}-1`,
   CUSTOM_EVENTS_TABS: 'custom-events-tabs',
   DEEP_LINKED_INITIALLY_SET_TABS: 'deep-linked-tabs-2',
   DEEP_LINKED_TABS: 'deep-linked-tabs-1',
@@ -117,7 +117,7 @@ context(`Tabs`, () => {
 
 
   context(`Basic Tabs`, () => {
-    const TABS_ID = IDS.BASIC_TABS;
+    const TABS_ID = IDS.SIMPLE_TABS;
 
 
     beforeEach(() => tabsBeforeEach(TABS_ID));

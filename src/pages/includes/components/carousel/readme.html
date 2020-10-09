@@ -10,12 +10,12 @@
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Carousel</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Carousel is instantiated within each <code>&lt;ace-carousel&gt;</code> element, and an ID <code>ace-carousel-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-carousel-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>It is strongly recommended that Carousel be provided with an accessible label using <code>aria-label</code> or <code>aria-labelledby</code>. The word &quot;carousel&quot; should not be included in the label as Carousel has <code>aria-roledescription=&quot;carousel&quot;</code> which will be read out by screen readers.</p>
+<p>It is strongly recommended that Carousel be provided with an accessible label using <code>aria-label</code> or <code>aria-labelledby</code>. The word &quot;carousel&quot; should not be included in the label as Carousel has <code>aria-roledescription=&quot;carousel&quot;</code> which is read out by screen readers.</p>
 <p>Carousel must have nested buttons to display the previous and next slide and will use <code>&lt;button&gt;</code> elements with attributes <code>ace-carousel-prev-btn</code> and <code>ace-carousel-next-btn</code> respectively. For better accesssbility these buttons should be the first and second focusable descendants. If no descendants have these attributes then the first and second decendant <code>&lt;button&gt;</code> element will be used and given this attribute.</p>
 <p>All Carousel slides must be nested within an element with attribute <code>ace-carousel-slides</code>. If no descendant has this attribute, the first child <code>&lt;div&gt;</code> will be used if present, otherwise Carousel will append a child <code>&lt;div&gt;</code> to itself and use it. Slides do not have to be present upon instantiation and can be dynamically added, or removed, later as long as custom event <code>ace-carousel-update-slides</code> is dispatched on the Carousel instance afterwards.</p>
 <h2>Usage</h2>
-<p>A Carousel displayed slide can be changed using the previous and next slide buttons, through custom events, or by changing the value of its attribute <code>ace-carousel-selected-slide</code> to the slide's number e.g. <code>2</code> will display the second slide and <code>3</code> the third. This attribute can be set before instantiation to display a specific slide on page load, but if omitted Carousel will add it and set its value to <code>1</code> thereby displaying the first slide. The attribute's value is also dynamically updated when the displayed slide is changed using the other methods.</p>
-<p>By default the previous and next slide buttons are disabled when the first and last slide is displayed respectively. Giving the Carousel the attribute <code>ace-carousel-infinite</code> allows infinite scrolling through slides, where clicking the previous button with the first slide displayed displays the last slide and clicking the next button with the last slide displayed displays the first slide. This is also an observed attribute that can be added or removed to dynamically enable or disable this behaviour.</p>
+<p>A Carousel displayed slide can be changed using the previous and next slide buttons, using custom events, or by changing the value of its attribute <code>ace-carousel-selected-slide</code> to the slide's number e.g. <code>2</code> will display the second slide and <code>3</code> the third. This attribute can be set before instantiation to display a specific slide on page load, but if omitted Carousel will add it and set its value to <code>1</code> thereby displaying the first slide. The attribute's value is also dynamically updated when the displayed slide is changed using the other methods.</p>
+<p>By default the previous and next slide buttons are disabled when the first and last slide is displayed respectively. Giving the Carousel the attribute <code>ace-carousel-infinite</code> allows infinite rotation through slides, where clicking the previous button with the first slide displayed will display the last, and clicking the next button with the last slide displayed will display the first. This is an observed attribute that can be added or removed to dynamically enable or disable this behaviour.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to Carousel, each declaration of which can be overridden by a single class selector.</p>
 <pre><code class="language-scss">[ace-carousel-slide] {
@@ -61,113 +61,97 @@
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Carousel</h3>
 <p>Simple Carousel with 3 slides.</p>
-<div class="example-block"><ace-carousel aria-label="Basic carousel">
+<div class="example-block"><ace-carousel aria-label="Get to know Potato">
   <button>Previous slide</button>
   <button>Next slide</button>
-  <br><br>
   <div>
     <div>
-      <h2>Potato</h2>
-      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <p><a href="https://p.ota.to">Get to know us</a></p>
-      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
     </div>
     <div>
-      <h2>Making new tech count</h2>
-      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
-      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
     </div>
     <div>
-      <h2>Making digital for real life</h2>
-      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
-      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Basic carousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Get to know Potato&quot;&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
-  &lt;br&gt;&lt;br&gt;
   &lt;div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Potato&lt;/h2&gt;
-      &lt;p&gt;We exist to design, develop and launch purposeful and effective digital products.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to&quot;&gt;Get to know us&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;120px&quot; alt=&quot;Classic Spuddy&quot;&gt;
+      &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 1 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Making new tech count&lt;/h2&gt;
-      &lt;p&gt;Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to/work/making-new-tech-count&quot;&gt;Find out more&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/carousel/spuddy-goggles.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with virtual reality goggles&quot;&gt;
+      &lt;h3&gt;Slide 2 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 2 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Making digital for real life&lt;/h2&gt;
-      &lt;p&gt;We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to/work/making-digital-for-real-life&quot;&gt;Find out more&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/carousel/spuddy-phone.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with headphones and camera&quot;&gt;
+      &lt;h3&gt;Slide 3 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 3 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Infinite Carousel with initially displayed second slide</h3>
+<h3>Carousel with infinite rotation and second slide initially displayed</h3>
 <p>Carousel with infinite rotation that displays the second slide upon page load.</p>
-<div class="example-block"><ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="A carousel with infinite scroll and an initially selected slide" id="infinite-carousel">
+<div class="example-block"><ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Get to know Potato">
   <button>Previous slide</button>
   <button>Next slide</button>
-  <br><br>
   <div>
     <div>
-      <h2>Potato</h2>
-      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <p><a href="https://p.ota.to">Get to know us</a></p>
-      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
     </div>
     <div>
-      <h2>Making new tech count</h2>
-      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
-      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
     </div>
     <div>
-      <h2>Making digital for real life</h2>
-      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
-      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
     </div>
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot; aria-label=&quot;A carousel with infinite scroll and an initially selected slide&quot; id=&quot;infinite-carousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot; aria-label=&quot;Get to know Potato&quot;&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
-  &lt;br&gt;&lt;br&gt;
   &lt;div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Potato&lt;/h2&gt;
-      &lt;p&gt;We exist to design, develop and launch purposeful and effective digital products.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to&quot;&gt;Get to know us&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;120px&quot; alt=&quot;Classic Spuddy&quot;&gt;
+      &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 1 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Making new tech count&lt;/h2&gt;
-      &lt;p&gt;Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to/work/making-new-tech-count&quot;&gt;Find out more&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/carousel/spuddy-goggles.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with virtual reality goggles&quot;&gt;
+      &lt;h3&gt;Slide 2 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 2 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Making digital for real life&lt;/h2&gt;
-      &lt;p&gt;We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to/work/making-digital-for-real-life&quot;&gt;Find out more&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/carousel/spuddy-phone.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with headphones and camera&quot;&gt;
+      &lt;h3&gt;Slide 3 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 3 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Carousel controlled by custom events</h3>
+<h3>Carousel controlled using custom events</h3>
 <p>The buttons in this example dispatch the <code>ace-carousel-set-prev-slide</code>, <code>ace-carousel-set-next-slide</code> and <code>ace-carousel-update-slides</code> custom events on the Carousel. The extra JavaScript used by this example is also shown below.</p>
 <div class="example-block"><p>These buttons dispatch custom events</p>
 <button id="prev-slide-btn">Prev slide</button>
@@ -175,28 +159,24 @@
 <button id="add-slide-btn">Add slide to end</button>
 <button id="remove-slide-btn">Remove last slide</button>
 <hr>
-<ace-carousel aria-label="Carousel controlled through custom events" id="custom-events-carousel">
+<ace-carousel aria-label="Get to know Potato" id="custom-events-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
-  <br><br>
   <div>
     <div>
-      <h2>Potato</h2>
-      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <p><a href="https://p.ota.to">Get to know us</a></p>
-      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
     </div>
     <div>
-      <h2>Making new tech count</h2>
-      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
-      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
     </div>
     <div>
-      <h2>Making digital for real life</h2>
-      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
-      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
     </div>
   </div>
 </ace-carousel>
@@ -207,28 +187,24 @@
 &lt;button id=&quot;add-slide-btn&quot;&gt;Add slide to end&lt;/button&gt;
 &lt;button id=&quot;remove-slide-btn&quot;&gt;Remove last slide&lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-carousel aria-label=&quot;Carousel controlled through custom events&quot; id=&quot;custom-events-carousel&quot;&gt;
+&lt;ace-carousel aria-label=&quot;Get to know Potato&quot; id=&quot;custom-events-carousel&quot;&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
-  &lt;br&gt;&lt;br&gt;
   &lt;div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Potato&lt;/h2&gt;
-      &lt;p&gt;We exist to design, develop and launch purposeful and effective digital products.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to&quot;&gt;Get to know us&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;120px&quot; alt=&quot;Classic Spuddy&quot;&gt;
+      &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 1 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Making new tech count&lt;/h2&gt;
-      &lt;p&gt;Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to/work/making-new-tech-count&quot;&gt;Find out more&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/carousel/spuddy-goggles.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with virtual reality goggles&quot;&gt;
+      &lt;h3&gt;Slide 2 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 2 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
     &lt;/div&gt;
     &lt;div&gt;
-      &lt;h2&gt;Making digital for real life&lt;/h2&gt;
-      &lt;p&gt;We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.&lt;/p&gt;
-      &lt;p&gt;&lt;a href=&quot;https://p.ota.to/work/making-digital-for-real-life&quot;&gt;Find out more&lt;/a&gt;&lt;/p&gt;
-      &lt;img src=&quot;/img/carousel/spuddy-phone.png&quot; height=&quot;120px&quot; alt=&quot;Spuddy with headphones and camera&quot;&gt;
+      &lt;h3&gt;Slide 3 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 3 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
@@ -243,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
     const headingEl = document.createElement('h2');
     headingEl.textContent = `Dynamically added Slide`;
     const p = document.createElement('p');
-    p.textContent = `This slide was added dynamically, after the carousel was initialised.`;
+    p.textContent = `This slide was added dynamically, after this Carousel was initialised.`;
     const newSlideEl = document.createElement('div');
     newSlideEl.appendChild(headingEl);
     newSlideEl.appendChild(p);

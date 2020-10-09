@@ -23,7 +23,7 @@ For convenience the ES6 class is exported as `Carousel` and the attribute names 
 
 After the event `DOMContentLoaded` is fired on `document`, an instance of Carousel is instantiated within each `<ace-carousel>` element, and an ID `ace-carousel-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-carousel-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-It is strongly recommended that Carousel be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "carousel" should not be included in the label as Carousel has `aria-roledescription="carousel"` which will be read out by screen readers.
+It is strongly recommended that Carousel be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "carousel" should not be included in the label as Carousel has `aria-roledescription="carousel"` which is read out by screen readers.
 
 Carousel must have nested buttons to display the previous and next slide and will use `<button>` elements with attributes `ace-carousel-prev-btn` and `ace-carousel-next-btn` respectively. For better accesssbility these buttons should be the first and second focusable descendants. If no descendants have these attributes then the first and second decendant `<button>` element will be used and given this attribute.
 
@@ -31,9 +31,9 @@ All Carousel slides must be nested within an element with attribute `ace-carouse
 
 ## Usage
 
-A Carousel displayed slide can be changed using the previous and next slide buttons, through custom events, or by changing the value of its attribute `ace-carousel-selected-slide` to the slide's number e.g. `2` will display the second slide and `3` the third. This attribute can be set before instantiation to display a specific slide on page load, but if omitted Carousel will add it and set its value to `1` thereby displaying the first slide. The attribute's value is also dynamically updated when the displayed slide is changed using the other methods.
+A Carousel displayed slide can be changed using the previous and next slide buttons, using custom events, or by changing the value of its attribute `ace-carousel-selected-slide` to the slide's number e.g. `2` will display the second slide and `3` the third. This attribute can be set before instantiation to display a specific slide on page load, but if omitted Carousel will add it and set its value to `1` thereby displaying the first slide. The attribute's value is also dynamically updated when the displayed slide is changed using the other methods.
 
-By default the previous and next slide buttons are disabled when the first and last slide is displayed respectively. Giving the Carousel the attribute `ace-carousel-infinite` allows infinite scrolling through slides, where clicking the previous button with the first slide displayed displays the last slide and clicking the next button with the last slide displayed displays the first slide. This is also an observed attribute that can be added or removed to dynamically enable or disable this behaviour.
+By default the previous and next slide buttons are disabled when the first and last slide is displayed respectively. Giving the Carousel the attribute `ace-carousel-infinite` allows infinite rotation through slides, where clicking the previous button with the first slide displayed will display the last, and clicking the next button with the last slide displayed will display the first. This is an observed attribute that can be added or removed to dynamically enable or disable this behaviour.
 
 
 ## Styles
@@ -123,67 +123,59 @@ Each example contains a live demo and the HTML code that produced it. The code s
 Simple Carousel with 3 slides.
 
 ```html
-<ace-carousel aria-label="Basic carousel">
+<ace-carousel aria-label="Get to know Potato">
   <button>Previous slide</button>
   <button>Next slide</button>
-  <br><br>
   <div>
     <div>
-      <h2>Potato</h2>
-      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <p><a href="https://p.ota.to">Get to know us</a></p>
-      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
     </div>
     <div>
-      <h2>Making new tech count</h2>
-      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
-      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
     </div>
     <div>
-      <h2>Making digital for real life</h2>
-      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
-      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
     </div>
   </div>
 </ace-carousel>
 ```
 
 
-### Infinite Carousel with initially displayed second slide
+### Carousel with infinite rotation and second slide initially displayed
 
 Carousel with infinite rotation that displays the second slide upon page load.
 
 ```html
-<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="A carousel with infinite scroll and an initially selected slide" id="infinite-carousel">
+<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Get to know Potato">
   <button>Previous slide</button>
   <button>Next slide</button>
-  <br><br>
   <div>
     <div>
-      <h2>Potato</h2>
-      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <p><a href="https://p.ota.to">Get to know us</a></p>
-      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
     </div>
     <div>
-      <h2>Making new tech count</h2>
-      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
-      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
     </div>
     <div>
-      <h2>Making digital for real life</h2>
-      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
-      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
     </div>
   </div>
 </ace-carousel>
 ```
 
-### Carousel controlled by custom events
+### Carousel controlled using custom events
 
 The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-carousel-set-next-slide` and `ace-carousel-update-slides` custom events on the Carousel. The extra JavaScript used by this example is also shown below.
 
@@ -194,28 +186,24 @@ The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-car
 <button id="add-slide-btn">Add slide to end</button>
 <button id="remove-slide-btn">Remove last slide</button>
 <hr>
-<ace-carousel aria-label="Carousel controlled through custom events" id="custom-events-carousel">
+<ace-carousel aria-label="Get to know Potato" id="custom-events-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
-  <br><br>
   <div>
     <div>
-      <h2>Potato</h2>
-      <p>We exist to design, develop and launch purposeful and effective digital products.</p>
-      <p><a href="https://p.ota.to">Get to know us</a></p>
-      <img src="/img/logo.svg" height="120px" alt="Classic Spuddy">
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
     </div>
     <div>
-      <h2>Making new tech count</h2>
-      <p>Though new technologies excite and drive us, we are not just seduced by the promise. Instead, we find useful applications that either make existing products better or provide new human-centred solutions.</p>
-      <p><a href="https://p.ota.to/work/making-new-tech-count">Find out more</a></p>
-      <img src="/img/carousel/spuddy-goggles.png" height="120px" alt="Spuddy with virtual reality goggles">
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
     </div>
     <div>
-      <h2>Making digital for real life</h2>
-      <p>We deliberately design for context, environment, and user outcomes, delivering products that allow people to interact with the world around them more effectively, making things better.</p>
-      <p><a href="https://p.ota.to/work/making-digital-for-real-life">Find out more</a></p>
-      <img src="/img/carousel/spuddy-phone.png" height="120px" alt="Spuddy with headphones and camera">
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
     </div>
   </div>
 </ace-carousel>
@@ -232,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const headingEl = document.createElement('h2');
     headingEl.textContent = `Dynamically added Slide`;
     const p = document.createElement('p');
-    p.textContent = `This slide was added dynamically, after the carousel was initialised.`;
+    p.textContent = `This slide was added dynamically, after this Carousel was initialised.`;
     const newSlideEl = document.createElement('div');
     newSlideEl.appendChild(headingEl);
     newSlideEl.appendChild(p);
