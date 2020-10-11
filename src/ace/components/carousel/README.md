@@ -123,7 +123,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 Simple Carousel with 3 slides.
 
 ```html
-<ace-carousel aria-label="Get to know Potato">
+<ace-carousel aria-label="Simple">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
@@ -152,7 +152,7 @@ Simple Carousel with 3 slides.
 Carousel with infinite rotation that displays the second slide upon page load.
 
 ```html
-<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Get to know Potato" id="infinite-carousel">
+<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="infinite-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
@@ -175,6 +175,36 @@ Carousel with infinite rotation that displays the second slide upon page load.
 </ace-carousel>
 ```
 
+### Carousel with automatic slide show
+
+Carousel with automatic slide show.
+
+```html
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="00" ace-carousel-infinite aria-label="Automatic slide show" id="auto-slide-show-carousel">
+  <button>Toggle Automatic Slide Show</button>
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div>
+    <div>
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div>
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div>
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+```
+
+
 ### Carousel controlled using custom events
 
 The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-carousel-set-next-slide` and `ace-carousel-update-slides` custom events on the Carousel. The extra JavaScript used by this example is also shown below.
@@ -186,7 +216,7 @@ The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-car
 <button id="add-slide-btn">Add slide to end</button>
 <button id="remove-slide-btn">Remove last slide</button>
 <hr>
-<ace-carousel aria-label="Get to know Potato" id="custom-events-carousel">
+<ace-carousel aria-label="Custom events controlled" id="custom-events-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>

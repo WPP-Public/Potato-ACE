@@ -61,7 +61,7 @@
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Carousel</h3>
 <p>Simple Carousel with 3 slides.</p>
-<div class="example-block"><ace-carousel aria-label="Get to know Potato">
+<div class="example-block"><ace-carousel aria-label="Simple">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
@@ -83,7 +83,7 @@
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Get to know Potato&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Simple&quot;&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
   &lt;div&gt;
@@ -107,7 +107,7 @@
 </code></pre>
 <h3>Carousel with infinite rotation and second slide initially displayed</h3>
 <p>Carousel with infinite rotation that displays the second slide upon page load.</p>
-<div class="example-block"><ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Get to know Potato" id="infinite-carousel">
+<div class="example-block"><ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="infinite-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
@@ -129,7 +129,55 @@
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot; aria-label=&quot;Get to know Potato&quot; id=&quot;infinite-carousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot; aria-label=&quot;Infinite rotation and second slide initially displayed&quot; id=&quot;infinite-carousel&quot;&gt;
+  &lt;button&gt;Previous slide&lt;/button&gt;
+  &lt;button&gt;Next slide&lt;/button&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 1 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 2 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 2 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 3 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 3 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/ace-carousel&gt;
+</code></pre>
+<h3>Carousel with automatic slide show</h3>
+<p>Carousel with automatic slide show.</p>
+<div class="example-block"><ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="00" ace-carousel-infinite aria-label="Automatic slide show" id="auto-slide-show-carousel">
+  <button>Toggle Automatic Slide Show</button>
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div>
+    <div>
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div>
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div>
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+</div>
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval=&quot;00&quot; ace-carousel-infinite aria-label=&quot;Automatic slide show&quot; id=&quot;auto-slide-show-carousel&quot;&gt;
+  &lt;button&gt;Toggle Automatic Slide Show&lt;/button&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
   &lt;div&gt;
@@ -159,7 +207,7 @@
 <button id="add-slide-btn">Add slide to end</button>
 <button id="remove-slide-btn">Remove last slide</button>
 <hr>
-<ace-carousel aria-label="Get to know Potato" id="custom-events-carousel">
+<ace-carousel aria-label="Custom events controlled" id="custom-events-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
@@ -187,7 +235,7 @@
 &lt;button id=&quot;add-slide-btn&quot;&gt;Add slide to end&lt;/button&gt;
 &lt;button id=&quot;remove-slide-btn&quot;&gt;Remove last slide&lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-carousel aria-label=&quot;Get to know Potato&quot; id=&quot;custom-events-carousel&quot;&gt;
+&lt;ace-carousel aria-label=&quot;Custom events controlled&quot; id=&quot;custom-events-carousel&quot;&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
   &lt;div&gt;
