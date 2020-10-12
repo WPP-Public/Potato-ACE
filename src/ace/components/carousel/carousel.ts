@@ -15,8 +15,8 @@ export const ATTRS = {
   AUTO_SLIDE_SHOW: `${CAROUSEL}-auto-slide-show`,
   AUTO_SLIDE_SHOW_ACTIVE: `${CAROUSEL}-auto-slide-show-active`,
   AUTO_SLIDE_SHOW_BTN: `${CAROUSEL}-auto-slide-show-btn`,
-  AUTO_SLIDE_SHOW_INTERVAL: `${CAROUSEL}-auto-slide-show-interval`,
   AUTO_SLIDE_SHOW_STOPPED: `${CAROUSEL}-auto-slide-show-stopped`,
+  AUTO_SLIDE_SHOW_TIME: `${CAROUSEL}-auto-slide-show-time`,
   GO_TO_FIRST_SLIDE_LABEL: `${CAROUSEL}-go-to-first-slide-label`,
   GO_TO_LAST_SLIDE_LABEL: `${CAROUSEL}-go-to-last-slide-label`,
   GO_TO_NEXT_SLIDE_LABEL: `${CAROUSEL}-go-to-next-slide-label`,
@@ -50,13 +50,13 @@ export const EVENTS = {
 };
 
 
-export const DEFAULT_SLIDE_SHOW_INTERVAL = 5000;
+export const DEFAULT_SLIDE_SHOW_TIME = 5000;
 
 
 /* CLASS */
 export default class Carousel extends HTMLElement {
   private autoSlideShowBtn: HTMLButtonElement;
-  private autoSlideShowInterval: number;
+  private autoSlideShowTime: number;
   private autoSlideShowTimer: number;
   private autoSlideShowStopped = false;
   private goToPrevSlideLabel: string;
@@ -165,15 +165,15 @@ export default class Carousel extends HTMLElement {
     this.selectedSlideIndex = initiallySelectedSlideNumber - 1;
 
     if (autoSlideShowCarousel) {
-      this.autoSlideShowInterval = +this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_INTERVAL) || DEFAULT_SLIDE_SHOW_INTERVAL;
+      this.autoSlideShowTime = +this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_TIME) || DEFAULT_SLIDE_SHOW_TIME;
 
       // Get user defined aria labels for auto slide show start and stop states or use default values
       this.stopAutoSlideShowLabel =
         this.autoSlideShowBtn.getAttribute(ATTRS.STOP_AUTO_SLIDE_SHOW_LABEL) ||
-        'Stop Automatic Slide Show';
+        'Stop automatic slide show';
       this.startAutoSlideShowLabel =
         this.autoSlideShowBtn.getAttribute(ATTRS.START_AUTO_SLIDE_SHOW_LABEL) ||
-        'Start Automatic Slide Show';
+        'Start automatic slide show';
     }
 
     // Get user defined aria labels for the prev and next slide btns or use default values
@@ -189,7 +189,7 @@ export default class Carousel extends HTMLElement {
 
     const slidesWrapperId = this.slidesWrapper.id || `${this.id}-slides`;
     if (autoSlideShowCarousel) {
-      this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_INTERVAL, this.autoSlideShowInterval.toString());
+      this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_TIME, this.autoSlideShowTime.toString());
       this.autoSlideShowBtn.setAttribute(ATTRS.AUTO_SLIDE_SHOW_BTN, '');
       this.autoSlideShowBtn.setAttribute('aria-label', this.stopAutoSlideShowLabel);
     }
@@ -307,7 +307,7 @@ export default class Carousel extends HTMLElement {
     Handles focus in, focus out, mouse enter and mouse leave events on Carousel.
   */
   private focusAndMouseHandler(e: FocusEvent): void {
-    if (!this.autoSlideShowInterval) {
+    if (!this.autoSlideShowTime) {
       return;
     }
 
@@ -366,7 +366,7 @@ export default class Carousel extends HTMLElement {
       }
     }));
 
-    if (this.slideEls.length > 0 && this.autoSlideShowInterval) {
+    if (this.slideEls.length > 0 && this.autoSlideShowTime) {
       this.startAutoSlideShow();
     }
   }
@@ -458,7 +458,7 @@ export default class Carousel extends HTMLElement {
     window.clearInterval(this.autoSlideShowTimer);
     this.autoSlideShowTimer = window.setInterval(() => {
       this.selectSlideBasedOnDirection(1);
-    }, this.autoSlideShowInterval);
+    }, this.autoSlideShowTime);
 
     this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true');
     this.slidesWrapper.setAttribute('aria-live', 'off');
