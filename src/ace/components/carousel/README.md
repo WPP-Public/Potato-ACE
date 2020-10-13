@@ -198,11 +198,14 @@ Carousel with infinite rotation that displays the second slide upon page load.
 
 ### Carousel with automatic slide show
 
-Carousel with automatic slide show.
+Carousel with automatic slide show. Two buttons have also been included, which dispatch the `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show` custom events. The extra JavaScript used by this example is also shown below.
 
 ```html
-<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="00" ace-carousel-infinite aria-label="Automatic slide show" id="auto-slide-show-carousel">
-  <button>Toggle Automatic Slide Show</button>
+<button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
+<button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
+<hr>
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
+  <button>Toggle automatic slide show</button>
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
@@ -225,6 +228,25 @@ Carousel with automatic slide show.
 </ace-carousel>
 ```
 
+```js
+import {EVENTS} from '/ace/components/carousel/carousel.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const carouselEl = document.getElementById('auto-carousel');
+
+  window.addEventListener('click', (e) => {
+    const targetId = e.target.id;
+    switch(targetId) {
+      case 'start-auto-slide-show-custom-event-btn':
+      case 'stop-auto-slide-show-custom-event-btn': {
+        const event = EVENTS.IN[`${targetId === 'start-auto-slide-show-custom-event-btn' ? 'START' : 'STOP'}_AUTO_SLIDE_SHOW`];
+        carouselEl.dispatchEvent(new CustomEvent(event));
+        break;
+      }
+    }
+  });
+});
+```
 
 ### Carousel controlled using custom events
 

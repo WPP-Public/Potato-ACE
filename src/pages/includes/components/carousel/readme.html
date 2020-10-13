@@ -164,9 +164,12 @@
 &lt;/ace-carousel&gt;
 </code></pre>
 <h3>Carousel with automatic slide show</h3>
-<p>Carousel with automatic slide show.</p>
-<div class="example-block"><ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="00" ace-carousel-infinite aria-label="Automatic slide show" id="auto-slide-show-carousel">
-  <button>Toggle Automatic Slide Show</button>
+<p>Carousel with automatic slide show. Two buttons have also been included, which dispatch the <code>ace-carousel-start-auto-slide-show</code> &amp; <code>ace-carousel-stop-auto-slide-show</code> custom events. The extra JavaScript used by this example is also shown below.</p>
+<div class="example-block"><button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
+<button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
+<hr>
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
+  <button>Toggle automatic slide show</button>
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>
@@ -188,8 +191,11 @@
   </div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval=&quot;00&quot; ace-carousel-infinite aria-label=&quot;Automatic slide show&quot; id=&quot;auto-slide-show-carousel&quot;&gt;
-  &lt;button&gt;Toggle Automatic Slide Show&lt;/button&gt;
+<pre><code class="language-html">&lt;button id=&quot;stop-auto-slide-show-custom-event-btn&quot;&gt;Stop automatic slide show custom event&lt;/button&gt;
+&lt;button id=&quot;start-auto-slide-show-custom-event-btn&quot;&gt;Start automatic slide show custom event&lt;/button&gt;
+&lt;hr&gt;
+&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval=&quot;2000&quot; ace-carousel-infinite aria-label=&quot;Automatic slide show&quot; id=&quot;auto-carousel&quot;&gt;
+  &lt;button&gt;Toggle automatic slide show&lt;/button&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
   &lt;div&gt;
@@ -210,6 +216,24 @@
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
+</code></pre>
+<pre><code class="language-js">import {EVENTS} from '/ace/components/carousel/carousel.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const carouselEl = document.getElementById('auto-carousel');
+
+  window.addEventListener('click', (e) =&gt; {
+    const targetId = e.target.id;
+    switch(targetId) {
+      case 'start-auto-slide-show-custom-event-btn':
+      case 'stop-auto-slide-show-custom-event-btn': {
+        const event = EVENTS.IN[`${targetId === 'start-auto-slide-show-custom-event-btn' ? 'START' : 'STOP'}_AUTO_SLIDE_SHOW`];
+        carouselEl.dispatchEvent(new CustomEvent(event));
+        break;
+      }
+    }
+  });
+});
 </code></pre>
 <h3>Carousel controlled using custom events</h3>
 <p>The buttons in this example dispatch the <code>ace-carousel-set-prev-slide</code>, <code>ace-carousel-set-next-slide</code> and <code>ace-carousel-update-slides</code> custom events on the Carousel. The extra JavaScript used by this example is also shown below.</p>

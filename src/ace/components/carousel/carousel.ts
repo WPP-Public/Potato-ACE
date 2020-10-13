@@ -126,8 +126,7 @@ export default class Carousel extends HTMLElement {
       this.autoSlideShowBtn = this.querySelector('button');
 
       if (!this.autoSlideShowBtn) {
-        console.error(`ACE: Carousel with ID '${this.id}' requires a descendant <button> element that is the first
-        focusable element in order to toggle the automatic slide show.`);
+        console.error(`ACE: Carousel with ID '${this.id}' requires a descendant <button> element that is the first focusable element in order to toggle the automatic slide show.`);
         return;
       }
     }
@@ -142,8 +141,7 @@ export default class Carousel extends HTMLElement {
       this.querySelector(nextSlideBtnSelector);
 
     if (!this.prevSlideBtn || !this.nextSlideBtn) {
-      console.error(`ACE: Carousel with ID '${this.id}' requires two descendant <button> elements needed to display the
-      previous and next slides.`);
+      console.error(`ACE: Carousel with ID '${this.id}' requires two descendant <button> elements needed to display the previous and next slides.`);
       return;
     }
 
@@ -214,6 +212,8 @@ export default class Carousel extends HTMLElement {
     this.addEventListener('mouseleave', this.focusAndMouseHandler);
     this.addEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
     this.addEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
+    this.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
     this.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
 
 
@@ -246,7 +246,10 @@ export default class Carousel extends HTMLElement {
     this.removeEventListener('mouseleave', this.focusAndMouseHandler);
     this.removeEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
     this.removeEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
+    this.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
+    this.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
     this.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
+
   }
 
 
@@ -480,6 +483,10 @@ export default class Carousel extends HTMLElement {
     Stop Carousel auto slide show
   */
   private stopAutoSlideShow(paused = false): void {
+    if (this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE) === 'false') {
+      return;
+    }
+
     window.clearInterval(this.autoSlideShowTimer);
     this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false');
     this.slidesWrapper.setAttribute('aria-live', 'polite');
