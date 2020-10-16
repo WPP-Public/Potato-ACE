@@ -56,6 +56,7 @@ export const DEFAULT_SLIDE_SHOW_TIME = 5000;
 /* CLASS */
 export default class Carousel extends HTMLElement {
   private autoSlideShowBtn: HTMLButtonElement;
+  private autoSlideShowCarousel: boolean;
   private autoSlideShowTime: number;
   private autoSlideShowTimer: number;
   private autoSlideShowStopped = false;
@@ -90,6 +91,7 @@ export default class Carousel extends HTMLElement {
     this.setSelectedSlide = this.setSelectedSlide.bind(this);
     this.startAutoSlideShow = this.startAutoSlideShow.bind(this);
     this.stopAutoSlideShow = this.stopAutoSlideShow.bind(this);
+    this.visibilityChangeHandler = this.visibilityChangeHandler.bind(this);
   }
 
 
@@ -121,8 +123,8 @@ export default class Carousel extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
-    const autoSlideShowCarousel = this.hasAttribute(ATTRS.AUTO_SLIDE_SHOW);
-    if (autoSlideShowCarousel) {
+    this.autoSlideShowCarousel = this.hasAttribute(ATTRS.AUTO_SLIDE_SHOW);
+    if (this.autoSlideShowCarousel) {
       this.autoSlideShowBtn = this.querySelector('button');
 
       if (!this.autoSlideShowBtn) {
@@ -131,8 +133,8 @@ export default class Carousel extends HTMLElement {
       }
     }
 
-    const prevSlideBtnSelector = autoSlideShowCarousel ? 'button:nth-of-type(2)' : 'button';
-    const nextSlideBtnSelector = autoSlideShowCarousel ? 'button:nth-of-type(3)' : 'button:nth-of-type(2)';
+    const prevSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(2)' : 'button';
+    const nextSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(3)' : 'button:nth-of-type(2)';
     this.prevSlideBtn =
       this.querySelector(`button[${ATTRS.PREV_SLIDE_BTN}]`) ||
       this.querySelector(prevSlideBtnSelector);
@@ -162,7 +164,7 @@ export default class Carousel extends HTMLElement {
     }
     this.selectedSlideIndex = initiallySelectedSlideNumber - 1;
 
-    if (autoSlideShowCarousel) {
+    if (this.autoSlideShowCarousel) {
       this.autoSlideShowTime = +this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_TIME) || DEFAULT_SLIDE_SHOW_TIME;
 
       // Get user defined aria labels for auto slide show start and stop states or use default values
@@ -186,7 +188,7 @@ export default class Carousel extends HTMLElement {
     this.setAttribute('role', 'region');
 
     const slidesWrapperId = this.slidesWrapper.id || `${this.id}-slides`;
-    if (autoSlideShowCarousel) {
+    if (this.autoSlideShowCarousel) {
       this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_TIME, this.autoSlideShowTime.toString());
       this.autoSlideShowBtn.setAttribute(ATTRS.AUTO_SLIDE_SHOW_BTN, '');
       this.autoSlideShowBtn.setAttribute('aria-label', this.stopAutoSlideShowLabel);
@@ -206,15 +208,19 @@ export default class Carousel extends HTMLElement {
 
     /* ADD EVENT LISTENERS */
     this.addEventListener('click', this.clickHandler);
-    this.addEventListener('focusin', this.focusAndMouseHandler);
-    this.addEventListener('focusout', this.focusAndMouseHandler);
-    this.addEventListener('mouseenter', this.focusAndMouseHandler);
-    this.addEventListener('mouseleave', this.focusAndMouseHandler);
     this.addEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
     this.addEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
-    this.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
-    this.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
     this.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
+
+    if (this.autoSlideShowCarousel) {
+      document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+      this.addEventListener('focusin', this.focusAndMouseHandler);
+      this.addEventListener('focusout', this.focusAndMouseHandler);
+      this.addEventListener('mouseenter', this.focusAndMouseHandler);
+      this.addEventListener('mouseleave', this.focusAndMouseHandler);
+      this.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
+      this.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
+    }
 
 
     /* INITIALISATION */
@@ -240,16 +246,19 @@ export default class Carousel extends HTMLElement {
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
     this.removeEventListener('click', this.clickHandler);
-    this.removeEventListener('focusin', this.focusAndMouseHandler);
-    this.removeEventListener('focusout', this.focusAndMouseHandler);
-    this.removeEventListener('mouseenter', this.focusAndMouseHandler);
-    this.removeEventListener('mouseleave', this.focusAndMouseHandler);
     this.removeEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
     this.removeEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
-    this.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
-    this.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
     this.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
 
+    if (this.autoSlideShowCarousel) {
+      document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+      this.removeEventListener('focusin', this.focusAndMouseHandler);
+      this.removeEventListener('focusout', this.focusAndMouseHandler);
+      this.removeEventListener('mouseenter', this.focusAndMouseHandler);
+      this.removeEventListener('mouseleave', this.focusAndMouseHandler);
+      this.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
+      this.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
+    }
   }
 
 
@@ -310,10 +319,6 @@ export default class Carousel extends HTMLElement {
     Handles focus in, focus out, mouse enter and mouse leave events on Carousel.
   */
   private focusAndMouseHandler(e: FocusEvent): void {
-    if (!this.autoSlideShowTime) {
-      return;
-    }
-
     switch (e.type) {
       case 'focusin':
       case 'mouseenter': {
@@ -369,7 +374,7 @@ export default class Carousel extends HTMLElement {
       }
     }));
 
-    if (this.slideEls.length > 0 && this.autoSlideShowTime) {
+    if (this.autoSlideShowCarousel && this.slideEls.length > 0) {
       this.startAutoSlideShow();
     }
   }
@@ -454,7 +459,11 @@ export default class Carousel extends HTMLElement {
     Start carousel auto slide show
   */
   private startAutoSlideShow(paused = false): void {
-    if (this.autoSlideShowStopped || this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE) === 'true') {
+    if (
+        this.autoSlideShowStopped ||
+        this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE) === 'true' ||
+        document.hidden
+      ) {
       return;
     }
 
@@ -501,6 +510,22 @@ export default class Carousel extends HTMLElement {
         'id': this.id,
       }
     }));
+  }
+
+
+  /*
+    Handle document visibility changes, pausing the carousel
+  */
+  private visibilityChangeHandler(): void {
+    if (this.autoSlideShowStopped) {
+      return;
+    }
+
+    if (document.hidden) {
+      this.stopAutoSlideShow(true);
+    } else {
+      this.startAutoSlideShow(true);
+    }
   }
 }
 
