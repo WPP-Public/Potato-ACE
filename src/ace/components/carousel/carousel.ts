@@ -1,10 +1,10 @@
 /* IMPORTS */
+import {NAME, PAGE_VISIBILITY_API_STRINGS} from '../../common/constants.js';
 import {
   autoID,
   getElByAttrOrSelector,
   getIndexOfNextItem
 } from '../../common/functions.js';
-import {NAME} from '../../common/constants.js';
 
 
 /* CONSTANTS */
@@ -213,7 +213,7 @@ export default class Carousel extends HTMLElement {
     this.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
 
     if (this.autoSlideShowCarousel) {
-      document.addEventListener('visibilitychange', this.visibilityChangeHandler);
+      document.addEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE, this.visibilityChangeHandler);
       this.addEventListener('focusin', this.focusAndMouseHandler);
       this.addEventListener('focusout', this.focusAndMouseHandler);
       this.addEventListener('mouseenter', this.focusAndMouseHandler);
@@ -251,7 +251,7 @@ export default class Carousel extends HTMLElement {
     this.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
 
     if (this.autoSlideShowCarousel) {
-      document.removeEventListener('visibilitychange', this.visibilityChangeHandler);
+      document.removeEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE, this.visibilityChangeHandler);
       this.removeEventListener('focusin', this.focusAndMouseHandler);
       this.removeEventListener('focusout', this.focusAndMouseHandler);
       this.removeEventListener('mouseenter', this.focusAndMouseHandler);
@@ -462,7 +462,7 @@ export default class Carousel extends HTMLElement {
     if (
         this.autoSlideShowStopped ||
         this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE) === 'true' ||
-        document.hidden
+        (document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN]
       ) {
       return;
     }
@@ -521,7 +521,7 @@ export default class Carousel extends HTMLElement {
       return;
     }
 
-    if (document.hidden) {
+    if ((document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN]) {
       this.stopAutoSlideShow(true);
     } else {
       this.startAutoSlideShow(true);
