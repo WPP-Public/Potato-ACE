@@ -1,9 +1,10 @@
 /* IMPORTS */
-import {NAME, PAGE_VISIBILITY_API_STRINGS} from '../../common/constants.js';
+import {KEYS, NAME, PAGE_VISIBILITY_API_STRINGS} from '../../common/constants.js';
 import {
   autoID,
   getElByAttrOrSelector,
-  getIndexOfNextItem
+  getIndexOfNextItem,
+  keyPressedMatches
 } from '../../common/functions.js';
 
 
@@ -27,6 +28,8 @@ export const ATTRS = {
   SELECTED_SLIDE: `${CAROUSEL}-selected-slide`,
   SLIDE: `${CAROUSEL}-slide`,
   SLIDES: `${CAROUSEL}-slides`,
+  SLIDE_PICKER: `${CAROUSEL}-slide-picker`,
+  SLIDE_PICKER_BTN: `${CAROUSEL}-slide-picker-btn`,
   SLIDE_SELECTED: `${CAROUSEL}-slide-selected`,
   START_AUTO_SLIDE_SHOW_LABEL: `${CAROUSEL}-start-auto-slide-show-label`,
   STOP_AUTO_SLIDE_SHOW_LABEL: `${CAROUSEL}-stop-auto-slide-show-label`,
@@ -70,6 +73,7 @@ export default class Carousel extends HTMLElement {
   private prevSlideBtn: HTMLButtonElement;
   private selectedSlideIndex: number;
   private slideEls: NodeListOf<HTMLElement>;
+  private slidePickerEl: HTMLElement;
   private slidesWrapper: HTMLElement;
   private slideCount: number;
   private stopAutoSlideShowLabel: string;
@@ -85,6 +89,7 @@ export default class Carousel extends HTMLElement {
     this.customEventsHander = this.customEventsHander.bind(this);
     this.focusAndMouseHandler = this.focusAndMouseHandler.bind(this);
     this.initSlides = this.initSlides.bind(this);
+    this.keydownHandler = this.keydownHandler.bind(this);
     this.selectSlide = this.selectSlide.bind(this);
     this.selectSlideBasedOnDirection = this.selectSlideBasedOnDirection.bind(this);
     this.setNavBtnAttributes = this.setNavBtnAttributes.bind(this);
@@ -123,6 +128,7 @@ export default class Carousel extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
+    // Automatic slide show carousel toggle button
     this.autoSlideShowCarousel = this.hasAttribute(ATTRS.AUTO_SLIDE_SHOW);
     if (this.autoSlideShowCarousel) {
       this.autoSlideShowBtn = this.querySelector('button');
@@ -133,6 +139,7 @@ export default class Carousel extends HTMLElement {
       }
     }
 
+    // Slide prev and next buttons
     const prevSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(2)' : 'button';
     const nextSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(3)' : 'button:nth-of-type(2)';
     this.prevSlideBtn =
@@ -143,11 +150,16 @@ export default class Carousel extends HTMLElement {
       this.querySelector(nextSlideBtnSelector);
 
     if (!this.prevSlideBtn || !this.nextSlideBtn) {
-      console.error(`ACE: Carousel with ID '${this.id}' requires two descendant <button> elements needed to display the previous and next slides.`);
+      console.error(`ACE: Carousel with ID '${this.id}' must contain two descendant <button> elements needed to display the previous and next slides.`);
       return;
     }
 
-    this.slidesWrapper = getElByAttrOrSelector(this, ATTRS.SLIDES, `#${this.id} > div`);
+    // Slide picker
+    this.slidePickerEl = this.querySelector(`[${ATTRS.SLIDE_PICKER}]`);
+
+    // Slide wrapper
+    const slidesWrapperSelector = this.slidePickerEl ? `#${this.id} > div:nth-of-type(2)` : `#${this.id} > div`;
+    this.slidesWrapper = getElByAttrOrSelector(this, ATTRS.SLIDES, slidesWrapperSelector);
     if (!this.slidesWrapper) {
       this.slidesWrapper = document.createElement('div');
       this.appendChild(this.slidesWrapper);
@@ -198,6 +210,14 @@ export default class Carousel extends HTMLElement {
     this.nextSlideBtn.setAttribute(ATTRS.NEXT_SLIDE_BTN, '');
     this.nextSlideBtn.setAttribute('aria-controls', slidesWrapperId);
 
+    if (this.slidePickerEl) {
+      this.slidePickerEl.setAttribute(ATTRS.SLIDE_PICKER, '');
+      this.slidePickerEl.setAttribute('role', 'tablist');
+      if (!this.slidePickerEl.hasAttribute('aria-label') || !this.slidePickerEl.hasAttribute('aria-labelledby')) {
+        this.slidePickerEl.setAttribute('aria-label', 'Choose slide to display');
+      }
+    }
+
     this.slidesWrapper.id = slidesWrapperId;
     this.slidesWrapper.setAttribute(ATTRS.SLIDES, '');
     this.slidesWrapper.setAttribute('aria-live', 'polite');
@@ -220,6 +240,10 @@ export default class Carousel extends HTMLElement {
       this.addEventListener('mouseleave', this.focusAndMouseHandler);
       this.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
       this.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
+    }
+
+    if (this.slidePickerEl) {
+      this.addEventListener('keydown', this.keydownHandler);
     }
 
 
@@ -259,6 +283,10 @@ export default class Carousel extends HTMLElement {
       this.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
       this.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
     }
+
+    if (this.slidePickerEl) {
+      this.removeEventListener('keydown', this.keydownHandler);
+    }
   }
 
 
@@ -270,7 +298,6 @@ export default class Carousel extends HTMLElement {
     const target = e.target as HTMLElement;
     const nextBtnClicked = target.closest(`[${ATTRS.NEXT_SLIDE_BTN}]`);
     const prevBtnClicked = target.closest(`[${ATTRS.PREV_SLIDE_BTN}]`);
-    const autoSlideShowBtnClicked = target.closest(`[${ATTRS.AUTO_SLIDE_SHOW_BTN}]`);
 
     if (nextBtnClicked || prevBtnClicked) {
       const direction = nextBtnClicked ? 1 : -1;
@@ -278,12 +305,23 @@ export default class Carousel extends HTMLElement {
       return;
     }
 
-    if (autoSlideShowBtnClicked) {
-      this.autoSlideShowStopped = !this.autoSlideShowStopped;
-      if (this.autoSlideShowStopped) {
-        this.stopAutoSlideShow();
-      } else {
-        this.startAutoSlideShow();
+    if (this.autoSlideShowCarousel) {
+      const autoSlideShowBtnClicked = target.closest(`[${ATTRS.AUTO_SLIDE_SHOW_BTN}]`);
+      if (autoSlideShowBtnClicked) {
+        this.autoSlideShowStopped = !this.autoSlideShowStopped;
+        if (this.autoSlideShowStopped) {
+          this.stopAutoSlideShow();
+        } else {
+          this.startAutoSlideShow();
+        }
+      }
+    }
+
+    if (this.slidePickerEl) {
+      const slidePickerBtnClicked = target.closest(`[${ATTRS.SLIDE_PICKER_BTN}][aria-selected="false"]`);
+      if (slidePickerBtnClicked) {
+        const slideToSelect = +slidePickerBtnClicked.getAttribute(ATTRS.SLIDE_PICKER_BTN);
+        this.setSelectedSlide(slideToSelect - 1);
       }
     }
   }
@@ -363,10 +401,34 @@ export default class Carousel extends HTMLElement {
       }
       slide.setAttribute('aria-label', `${index + 1} of ${this.slideCount}`);
       slide.setAttribute('aria-roledescription', 'slide');
-      slide.setAttribute('role', 'group');
+      slide.setAttribute('role', this.slidePickerEl ? 'tabpanel' : 'group');
+      slide.id = `${this.id}-slide-${index + 1}`;
     });
 
     this.setNavBtnAttributes();
+
+    if (this.slidePickerEl) {
+      let slidePickerBtns = this.slidePickerEl.querySelectorAll('button');
+      const slidePickerBtnsCount = slidePickerBtns.length;
+      if (slidePickerBtnsCount === 0) {
+        this.slideEls.forEach(() => this.slidePickerEl.appendChild(document.createElement('button')));
+        slidePickerBtns = this.slidePickerEl.querySelectorAll('button');
+      } else if (slidePickerBtnsCount !== this.slideCount) {
+        console.error(`ACE: Carousel with ID '${this.id}' has decendant with '${ATTRS.SLIDE_PICKER}' that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons or no buttons at all and Carousel will automatically generate the correct number required.`);
+        return;
+      }
+
+      slidePickerBtns.forEach((slidePickerBtn, index) => {
+        const slideNumber = index + 1;
+        const isSelectedSlideBtn = index === this.selectedSlideIndex;
+        slidePickerBtn.setAttribute(ATTRS.SLIDE_PICKER_BTN, `${slideNumber}`);
+        slidePickerBtn.setAttribute('aria-label', `Slide ${slideNumber}`);
+        slidePickerBtn.setAttribute('aria-selected', isSelectedSlideBtn ? 'true' : 'false');
+        slidePickerBtn.setAttribute('aria-controls', `${this.id}-slide-${slideNumber}`);
+        slidePickerBtn.setAttribute('tabindex', isSelectedSlideBtn ? '0' : '-1');
+        slidePickerBtn.setAttribute('role', 'tab');
+      });
+    }
 
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
@@ -376,6 +438,30 @@ export default class Carousel extends HTMLElement {
 
     if (this.autoSlideShowCarousel && this.slideEls.length > 0) {
       this.startAutoSlideShow();
+    }
+  }
+
+
+  /*
+    Handles keydown event on slide picker
+  */
+  private keydownHandler(e: KeyboardEvent): void {
+    const keyPressed = e.key || e.which || e.keyCode;
+    const homeKeyPressed = keyPressedMatches(keyPressed, KEYS.HOME);
+    const endKeyPressed = keyPressedMatches(keyPressed, KEYS.END);
+    const leftKeyPressed = keyPressedMatches(keyPressed, KEYS.LEFT);
+    const rightKeyPressed = keyPressedMatches(keyPressed, KEYS.RIGHT);
+
+    if (!homeKeyPressed && !endKeyPressed && !leftKeyPressed && !rightKeyPressed) {
+      return;
+    }
+
+    e.preventDefault();
+    if (leftKeyPressed || rightKeyPressed) {
+      const direction = leftKeyPressed ? -1 : 1;
+      this.selectSlideBasedOnDirection(direction);
+    } else {
+      this.setSelectedSlide(homeKeyPressed ? 0 : this.slideCount - 1);
     }
   }
 
@@ -392,6 +478,20 @@ export default class Carousel extends HTMLElement {
     const selectedSlideIndex = this.selectedSlideIndex;
     this.slideEls[selectedSlideIndex].removeAttribute(ATTRS.SLIDE_SELECTED);
     this.slideEls[slideToSelectIndex].setAttribute(ATTRS.SLIDE_SELECTED, '');
+
+    if (this.slidePickerEl) {
+      const selectedSlidePickerBtn = this.slidePickerEl.querySelector('button[aria-selected="true"]') as HTMLButtonElement;
+      const slideToSelectPickerBtn = this.slidePickerEl.querySelector(`button:nth-of-type(${slideToSelectIndex + 1})`) as HTMLButtonElement;
+
+      selectedSlidePickerBtn.setAttribute('tabindex', '-1');
+      selectedSlidePickerBtn.setAttribute('aria-selected', 'false');
+
+      slideToSelectPickerBtn.setAttribute('aria-selected', 'true');
+      slideToSelectPickerBtn.setAttribute('tabindex', '0');
+      if (selectedSlidePickerBtn === document.activeElement) {
+        slideToSelectPickerBtn.focus();
+      }
+    }
 
     this.selectedSlideIndex = slideToSelectIndex;
 

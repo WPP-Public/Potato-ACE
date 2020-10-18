@@ -47,12 +47,56 @@ The automatic slide show can be stopped and started again using the automatic sl
 The following SASS is applied to Carousel, each declaration of which can be overridden by a single class selector.
 
 ```scss
+@import '../../common/constants';
+
+
+/* VARIABLES */
+$ace-carousel-slide-picker-btn-focus-ring-width: 3px !default;
+$ace-carousel-slide-picker-btn-focus-ring-color: $ace-color-focus !default;
+$ace-carousel-slide-picker-btn-diameter: $ace-spacing-1 !default;
+$ace-carousel-slide-picker-btn-border-width: 1px !default;
+$ace-carousel-slide-picker-btn-border-color: #000 !default;
+$ace-carousel-slide-picker-btn-selected-bg-color: $ace-carousel-slide-picker-btn-border-color !default;
+
+
+/* STYLES */
 [ace-carousel-slide] {
   display: none;
 }
 
 [ace-carousel-slide-selected] {
   display: block;
+}
+
+[ace-carousel-slide-picker-btn] {
+  background-color: transparent;
+  border: $ace-carousel-slide-picker-btn-focus-ring-width solid transparent;
+  border-radius: 50%;
+  height: $ace-carousel-slide-picker-btn-diameter * 2.5;
+  position: relative;
+  width: $ace-carousel-slide-picker-btn-diameter * 2.5;
+
+  &:active,
+  &:focus {
+    border-color: $ace-carousel-slide-picker-btn-focus-ring-color;
+    outline: none;
+  }
+
+  &::after {
+    border: $ace-carousel-slide-picker-btn-border-width solid $ace-carousel-slide-picker-btn-border-color;
+    border-radius: 50%;
+    content: '';
+    height: $ace-carousel-slide-picker-btn-diameter;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: $ace-carousel-slide-picker-btn-diameter;
+  }
+
+  &[aria-selected="true"]::after {
+    background-color: $ace-carousel-slide-picker-btn-selected-bg-color;
+  }
 }
 ```
 
@@ -178,6 +222,35 @@ Carousel with infinite rotation that displays the second slide upon page load.
 <ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="infinite-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
+  <div>
+    <div>
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div>
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div>
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+```
+
+### Carousel with slide picker
+
+Carousel with slide picker buttons.
+
+```html
+<ace-carousel aria-label="Example of slide picker" id="slide-picker-carousel">
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div ace-carousel-slide-picker></div>
   <div>
     <div>
       <h3>Slide 1 heading</h3>

@@ -21,12 +21,56 @@
 <p>The automatic slide show can be stopped and started again using the automatic slide show toggle button or using custom events, with both methods setting Carousel attribute <code>ace-carousel-auto-slide-show-stopped</code> to <code>true</code> or <code>false</code>. This attribute can therefore be used to change the text string or icon of the toggle button simply using CSS. Note that this attribute will have value <code>false</code> while the Carousel is temporarily paused due to mouse hover or descendant keyboard focus.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to Carousel, each declaration of which can be overridden by a single class selector.</p>
-<pre><code class="language-scss">[ace-carousel-slide] {
+<pre><code class="language-scss">@import '../../common/constants';
+
+
+/* VARIABLES */
+$ace-carousel-slide-picker-btn-focus-ring-width: 3px !default;
+$ace-carousel-slide-picker-btn-focus-ring-color: $ace-color-focus !default;
+$ace-carousel-slide-picker-btn-diameter: $ace-spacing-1 !default;
+$ace-carousel-slide-picker-btn-border-width: 1px !default;
+$ace-carousel-slide-picker-btn-border-color: #000 !default;
+$ace-carousel-slide-picker-btn-selected-bg-color: $ace-carousel-slide-picker-btn-border-color !default;
+
+
+/* STYLES */
+[ace-carousel-slide] {
   display: none;
 }
 
 [ace-carousel-slide-selected] {
   display: block;
+}
+
+[ace-carousel-slide-picker-btn] {
+  background-color: transparent;
+  border: $ace-carousel-slide-picker-btn-focus-ring-width solid transparent;
+  border-radius: 50%;
+  height: $ace-carousel-slide-picker-btn-diameter * 2.5;
+  position: relative;
+  width: $ace-carousel-slide-picker-btn-diameter * 2.5;
+
+  &amp;:active,
+  &amp;:focus {
+    border-color: $ace-carousel-slide-picker-btn-focus-ring-color;
+    outline: none;
+  }
+
+  &amp;::after {
+    border: $ace-carousel-slide-picker-btn-border-width solid $ace-carousel-slide-picker-btn-border-color;
+    border-radius: 50%;
+    content: '';
+    height: $ace-carousel-slide-picker-btn-diameter;
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: $ace-carousel-slide-picker-btn-diameter;
+  }
+
+  &amp;[aria-selected=&quot;true&quot;]::after {
+    background-color: $ace-carousel-slide-picker-btn-selected-bg-color;
+  }
 }
 </code></pre>
 <h2>Custom events</h2>
@@ -145,6 +189,54 @@
 <pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot; aria-label=&quot;Infinite rotation and second slide initially displayed&quot; id=&quot;infinite-carousel&quot;&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 1 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 2 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 2 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 3 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 3 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/ace-carousel&gt;
+</code></pre>
+<h3>Carousel with slide picker</h3>
+<p>Carousel with slide picker buttons.</p>
+<div class="example-block"><ace-carousel aria-label="Example of slide picker" id="slide-picker-carousel">
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div ace-carousel-slide-picker></div>
+  <div>
+    <div>
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div>
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div>
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+</div>
+<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Example of slide picker&quot; id=&quot;slide-picker-carousel&quot;&gt;
+  &lt;button&gt;Previous slide&lt;/button&gt;
+  &lt;button&gt;Next slide&lt;/button&gt;
+  &lt;div ace-carousel-slide-picker&gt;&lt;/div&gt;
   &lt;div&gt;
     &lt;div&gt;
       &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
