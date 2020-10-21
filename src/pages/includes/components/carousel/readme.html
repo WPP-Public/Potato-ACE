@@ -50,8 +50,8 @@
 }
 </code></pre>
 <h4>Automatic slide show events</h4>
-<p><code>ace-carousel-auto-slide-show-started</code> &amp; <code>ace-carousel-auto-slide-show-stopped</code></p>
-<p>These events are dispatched when the automatic slide show is started or stopped. The event names are available as <code>EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED</code> and <code>EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED</code>, and their <code>detail</code> properties are composed as follows:</p>
+<p><code>ace-carousel-auto-slide-show-started</code>, <code>ace-carousel-auto-slide-show-stopped</code> &amp; <code>ace-carousel-auto-slide-show-paused</code></p>
+<p>These events are dispatched when the automatic slide show is started, stopped or paused, the latter of which occurs when the mouse pointer hovers over the Carousel or when a descendant, other than the automatic slide show toggle button, has keyboard focus. The event names are available as <code>EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED</code>, <code>EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED</code> and <code>EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED</code>, and their <code>detail</code> properties are composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Carousel [string]
 }
@@ -169,7 +169,7 @@
 <div class="example-block"><button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
 <button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
 <hr>
-<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
   <button>Toggle automatic slide show</button>
   <button>Previous slide</button>
   <button>Next slide</button>
@@ -195,7 +195,7 @@
 <pre><code class="language-html">&lt;button id=&quot;stop-auto-slide-show-custom-event-btn&quot;&gt;Stop automatic slide show custom event&lt;/button&gt;
 &lt;button id=&quot;start-auto-slide-show-custom-event-btn&quot;&gt;Start automatic slide show custom event&lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval=&quot;2000&quot; ace-carousel-infinite aria-label=&quot;Automatic slide show&quot; id=&quot;auto-carousel&quot;&gt;
+&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time=&quot;2000&quot; ace-carousel-infinite aria-label=&quot;Automatic slide show&quot; id=&quot;auto-carousel&quot;&gt;
   &lt;button&gt;Toggle automatic slide show&lt;/button&gt;
   &lt;button&gt;Previous slide&lt;/button&gt;
   &lt;button&gt;Next slide&lt;/button&gt;
