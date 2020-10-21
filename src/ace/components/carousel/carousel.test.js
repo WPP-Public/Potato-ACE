@@ -33,20 +33,12 @@ const getEls = (id) => {
 
 const checkSlideSelected = (slideNumber) => {
   return cy.get('@carouselSlides')
-    .then(($slides) => {
-      cy.get('@carouselSlides')
-        .each(($slide, index) => {
-          cy.wrap($slide)
-            .should('have.attr', ATTRS.SLIDE, '')
-            .and('have.attr', 'aria-label', `${index + 1} of ${$slides.length}`)
-            .and('have.attr', 'aria-roledescription', 'slide')
-            .and(`${index === slideNumber - 1 ? '' : 'not.' }have.attr`, ATTRS.SLIDE_SELECTED, '');
-        });
-    });
+    .eq(slideNumber - 1)
+    .should('have.attr', ATTRS.SLIDE_SELECTED, '');
 };
 
 
-const carouselInitChecks = (id, selectedSlideNumber=1, automatic=false) => {
+const carouselInitChecks = (id, autoSlideShow=false, hasSlidePicker=false) => {
   const SLIDES_ID = `${id}-slides`;
 
   return cy.get('@carousel')
@@ -60,9 +52,18 @@ const carouselInitChecks = (id, selectedSlideNumber=1, automatic=false) => {
     .and('have.attr', 'aria-controls', SLIDES_ID)
     .get('@carouselSlidesWrapper')
     .should('have.id', SLIDES_ID)
-    .and(`${automatic ? 'not.' : ''}have.attr`, 'aria-live', 'polite')
+    .and(`${autoSlideShow ? 'not.' : ''}have.attr`, 'aria-live', 'polite')
     .get('@carouselSlides')
-    .then(() => checkSlideSelected(selectedSlideNumber));
+    .then(($slides) => {
+      cy.get('@carouselSlides')
+        .each(($slide, index) => {
+          cy.wrap($slide)
+            .should('have.attr', ATTRS.SLIDE, '')
+            .and('have.attr', 'aria-label', `${index + 1} of ${$slides.length}`)
+            .and('have.attr', 'aria-roledescription', 'slide')
+            .and('have.attr', 'role', `${hasSlidePicker ? 'tabpanel' : 'group'}`);
+        });
+    });
 };
 
 
@@ -96,12 +97,13 @@ context(`Carousel`, () => {
 
     it(`Should initialise correctly`, () => {
       carouselInitChecks(CAROUSEL_ID);
+      checkSlideSelected(1);
       cy.get('@carouselPrevSlideBtn').should('be.disabled');
     });
 
 
     it(`Should respond to next and previous slide buttons correctly`, () => {
-      // Test Next button
+      // Test next slide button
       cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
         .get('@carouselNextSlideBtn')
         .click()
@@ -113,7 +115,7 @@ context(`Carousel`, () => {
         .should('be.disabled');
       checkSlideSelected(3);
 
-      // Test Prev button
+      // Test prev slide button
       cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 3, 2))
         .get('@carouselPrevSlideBtn')
         .click()
@@ -143,7 +145,7 @@ context(`Carousel`, () => {
           .get('@carouselPrevSlideBtn')
           .should('not.be.disabled')
           .get('@carousel')
-          .then($carousel => $carousel.removeAttr(ATTRS.INFINITE))
+          .invoke('removeAttr', ATTRS.INFINITE)
           .get('@carouselPrevSlideBtn')
           .should('be.disabled');
       });
@@ -151,14 +153,17 @@ context(`Carousel`, () => {
   });
 
 
-  context(`Infinite Carousel with initially set slide`, () => {
+  context(`Carousel with infinite rotation and initially set slide`, () => {
     const CAROUSEL_ID = IDS.INFINITE_CAROUSEL;
 
 
     beforeEach(() => getEls(CAROUSEL_ID));
 
 
-    it(`Should initialise correctly`, () => carouselInitChecks(CAROUSEL_ID, 2));
+    it(`Should initialise correctly`, () => {
+      carouselInitChecks(CAROUSEL_ID);
+      checkSlideSelected(2);
+    });
 
 
     it(`Should respond to next and previous slide buttons correctly`, () => {
@@ -209,7 +214,7 @@ context(`Carousel`, () => {
   });
 
 
-  context(`Automatic Carousel`, () => {
+  context(`Carousel with automatic slide show`, () => {
     const CAROUSEL_ID = IDS.AUTO_CAROUSEL;
 
 
@@ -217,98 +222,159 @@ context(`Carousel`, () => {
       getEls(CAROUSEL_ID);
 
       cy.get('@carousel')
-        .invoke('attr', ATTRS.SELECTED_SLIDE, 1)
         .find(`[${ATTRS.AUTO_SLIDE_SHOW_BTN}]`)
         .as('carouselAutoSlideShowBtn');
     });
 
 
     it(`Should initialise correctly`, () => {
-      carouselInitChecks(CAROUSEL_ID, 1, true);
+      carouselInitChecks(CAROUSEL_ID, true);
 
       cy.get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
+    });
+
+
+    it(`Should automatically select next slide after interval time`, () => {
+      const startingSelectedSlideNumber = 2;
+      const selectedSlideNumberAfterInterval = startingSelectedSlideNumber + 1;
+      cy.get('@carousel')
+        .invoke('attr', ATTRS.SELECTED_SLIDE, startingSelectedSlideNumber)
+        .invoke('attr', ATTRS.AUTO_SLIDE_SHOW_TIME)
+        .then((intervalTime) => {
+          cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, startingSelectedSlideNumber, selectedSlideNumberAfterInterval))
+            .wait(+intervalTime)
+            .get('@carousel')
+            .invoke('attr', ATTRS.SELECTED_SLIDE)
+            .then((selectedSlideNumber) => {
+              cy.wrap(+selectedSlideNumber).should('equal', selectedSlideNumberAfterInterval);
+            });
+        });
     });
 
 
     it(`Should pause automatic slide show when mouse hovers over Carousel`, () => {
-      cy.get('@carousel')
+      cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {id: CAROUSEL_ID})
+        .get('@carousel')
         .trigger('mouseenter')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+        .get('@carouselSlidesWrapper')
+        .should('have.attr', 'aria-live', 'polite')
+        .get('@carouselAutoSlideShowBtn')
+        .focus()
+        .blur()
+        .get('@carousel')
+        .trigger('mouseleave')
+        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+        .get('@carouselSlidesWrapper')
+        .should('have.attr', 'aria-live', 'off');
     });
 
 
     it(`Should pause automatic slide show when a descendant of Carousel, other than toggle button, receives keyboard focus`, () => {
-      cy.get('@carouselPrevSlideBtn')
+      cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {id: CAROUSEL_ID})
+        .get('@carousel')
+        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
+        .get('@carouselPrevSlideBtn')
         .focus()
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+        .get('@carouselSlidesWrapper')
+        .should('have.attr', 'aria-live', 'polite')
+        .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {id: CAROUSEL_ID})
         .get('@carouselAutoSlideShowBtn')
         .focus()
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
+        .get('@carouselSlidesWrapper')
+        .should('have.attr', 'aria-live', 'off')
+        .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {id: CAROUSEL_ID})
         .get('@carouselNextSlideBtn')
         .focus()
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+        .get('@carouselSlidesWrapper')
+        .should('have.attr', 'aria-live', 'polite')
+        .get('@carouselAutoSlideShowBtn')
+        .focus()
+        .blur();
     });
 
 
-    it(`Should toggle automatic slide show and dispatch custom events when toggle button is pressed`, () => {
+    it(`Should toggle automatic slide show and dispatch custom events when toggle button clicked`, () => {
       cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {id: CAROUSEL_ID})
+        .get('@carousel')
+        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
         .get('@carouselAutoSlideShowBtn')
         .click()
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
+        .get('@carouselSlidesWrapper')
+        .should('have.attr', 'aria-live', 'polite')
         .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {id: CAROUSEL_ID})
         .get('@carouselAutoSlideShowBtn')
         .click()
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+        .get('@carouselSlidesWrapper')
+        .should('have.attr', 'aria-live', 'off');
     });
 
 
-    it(`Should toggle automatic slide show when custom events received`, () => {
+    it(`Should toggle automatic slide show when custom events dispatched`, () => {
       cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {id: CAROUSEL_ID})
         .get(`#${IDS.STOP_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN}`)
         .click()
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
         .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {id: CAROUSEL_ID})
         .get(`#${IDS.START_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN}`)
         .click()
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
     });
 
 
     describe(`Observed attributes`, () => {
+      beforeEach(() => {
+        // Stop automatic slide show if running and select the first slide
+        cy.get('@carousel')
+          .invoke('attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE)
+          .then(($slideShowActive) => {
+            if ($slideShowActive === 'true') {
+              cy.get('@carouselAutoSlideShowBtn').click();
+            }
+            cy.get('@carousel').invoke('attr', ATTRS.SELECTED_SLIDE, 1);
+          });
+      });
+
+
       it(`Should set correct slide when observed attribute changed`, () => {
         const slideToSelect = 3;
         cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
           .get('@carousel')
-          .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect)
-          .invoke('attr', ATTRS.SELECTED_SLIDE, 1);
+          .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect);
       });
 
 
-      it(`Should select infinite rotation when observed attribute added`, () => {
+      it(`Should de-select infinite rotation when observed attribute removed`, () => {
         cy.get('@carousel')
-          .invoke('attr', ATTRS.INFINITE, '')
-          .get('@carouselPrevSlideBtn')
-          .should('not.be.disabled')
-          .get('@carousel')
           .then($carousel => $carousel.removeAttr(ATTRS.INFINITE))
           .get('@carouselPrevSlideBtn')
-          .should('be.disabled');
+          .should('be.disabled')
+          .get('@carousel')
+          .invoke('attr', ATTRS.INFINITE, '')
+          .get('@carouselPrevSlideBtn')
+          .should('not.be.disabled');
       });
     });
   });
@@ -322,7 +388,8 @@ context(`Carousel`, () => {
 
 
     it(`Should initialise correctly`, () => {
-      carouselInitChecks(CAROUSEL_ID, 1);
+      carouselInitChecks(CAROUSEL_ID);
+      checkSlideSelected(1);
     });
 
 

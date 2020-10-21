@@ -45,6 +45,7 @@ export const EVENTS = {
     UPDATE_SLIDES: `${CAROUSEL}-update-slides`,
   },
   OUT: {
+    AUTO_SLIDE_SHOW_PAUSED: `${CAROUSEL}-auto-slide-show-paused`,
     AUTO_SLIDE_SHOW_STARTED: `${CAROUSEL}-auto-slide-show-started`,
     AUTO_SLIDE_SHOW_STOPPED: `${CAROUSEL}-auto-slide-show-stopped`,
     READY: `${CAROUSEL}-ready`,
@@ -150,7 +151,7 @@ export default class Carousel extends HTMLElement {
       this.querySelector(nextSlideBtnSelector);
 
     if (!this.prevSlideBtn || !this.nextSlideBtn) {
-      console.error(`ACE: Carousel with ID '${this.id}' must contain two descendant <button> elements needed to display the previous and next slides.`);
+      console.error(`ACE: Carousel with ID '${this.id}' must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to ${this.autoSlideShowCarousel ? 'toggle the automatic slide show and' : ''} display the previous and next slides.`);
       return;
     }
 
@@ -605,7 +606,8 @@ export default class Carousel extends HTMLElement {
       this.autoSlideShowBtn.setAttribute('aria-label', this.startAutoSlideShowLabel);
     }
 
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {
+    const eventName = (EVENTS.OUT as any)[`AUTO_SLIDE_SHOW_${paused ? 'PAUSED' : 'STOPPED'}`];
+    window.dispatchEvent(new CustomEvent(eventName, {
       'detail': {
         'id': this.id,
       }
