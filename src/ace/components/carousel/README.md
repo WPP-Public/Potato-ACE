@@ -95,9 +95,9 @@ This event is dispatched when the displayed slide is changed. The event name is 
 
 #### Automatic slide show events
 
-`ace-carousel-auto-slide-show-started` & `ace-carousel-auto-slide-show-stopped`
+`ace-carousel-auto-slide-show-started`, `ace-carousel-auto-slide-show-stopped` & `ace-carousel-auto-slide-show-paused`
 
-These events are dispatched when the automatic slide show is started or stopped. The event names are available as `EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED` and `EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED`, and their `detail` properties are composed as follows:
+These events are dispatched when the automatic slide show is started, stopped or paused, the latter of which occurs when the mouse pointer hovers over the Carousel or when a descendant, other than the automatic slide show toggle button, has keyboard focus. The event names are available as `EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED`, `EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED` and `EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED`, and their `detail` properties are composed as follows:
 
 ```js
 'detail': {
