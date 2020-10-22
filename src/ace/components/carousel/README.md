@@ -279,7 +279,7 @@ Carousel with automatic slide show. Two buttons have also been included, which d
 <button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
 <button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
 <hr>
-<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-interval="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
   <button>Toggle automatic slide show</button>
   <button>Previous slide</button>
   <button>Next slide</button>
