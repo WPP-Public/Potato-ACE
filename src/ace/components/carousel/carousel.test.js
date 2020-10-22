@@ -10,6 +10,7 @@ const IDS = {
   PREV_SLIDE_BTN: 'prev-slide-btn',
   REMOVE_SLIDE_BTN: 'remove-slide-btn',
   SIMPLE_CAROUSEL: `${CAROUSEL}-1`,
+  SLIDE_PICKER_CAROUSEL: `slide-picker-carousel`,
   START_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN: 'start-auto-slide-show-custom-event-btn',
   STOP_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN: 'stop-auto-slide-show-custom-event-btn',
 };
@@ -376,6 +377,61 @@ context(`Carousel`, () => {
           .get('@carouselPrevSlideBtn')
           .should('not.be.disabled');
       });
+    });
+  });
+
+
+  context(`Carousel with slide picker`, () => {
+    const CAROUSEL_ID = IDS.SLIDE_PICKER_CAROUSEL;
+
+
+    beforeEach(() => {
+      getEls(CAROUSEL_ID);
+
+      cy.get('@carousel')
+        .find(`[${ATTRS.AUTO_SLIDE_SHOW_BTN}]`)
+        .as('carouselAutoSlideShowBtn')
+        .get('@carousel')
+        .find(`[${ATTRS.SLIDE_PICKER}]`)
+        .as('carouselSlidePicker')
+        .find('button')
+        .as('carouselSlidePickerBtns');
+    });
+
+
+    it(`Should initialise correctly`, () => {
+      carouselInitChecks(CAROUSEL_ID, true, true);
+
+      cy.get('@carousel')
+        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
+        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+        .get('@carouselSlidePicker')
+        .should('have.attr', ATTRS.SLIDE_PICKER, '')
+        .and('have.attr', 'aria-label', 'Choose slide to display')
+        .and('have.attr', 'role', 'tablist')
+
+        // Pause automatic slide show
+        .get('@carouselNextSlideBtn').focus()
+
+        // Check initial attributes of slide picker buttons
+        .get('@carousel')
+        .invoke('attr', ATTRS.SELECTED_SLIDE)
+        .then((selectedSlideNumber) => {
+          cy.get('@carouselSlidePickerBtns')
+            .each(($slidePickerBtn, index) => {
+              const slideNumber = index + 1;
+              cy.wrap($slidePickerBtn)
+                .should('have.attr', ATTRS.SLIDE_PICKER_BTN, slideNumber)
+                .and('have.attr', 'aria-controls', `${IDS.SLIDE_PICKER_CAROUSEL}-slide-${slideNumber}`)
+                .and('have.attr', 'aria-label', `Slide ${slideNumber}`)
+                .and('have.attr', 'aria-selected', +selectedSlideNumber === slideNumber ? 'true' : 'false')
+                .and('have.attr', 'role', 'tab')
+                .and('have.attr', 'tabindex', +selectedSlideNumber === slideNumber ? '0' : '-1');
+            });
+        })
+
+        // Resume automatic slide show
+        .get('@carouselAutoSlideShowBtn').focus();
     });
   });
 

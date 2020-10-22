@@ -242,35 +242,6 @@ Carousel with infinite rotation that displays the second slide upon page load.
 </ace-carousel>
 ```
 
-### Carousel with slide picker
-
-Carousel with slide picker buttons.
-
-```html
-<ace-carousel aria-label="Example of slide picker" id="slide-picker-carousel">
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div ace-carousel-slide-picker></div>
-  <div>
-    <div>
-      <h3>Slide 1 heading</h3>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div>
-      <h3>Slide 2 heading</h3>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div>
-      <h3>Slide 3 heading</h3>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
-</ace-carousel>
-```
-
 ### Carousel with automatic slide show
 
 Carousel with automatic slide show. Two buttons have also been included, which dispatch the `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show` custom events. The extra JavaScript used by this example is also shown below.
@@ -322,6 +293,39 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 ```
+
+
+### Carousel with slide picker
+
+Carousel with slide picker buttons and automatic slide show.
+
+```html
+<ace-carousel ace-carousel-auto-slide-show
+ace-carousel-infinite aria-label="Example of slide picker" id="slide-picker-carousel">
+  <button>Toggle automatic slide show</button>
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div ace-carousel-slide-picker></div>
+  <div>
+    <div>
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div>
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div>
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+```
+
 
 ### Carousel controlled using custom events
 

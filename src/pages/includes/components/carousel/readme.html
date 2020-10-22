@@ -208,54 +208,6 @@ $ace-carousel-slide-picker-btn-selected-bg-color: $ace-carousel-slide-picker-btn
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Carousel with slide picker</h3>
-<p>Carousel with slide picker buttons.</p>
-<div class="example-block"><ace-carousel aria-label="Example of slide picker" id="slide-picker-carousel">
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div ace-carousel-slide-picker></div>
-  <div>
-    <div>
-      <h3>Slide 1 heading</h3>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div>
-      <h3>Slide 2 heading</h3>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div>
-      <h3>Slide 3 heading</h3>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
-</ace-carousel>
-</div>
-<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Example of slide picker&quot; id=&quot;slide-picker-carousel&quot;&gt;
-  &lt;button&gt;Previous slide&lt;/button&gt;
-  &lt;button&gt;Next slide&lt;/button&gt;
-  &lt;div ace-carousel-slide-picker&gt;&lt;/div&gt;
-  &lt;div&gt;
-    &lt;div&gt;
-      &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
-      &lt;p&gt;Slide 1 content.&lt;/p&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
-    &lt;/div&gt;
-    &lt;div&gt;
-      &lt;h3&gt;Slide 2 heading&lt;/h3&gt;
-      &lt;p&gt;Slide 2 content.&lt;/p&gt;
-      &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
-    &lt;/div&gt;
-    &lt;div&gt;
-      &lt;h3&gt;Slide 3 heading&lt;/h3&gt;
-      &lt;p&gt;Slide 3 content.&lt;/p&gt;
-      &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/ace-carousel&gt;
-</code></pre>
 <h3>Carousel with automatic slide show</h3>
 <p>Carousel with automatic slide show. Two buttons have also been included, which dispatch the <code>ace-carousel-start-auto-slide-show</code> &amp; <code>ace-carousel-stop-auto-slide-show</code> custom events. The extra JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
@@ -327,6 +279,58 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
     }
   });
 });
+</code></pre>
+<h3>Carousel with slide picker</h3>
+<p>Carousel with slide picker buttons and automatic slide show.</p>
+<div class="example-block"><ace-carousel ace-carousel-auto-slide-show
+ace-carousel-infinite aria-label="Example of slide picker" id="slide-picker-carousel">
+  <button>Toggle automatic slide show</button>
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div ace-carousel-slide-picker></div>
+  <div>
+    <div>
+      <h3>Slide 1 heading</h3>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div>
+      <h3>Slide 2 heading</h3>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div>
+      <h3>Slide 3 heading</h3>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+</div>
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-auto-slide-show
+ace-carousel-infinite aria-label=&quot;Example of slide picker&quot; id=&quot;slide-picker-carousel&quot;&gt;
+  &lt;button&gt;Toggle automatic slide show&lt;/button&gt;
+  &lt;button&gt;Previous slide&lt;/button&gt;
+  &lt;button&gt;Next slide&lt;/button&gt;
+  &lt;div ace-carousel-slide-picker&gt;&lt;/div&gt;
+  &lt;div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 1 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 1 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 2 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 2 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;h3&gt;Slide 3 heading&lt;/h3&gt;
+      &lt;p&gt;Slide 3 content.&lt;/p&gt;
+      &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/ace-carousel&gt;
 </code></pre>
 <h3>Carousel controlled using custom events</h3>
 <p>The buttons in this example dispatch the <code>ace-carousel-set-prev-slide</code>, <code>ace-carousel-set-next-slide</code> and <code>ace-carousel-update-slides</code> custom events on the Carousel. The extra JavaScript used by this example is also shown below.</p>
