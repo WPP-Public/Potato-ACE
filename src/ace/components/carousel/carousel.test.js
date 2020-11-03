@@ -59,20 +59,19 @@ const getEls = (id) => {
 
 
 const checkSlideSelected = (slideNumber) => {
-  return cy.get('@carouselSlides')
+  cy.get('@carouselSlides')
     .each(($slide, index) => {
       cy.wrap($slide).should(`${index === slideNumber - 1 ? '' : 'not.'}have.attr`, ATTRS.SLIDE_SELECTED, '');
-    })
-    .then(() => {
-      if (carouselHasSlidePicker) {
-        cy.get('@carouselSlidePickerBtns')
-          .each(($slidePickerBtn, index) => {
-            cy.wrap($slidePickerBtn)
-              .should('have.attr', 'aria-selected', `${index === slideNumber - 1 ? 'true' : 'false'}`)
-              .and('have.attr', 'tabindex', `${index === slideNumber - 1 ? '0' : '-1'}`);
-          });
-      }
     });
+
+    if (carouselHasSlidePicker) {
+      cy.get('@carouselSlidePickerBtns')
+        .each(($slidePickerBtn, index) => {
+          cy.wrap($slidePickerBtn)
+            .should('have.attr', 'aria-selected', `${index === slideNumber - 1 ? 'true' : 'false'}`)
+            .and('have.attr', 'tabindex', `${index === slideNumber - 1 ? '0' : '-1'}`);
+        });
+    }
 };
 
 
@@ -491,21 +490,21 @@ context(`Carousel`, () => {
 
       it(`Should respond to next and previous slide buttons correctly`, () => {
         testSlideChangeBtns(CAROUSEL_ID);
-        // Start slideshow
+        // Resume slideshow
         cy.get('@carouselAutoSlideShowBtn').click();
       });
 
 
       it(`Should select correct slide when observed attribute changed`, () => {
         testSelectedSlideObsAttr(CAROUSEL_ID, 2);
-        // Start slideshow
+        // Resume slideshow
         cy.get('@carouselAutoSlideShowBtn').click();
       });
 
 
       it(`Should select infinite rotation when observed attribute added`, () => {
         testInfiniteObsAttr();
-        // Start slideshow
+        // Resume slideshow
         cy.get('@carouselAutoSlideShowBtn').click();
       });
 
@@ -531,14 +530,42 @@ context(`Carousel`, () => {
 
         it(`Should change selected slide when arrows keys used while any slide picker button is focused`, () => {
           cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
+            .get('@carousel')
+            // Test that arrow buttons obey infinite behaviour
+            .invoke('removeAttr', ATTRS.INFINITE)
             .get('@carouselSlidePickerBtns')
             .eq(0)
+            .as('carouselSlidePickerBtn1')
+            .focus()
+            .type('{leftarrow}');
+          checkSlideSelected(1);
+          cy.get('@carouselSlidePickerBtn1')
             .focus()
             .type('{rightarrow}');
           checkSlideSelected(2);
+          cy.get('@carouselSlidePickerBtn1')
+            .focus()
+            .type('{rightarrow}{rightarrow}');
+          checkSlideSelected(3);
+
+          cy.get('@carousel')
+            .invoke('attr', ATTRS.INFINITE, '')
+            .get('@carouselSlidePickerBtn1')
+            .focus()
+            .type('{rightarrow}');
+          checkSlideSelected(1);
+
+          cy.get('@carouselSlidePickerBtn1')
+            .focus()
+            .type('{leftarrow}');
+          checkSlideSelected(3);
 
           // Resume automatic slideshow
-          cy.get('@carouselAutoSlideShowBtn').click();
+          cy.get('@carouselSlidePickerBtn1')
+            .focus()
+            .type('{rightarrow}')
+            .get('@carouselAutoSlideShowBtn')
+            .click();
         });
       });
     });
