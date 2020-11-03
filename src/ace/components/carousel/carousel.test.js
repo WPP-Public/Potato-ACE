@@ -478,10 +478,12 @@ context(`Carousel`, () => {
 
     it(`Should respond to next and previous slide buttons correctly`, () => {
       // Stop automatic slideshow
-      cy.get('@carouselAutoSlideShowBtn').click();
-
-      // Test next slide button
-      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
+      cy.get('@carouselAutoSlideShowBtn')
+        .click()
+        .get('@carousel')
+        .invoke('attr', ATTRS.SELECTED_SLIDE, 1)
+        // Test next slide button
+        .addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
         .get('@carouselNextSlideBtn')
         .click();
       checkSlideSelected(2);
@@ -505,9 +507,11 @@ context(`Carousel`, () => {
 
     it(`Should change selected slide when slide picker buttons clicked`, () => {
       // Stop automatic slideshow
-      cy.get('@carouselAutoSlideShowBtn').click();
-
-      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 3))
+      cy.get('@carouselAutoSlideShowBtn')
+        .click()
+        .get('@carousel')
+        .invoke('attr', ATTRS.SELECTED_SLIDE, 1)
+        .addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 3))
         .get('@carouselSlidePickerBtns')
         .eq(2)
         .click();
@@ -519,20 +523,17 @@ context(`Carousel`, () => {
         .click();
       checkSlideSelected(2);
 
-      cy.get('@carouselSlidePickerBtns')
-        .eq(0)
-        .click();
-
       // Start automatic slideshow
       cy.get('@carouselAutoSlideShowBtn').click();
     });
 
 
     it(`Should change selected slide when arrows keys used while any slide picker button is focused`, () => {
-      // Stop automatic slideshow
-      cy.get('@carouselAutoSlideShowBtn').click();
-
-      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
+      cy.get('@carouselAutoSlideShowBtn')
+        .click()
+        .get('@carousel')
+        .invoke('attr', ATTRS.SELECTED_SLIDE, 1)
+        .addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
         .get('@carouselSlidePickerBtns')
         .eq(0)
         .focus()
