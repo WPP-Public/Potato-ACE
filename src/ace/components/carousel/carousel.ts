@@ -33,6 +33,7 @@ export const ATTRS = {
   SLIDE_SELECTED: `${CAROUSEL}-slide-selected`,
   START_AUTO_SLIDE_SHOW_LABEL: `${CAROUSEL}-start-auto-slide-show-label`,
   STOP_AUTO_SLIDE_SHOW_LABEL: `${CAROUSEL}-stop-auto-slide-show-label`,
+  WITH_SLIDE_PICKER: `${CAROUSEL}-with-slide-picker`,
 };
 
 
@@ -64,6 +65,7 @@ export default class Carousel extends HTMLElement {
   private autoSlideShowTime: number;
   private autoSlideShowTimer: number;
   private autoSlideShowStopped = false;
+  private carouselHasSlidePicker = false;
   private goToPrevSlideLabel: string;
   private goToLastSlideLabel: string;
   private goToNextSlideLabel: string;
@@ -157,6 +159,7 @@ export default class Carousel extends HTMLElement {
 
     // Slide picker
     this.slidePickerEl = this.querySelector(`[${ATTRS.SLIDE_PICKER}]`);
+    this.carouselHasSlidePicker = !!this.slidePickerEl;
 
     // Slide wrapper
     const slidesWrapperSelector = this.slidePickerEl ? `#${this.id} > div:nth-of-type(2)` : `#${this.id} > div`;
@@ -211,7 +214,8 @@ export default class Carousel extends HTMLElement {
     this.nextSlideBtn.setAttribute(ATTRS.NEXT_SLIDE_BTN, '');
     this.nextSlideBtn.setAttribute('aria-controls', slidesWrapperId);
 
-    if (this.slidePickerEl) {
+    if (this.carouselHasSlidePicker) {
+      this.setAttribute(ATTRS.WITH_SLIDE_PICKER, '');
       this.slidePickerEl.setAttribute(ATTRS.SLIDE_PICKER, '');
       this.slidePickerEl.setAttribute('role', 'tablist');
       if (!this.slidePickerEl.hasAttribute('aria-label') || !this.slidePickerEl.hasAttribute('aria-labelledby')) {
@@ -243,7 +247,7 @@ export default class Carousel extends HTMLElement {
       this.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
     }
 
-    if (this.slidePickerEl) {
+    if (this.carouselHasSlidePicker) {
       this.addEventListener('keydown', this.keydownHandler);
     }
 
@@ -285,7 +289,7 @@ export default class Carousel extends HTMLElement {
       this.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
     }
 
-    if (this.slidePickerEl) {
+    if (this.carouselHasSlidePicker) {
       this.removeEventListener('keydown', this.keydownHandler);
     }
   }
@@ -318,7 +322,7 @@ export default class Carousel extends HTMLElement {
       }
     }
 
-    if (this.slidePickerEl) {
+    if (this.carouselHasSlidePicker) {
       const slidePickerBtnClicked = target.closest(`[${ATTRS.SLIDE_PICKER_BTN}][aria-selected="false"]`);
       if (slidePickerBtnClicked) {
         const slideToSelect = +slidePickerBtnClicked.getAttribute(ATTRS.SLIDE_PICKER_BTN);
@@ -402,13 +406,13 @@ export default class Carousel extends HTMLElement {
       }
       slide.setAttribute('aria-label', `${index + 1} of ${this.slideCount}`);
       slide.setAttribute('aria-roledescription', 'slide');
-      slide.setAttribute('role', this.slidePickerEl ? 'tabpanel' : 'group');
+      slide.setAttribute('role', this.carouselHasSlidePicker ? 'tabpanel' : 'group');
       slide.id = `${this.id}-slide-${index + 1}`;
     });
 
     this.setNavBtnAttributes();
 
-    if (this.slidePickerEl) {
+    if (this.carouselHasSlidePicker) {
       let slidePickerBtns = this.slidePickerEl.querySelectorAll('button');
       const slidePickerBtnsCount = slidePickerBtns.length;
       if (slidePickerBtnsCount === 0) {
@@ -480,7 +484,7 @@ export default class Carousel extends HTMLElement {
     this.slideEls[selectedSlideIndex].removeAttribute(ATTRS.SLIDE_SELECTED);
     this.slideEls[slideToSelectIndex].setAttribute(ATTRS.SLIDE_SELECTED, '');
 
-    if (this.slidePickerEl) {
+    if (this.carouselHasSlidePicker) {
       const selectedSlidePickerBtn = this.slidePickerEl.querySelector('button[aria-selected="true"]') as HTMLButtonElement;
       const slideToSelectPickerBtn = this.slidePickerEl.querySelector(`button:nth-of-type(${slideToSelectIndex + 1})`) as HTMLButtonElement;
 

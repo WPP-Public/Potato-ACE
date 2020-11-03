@@ -60,6 +60,10 @@ $ace-carousel-slide-picker-btn-selected-bg-color: $ace-carousel-slide-picker-btn
 
 
 /* STYLES */
+ace-carousel {
+  display: inline-block;
+}
+
 [ace-carousel-slide] {
   display: none;
 }

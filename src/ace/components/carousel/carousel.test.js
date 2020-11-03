@@ -16,6 +16,21 @@ const IDS = {
 };
 
 
+let isAutoSlideShowCarousel, isInfiniteCarousel, carouselHasSlidePicker;
+
+
+// Determine whether Carousel is infinite, has automatic slideshow and has slide picker
+const beforeAll = (id) => {
+  return cy.get(`#${id}`)
+    .then(($carousel) => {
+      const carouselEl = $carousel[0];
+      isAutoSlideShowCarousel = carouselEl.hasAttribute(ATTRS.AUTO_SLIDE_SHOW);
+      isInfiniteCarousel = carouselEl.hasAttribute(ATTRS.INFINITE);
+      carouselHasSlidePicker = carouselEl.hasAttribute(ATTRS.WITH_SLIDE_PICKER);
+    });
+};
+
+
 const getEls = (id) => {
   return cy.get(`#${id}`)
     .as('carousel')
@@ -28,42 +43,121 @@ const getEls = (id) => {
     .find(`[${ATTRS.SLIDES}]`)
     .as('carouselSlidesWrapper')
     .find(`[${ATTRS.SLIDE}]`)
-    .as('carouselSlides');
+    .as('carouselSlides')
+    .then(() => {
+      if (isAutoSlideShowCarousel) {
+        cy.get(`#${id} [${ATTRS.AUTO_SLIDE_SHOW_BTN}]`)
+          .as('carouselAutoSlideShowBtn');
+      }
+
+      if (carouselHasSlidePicker) {
+        cy.get(`#${id} [${ATTRS.SLIDE_PICKER}]`)
+          .as('carouselSlidePicker')
+          .find('button')
+          .as('carouselSlidePickerBtns');
+      }
+    });
 };
 
 
 const checkSlideSelected = (slideNumber) => {
   return cy.get('@carouselSlides')
-    .eq(slideNumber - 1)
-    .should('have.attr', ATTRS.SLIDE_SELECTED, '');
+    .each(($slide, index) => {
+      cy.wrap($slide).should(`${index === slideNumber - 1 ? '' : 'not.'}have.attr`, ATTRS.SLIDE_SELECTED, '');
+    })
+    .then(() => {
+      if (carouselHasSlidePicker) {
+        cy.get('@carouselSlidePickerBtns')
+          .each(($slidePickerBtn, index) => {
+            cy.wrap($slidePickerBtn)
+              .should('have.attr', 'aria-selected', `${index === slideNumber - 1 ? 'true' : 'false'}`)
+              .and('have.attr', 'tabindex', `${index === slideNumber - 1 ? '0' : '-1'}`);
+          });
+      }
+    });
 };
 
 
-const carouselInitChecks = (id, autoSlideShow=false, hasSlidePicker=false) => {
+const initChecks = (id) => {
   const SLIDES_ID = `${id}-slides`;
 
   return cy.get('@carousel')
     .should('have.attr', 'aria-roledescription', 'carousel')
     .and('have.attr', 'role', 'region')
+    .and(`${isAutoSlideShowCarousel ? '' : 'not.'}have.attr`, ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
+    .and(`${isAutoSlideShowCarousel ? '' : 'not.'}have.attr`, ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+
+    // Check initial attributes of previous slide button
     .get('@carouselPrevSlideBtn')
     .should('have.attr', ATTRS.PREV_SLIDE_BTN, '')
     .and('have.attr', 'aria-controls', SLIDES_ID)
+
+    // Check initial attributes of next slide button
     .get('@carouselNextSlideBtn')
     .should('have.attr', ATTRS.NEXT_SLIDE_BTN, '')
     .and('have.attr', 'aria-controls', SLIDES_ID)
+
+    // Check initial attributes of slides wrapper
     .get('@carouselSlidesWrapper')
     .should('have.id', SLIDES_ID)
-    .and(`${autoSlideShow ? 'not.' : ''}have.attr`, 'aria-live', 'polite')
+    .and('have.attr', 'aria-live', `${isAutoSlideShowCarousel ? 'off' : 'polite'}`)
+
+    // Check initial attributes of slides
     .get('@carouselSlides')
     .then(($slides) => {
-      cy.get('@carouselSlides')
+      cy.wrap($slides)
         .each(($slide, index) => {
           cy.wrap($slide)
             .should('have.attr', ATTRS.SLIDE, '')
             .and('have.attr', 'aria-label', `${index + 1} of ${$slides.length}`)
             .and('have.attr', 'aria-roledescription', 'slide')
-            .and('have.attr', 'role', `${hasSlidePicker ? 'tabpanel' : 'group'}`);
+            .and('have.attr', 'role', `${carouselHasSlidePicker ? 'tabpanel' : 'group'}`);
         });
+    })
+
+    // Check initial attributes of slide picker and slide picker buttons
+    .then(() => {
+      if (carouselHasSlidePicker) {
+        cy.get('@carouselSlidePicker')
+          .should('have.attr', ATTRS.SLIDE_PICKER, '')
+          .and('have.attr', 'aria-label', 'Choose slide to display')
+          .and('have.attr', 'role', 'tablist')
+          .get('@carouselSlidePickerBtns')
+          .each(($slidePickerBtn, index) => {
+            const slideNumber = index + 1;
+            cy.wrap($slidePickerBtn)
+              .should('have.attr', ATTRS.SLIDE_PICKER_BTN, slideNumber)
+              .and('have.attr', 'aria-controls', `${IDS.SLIDE_PICKER_CAROUSEL}-slide-${slideNumber}`)
+              .and('have.attr', 'aria-label', `Slide ${slideNumber}`)
+              .and('have.attr', 'role', 'tab');
+          });
+      }
+    })
+
+    // Pause automatic slide show to prevent values changing in between checks
+    .then(() => {
+      if (isAutoSlideShowCarousel) {
+        cy.get('@carouselNextSlideBtn').focus();
+      }
+    })
+
+    // Check that correct initial slide selected
+    .get('@carousel')
+    .invoke('attr', ATTRS.SELECTED_SLIDE)
+    .then((selectedSlideNumberString) => {
+      const selectedSlideNumber = +selectedSlideNumberString;
+      checkSlideSelected(selectedSlideNumber);
+
+      if (!isInfiniteCarousel) {
+        cy.get('@carouselPrevSlideBtn').should(`${selectedSlideNumber === 1 ? '' : 'not.'}be.disabled`);
+      }
+    })
+
+    // Resume automatic slide show
+    .then(() => {
+      if (isAutoSlideShowCarousel) {
+        cy.get('@carouselAutoSlideShowBtn').focus();
+      }
     });
 };
 
@@ -75,6 +169,50 @@ const getExpectedDetailObj = (id, prevSlideNumber, newSlideNumber) => {
     previouslySelectedSlide: prevSlideNumber,
   };
   return expectedDetail;
+};
+
+
+const testSelectedSlideObsAttr = (slideToSelect) => {
+  return cy.get('@carousel')
+    .then(($carousel) => {
+      const id = $carousel.attr('id');
+      const currentSelectedSlide = +$carousel.attr(ATTRS.SELECTED_SLIDE);
+
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(id, currentSelectedSlide, slideToSelect))
+        .get('@carousel')
+        .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect);
+      checkSlideSelected(slideToSelect);
+
+      // Reset state
+      cy.get('@carousel').invoke('attr', ATTRS.SELECTED_SLIDE, currentSelectedSlide);
+    });
+};
+
+
+const testInfiniteObsAttr = () => {
+  return cy.get('@carousel')
+    .invoke('attr', ATTRS.SELECTED_SLIDE, 1)
+    .then(($carousel) => {
+      if (isInfiniteCarousel) {
+        cy.wrap($carousel)
+          .invoke('removeAttr', ATTRS.INFINITE)
+          .get('@carouselPrevSlideBtn')
+          .should('be.disabled')
+          .get('@carousel')
+          .invoke('attr', ATTRS.INFINITE, '')
+          .get('@carouselPrevSlideBtn')
+          .should('not.be.disabled');
+      } else {
+        cy.wrap($carousel)
+          .invoke('attr', ATTRS.INFINITE, '')
+          .get('@carouselPrevSlideBtn')
+          .should('not.be.disabled')
+          .get('@carousel')
+          .invoke('removeAttr', ATTRS.INFINITE)
+          .get('@carouselPrevSlideBtn')
+          .should('be.disabled');
+      }
+    });
 };
 
 
@@ -93,18 +231,17 @@ context(`Carousel`, () => {
     const CAROUSEL_ID = IDS.SIMPLE_CAROUSEL;
 
 
+    before(() => beforeAll(CAROUSEL_ID));
+
+
     beforeEach(() => getEls(CAROUSEL_ID));
 
 
-    it(`Should initialise correctly`, () => {
-      carouselInitChecks(CAROUSEL_ID);
-      checkSlideSelected(1);
-      cy.get('@carouselPrevSlideBtn').should('be.disabled');
-    });
+    it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
 
 
     it(`Should respond to next and previous slide buttons correctly`, () => {
-      // Test next slide button
+      // Test prev slide button
       cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
         .get('@carouselNextSlideBtn')
         .click()
@@ -116,7 +253,7 @@ context(`Carousel`, () => {
         .should('be.disabled');
       checkSlideSelected(3);
 
-      // Test prev slide button
+      // Test next slide button
       cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 3, 2))
         .get('@carouselPrevSlideBtn')
         .click()
@@ -131,25 +268,10 @@ context(`Carousel`, () => {
 
 
     describe(`Observed attributes`, () => {
-      it(`Should select correct slide when observed attribute changed`, () => {
-        const slideToSelect = 3;
-        cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
-          .get('@carousel')
-          .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect)
-          .invoke('attr', ATTRS.SELECTED_SLIDE, 1);
-      });
+      it(`Should select correct slide when observed attribute changed`, () => testSelectedSlideObsAttr(3));
 
 
-      it(`Should select infinite rotation when observed attribute added`, () => {
-        cy.get('@carousel')
-          .invoke('attr', ATTRS.INFINITE, '')
-          .get('@carouselPrevSlideBtn')
-          .should('not.be.disabled')
-          .get('@carousel')
-          .invoke('removeAttr', ATTRS.INFINITE)
-          .get('@carouselPrevSlideBtn')
-          .should('be.disabled');
-      });
+      it(`Should select infinite rotation when observed attribute added`, () => testInfiniteObsAttr());
     });
   });
 
@@ -158,21 +280,21 @@ context(`Carousel`, () => {
     const CAROUSEL_ID = IDS.INFINITE_CAROUSEL;
 
 
+    before(() => beforeAll(CAROUSEL_ID));
+
+
     beforeEach(() => getEls(CAROUSEL_ID));
 
 
-    it(`Should initialise correctly`, () => {
-      carouselInitChecks(CAROUSEL_ID);
-      checkSlideSelected(2);
-    });
+    it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
 
 
     it(`Should respond to next and previous slide buttons correctly`, () => {
-      // Test Prev button
-      cy.get('@carouselPrevSlideBtn').click();
+      // Test prev slide button
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 2, 1))
+        .get('@carouselPrevSlideBtn')
+        .click();
       checkSlideSelected(1);
-
-      // Test Prev button wrapping
       cy.get('@carouselPrevSlideBtn')
         .should('not.be.disabled')
         .click();
@@ -191,26 +313,10 @@ context(`Carousel`, () => {
 
 
     describe(`Observed attributes`, () => {
-      it(`Should select correct slide when observed attribute changed`, () => {
-        const slideToSelect = 3;
-        cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 2, slideToSelect))
-          .get('@carousel')
-          .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect)
-          .invoke('attr', ATTRS.SELECTED_SLIDE, 2);
-      });
+      it(`Should select correct slide when observed attribute changed`, () => testSelectedSlideObsAttr(1));
 
 
-      it(`Should de-select infinite rotation when observed attribute removed`, () => {
-        cy.get('@carousel')
-          .then($carousel => $carousel.removeAttr(ATTRS.INFINITE))
-          .get('@carouselPrevSlideBtn')
-          .click()
-          .should('be.disabled')
-          .get('@carousel')
-          .invoke('attr', ATTRS.INFINITE, '')
-          .get('@carouselPrevSlideBtn')
-          .should('not.be.disabled');
-      });
+      it(`Should de-select infinite rotation when observed attribute removed`, () => testInfiniteObsAttr());
     });
   });
 
@@ -219,37 +325,28 @@ context(`Carousel`, () => {
     const CAROUSEL_ID = IDS.AUTO_CAROUSEL;
 
 
-    beforeEach(() => {
-      getEls(CAROUSEL_ID);
-
-      cy.get('@carousel')
-        .find(`[${ATTRS.AUTO_SLIDE_SHOW_BTN}]`)
-        .as('carouselAutoSlideShowBtn');
-    });
+    before(() => beforeAll(CAROUSEL_ID));
 
 
-    it(`Should initialise correctly`, () => {
-      carouselInitChecks(CAROUSEL_ID, true);
+    beforeEach(() => getEls(CAROUSEL_ID));
 
-      cy.get('@carousel')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
-    });
+
+    it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
 
 
     it(`Should automatically select next slide after interval time`, () => {
-      const startingSelectedSlideNumber = 2;
-      const selectedSlideNumberAfterInterval = startingSelectedSlideNumber + 1;
       cy.get('@carousel')
-        .invoke('attr', ATTRS.SELECTED_SLIDE, startingSelectedSlideNumber)
         .invoke('attr', ATTRS.AUTO_SLIDE_SHOW_TIME)
         .then((intervalTime) => {
-          cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, startingSelectedSlideNumber, selectedSlideNumberAfterInterval))
-            .wait(+intervalTime)
-            .get('@carousel')
+          cy.get('@carousel')
             .invoke('attr', ATTRS.SELECTED_SLIDE)
-            .then((selectedSlideNumber) => {
-              cy.wrap(+selectedSlideNumber).should('equal', selectedSlideNumberAfterInterval);
+            .then((currentSelectedSlideString) => {
+              const currentSelectedSlide = +currentSelectedSlideString;
+              cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, currentSelectedSlide, currentSelectedSlide + 1))
+                .wait(+intervalTime)
+                .get('@carousel')
+                .invoke('attr', ATTRS.SELECTED_SLIDE)
+                .should('equal', (currentSelectedSlide + 1).toString());
             });
         });
     });
@@ -258,20 +355,15 @@ context(`Carousel`, () => {
     it(`Should pause automatic slide show when mouse hovers over Carousel`, () => {
       cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {id: CAROUSEL_ID})
         .get('@carousel')
-        .trigger('mouseenter')
+        .trigger('mouseenter', 'bottomRight', {eventConstructor: 'MouseEvent'})
+        .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
         .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
         .get('@carouselSlidesWrapper')
         .should('have.attr', 'aria-live', 'polite')
         .get('@carouselAutoSlideShowBtn')
         .focus()
-        .blur()
-        .get('@carousel')
-        .trigger('mouseleave')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
-        .get('@carouselSlidesWrapper')
-        .should('have.attr', 'aria-live', 'off');
+        .blur();
     });
 
 
@@ -307,7 +399,7 @@ context(`Carousel`, () => {
     });
 
 
-    it(`Should toggle automatic slide show and dispatch custom events when toggle button clicked`, () => {
+    it(`Should toggle automatic slide show when toggle button clicked`, () => {
       cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {id: CAROUSEL_ID})
         .get('@carousel')
         .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
@@ -347,35 +439,25 @@ context(`Carousel`, () => {
 
     describe(`Observed attributes`, () => {
       beforeEach(() => {
-        // Stop automatic slide show if running and select the first slide
-        cy.get('@carousel')
-          .invoke('attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE)
-          .then(($slideShowActive) => {
-            if ($slideShowActive === 'true') {
-              cy.get('@carouselAutoSlideShowBtn').click();
-            }
-            cy.get('@carousel').invoke('attr', ATTRS.SELECTED_SLIDE, 1);
-          });
+        // Stop automatic slideshow before the following tests
+        cy.get('@carouselAutoSlideShowBtn').click();
       });
 
 
-      it(`Should set correct slide when observed attribute changed`, () => {
-        const slideToSelect = 3;
-        cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
-          .get('@carousel')
-          .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect);
+      it(`Should select correct slide when observed attribute changed`, () => {
+        cy.get('@carousel').invoke('attr', ATTRS.SELECTED_SLIDE, 1);
+        testSelectedSlideObsAttr(2);
+
+        // Resume slide show
+        cy.get('@carouselAutoSlideShowBtn').click();
       });
 
 
-      it(`Should de-select infinite rotation when observed attribute removed`, () => {
-        cy.get('@carousel')
-          .then($carousel => $carousel.removeAttr(ATTRS.INFINITE))
-          .get('@carouselPrevSlideBtn')
-          .should('be.disabled')
-          .get('@carousel')
-          .invoke('attr', ATTRS.INFINITE, '')
-          .get('@carouselPrevSlideBtn')
-          .should('not.be.disabled');
+      it(`Should select infinite rotation when observed attribute added`, () => {
+        testInfiniteObsAttr();
+
+        // Resume slide show
+        cy.get('@carouselAutoSlideShowBtn').click();
       });
     });
   });
@@ -385,53 +467,105 @@ context(`Carousel`, () => {
     const CAROUSEL_ID = IDS.SLIDE_PICKER_CAROUSEL;
 
 
-    beforeEach(() => {
-      getEls(CAROUSEL_ID);
+    before(() => beforeAll(CAROUSEL_ID));
 
-      cy.get('@carousel')
-        .find(`[${ATTRS.AUTO_SLIDE_SHOW_BTN}]`)
-        .as('carouselAutoSlideShowBtn')
-        .get('@carousel')
-        .find(`[${ATTRS.SLIDE_PICKER}]`)
-        .as('carouselSlidePicker')
-        .find('button')
-        .as('carouselSlidePickerBtns');
+
+    beforeEach(() => getEls(CAROUSEL_ID));
+
+
+    it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
+
+
+    it(`Should respond to next and previous slide buttons correctly`, () => {
+      // Stop automatic slideshow
+      cy.get('@carouselAutoSlideShowBtn').click();
+
+      // Test next slide button
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
+        .get('@carouselNextSlideBtn')
+        .click();
+      checkSlideSelected(2);
+
+      cy.get('@carouselNextSlideBtn').click();
+      checkSlideSelected(3);
+
+      // Test prev slide button
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 3, 2))
+        .get('@carouselPrevSlideBtn')
+        .click();
+      checkSlideSelected(2);
+
+      cy.get('@carouselPrevSlideBtn').click();
+      checkSlideSelected(1);
+
+      // Start automatic slideshow
+      cy.get('@carouselAutoSlideShowBtn').click();
     });
 
 
-    it(`Should initialise correctly`, () => {
-      carouselInitChecks(CAROUSEL_ID, true, true);
+    it(`Should change selected slide when slide picker buttons clicked`, () => {
+      // Stop automatic slideshow
+      cy.get('@carouselAutoSlideShowBtn').click();
 
-      cy.get('@carousel')
-        .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-        .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
-        .get('@carouselSlidePicker')
-        .should('have.attr', ATTRS.SLIDE_PICKER, '')
-        .and('have.attr', 'aria-label', 'Choose slide to display')
-        .and('have.attr', 'role', 'tablist')
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 3))
+        .get('@carouselSlidePickerBtns')
+        .eq(2)
+        .click();
+      checkSlideSelected(3);
 
-        // Pause automatic slide show
-        .get('@carouselNextSlideBtn').focus()
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 3, 2))
+        .get('@carouselSlidePickerBtns')
+        .eq(1)
+        .click();
+      checkSlideSelected(2);
 
-        // Check initial attributes of slide picker buttons
-        .get('@carousel')
-        .invoke('attr', ATTRS.SELECTED_SLIDE)
-        .then((selectedSlideNumber) => {
-          cy.get('@carouselSlidePickerBtns')
-            .each(($slidePickerBtn, index) => {
-              const slideNumber = index + 1;
-              cy.wrap($slidePickerBtn)
-                .should('have.attr', ATTRS.SLIDE_PICKER_BTN, slideNumber)
-                .and('have.attr', 'aria-controls', `${IDS.SLIDE_PICKER_CAROUSEL}-slide-${slideNumber}`)
-                .and('have.attr', 'aria-label', `Slide ${slideNumber}`)
-                .and('have.attr', 'aria-selected', +selectedSlideNumber === slideNumber ? 'true' : 'false')
-                .and('have.attr', 'role', 'tab')
-                .and('have.attr', 'tabindex', +selectedSlideNumber === slideNumber ? '0' : '-1');
-            });
-        })
+      cy.get('@carouselSlidePickerBtns')
+        .eq(0)
+        .click();
 
-        // Resume automatic slide show
-        .get('@carouselAutoSlideShowBtn').focus();
+      // Start automatic slideshow
+      cy.get('@carouselAutoSlideShowBtn').click();
+    });
+
+
+    it(`Should change selected slide when arrows keys used while any slide picker button is focused`, () => {
+      // Stop automatic slideshow
+      cy.get('@carouselAutoSlideShowBtn').click();
+
+      cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, 2))
+        .get('@carouselSlidePickerBtns')
+        .eq(0)
+        .focus()
+        .type('{rightarrow}');
+      checkSlideSelected(2);
+
+      // Start automatic slideshow
+      cy.get('@carouselAutoSlideShowBtn').click();
+    });
+
+
+    describe(`Observed attributes`, () => {
+      beforeEach(() => {
+        // Stop automatic slideshow before the following tests
+        cy.get('@carouselAutoSlideShowBtn').click();
+      });
+
+
+      it(`Should select correct slide when observed attribute changed`, () => {
+        cy.get('@carousel').invoke('attr', ATTRS.SELECTED_SLIDE, 1);
+        testSelectedSlideObsAttr(3);
+
+        // Resume slide show
+        cy.get('@carouselAutoSlideShowBtn').click();
+      });
+
+
+      it(`Should select infinite rotation when observed attribute added`, () => {
+        testInfiniteObsAttr();
+
+        // Resume slide show
+        cy.get('@carouselAutoSlideShowBtn').click();
+      });
     });
   });
 
@@ -440,13 +574,13 @@ context(`Carousel`, () => {
     const CAROUSEL_ID = IDS.CUSTOM_EVENTS_CAROUSEL;
 
 
+    before(() => beforeAll(CAROUSEL_ID));
+
+
     beforeEach(() => getEls(CAROUSEL_ID));
 
 
-    it(`Should initialise correctly`, () => {
-      carouselInitChecks(CAROUSEL_ID);
-      checkSlideSelected(1);
-    });
+    it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
 
 
     it(`Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched`, () => {
@@ -486,25 +620,10 @@ context(`Carousel`, () => {
 
 
     describe(`Observed attributes`, () => {
-      it(`Should set correct slide when observed attribute changed`, () => {
-        const slideToSelect = 3;
-        cy.addCustomEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, getExpectedDetailObj(CAROUSEL_ID, 1, slideToSelect))
-          .get('@carousel')
-          .invoke('attr', ATTRS.SELECTED_SLIDE, slideToSelect)
-          .invoke('attr', ATTRS.SELECTED_SLIDE, 1);
-      });
+      it(`Should select correct slide when observed attribute changed`, () => testSelectedSlideObsAttr(3));
 
 
-      it(`Should select infinite rotation when observed attribute added`, () => {
-        cy.get('@carousel')
-          .invoke('attr', ATTRS.INFINITE, '')
-          .get('@carouselPrevSlideBtn')
-          .should('not.be.disabled')
-          .get('@carousel')
-          .then($carousel => $carousel.removeAttr(ATTRS.INFINITE))
-          .get('@carouselPrevSlideBtn')
-          .should('be.disabled');
-      });
+      it(`Should select infinite rotation when observed attribute added`, () => testInfiniteObsAttr());
     });
   });
 });
