@@ -1,10 +1,8 @@
-<p>These buttons dispatch custom events</p>
-<button id="prev-slide-btn">Prev slide</button>
-<button id="next-slide-btn">Next slide</button>
-<button id="add-slide-btn">Add slide to end</button>
-<button id="remove-slide-btn">Remove last slide</button>
+<button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
+<button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
 <hr>
-<ace-carousel aria-label="Custom events controlled" id="custom-events-carousel">
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
+  <button>Toggle automatic slide show</button>
   <button>Previous slide</button>
   <button>Next slide</button>
   <div>

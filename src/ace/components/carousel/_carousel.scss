@@ -2,12 +2,8 @@
 
 
 /* VARIABLES */
-$ace-carousel-slide-picker-btn-focus-ring-width: 3px !default;
-$ace-carousel-slide-picker-btn-focus-ring-color: $ace-color-focus !default;
-$ace-carousel-slide-picker-btn-diameter: $ace-spacing-1 !default;
-$ace-carousel-slide-picker-btn-border-width: 1px !default;
-$ace-carousel-slide-picker-btn-border-color: #000 !default;
-$ace-carousel-slide-picker-btn-selected-bg-color: $ace-carousel-slide-picker-btn-border-color !default;
+$ace-carousel-slide-picker-btn-size: 12px !default;
+$ace-carousel-slide-picker-btn-spacing: $ace-spacing-1 !default;
 
 
 /* STYLES */
@@ -24,32 +20,16 @@ ace-carousel {
 }
 
 [ace-carousel-slide-picker-btn] {
-  background-color: transparent;
-  border: $ace-carousel-slide-picker-btn-focus-ring-width solid transparent;
-  border-radius: 50%;
-  height: $ace-carousel-slide-picker-btn-diameter * 2.5;
-  position: relative;
-  width: $ace-carousel-slide-picker-btn-diameter * 2.5;
+  height: $ace-carousel-slide-picker-btn-size;
+  padding: 0;
+  width: $ace-carousel-slide-picker-btn-size;
 
-  &:active,
-  &:focus {
-    border-color: $ace-carousel-slide-picker-btn-focus-ring-color;
-    outline: none;
+  & + & {
+    margin-left: $ace-carousel-slide-picker-btn-spacing;
   }
 
-  &::after {
-    border: $ace-carousel-slide-picker-btn-border-width solid $ace-carousel-slide-picker-btn-border-color;
-    border-radius: 50%;
-    content: '';
-    height: $ace-carousel-slide-picker-btn-diameter;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: $ace-carousel-slide-picker-btn-diameter;
-  }
-
-  &[aria-selected="true"]::after {
-    background-color: $ace-carousel-slide-picker-btn-selected-bg-color;
+  &[aria-selected="true"] {
+    background-color: $ace-color-selected;
+    border-style: inset;
   }
 }
