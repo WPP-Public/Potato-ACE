@@ -61,7 +61,7 @@ $ace-carousel-slide-picker-btn-spacing: $ace-spacing-1 !default;
 
 /* STYLES */
 ace-carousel {
-  display: inline-block;
+  display: block;
 }
 
 [ace-carousel-slide] {
@@ -74,8 +74,6 @@ ace-carousel {
 
 [ace-carousel-slide-picker-btn] {
   height: $ace-carousel-slide-picker-btn-size;
-  padding: 0;
-  width: $ace-carousel-slide-picker-btn-size;
 
   & + & {
     margin-left: $ace-carousel-slide-picker-btn-spacing;
@@ -385,5 +383,118 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+});
+```
+
+
+### Animated Carousel
+
+Although Carousel does not animate the selected slide change, developers can listen for the `ace-carousel-slide-changed` event and apply their own animations as demonstrated in this example. It is important to note that in order to implement animations without affecting accessibility, developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. 
+
+```html
+<ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
+  <button>Previous slide</button>
+  <button>Next slide</button>
+  <div class="animated-carousel__slides">
+    <div class="animated-carousel__slide">
+      <h3>Slide 1 heading</h3>
+      <button>Button</button>
+      <a href="#">Link</a>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div class="animated-carousel__slide">
+      <h3>Slide 2 heading</h3>
+      <button>Button</button>
+      <a href="#">Link</a>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div class="animated-carousel__slide">
+      <h3>Slide 3 heading</h3>
+      <button>Button</button>
+      <a href="#">Link</a>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+```
+
+```scss
+.animated-carousel {
+  &__slides {
+    display: flex;
+    overflow-x: hidden;
+  }
+
+  &__slide {
+    display: block;
+    flex-shrink: 0;
+    width: 100%;
+
+    &--hidden {
+      visibility: hidden;
+    }
+  }
+}
+```
+
+```js
+import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const CAROUSEL_ID = 'animated-carousel';
+  const carouselEl = document.getElementById(CAROUSEL_ID);
+  const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
+  const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
+  const slidesEdges = [];
+  let selectedSlideIndex = +carouselEl.getAttribute(ATTRS.SELECTED_SLIDE) - 1;
+  let scrollTimeout;
+
+  // Hide non-selected slides on page load
+  carouselSlideEls.forEach((slide, i) => {
+    if (i === selectedSlideIndex) {
+      return;
+    }
+    slide.setAttribute('aria-hidden', 'true');
+    slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+  });
+
+  // Store left edge x-coordinates of slides on page load and resize
+  const getSlidesEdges = () => {
+    carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselEl.offsetLeft);
+  };
+  window.addEventListener('load', getSlidesEdges);
+  window.addEventListener('resize', getSlidesEdges, {passive: true});
+
+  // Start animation when slide changes
+  window.addEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, (e) => {
+    if (!e.detail || e.detail.id !== CAROUSEL_ID) {
+      return;
+    }
+    clearTimeout(scrollTimeout);
+    selectedSlideIndex = e.detail.currentlySelectedSlide - 1;
+    carouselSlideEls.forEach((slide) => {
+      // Prevent non-selected slides from being announced by screen reader due to aria-live="polite" on carouselSlidesEl
+      slide.setAttribute('aria-hidden', 'true');
+      slide.classList.remove(`${CAROUSEL_ID}__slide--hidden`);
+    });
+    carouselSlidesEl.scrollTo({behavior: 'smooth', left: slidesEdges[selectedSlideIndex]});
+  });
+
+  // Hide non-selected slides when scrolling finishes
+  carouselSlidesEl.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      carouselSlideEls.forEach((slide, i) => {
+        if (i === selectedSlideIndex) {
+          slide.removeAttribute('aria-hidden');
+          return;
+        }
+        slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+      });
+    }, 100);
+  }, {passive: true});
 });
 ```
