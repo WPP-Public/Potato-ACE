@@ -64,7 +64,7 @@ The following SASS is applied to the component, each declaration of which can be
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
 $ace-combobox-list-z-index: 1 !default;
-$ace-combobox-option-selected-bg-color: $ace-color-selected-light !default;
+$ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */

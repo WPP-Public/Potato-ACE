@@ -53,7 +53,7 @@ To conform to W3 WAI-ARIA practices, active and selected options must be visuall
 ```scss
 /* VARIABLES */
 $ace-listbox-active-option-outline: 1px dashed slategray !default;
-$ace-listbox-selected-option-bg-color: $ace-color-selected-light !default;
+$ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
@@ -64,6 +64,7 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected-light !default;
 [ace-listbox-option-index] {
   &[aria-selected="true"] {
     background: $ace-listbox-selected-option-bg-color;
+    color: white;
   }
 }
 
