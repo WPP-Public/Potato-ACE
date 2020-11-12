@@ -1,6 +1,11 @@
 import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // If user prefers reduced motion then do not animate
+  if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    return;
+  }
+
   const CAROUSEL_ID = 'animated-carousel';
   const carouselEl = document.getElementById(CAROUSEL_ID);
   const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);

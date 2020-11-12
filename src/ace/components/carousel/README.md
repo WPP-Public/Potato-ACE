@@ -389,7 +389,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Animated Carousel
 
-Although Carousel does not animate the selected slide change, developers can listen for the `ace-carousel-slide-changed` event and apply their own animations as demonstrated in this example. It is important to note that in order to implement animations without affecting accessibility, developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. 
+Although Carousel does not animate slide changes, developers can listen for the `ace-carousel-slide-changed` event and apply their own animations, as demonstrated in this example. In order to implement animations without hindering accessibility developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them.
+
+For better accessibility animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
 
 ```html
 <ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
@@ -422,19 +424,21 @@ Although Carousel does not animate the selected slide change, developers can lis
 ```
 
 ```scss
-.animated-carousel {
-  &__slides {
-    display: flex;
-    overflow-x: hidden;
-  }
+@media (prefers-reduced-motion: no-preference) {
+  .animated-carousel {
+    &__slides {
+      display: flex;
+      overflow-x: hidden;
+    }
 
-  &__slide {
-    display: block;
-    flex-shrink: 0;
-    width: 100%;
+    &__slide {
+      display: block;
+      flex-shrink: 0;
+      width: 100%;
 
-    &--hidden {
-      visibility: hidden;
+      &--hidden {
+        visibility: hidden;
+      }
     }
   }
 }
@@ -444,6 +448,11 @@ Although Carousel does not animate the selected slide change, developers can lis
 import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  // If user prefers reduced motion then do not animate
+  if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    return;
+  }
+
   const CAROUSEL_ID = 'animated-carousel';
   const carouselEl = document.getElementById(CAROUSEL_ID);
   const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);

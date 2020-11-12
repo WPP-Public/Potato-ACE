@@ -411,7 +411,8 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 });
 </code></pre>
 <h3>Animated Carousel</h3>
-<p>Although Carousel does not animate the selected slide change, developers can listen for the <code>ace-carousel-slide-changed</code> event and apply their own animations as demonstrated in this example. It is important to note that in order to implement animations without affecting accessibility, developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration <code>display: none</code> or <code>visibility: hidden</code> to them.</p>
+<p>Although Carousel does not animate slide changes, developers can listen for the <code>ace-carousel-slide-changed</code> event and apply their own animations, as demonstrated in this example. In order to implement animations without hindering accessibility developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration <code>display: none</code> or <code>visibility: hidden</code> to them.</p>
+<p>For better accessibility animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"><code>prefers-reduced-motion</code> media query</a> as demonstrated in the example.</p>
 <div class="example-block"><ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
   <button>Previous slide</button>
   <button>Next slide</button>
@@ -468,19 +469,21 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   &lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<pre><code class="language-scss">.animated-carousel {
-  &amp;__slides {
-    display: flex;
-    overflow-x: hidden;
-  }
+<pre><code class="language-scss">@media (prefers-reduced-motion: no-preference) {
+  .animated-carousel {
+    &amp;__slides {
+      display: flex;
+      overflow-x: hidden;
+    }
 
-  &amp;__slide {
-    display: block;
-    flex-shrink: 0;
-    width: 100%;
+    &amp;__slide {
+      display: block;
+      flex-shrink: 0;
+      width: 100%;
 
-    &amp;--hidden {
-      visibility: hidden;
+      &amp;--hidden {
+        visibility: hidden;
+      }
     }
   }
 }
@@ -488,6 +491,11 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
+  // If user prefers reduced motion then do not animate
+  if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    return;
+  }
+
   const CAROUSEL_ID = 'animated-carousel';
   const carouselEl = document.getElementById(CAROUSEL_ID);
   const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
