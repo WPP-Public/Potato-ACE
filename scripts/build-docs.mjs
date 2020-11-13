@@ -211,6 +211,7 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
   const componentDir = `${componentsDir}/${componentName}`;
   const mdFilePath = `${componentDir}/README.md`;
   const componentPageDir = `${pagesDir}/includes/components/${componentName}`;
+  const indexPugFilePath = `${componentPageDir}/index.pug`;
 
   // Read md file
   let mdFileContent = await fsPromises.readFile(mdFilePath, fileEncoding);
@@ -245,7 +246,14 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
   writeContentToFile(convertedHtmlContent, `${componentPageDir}/readme.html`);
 
 
-  // Create pug files
+  // Write to pug files
+  // Create index.pug if doesn't exist
+  await fsPromises.readFile(indexPugFilePath, fileEncoding)
+    .catch(async () => {
+      await fsPromises.copyFile(`${pagesDir}/includes/component.pug`, indexPugFilePath);
+      console.log(LOG_COLORS.GREEN, `>> ${indexPugFilePath} created`);
+    });
+
   // Write scriptsPugContent to scripts.pug file
   writeContentToFile(scriptsPugContent, `${componentPageDir}/scripts.pug`);
   // Write stylesPugContent to styles.pug file
@@ -253,7 +261,7 @@ const buildComponentDocs = async (componentName, htmlOnly=false, examplesOnly=fa
     writeContentToFile(stylesPugContent, `${componentPageDir}/styles.pug`);
     let componentPugFileContents = await fsPromises.readFile(`${pagesDir}/includes/component.pug`, fileEncoding);
     componentPugFileContents += `\nblock styles\n  include styles\n`;
-    writeContentToFile(componentPugFileContents, `${componentPageDir}/index.pug`);
+    writeContentToFile(componentPugFileContents, indexPugFilePath);
   }
 };
 
