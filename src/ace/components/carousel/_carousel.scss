@@ -1,7 +1,35 @@
+@import '../../common/constants';
+
+
+/* VARIABLES */
+$ace-carousel-slide-picker-btn-size: 12px !default;
+$ace-carousel-slide-picker-btn-spacing: $ace-spacing-1 !default;
+
+
+/* STYLES */
+ace-carousel {
+  display: inline-block;
+}
+
 [ace-carousel-slide] {
   display: none;
 }
 
 [ace-carousel-slide-selected] {
   display: block;
+}
+
+[ace-carousel-slide-picker-btn] {
+  height: $ace-carousel-slide-picker-btn-size;
+  padding: 0;
+  width: $ace-carousel-slide-picker-btn-size;
+
+  & + & {
+    margin-left: $ace-carousel-slide-picker-btn-spacing;
+  }
+
+  &[aria-selected="true"] {
+    background-color: $ace-color-selected;
+    border-style: inset;
+  }
 }

@@ -287,14 +287,14 @@ export default class Tabs extends HTMLElement {
 
 
   /*
-    Handles keyddown event on tab elements
+    Handles keydown events on tab elements
   */
   private keydownHandler(e: KeyboardEvent): void {
     const keyPressed = e.key || e.which || e.keyCode;
     const homeKeyPressed = keyPressedMatches(keyPressed, KEYS.HOME);
     const endKeyPressed = keyPressedMatches(keyPressed, KEYS.END);
     const prevTabKeyPressed = keyPressedMatches(keyPressed, this.prevTabKey);
-    const prevNextKeyPressed = keyPressedMatches(keyPressed, this.nextTabKey);
+    const nextTabKeyPressed = keyPressedMatches(keyPressed, this.nextTabKey);
 
     // SPACE or ENTER key pressed
     if (this.manualSelection && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
@@ -304,24 +304,25 @@ export default class Tabs extends HTMLElement {
     }
 
     // LEFT/UP/RIGHT/DOWN/HOME/END key pressed
-    if (!homeKeyPressed && !endKeyPressed && !prevTabKeyPressed && !prevNextKeyPressed) {
+    if (!homeKeyPressed && !endKeyPressed && !prevTabKeyPressed && !nextTabKeyPressed) {
       return;
     }
+
     e.preventDefault();
-    let desiredSlideIndex = homeKeyPressed ? 0 : this.tabCount - 1;
-    if (prevTabKeyPressed || prevNextKeyPressed) {
+    let desiredTabIndex = homeKeyPressed ? 0 : this.tabCount - 1;
+    if (prevTabKeyPressed || nextTabKeyPressed) {
       const direction = prevTabKeyPressed ? -1 : 1;
       const startingPoint = this.manualSelection ? this.activeTabIndex : this.selectedTabIndex;
-      desiredSlideIndex = getIndexOfNextItem(startingPoint, direction, this.tabCount, this.infinite);
+      desiredTabIndex = getIndexOfNextItem(startingPoint, direction, this.tabCount, this.infinite);
     }
     if (this.manualSelection) {
       this.tabEls[this.activeTabIndex].setAttribute('tabindex', '-1');
-      this.activeTabIndex = desiredSlideIndex;
-      const desiredSlideEl = this.tabEls[desiredSlideIndex];
-      desiredSlideEl.removeAttribute('tabindex');
-      desiredSlideEl.focus();
+      this.activeTabIndex = desiredTabIndex;
+      const desiredTabEl = this.tabEls[desiredTabIndex];
+      desiredTabEl.removeAttribute('tabindex');
+      desiredTabEl.focus();
     } else {
-      this.setSelectedTab(desiredSlideIndex);
+      this.setSelectedTab(desiredTabIndex);
     }
   }
 
