@@ -23,14 +23,24 @@ For convenience the ES6 class is exported as `Tabs` and the attribute names used
 
 After the event `DOMContentLoaded` is fired on `document`, an instance of Tabs is instantiated within each `<ace-tabs>` element, and an ID `ace-tabs-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-tabs-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-The buttons that display the panels, known as tabs, must be nested within a tablist element with attribute `ace-tabs-tablist`. If no descendant has this attribute then the first child `<div>` will be used and given this attribute. It is strongly recommended that this tablist element be provided with an accessible label using `aria-label` or `aria-labelledby`.
+The buttons that display the panels, known as tabs, must be nested within a tablist element with attribute `ace-tabs-tablist`. If no descendant has this attribute then the first child `<div>` will be used and given this attribute. It is strongly recommended that this tablist element be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "tablist" should not be included in the label as Tabs has `role="tablist"` which is read out by screen readers.
 
-Tabs must also have nested panel elements and will use any descendant with attribute `ace-tabs-panel`. If no descendants have this attribute then all child elements except the first one (tablist) will be used and given this attribute.
+Tabs must also have the same number of panel elements as tabs. Tabs will use any descendant with attribute `ace-tabs-panel`. If no descendants have this attribute then all child elements except the first, which should be the tablist, will be used and given this attribute.
 
 
 ## Usage
 
-By default, the first tab is selected and so the panel content for the first tab is displayed. If a user clicks on a tab then the content for that tab will be revealed and the previous content hidden. When the tablist is focused, pressing <kbd>&#8592;</kbd> or <kbd>&#8594;</kbd> (<kbd>&#8593;</kbd> or <kbd>&#8595;</kbd> if tablist is vertical) will select the previous or next tab in the list and select it. Tabbing while focused on the tablist will then focus the content for the selected tab. Pressing <kbd>Home</kbd> when the tablist is focused will select the first tab in the tablist and <kbd>End</kbd> will select the last.
+The displayed panel of Tabs can be changed using the tab buttons, keyboard keys or custom events; or by changing the value of its attribute `ace-tabs-selected-tab` to the panel's number, e.g. `2` will display the second panel and `3` the third. This attribute can be set before instantiation to display a specific panel on page load, but if omitted Tabs will add it and set its value to `1` thereby displaying the first panel. The attribute's value is also dynamically updated when the displayed panel is changed using the other methods.
+
+When a tab is focused, pressing <kbd>&#8592;</kbd> or <kbd>&#8594;</kbd> (<kbd>&#8593;</kbd> or <kbd>&#8595;</kbd> for vertical Tabs) will select the previous or next tab in the list respectively, while pressing <kbd>Home</kbd> or <kbd>End</kbd> will select the first or last tab respectively.
+
+Tabs can be added or removed dynamically as long as custom event `ace-tabs-update` is dispatched on the Tabs component afterwards.
+
+Giving the Tabs the attribute `ace-tabs-infinite` allows infinite rotation through panels, where pressing <kbd>&#8592;</kbd> (or <kbd>&#8593;</kbd> for vertical Tabs) with the first panel displayed will display the last, and pressing <kbd>&#8594;</kbd> (or <kbd>&#8595;</kbd> in vertical Tabs) with the last panel displayed will display the first. Giving the Tabs the attribute `ace-tabs-vertical` stacks the tabs vertically and makes <kbd>&#8593;</kbd> and <kbd>&#8595;</kbd> change the displayed panel, rather than <kbd>&#8592;</kbd> or <kbd>&#8594;</kbd>. These two attributes are observed attributes that can be added or removed to dynamically enable or disable their respective behaviour.
+
+Tabs can be given the attribute `ace-tabs-manual` which will cause the arrow keys to change the focused tab without changing the displayed panel. For these Tabs the focused tab's corresponding panel can be displayed manually by pressing <kbd>Space</kbd> or <kbd>Enter</kbd>.
+
+Tabs with the attribute `ace-tabs-deep-linked` are deep-linked meaning that whenever the displayed panel changes, the page URL is dynamically updated to include a search parameter with key and value equal to the Tabs ID and the displayed panel respectively. Deep linking works with multiple Tabs components, each adding a search parameter to the URL. When a page is loaded if the URL contains a search parameter for a deep-linked Tabs component, the panel whose number matched the search parameter value is displayed. This is a useful feature for sharing pages with specific tabs diplayed.
 
 
 ## Styles
@@ -185,7 +195,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 ### Simple Tabs
 
-The default tabs, note that the tablist does not have an `aria-label` and so a warning will printed in the console and it will be assigned the default value `ace-tabs-basic-tablist`.
+The default Tabs with three tabs.
 
 ```html
 <ace-tabs>
@@ -195,20 +205,26 @@ The default tabs, note that the tablist does not have an `aria-label` and so a w
     <button>Tab 3</button>
   </div>
   <div>
-    <h3>Panel 1</h3>
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
   </div>
   <div>
-    <h3>Panel 2</h3>
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
   </div>
   <div>
-    <h3>Panel 3</h3>
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
   </div>
 </ace-tabs>
 ```
 
-### Tabs with infinite scroll
+### Infinite rotation Tabs
 
-Simple tabs but won't wrap to first/last element when cycling through tabs using <kbd>&#8592;</kbd> and <kbd>&#8594;</kbd> keys.
+Tabs with infinite rotation.
 
 ```html
 <ace-tabs id="infinite-tabs" ace-tabs-infinite ace-tabs-selected-tab="2">
@@ -218,20 +234,26 @@ Simple tabs but won't wrap to first/last element when cycling through tabs using
     <button>Tab 3</button>
   </div>
   <div>
-    <h3>Panel 1</h3>
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
   </div>
   <div>
-    <h3>Panel 2</h3>
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
   </div>
   <div>
-    <h3>Panel 3</h3>
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
   </div>
 </ace-tabs>
 ```
 
 ### Vertical Tabs
 
-If your tablist is vertical (e.g. when having the tabs appear next to the panel instead of above) add the `ace-tabs-vertical` attribute which will add `aria-orientation="vertical"` to the tabslist element.
+Tabs with vertically stacked tabs.
 
 ```html
 <ace-tabs id="vertical-tabs" ace-tabs-vertical>
@@ -241,45 +263,55 @@ If your tablist is vertical (e.g. when having the tabs appear next to the panel 
     <button>Tab 3</button>
   </div>
   <div>
-    <h3>Panel 1</h3>
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
   </div>
   <div>
-    <h3>Panel 2</h3>
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
   </div>
   <div>
-    <h3>Panel 3</h3>
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
   </div>
 </ace-tabs>
 ```
 
-### Manually selected Tabs
+### Manually displayed Tabs
 
-The Tabs in this example are selected when the user pressed the <kbd>Space</kbd> or <kbd>Enter</kbd> on a focussed tab.
+Tabs with panels that are displayed by pressing <kbd>Space</kbd> or <kbd>Enter</kbd> when their corresponding tab is focussed.
 
 ```html
-<ace-tabs id="manual-tabs" ace-tabs-infinite ace-tabs-manual>
+<ace-tabs id="manual-tabs" ace-tabs-manual>
   <div aria-label="Tabs with manual activation">
     <button>Tab 1</button>
     <button>Tab 2</button>
     <button>Tab 3</button>
   </div>
   <div>
-    <h3>Panel 1</h3>
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
   </div>
   <div>
-    <h3>Panel 2</h3>
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
   </div>
   <div>
-    <h3>Panel 3</h3>
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
   </div>
 </ace-tabs>
 ```
 
-### Deep linked Tabs
+### Deep-linked Tabs
 
-The Tabs components in these examples contain the attribute `ace-tabs-deep-linked` and are deep-linked, meaning the page URL is dynamically updated whenever the selected tab changes to include a search parameter for each deep-linked Tabs component, with the ID and selected tab number as the key and value respectively. If upon page load the URL contains a search parameter for a deep-linked Tabs component the tab with that value is automatically selected. Note that deep-linked tabs  value 
-
-This is a useful feature for sharing specific tabs with others.
+Two Tabs components with deep linking enabled. 
 
 ```html
 <h3>Deep-linked</h3>
@@ -291,13 +323,19 @@ This is a useful feature for sharing specific tabs with others.
     <button>Tab 3</button>
   </div>
   <div>
-    <h3>Panel 1</h3>
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
   </div>
   <div>
-    <h3>Panel 2</h3>
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
   </div>
   <div>
-    <h3>Panel 3</h3>
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
   </div>
 </ace-tabs>
 
@@ -312,22 +350,26 @@ This is a useful feature for sharing specific tabs with others.
     <button>Tab 3</button>
   </div>
   <div>
-    <h3>Panel 1</h3>
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
   </div>
   <div>
-    <h3>Panel 2</h3>
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
   </div>
   <div>
-    <h3>Panel 3</h3>
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
   </div>
 </ace-tabs>
 ```
 
-### Custom Event Controlled Tabs
+### Tabs controlled using custom events
 
-In some cases you might want to customise tabs to limit the tabs which can be selectedd by the user at a particular point or create a paginated experience. To achieve this behaviour buttons which emit the `ace-tabs-set-tab`, `ace-tabs-next-tab` and `ace-tabs-prev-tab` can be used.
-
-You may want tabs to be added, removed or updated after initial load and so the tabs component can be reloaded by emitting the `ace-tabs-update` event with the ID of the tabs element to update.
+The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs. The extra JavaScript used by this example is also shown below.
 
 ```html
 <p>These buttons dispatch custom events</p>
@@ -345,13 +387,19 @@ You may want tabs to be added, removed or updated after initial load and so the 
     <button>Tab 3</button>
   </div>
   <div>
-    <h3>Panel 1</h3>
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
   </div>
   <div>
-    <h3>Panel 2</h3>
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
   </div>
   <div>
-    <h3>Panel 3</h3>
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
   </div>
 </ace-tabs>
 ```
@@ -372,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const heading = document.createElement('h3');
     heading.textContent = `Panel ${tabNumber}`;
     const p = document.createElement('p');
-    p.textContent = `This tab was added dynamically, after the carousel was initialised`;
+    p.textContent = `This tab was added dynamically, after this Tabs component was initialised`;
     const newPanel = document.createElement('div');
     newPanel.setAttribute(ATTRS.PANEL, '');
     newPanel.appendChild(heading);

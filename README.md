@@ -54,7 +54,7 @@ To create a new component:
         - Under **Options** > **Microphone** make sure **None** is ticked
         - Set the portion size to be a square. If using the minimum browser width use 420px x 420px.
         - Make sure the component is completely surrounded by whitespace within the portion square. Add padding to `example-block` elements if necessary.
-    - Use the most basic variant of the component
+    - Use the most simple variant of the component
     - For smoother video looping, try to have the component start and end the video in it's initial state.
     - Save the file as *\<component-name>.mov*
     - Make sure video is as short as possible with a maximum length of 15 seconds

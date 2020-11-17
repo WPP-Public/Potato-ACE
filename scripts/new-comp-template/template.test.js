@@ -5,9 +5,9 @@ import {ATTRS, EVENTS, TEMPLATE} from './template-kebab';
 
 // TODO: Add IDs used to find elements here
 const IDS = {
-  BASIC_TEMPLATE: 'basic-template',
   CUSTOM_EVENTS_TEMPLATE: 'custom-events-template',
   CUSTOM_EVENT_BTN: 'custom-event-1-btn',
+  SIMPLE_TEMPLATE: 'simple-template',
 };
 
 
@@ -81,8 +81,8 @@ context(`Template`, () => {
 
 
   // TODO: Group tests for different variants together using `context`
-  context(`Basic Template`, () => {
-    const TEMPLATE_ID = IDS.BASIC_TEMPLATE;
+  context(`Simple Template`, () => {
+    const TEMPLATE_ID = IDS.SIMPLE_TEMPLATE;
 
 
     beforeEach(() => getEls(TEMPLATE_ID));

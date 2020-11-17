@@ -53,6 +53,7 @@ ace-combobox {
   background: $ace-combobox-list-bg-color;
   height: auto;
   left: 0;
+  list-style: none;
   position: absolute;
   text-align: left;
   top: 100%;
@@ -395,8 +396,9 @@ ace-combobox {
   &lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
-<h3>Combobox controlled with custom events</h3>
-<p>The <strong>Add options</strong> button adds options to the initially empty Combobox, while the <strong>Show list</strong> and <strong>Hide list</strong> buttons show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select which option to choose</strong> input and clicking the <strong>Select option</strong> button. All the buttons in this example make use of Combobox's custom events. The extra JavaScript used by this example is also shown below.</p>
+<h3>Combobox controlled using custom events</h3>
+<p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events on the Tabs.</p>
+<p>The <strong>Add options</strong> button adds options to the initially empty Combobox then dispatches the <code>ace-combobox-update-options</code> custom event. The <strong>Show list</strong> and <strong>Hide list</strong> buttons dispatch the <code>ace-combobox-show-list</code> and <code>ace-combobox-hide-list</code> custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select option</strong> input and clicking <strong>Go</strong>, which dispatches the <code>ace-combobox-select-option</code> custom event. The extra JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button id="add-options-btn">Add options</button>
 <button id="show-list-btn">Show list</button>
 <button id="hide-list-btn">Hide list</button>

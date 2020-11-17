@@ -81,6 +81,7 @@ ace-combobox {
   background: $ace-combobox-list-bg-color;
   height: auto;
   left: 0;
+  list-style: none;
   position: absolute;
   text-align: left;
   top: 100%;
@@ -187,7 +188,6 @@ This event is dispatched when Select has finished updating its options. The even
 
 Combobox listens for the following events, which should be dispatched by the user's code on the specific `ace-combobox` element.
 
-
 #### Hide and show list
 
 `ace-combobox-hide-list` & `ace-combobox-show-list`
@@ -212,6 +212,7 @@ This event should be dispatched to programatically select an option. The event n
 `ace-combobox-update-options`
 
 This event should be dispatched when options are added or deleted, and causes Combobox to reinitialise itself. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+
 
 
 ## Examples
@@ -364,9 +365,11 @@ Same as previous example but with automatic selection enabled.
 </ace-combobox>
 ```
 
-### Combobox controlled with custom events 
+### Combobox controlled using custom events
 
-The **Add options** button adds options to the initially empty Combobox, while the **Show list** and **Hide list** buttons show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the **Select which option to choose** input and clicking the **Select option** button. All the buttons in this example make use of Combobox's custom events. The extra JavaScript used by this example is also shown below.
+The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs.
+
+The **Add options** button adds options to the initially empty Combobox then dispatches the `ace-combobox-update-options` custom event. The **Show list** and **Hide list** buttons dispatch the `ace-combobox-show-list` and `ace-combobox-hide-list` custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the **Select option** input and clicking **Go**, which dispatches the `ace-combobox-select-option` custom event. The extra JavaScript used by this example is also shown below.
 
 ```html
 <button id="add-options-btn">Add options</button>

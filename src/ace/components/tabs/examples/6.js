@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const heading = document.createElement('h3');
     heading.textContent = `Panel ${tabNumber}`;
     const p = document.createElement('p');
-    p.textContent = `This tab was added dynamically, after the carousel was initialised`;
+    p.textContent = `This tab was added dynamically, after this Tabs component was initialised`;
     const newPanel = document.createElement('div');
     newPanel.setAttribute(ATTRS.PANEL, '');
     newPanel.appendChild(heading);

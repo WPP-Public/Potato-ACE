@@ -5,9 +5,9 @@ import {getOptionId} from '../../../../cypress/functions';
 
 const IDS = {
   ADD_OPTION_BTN: 'add-option',
-  BASIC_SELECT: `${SELECT}-1`,
   CUSTOM_EVENTS_SELECT: 'custom-events-select',
   REMOVE_OPTION_BTN: 'remove-option',
+  SIMPLE_SELECT: `${SELECT}-1`,
 };
 
 
@@ -99,7 +99,7 @@ context(`Select`, () => {
 
 
   context(`Basic Select`, () => {
-    const SELECT_ID = IDS.BASIC_SELECT;
+    const SELECT_ID = IDS.SIMPLE_SELECT;
     const option1Id = getOptionId(SELECT_ID, 0);
 
 
@@ -284,11 +284,12 @@ context(`Select`, () => {
             },
             id: SELECT_ID,
           };
+
           cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
             .get('@selectTrigger')
             .focus()
             .click()
-            .type('{downarrow} ');
+            .type('{downarrow} {esc}');
           checkOptionChosen(optionIndex);
         });
 
