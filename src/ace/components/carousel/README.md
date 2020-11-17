@@ -75,10 +75,7 @@ ace-carousel {
 
 [ace-carousel-slide-picker-btn] {
   height: $ace-carousel-slide-picker-btn-size;
-
-  & + & {
-    margin-left: $ace-carousel-slide-picker-btn-spacing;
-  }
+  margin: 0 calc(#{$ace-carousel-slide-picker-btn-spacing} / 2);
 
   &[aria-selected="true"] {
     background-color: $ace-color-selected;
@@ -473,7 +470,219 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Store left edge x-coordinates of slides on page load and resize
   const getSlidesEdges = () => {
-    carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselEl.offsetLeft);
+    carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselSlidesEl.offsetLeft);
+  };
+  window.addEventListener('load', getSlidesEdges);
+  window.addEventListener('resize', getSlidesEdges, {passive: true});
+
+  // Start animation when slide changes
+  window.addEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, (e) => {
+    if (!e.detail || e.detail.id !== CAROUSEL_ID) {
+      return;
+    }
+    clearTimeout(scrollTimeout);
+    selectedSlideIndex = e.detail.currentlySelectedSlide - 1;
+    carouselSlideEls.forEach((slide) => {
+      // Prevent non-selected slides from being announced by screen reader due to aria-live="polite" on carouselSlidesEl
+      slide.setAttribute('aria-hidden', 'true');
+      slide.classList.remove(`${CAROUSEL_ID}__slide--hidden`);
+    });
+    carouselSlidesEl.scrollTo({behavior: 'smooth', left: slidesEdges[selectedSlideIndex]});
+  });
+
+  // Hide non-selected slides when scrolling finishes
+  carouselSlidesEl.addEventListener('scroll', () => {
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => {
+      carouselSlideEls.forEach((slide, i) => {
+        if (i === selectedSlideIndex) {
+          slide.removeAttribute('aria-hidden');
+          return;
+        }
+        slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+      });
+    }, 100);
+  }, {passive: true});
+});
+```
+
+
+### Styled Carousel
+
+An example of how Carousel can be styled to resemble a common use case design.
+
+```html
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="styled-carousel" class="styled-carousel">
+  <button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span class="pause-icon">&#10074; &#10074;</span></button>
+  <button class="styled-carousel__slide-btn styled-carousel__slide-btn--prev">&#10094;</button>
+  <button class="styled-carousel__slide-btn styled-carousel__slide-btn--next">&#10095;</button>
+  <div ace-carousel-slide-picker class="styled-carousel__slide-picker"></div>
+  <div class="styled-carousel__slides">
+    <div class="styled-carousel__slide">
+      <h3>Slide 1 heading</h3>
+      <button>Button</button>
+      <a href="#">Link</a>
+      <p>Slide 1 content.</p>
+      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+    </div>
+    <div class="styled-carousel__slide">
+      <h3>Slide 2 heading</h3>
+      <button>Button</button>
+      <a href="#">Link</a>
+      <p>Slide 2 content.</p>
+      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+    </div>
+    <div class="styled-carousel__slide">
+      <h3>Slide 3 heading</h3>
+      <button>Button</button>
+      <a href="#">Link</a>
+      <p>Slide 3 content.</p>
+      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+    </div>
+  </div>
+</ace-carousel>
+```
+
+```scss
+.styled-carousel {
+  margin: 0 auto;
+  max-width: 600px;
+  position: relative;
+
+  &__auto-slide-show-btn,
+  &__slide-btn {
+    cursor: pointer;
+    margin: 8px;
+    position: absolute;
+  }
+
+  &__slide-btn {
+    border-radius: 50%;
+    font-size: 24px;
+    height: 48px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+
+    &--next {
+      right: 0;
+    }
+  }
+
+  &__slide-picker {
+    bottom: 0;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%);
+  }
+
+  [ace-carousel-slide-picker-btn] {
+    $slide-picker-btn-diameter: 8px;
+
+    background-color: transparent;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    height: $slide-picker-btn-diameter * 2.5;
+    margin: 0;
+    position: relative;
+    width: $slide-picker-btn-diameter * 2.5;
+
+    &:active,
+    &:focus {
+      border-color: steelblue;
+      outline: none;
+    }
+
+    &::after {
+      border: 1px solid black;
+      border-radius: 50%;
+      content: '';
+      height: $slide-picker-btn-diameter;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: $slide-picker-btn-diameter;
+    }
+
+    &[aria-selected="true"]::after {
+      background-color: black;
+    }
+  }
+
+  &__slide {
+    padding: 48px 80px 32px;
+
+    &:nth-of-type(1) {
+      background: #7ddde6;
+    }
+
+    &:nth-of-type(2) {
+      background: #d089a8;
+    }
+
+    &:nth-of-type(3) {
+      background: #eef08f;
+    }
+  }
+
+  &[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
+  &[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
+    display: none;
+  }
+}
+
+// Animation styles
+@media (prefers-reduced-motion: no-preference) {
+  .styled-carousel {
+    &__slides {
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    &__slide {
+      display: block;
+      flex-shrink: 0;
+      width: 100%;
+
+      &--hidden {
+        visibility: hidden;
+      }
+    }
+  }
+}
+```
+
+```js
+import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  // If user prefers reduced motion then do not animate
+  if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    return;
+  }
+
+  const CAROUSEL_ID = 'styled-carousel';
+  const carouselEl = document.getElementById(CAROUSEL_ID);
+  const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
+  const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
+  const slidesEdges = [];
+  let selectedSlideIndex = +carouselEl.getAttribute(ATTRS.SELECTED_SLIDE) - 1;
+  let scrollTimeout;
+
+  // Hide non-selected slides on page load
+  carouselSlideEls.forEach((slide, i) => {
+    if (i === selectedSlideIndex) {
+      return;
+    }
+    slide.setAttribute('aria-hidden', 'true');
+    slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+  });
+
+  // Store left edge x-coordinates of slides on page load and resize
+  const getSlidesEdges = () => {
+    carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselSlidesEl.offsetLeft);
   };
   window.addEventListener('load', getSlidesEdges);
   window.addEventListener('resize', getSlidesEdges, {passive: true});
