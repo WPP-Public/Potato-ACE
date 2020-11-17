@@ -57,7 +57,7 @@ $ace-tabs-tab-bg-colour: transparent !default;
 $ace-tabs-tab-padding-horizontal: $ace-spacing-4 !default;
 $ace-tabs-tab-padding-vertical: $ace-spacing-2 !default;
 $ace-tabs-tab-hover-bg-colour: $ace-color-hover !default;
-$ace-tabs-selected-tab-border-colour: $ace-color-focus !default;
+$ace-tabs-selected-tab-border-colour: $ace-color-selected !default;
 $ace-tabs-selected-tab-border-width: 3px !default;
 
 
