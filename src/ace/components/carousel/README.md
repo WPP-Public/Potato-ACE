@@ -46,6 +46,7 @@ For automatic Carousels the automatic slide show is paused while the mouse point
 The automatic slide show can be stopped and started again using the automatic slide show toggle button or using custom events, with both methods setting Carousel attribute `ace-carousel-auto-slide-show-stopped` to `true` or `false`. This attribute can therefore be used to change the text string or icon of the toggle button simply using CSS. Note that this attribute will have value `false` while the Carousel is temporarily paused due to mouse hover or descendant keyboard focus.
 
 
+
 ## Styles
 
 The following SASS is applied to Carousel, each declaration of which can be overridden by a single class selector.
