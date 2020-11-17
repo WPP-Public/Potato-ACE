@@ -2,11 +2,11 @@ import {ATTRS, DISCLOSURE, EVENTS} from './disclosure';
 
 
 const IDS = {
-  BASIC_DISCLOSURE: 'basic-disclosure',
   CUSTOM_EVENTS_DISCLOSURE: 'custom-events-disclosure',
   HIDE_BTN: 'custom-events-hide-btn',
   INIT_VISIBLE_DISCLOSURE: 'initially-visible-disclosure',
   SHOW_BTN: 'custom-events-show-btn',
+  SIMPLE_DISCLOSURE: 'simple-disclosure',
   TOGGLE_BTN: 'custom-events-toggle-btn',
 };
 
@@ -59,7 +59,7 @@ context(`Disclosure`, () => {
 
 
   context(`Basic Disclosure`, () => {
-    const ID = IDS.BASIC_DISCLOSURE;
+    const ID = IDS.SIMPLE_DISCLOSURE;
 
 
     beforeEach(() => getEls(ID));
@@ -133,10 +133,10 @@ context(`Disclosure`, () => {
       checkDislosureState(false);
 
       // Check that other disclosure not affected
-      cy.get(`#${IDS.BASIC_DISCLOSURE}`)
+      cy.get(`#${IDS.SIMPLE_DISCLOSURE}`)
         .as('anotherDisclosure')
         .should('have.attr', ATTRS.VISIBLE, 'false')
-        .get(`[${ATTRS.TRIGGER}="${IDS.BASIC_DISCLOSURE}"]`)
+        .get(`[${ATTRS.TRIGGER}="${IDS.SIMPLE_DISCLOSURE}"]`)
         .as('anotherDisclosureTriggers')
         .each($trigger => {
           cy.wrap($trigger).should('have.attr', 'aria-expanded', 'false');

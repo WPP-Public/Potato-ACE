@@ -3,12 +3,12 @@ import {ATTRS, CAROUSEL, EVENTS} from './carousel';
 
 const IDS = {
   ADD_SLIDE_BTN: 'add-slide-btn',
-  BASIC_CAROUSEL: `${CAROUSEL}-1`,
   CUSTOM_EVENTS_CAROUSEL: 'custom-events-carousel',
   INFINITE_CAROUSEL: 'infinite-carousel',
   NEXT_SLIDE_BTN: 'next-slide-btn',
   PREV_SLIDE_BTN: 'prev-slide-btn',
   REMOVE_SLIDE_BTN: 'remove-slide-btn',
+  SIMPLE_CAROUSEL: `${CAROUSEL}-1`,
 };
 
 
@@ -84,8 +84,8 @@ context(`Carousel`, () => {
   });
 
 
-  context(`Basic Carousel`, () => {
-    const CAROUSEL_ID = IDS.BASIC_CAROUSEL;
+  context(`Simple Carousel`, () => {
+    const CAROUSEL_ID = IDS.SIMPLE_CAROUSEL;
 
 
     beforeEach(() => getEls(CAROUSEL_ID));

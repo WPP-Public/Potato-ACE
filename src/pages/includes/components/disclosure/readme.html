@@ -46,15 +46,15 @@
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Disclosure</h3>
-<p>This is a simple button triggered Disclosure.</p>
+<p>This is a simple, button-triggered Disclosure.</p>
 <div class="example-block"><button ace-disclosure-trigger-for="ace-disclosure-1">
   Disclosure toggle
 </button>
 <hr>
 <ace-disclosure id="ace-disclosure-1">
   <h2>Disclosure heading</h2>
-  <p>Disclosure content</p>
-  <img src="/img/logo.svg" width="50px" alt="Potato logo"/>
+  <p>Disclosure content.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 </ace-disclosure>
 </div>
 <pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;ace-disclosure-1&quot;&gt;
@@ -63,16 +63,16 @@
 &lt;hr&gt;
 &lt;ace-disclosure id=&quot;ace-disclosure-1&quot;&gt;
   &lt;h2&gt;Disclosure heading&lt;/h2&gt;
-  &lt;p&gt;Disclosure content&lt;/p&gt;
-  &lt;img src=&quot;/img/logo.svg&quot; width=&quot;50px&quot; alt=&quot;Potato logo&quot;/&gt;
+  &lt;p&gt;Disclosure content.&lt;/p&gt;
+  &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
 <h3>Initially visible Disclosure</h3>
 <p>In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute <code>ace-disclosure-visible=&quot;true&quot;</code>.</p>
-<div class="example-block"><button ace-disclosure-trigger-for="basic-disclosure">
+<div class="example-block"><button ace-disclosure-trigger-for="simple-disclosure">
   Disclosure 1 toggle trigger 1
 </button>
-<button ace-disclosure-trigger-for="basic-disclosure">
+<button ace-disclosure-trigger-for="simple-disclosure">
   Disclosure 1 toggle trigger 2
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
@@ -85,19 +85,21 @@
   Disclosure 2 hide trigger
 </button>
 <hr>
-<ace-disclosure id="basic-disclosure">
+<ace-disclosure id="simple-disclosure">
   <h2>Disclosure 1</h2>
   <p>This Disclosure is initially hidden.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 </ace-disclosure>
 <ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
   <h2>Disclosure 2</h2>
   <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
+  <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 </ace-disclosure>
 </div>
-<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;basic-disclosure&quot;&gt;
+<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;simple-disclosure&quot;&gt;
   Disclosure 1 toggle trigger 1
 &lt;/button&gt;
-&lt;button ace-disclosure-trigger-for=&quot;basic-disclosure&quot;&gt;
+&lt;button ace-disclosure-trigger-for=&quot;simple-disclosure&quot;&gt;
   Disclosure 1 toggle trigger 2
 &lt;/button&gt;
 &lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot;&gt;
@@ -110,18 +112,20 @@
   Disclosure 2 hide trigger
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-disclosure id=&quot;basic-disclosure&quot;&gt;
+&lt;ace-disclosure id=&quot;simple-disclosure&quot;&gt;
   &lt;h2&gt;Disclosure 1&lt;/h2&gt;
   &lt;p&gt;This Disclosure is initially hidden.&lt;/p&gt;
+  &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
 &lt;/ace-disclosure&gt;
 
 &lt;ace-disclosure ace-disclosure-visible=&quot;true&quot; id=&quot;initially-visible-disclosure&quot;&gt;
   &lt;h2&gt;Disclosure 2&lt;/h2&gt;
   &lt;p&gt;This Disclosure is initially visible becasue it has the attribute &lt;code&gt;ace-disclosure-visible=&quot;true&quot;&lt;/code&gt;.&lt;/p&gt;
+  &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
-<h3>Custom event triggered Disclosure</h3>
-<p>Example of Disclosure controlled through custom events. The buttons in this example are <strong>not</strong> trigger buttons and instead dispatch the Disclosure's custom events. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The extra JavaScript code required by this example is also included below.</p>
+<h3>Disclosure controlled using custom events</h3>
+<p>The buttons in this example are <strong>not</strong> trigger buttons and instead dispatch the <code>ace-disclosure-show</code>, <code>ace-disclosure-hide</code> &amp; <code>ace-disclosure-toggle</code> custom events on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The extra JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button id="custom-events-show-btn">
   Show disclosure using custom event
 </button>
@@ -135,6 +139,7 @@
 <ace-disclosure id="custom-events-disclosure">
   <h2>Custom event Disclosure</h2>
   <p>This Disclosure's visibility is controlled using custom events.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 </ace-disclosure>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;custom-events-show-btn&quot;&gt;
@@ -150,6 +155,7 @@
 &lt;ace-disclosure id=&quot;custom-events-disclosure&quot;&gt;
   &lt;h2&gt;Custom event Disclosure&lt;/h2&gt;
   &lt;p&gt;This Disclosure's visibility is controlled using custom events.&lt;/p&gt;
+  &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
 <pre><code class="language-js">import {EVENTS} from '/ace/components/disclosure/disclosure.js';

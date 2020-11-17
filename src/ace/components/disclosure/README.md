@@ -94,7 +94,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 ### Simple Disclosure
 
-This is a simple button triggered Disclosure.
+This is a simple, button-triggered Disclosure.
 
 ```html
 <button ace-disclosure-trigger-for="ace-disclosure-1">
@@ -103,8 +103,8 @@ This is a simple button triggered Disclosure.
 <hr>
 <ace-disclosure id="ace-disclosure-1">
   <h2>Disclosure heading</h2>
-  <p>Disclosure content</p>
-  <img src="/img/logo.svg" width="50px" alt="Potato logo"/>
+  <p>Disclosure content.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 </ace-disclosure>
 ```
 
@@ -114,10 +114,10 @@ This is a simple button triggered Disclosure.
 In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute `ace-disclosure-visible="true"`.
 
 ```html
-<button ace-disclosure-trigger-for="basic-disclosure">
+<button ace-disclosure-trigger-for="simple-disclosure">
   Disclosure 1 toggle trigger 1
 </button>
-<button ace-disclosure-trigger-for="basic-disclosure">
+<button ace-disclosure-trigger-for="simple-disclosure">
   Disclosure 1 toggle trigger 2
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
@@ -130,21 +130,23 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
   Disclosure 2 hide trigger
 </button>
 <hr>
-<ace-disclosure id="basic-disclosure">
+<ace-disclosure id="simple-disclosure">
   <h2>Disclosure 1</h2>
   <p>This Disclosure is initially hidden.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 </ace-disclosure>
 
 <ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
   <h2>Disclosure 2</h2>
   <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
+  <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 </ace-disclosure>
 ```
 
 
-### Custom event triggered Disclosure
+### Disclosure controlled using custom events
 
-Example of Disclosure controlled through custom events. The buttons in this example are **not** trigger buttons and instead dispatch the Disclosure's custom events. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The extra JavaScript code required by this example is also included below.
+The buttons in this example are **not** trigger buttons and instead dispatch the `ace-disclosure-show`, `ace-disclosure-hide` & `ace-disclosure-toggle` custom events on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The extra JavaScript used by this example is also shown below.
 
 ```html
 <button id="custom-events-show-btn">
@@ -160,6 +162,7 @@ Example of Disclosure controlled through custom events. The buttons in this exam
 <ace-disclosure id="custom-events-disclosure">
   <h2>Custom event Disclosure</h2>
   <p>This Disclosure's visibility is controlled using custom events.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 </ace-disclosure>
 ```
 
