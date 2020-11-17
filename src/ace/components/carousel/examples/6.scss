@@ -1,0 +1,18 @@
+@media (prefers-reduced-motion: no-preference) {
+  .animated-carousel {
+    &__slides {
+      display: flex;
+      overflow-x: hidden;
+    }
+
+    &__slide {
+      display: block;
+      flex-shrink: 0;
+      width: 100%;
+
+      &--hidden {
+        visibility: hidden;
+      }
+    }
+  }
+}

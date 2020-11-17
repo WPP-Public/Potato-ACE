@@ -8,7 +8,7 @@ $ace-carousel-slide-picker-btn-spacing: $ace-spacing-1 !default;
 
 /* STYLES */
 ace-carousel {
-  display: inline-block;
+  display: block;
 }
 
 [ace-carousel-slide] {
@@ -21,8 +21,6 @@ ace-carousel {
 
 [ace-carousel-slide-picker-btn] {
   height: $ace-carousel-slide-picker-btn-size;
-  padding: 0;
-  width: $ace-carousel-slide-picker-btn-size;
 
   & + & {
     margin-left: $ace-carousel-slide-picker-btn-spacing;
