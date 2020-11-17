@@ -62,3 +62,20 @@ export const KEYS: Keys = {
     KEY: 'ArrowUp',
   },
 };
+
+
+// Browser-specific, page visibility API strings
+// From https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+let HIDDEN, VISIBILITY_CHANGE;
+if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
+  HIDDEN = 'hidden';
+  VISIBILITY_CHANGE = 'visibilitychange';
+} else if (typeof (document as any).msHidden !== 'undefined') {
+  HIDDEN = 'msHidden';
+  VISIBILITY_CHANGE = 'msvisibilitychange';
+} else if (typeof (document as any).webkitHidden !== 'undefined') {
+  HIDDEN = 'webkitHidden';
+  VISIBILITY_CHANGE = 'webkitvisibilitychange';
+}
+
+export const PAGE_VISIBILITY_API_STRINGS = {HIDDEN, VISIBILITY_CHANGE};
