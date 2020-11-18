@@ -3,11 +3,9 @@ import {ATTRS, DISCLOSURE, EVENTS} from './disclosure';
 
 const IDS = {
   CUSTOM_EVENTS_DISCLOSURE: 'custom-events-disclosure',
-  HIDE_BTN: 'custom-events-hide-btn',
   INIT_VISIBLE_DISCLOSURE: 'initially-visible-disclosure',
-  SHOW_BTN: 'custom-events-show-btn',
   SIMPLE_DISCLOSURE: 'simple-disclosure',
-  TOGGLE_BTN: 'custom-events-toggle-btn',
+  TOGGLE_CUSTOM_EVENT_BTN: 'toggle-custom-event-btn',
 };
 
 
@@ -51,14 +49,14 @@ context(`Disclosure`, () => {
   before(() => cy.visit(`/disclosure`));
 
 
-  it(`Disclosure without ID should initialise with an ID`, () => {
+  it(`Should initialise with an ID even if one not provided`, () => {
     cy.get(DISCLOSURE)
       .first()
       .should('have.id', `${DISCLOSURE}-1`);
   });
 
 
-  context(`Basic Disclosure`, () => {
+  context(`Simple Disclosure`, () => {
     const ID = IDS.SIMPLE_DISCLOSURE;
 
 
@@ -68,7 +66,7 @@ context(`Disclosure`, () => {
     it(`Should initialise correctly`, () => initChecks(false));
 
 
-    it(`Toggle triggers should toggle Disclosure and update all it's triggers`, () => {
+    it(`Should only toggle its own visibility and update all of it's own triggers when any toggle trigger clicked`, () => {
       let expectedDetail = {
         id: ID,
         visible: true,
@@ -112,6 +110,34 @@ context(`Disclosure`, () => {
           cy.wrap($trigger).should('have.attr', 'aria-expanded', 'true');
         });
     });
+
+
+    it(`Should change visibility when observed attribute changed`, () => {
+      let expectedDetail = {
+        id: ID,
+        visible: true,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+
+      cy.get('@disclosure')
+        .invoke('attr', ATTRS.VISIBLE, 'true')
+        .get('@disclosureTriggers')
+        .each(($trigger) => {
+          cy.wrap($trigger).should('have.attr', 'aria-expanded', 'true');
+        });
+
+      expectedDetail = {
+        id: ID,
+        visible: false,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+      cy.get('@disclosure')
+        .invoke('attr', ATTRS.VISIBLE, 'false')
+        .get('@disclosureTriggers')
+        .each(($trigger) => {
+          cy.wrap($trigger).should('have.attr', 'aria-expanded', 'false');
+        });
+    });
   });
 
 
@@ -125,7 +151,7 @@ context(`Disclosure`, () => {
     it(`Should initialise correctly`, () => initChecks(true));
 
 
-    it(`Toggle triggers should toggle Disclosure and update all its triggers`, () => {
+    it(`Should only toggle its own visibility and update all of it's own triggers when any toggle trigger clicked`, () => {
       // Check that disclosure's first toggle trigger toggles it
       cy.get('@disclosureTriggers')
         .first()
@@ -158,7 +184,7 @@ context(`Disclosure`, () => {
     });
 
 
-    it(`Show and Hide triggers should only show and only hide Disclosure`, () => {
+    it(`Should only show or only hide itself only and update all of it's own triggers when show or hide trigger clicked, repectively`, () => {
       cy.get(`[${ATTRS.TRIGGER}="${ID}"][${ATTRS.TRIGGER_SHOW}]`)
         .as('disclosureShowTrigger')
         .get(`[${ATTRS.TRIGGER}="${ID}"][${ATTRS.TRIGGER_HIDE}]`)
@@ -179,38 +205,42 @@ context(`Disclosure`, () => {
         .get('@disclosure')
         .should('have.attr', ATTRS.VISIBLE, 'true');
     });
+
+
+    it(`Should change visibility when observed attribute changed`, () => {
+      let expectedDetail = {
+        id: ID,
+        visible: false,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+
+      cy.get('@disclosure')
+        .invoke('attr', ATTRS.VISIBLE, 'false')
+        .get('@disclosureTriggers')
+        .each(($trigger) => {
+          cy.wrap($trigger).should('have.attr', 'aria-expanded', 'false');
+        });
+
+      expectedDetail = {
+        id: ID,
+        visible: true,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+      cy.get('@disclosure')
+        .invoke('attr', ATTRS.VISIBLE, 'true')
+        .get('@disclosureTriggers')
+        .each(($trigger) => {
+          cy.wrap($trigger).should('have.attr', 'aria-expanded', 'true');
+        });
+    });
   });
 
 
-  it(`Disclosure should respond to custom events correctly`, () => {
+  it(`Should toggle visibility when toggle custom event dispatched on it`, () => {
     cy.get(`#${IDS.CUSTOM_EVENTS_DISCLOSURE}`)
       .as('disclosure')
-      .get(`#${IDS.SHOW_BTN}`)
-      .as('showBtn')
-      .get(`#${IDS.HIDE_BTN}`)
-      .as('hideBtn')
-      .get(`#${IDS.TOGGLE_BTN}`)
+      .get(`#${IDS.TOGGLE_CUSTOM_EVENT_BTN}`)
       .as('toggleBtn')
-      // Test Show button
-      .get('@showBtn')
-      .click()
-      .get('@disclosure')
-      .should('have.attr', ATTRS.VISIBLE, 'true')
-      .get('@showBtn')
-      .click()
-      .get('@disclosure')
-      .should('have.attr', ATTRS.VISIBLE, 'true')
-      // Test hide button
-      .get('@hideBtn')
-      .click()
-      .get('@disclosure')
-      .should('have.attr', ATTRS.VISIBLE, 'false')
-      .get('@hideBtn')
-      .click()
-      .get('@disclosure')
-      .should('have.attr', ATTRS.VISIBLE, 'false')
-      // Test toggle button
-      .get('@toggleBtn')
       .click()
       .get('@disclosure')
       .should('have.attr', ATTRS.VISIBLE, 'true')
