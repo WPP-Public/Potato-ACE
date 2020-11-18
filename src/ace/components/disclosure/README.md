@@ -35,7 +35,7 @@ Triggers will by default toggle the visibiility of the Disclosure, but the `ace-
 The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.
 
 ```scss
-[ace-disclosure-visible="false"] {
+ace-disclosure:not([ace-disclosure-visible="true"]) {
   display: none;
 }
 ```
