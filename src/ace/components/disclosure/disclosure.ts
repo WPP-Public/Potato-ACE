@@ -69,15 +69,13 @@ export default class Disclosure extends HTMLElement {
 
 
     /* GET DOM DATA */
-    const visible = this.hasAttribute(ATTRS.VISIBLE);
+    const visible = (this.getAttribute(ATTRS.VISIBLE) === 'true').toString();
 
 
     /* SET DOM DATA */
-    this.setAttribute(ATTRS.VISIBLE, visible.toString());
-
     this.triggerEls.forEach((triggerEl) => {
       triggerEl.setAttribute('aria-controls', this.id);
-      triggerEl.setAttribute('aria-expanded', visible.toString());
+      triggerEl.setAttribute('aria-expanded', visible);
     });
 
 
@@ -86,6 +84,8 @@ export default class Disclosure extends HTMLElement {
 
 
     /* INITIALISATION */
+    this.setAttribute(ATTRS.VISIBLE, visible);
+
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
         'id': this.id,
