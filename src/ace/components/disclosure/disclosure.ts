@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
   autoID(DISCLOSURE);
   customElements.define(DISCLOSURE, Disclosure);
 
+
   // Add window click handler for disclosure triggers
   window.addEventListener('click', (e) => {
     const triggerClicked = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`);
