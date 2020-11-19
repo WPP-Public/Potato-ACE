@@ -3,7 +3,6 @@
 
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
-$ace-combobox-list-z-index: 1 !default;
 $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 
@@ -28,15 +27,9 @@ ace-combobox {
   white-space: nowrap;
   width: 100%;
   z-index: $ace-combobox-list-z-index;
-}
 
-[ace-combobox-list-visible="false"] {
-  display: none;
-}
-
-[ace-combobox-option] {
-  &:hover {
-    background-color: $ace-combobox-option-selected-bg-color;
+  &:not([ace-combobox-list-visible="true"]) {
+    display: none;
   }
 }
 
@@ -44,5 +37,10 @@ ace-combobox {
   background-color: $ace-combobox-option-selected-bg-color;
 }
 
+[ace-combobox-option]:hover {
+  background-color: $ace-combobox-option-selected-bg-color;
+}
 
+
+// Import styles that ensure that the listbox doesn't overflow outside the viewport.
 @import '../../common/utils';

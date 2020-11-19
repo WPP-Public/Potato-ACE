@@ -47,7 +47,7 @@ The automatic slide show can be stopped and started again using the automatic sl
 
 ## Styles
 
-The following SASS is applied to Carousel, each declaration of which can be overridden by a single class selector.
+The following SASS is applied to Carousel. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
 
 ```scss
 @import '../../common/constants';
@@ -63,12 +63,8 @@ ace-carousel {
   display: block;
 }
 
-[ace-carousel-slide] {
+[ace-carousel-slide]:not([ace-carousel-slide-selected]) {
   display: none;
-}
-
-[ace-carousel-slide-selected] {
-  display: block;
 }
 
 [ace-carousel-slide-picker-btn] {

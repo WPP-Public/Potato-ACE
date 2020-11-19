@@ -11,12 +11,8 @@ ace-carousel {
   display: block;
 }
 
-[ace-carousel-slide] {
+[ace-carousel-slide]:not([ace-carousel-slide-selected]) {
   display: none;
-}
-
-[ace-carousel-slide-selected] {
-  display: block;
 }
 
 [ace-carousel-slide-picker-btn] {

@@ -21,7 +21,7 @@
 <p>For automatic Carousels the automatic slide show is paused while the mouse pointer hovers over the Carousel or while a Carousel instance descendant, other than the automatic slide show toggle button, has keyboard focus, and automatically resumes afterwards. The automatic slide show will not start on page load if the page is hidden, i.e. it's in a background tab or the window is minimised, and will start as soon as the page becomes visible. It will also pause if the page becomes hidden at any point and will resume once the page is visible again.</p>
 <p>The automatic slide show can be stopped and started again using the automatic slide show toggle button or using custom events, with both methods setting Carousel attribute <code>ace-carousel-auto-slide-show-stopped</code> to <code>true</code> or <code>false</code>. This attribute can therefore be used to change the text string or icon of the toggle button simply using CSS. Note that this attribute will have value <code>false</code> while the Carousel is temporarily paused due to mouse hover or descendant keyboard focus.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to Carousel, each declaration of which can be overridden by a single class selector.</p>
+<p>The following SASS is applied to Carousel. SASS variables used that are not defined here are defined in <em>ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
 
@@ -35,12 +35,8 @@ ace-carousel {
   display: block;
 }
 
-[ace-carousel-slide] {
+[ace-carousel-slide]:not([ace-carousel-slide-selected]) {
   display: none;
-}
-
-[ace-carousel-slide-selected] {
-  display: block;
 }
 
 [ace-carousel-slide-picker-btn] {
