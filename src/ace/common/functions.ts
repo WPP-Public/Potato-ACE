@@ -1,5 +1,5 @@
 /* FUNCTIONS THAT CAN BE USED BY ANY COMPONENT */
-import {Key, UTIL_ATTRS} from './constants.js';
+import {DISPLAY_NAME, Key, UTIL_ATTRS} from './constants.js';
 
 
 /*
@@ -23,6 +23,26 @@ export const autoID = (component: string): void => {
 
       elem.id = newId;
    });
+};
+
+
+/*
+  Warn user if element doesn't have aria-label nor aria-labelledby, or aria-labelledby is set to a non-existing element or an element with no text content
+*/
+export const warnIfElHasNoAriaLabel = (element: HTMLElement, elementName: string, ancestorElWithId?: HTMLElement): void => {
+  const elementHasLabel = element.hasAttribute('aria-label');
+  const elementLabelledById = element.getAttribute('aria-labelledby');
+  const elementWithId = ancestorElWithId || element;
+  if (elementLabelledById) {
+    const labelEl = document.getElementById(elementLabelledById);
+    if (!labelEl) {
+      console.warn(`${DISPLAY_NAME}: ${elementName} with ID '${elementWithId.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
+    } else if (!labelEl.textContent.length) {
+      console.warn(`${DISPLAY_NAME}: ${elementName} with ID '${elementWithId.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
+    }
+  } else if (!elementHasLabel) {
+    console.warn(`${DISPLAY_NAME}: ${elementName} with ID '${elementWithId.id}' requires an 'aria-label' or an 'aria-labelledby' attribute.`);
+  }
 };
 
 
@@ -54,41 +74,8 @@ export const getElsByAttrOrSelector = (container: Element, attr: string, selecto
 };
 
 
-
 /*
-  Check if key pressed matches any key in the provided keysToMatch array
-*/
-export const keyPressedMatches = (keyPressed: string | number, keysToMatch: Array<Key> | Key): boolean => {
-  const keys = Array.isArray(keysToMatch) ? keysToMatch : [keysToMatch];
-  return keys.some((key) => key.CODE === keyPressed || key.KEY === keyPressed);
-};
-
-
-/*
-  Checks if an element will overflow to the bottom or the right
-  of the viewport and adds utility attibutes to prevent either or both.
-  Util attributes are in `./_utils.scss`
-*/
-export const handleOverflow = (elem: HTMLElement): void => {
-  elem.removeAttribute(UTIL_ATTRS.FLOAT_LEFT);
-  elem.removeAttribute(UTIL_ATTRS.FLOAT_ABOVE);
-  const bounding = elem.getBoundingClientRect();
-  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-
-  if (bounding.bottom > viewportHeight && bounding.height < viewportHeight) {
-    elem.setAttribute(UTIL_ATTRS.FLOAT_ABOVE, '');
-  }
-
-  if (bounding.right >
-    (window.innerWidth || document.documentElement.clientWidth)
-  ) {
-    elem.setAttribute(UTIL_ATTRS.FLOAT_LEFT, '');
-  }
-};
-
-
-/*
-  Increments or decrements a given index based on whether DOWN or UP arrow is pressed respectively, looping around if necessary.
+  Increments or decrements a given index based on direction and total number of items, looping around if necessary, and returns new index.
 */
 export const getIndexOfNextItem = (startIndex: number, direction: -1|1, itemsTotal: number, loopAround=false): number => {
   let newIndex = startIndex + direction;
@@ -98,4 +85,36 @@ export const getIndexOfNextItem = (startIndex: number, direction: -1|1, itemsTot
     newIndex = loopAround ? 0 : itemsTotal - 1;
   }
   return newIndex;
+};
+
+
+/*
+  Checks if an element will overflow to the bottom or the right
+  of the viewport and adds utility attibutes to prevent either or both.
+  Util attributes are in `./_utils.scss`
+*/
+export const handleOverflow = (elem: HTMLElement, verticalOnly = false): void => {
+  if (!verticalOnly) {
+    elem.removeAttribute(UTIL_ATTRS.FLOAT_LEFT);
+  }
+  elem.removeAttribute(UTIL_ATTRS.FLOAT_ABOVE);
+  const bounding = elem.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+  if (bounding.bottom > viewportHeight && bounding.height < viewportHeight) {
+    elem.setAttribute(UTIL_ATTRS.FLOAT_ABOVE, '');
+  }
+
+  if (!verticalOnly && bounding.right > (window.innerWidth || document.documentElement.clientWidth)) {
+    elem.setAttribute(UTIL_ATTRS.FLOAT_LEFT, '');
+  }
+};
+
+
+/*
+  Check if key pressed matches any key in the provided keysToMatch array
+*/
+export const keyPressedMatches = (keyPressed: string | number, keysToMatch: Array<Key> | Key): boolean => {
+  const keys = Array.isArray(keysToMatch) ? keysToMatch : [keysToMatch];
+  return keys.some((key) => key.CODE === keyPressed || key.KEY === keyPressed);
 };

@@ -1,6 +1,7 @@
 /* CONSTANTS AVAILABLE TO ALL COMPONENTS */
 
 export const NAME = 'ace';
+export const DISPLAY_NAME = 'ACE';
 
 export const UTIL_ATTRS = {
   FLOAT_ABOVE: `${NAME}-u-float-above`,

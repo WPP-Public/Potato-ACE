@@ -1,6 +1,11 @@
 /* IMPORTS */
-import {KEYS, NAME} from '../../common/constants.js';
-import {autoID, getIndexOfNextItem, keyPressedMatches} from '../../common/functions.js';
+import {DISPLAY_NAME, KEYS, NAME} from '../../common/constants.js';
+import {
+  autoID,
+  getIndexOfNextItem,
+  keyPressedMatches,
+  warnIfElHasNoAriaLabel
+} from '../../common/functions.js';
 
 
 /* COMPONENT NAME */
@@ -63,6 +68,9 @@ export default class Listbox extends HTMLElement {
 
 
   public connectedCallback(): void {
+    const ELEMENT_NAME = this.constructor === Listbox ? 'Listbox' : 'Select';
+
+
     /* GET DOM ELEMENTS */
     this.listEl =
       this.querySelector(`[${ATTRS.LIST}]`) ||
@@ -71,7 +79,7 @@ export default class Listbox extends HTMLElement {
 
     // Error if no <ul> nor <ol> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
     if (!this.listEl) {
-      console.error(`ACE: ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' requires a <ul> or <ol> ancestor element.`);
+      console.error(`${DISPLAY_NAME}: ${ELEMENT_NAME} with ID '${this.id}' requires a <ul> or <ol> ancestor element.`);
       return;
     }
 
@@ -102,16 +110,7 @@ export default class Listbox extends HTMLElement {
 
 
     /* INITIALISATION */
-    // Check that list is labelled
-    const listLabelElId = this.listEl.getAttribute('aria-labelledby');
-    const labelEl = document.getElementById(listLabelElId);
-    if (!listLabelElId) {
-      console.warn(`ACE: List element of ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' requires an 'aria-labelledby' attribute.`);
-    } else if (!labelEl) {
-      console.warn(`ACE: List element of ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
-    } else if (!labelEl.textContent.length) {
-      console.warn(`ACE: ${this.constructor === Listbox ? 'Listbox' : 'Select'} with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
-    }
+    warnIfElHasNoAriaLabel(this.listEl, `List element of ${ELEMENT_NAME}`, this);
 
     this.initialiseList();
     this.initialised = true;
@@ -347,7 +346,7 @@ export default class Listbox extends HTMLElement {
 
     // "type-ahead" search functionality
     clearTimeout(this.searchTimeout);
-    this.query+=e.key.toLowerCase();
+    this.query += e.key.toLowerCase();
     this.findInList();
     this.searchTimeout = window.setTimeout(this.clearListSearch, searchTimeoutTime);
   }

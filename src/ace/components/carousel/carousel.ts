@@ -1,10 +1,11 @@
 /* IMPORTS */
-import {KEYS, NAME, PAGE_VISIBILITY_API_STRINGS} from '../../common/constants.js';
+import {DISPLAY_NAME, KEYS, NAME, PAGE_VISIBILITY_API_STRINGS} from '../../common/constants.js';
 import {
   autoID,
   getElByAttrOrSelector,
   getIndexOfNextItem,
-  keyPressedMatches
+  keyPressedMatches,
+  warnIfElHasNoAriaLabel
 } from '../../common/functions.js';
 
 
@@ -141,7 +142,7 @@ export default class Carousel extends HTMLElement {
       this.autoSlideShowBtn = this.querySelector('button');
 
       if (!this.autoSlideShowBtn) {
-        console.error(`ACE: Carousel with ID '${this.id}' has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show Carousel that in turn  requires a descendant <button> element that is the first focusable element in order to toggle the automatic slide show.`);
+        console.error(`${DISPLAY_NAME}: Carousel with ID '${this.id}' has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show Carousel that in turn  requires a descendant <button> element that is the first focusable element in order to toggle the automatic slide show.`);
         return;
       }
     }
@@ -157,7 +158,7 @@ export default class Carousel extends HTMLElement {
       this.querySelector(nextSlideBtnSelector);
 
     if (!this.prevSlideBtn || !this.nextSlideBtn) {
-      console.error(`ACE: Carousel with ID '${this.id}' must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to ${this.autoSlideShowCarousel ? 'toggle the automatic slide show and' : ''} display the previous and next slides.`);
+      console.error(`${DISPLAY_NAME}: Carousel with ID '${this.id}' must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to ${this.autoSlideShowCarousel ? 'toggle the automatic slide show and' : ''} display the previous and next slides.`);
       return;
     }
 
@@ -208,7 +209,7 @@ export default class Carousel extends HTMLElement {
       this.slidePickerBtnAriaLabelPrefix = this.slidePickerEl.getAttribute(ATTRS.SLIDE_PICKER_BTN_ARIA_LABEL_PREFIX);
     }
 
-    // For localisation, users can provide a string to infix between the slide number and slide count in the slide aria-label attributes, e.g. if this.slidesWrapper has attribute ace-carousel-slide-aria-label-infix set to "de" the aria labels of the slides will be "n de N" where n is the slide number and N is the slide count.
+    // For localisation, users can provide a string to infix between the slide number and slide count in the slide aria-label attributes, e.g. if this.slidesWrapper has attribute ace-carousel-slide-aria-label-infix set to "de" the aria labels of the slides will be "1 de N", "2 de N", ... "n de N" where n is the slide number and N is the slide count.
     this.slideAriaLabelInfix = this.slidesWrapper.getAttribute(ATTRS.SLIDE_ARIA_LABEL_INFIX);
 
 
@@ -271,19 +272,7 @@ export default class Carousel extends HTMLElement {
 
 
     /* INITIALISATION */
-    // Check if Carousel labelled else warn user
-    const carouselHasLabel = this.hasAttribute('aria-label');
-    const carouselLabelElId = this.getAttribute('aria-labelledby');
-    if (carouselLabelElId) {
-      const labelEl = document.getElementById(carouselLabelElId);
-      if (!labelEl) {
-        console.warn(`ACE: Carousel with ID '${this.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
-      } else if (!labelEl.textContent.length) {
-        console.warn(`ACE: Carousel with ID '${this.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
-      }
-    } else if (!carouselHasLabel) {
-      console.warn(`Carousel with ID '${this.id}' requires an 'aria-label' or an 'aria-labelledby' attribute.`);
-    }
+    warnIfElHasNoAriaLabel(this, 'Carousel');
 
     // Initialise slides
     this.initSlides();
@@ -424,7 +413,7 @@ export default class Carousel extends HTMLElement {
         this.slideEls.forEach(() => this.slidePickerEl.appendChild(document.createElement('button')));
         slidePickerBtns = this.slidePickerEl.querySelectorAll('button');
       } else if (slidePickerBtnsCount !== this.slideCount) {
-        console.error(`ACE: Carousel with ID '${this.id}' has decendant with '${ATTRS.SLIDE_PICKER}' that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
+        console.error(`${DISPLAY_NAME}: Carousel with ID '${this.id}' has decendant with '${ATTRS.SLIDE_PICKER}' that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
         return;
       }
 
