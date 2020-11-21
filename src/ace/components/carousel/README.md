@@ -63,8 +63,12 @@ ace-carousel {
   display: block;
 }
 
-[ace-carousel-slide]:not([ace-carousel-slide-selected]) {
+[ace-carousel-slide] {
   display: none;
+}
+
+[ace-carousel-slide-selected] {
+  display: unset;
 }
 
 [ace-carousel-slide-picker-btn] {

@@ -75,7 +75,7 @@ ace-modal {
     transform: translate(-50%, -50%);
   }
 
-  &:not([ace-modal-visible="true"]) {
+  &:not([ace-modal-visible]) {
     display: none;
   }
 }
@@ -158,32 +158,96 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 ### Example
 <!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
-<!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
-<!-- Custom styles have been applied to this example using HTML classes and are shown below. -->
-<!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
-<!-- The extra JavaScript used by this example is also shown below. -->
+The extra JavaScript used by this example is also shown below.
 
-<!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
 ```html
-<button ace-modal-trigger-for="simple-modal">Modal trigger</button>
-<hr>
-<ace-modal id="simple-modal" aria-label="Simple Modal">
-  Modal
-  <button>Dummy Button 1</button>
-  <button disabled>Dummy Button 2</button>
+<button ace-modal-trigger-for="modal-1">Modal trigger 1</button>
+<button ace-modal-trigger-for="modal-1">Modal trigger 2</button>
+
+<ace-modal aria-label="Example Modal" id="modal-1" ace-modal-visible>
+  <h3>Modal heading</h3>
+  <p>This modal was shown on page load as it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+
+  <button id="add-link-btn">Add link to Modal</button>
+  <button id="remove-link-btn">Remove link from Modal</button>
+
+  <button id="toggle-disabled-btn-btn">Toggle disabled button</button>
+  <button id="disabled-btn" disabled>Disabled Button</button>
 </ace-modal>
 ```
 
-<!-- IF EXAMPLE HAS CUSTOM STYLES INCLUDE AN EMPTY SCSS CODE BLOCK AS WELL -->
-<!--
-```scss
-
-```
--->
-
-<!-- IF EXAMPLE HAS CUSTOM JS CODE INCLUDE AN EMPTY JS CODE BLOCK AS WELL -->
-<!--
 ```js
+import {EVENTS} from '/ace/components/modal/modal.js';
 
+document.addEventListener('DOMContentLoaded', () => {
+  const modalEl = document.getElementById('modal-1');
+  const disabledBtn = document.getElementById('disabled-btn');
+
+  modalEl.addEventListener('click', (e) => {
+    const targetId = e.target.id;
+    const toggleDisabledBtnBtnClicked = targetId === 'toggle-disabled-btn-btn';
+    if (toggleDisabledBtnBtnClicked) {
+      disabledBtn.disabled = !disabledBtn.disabled;
+      return;
+    }
+
+    const addLinkBtnClicked = targetId === 'add-link-btn';
+    if (addLinkBtnClicked) {
+      const linkEl = document.createElement('a');
+      linkEl.href = '#';
+      linkEl.textContent = 'Dummy link';
+      modalEl.appendChild(linkEl);
+    }
+
+    const removeLinkBtnClicked = targetId === 'remove-link-btn';
+    if (removeLinkBtnClicked) {
+      const linkEl = modalEl.querySelector('a');
+      if (linkEl) {
+        linkEl.remove();
+      }
+    }
+    modalEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_FOCUS_TRAP));
+  });
+});
 ```
--->
+
+### Example
+<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
+The extra JavaScript used by this example is also shown below.
+
+```html
+<button ace-modal-trigger-for="modal-from-modal">
+  Second Modal's trigger
+</button>
+
+<ace-modal aria-label="Second Modal" id="modal-from-modal">
+  <h3>Second Modal</h3>
+  <p>Second Modal</p>
+  <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+
+  <button ace-modal-hide-modal-btn ace-modal-trigger-for="modal-1">Show first modal</button>
+</ace-modal>
+```
+
+```js
+import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
+
+document.addEventListener('DOMContentLoaded', () => {
+  const OTHER_MODAL_ID = 'modal-1';
+  const modalEl = document.getElementById('modal-from-modal');
+  let otherModalTriggerClicked;
+
+  // If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden
+  const otherModalTrigger = modalEl.querySelector(`[ace-modal-trigger-for="${OTHER_MODAL_ID}"]`);
+  otherModalTrigger.addEventListener('click', () => otherModalTriggerClicked = true);
+
+  window.addEventListener(EVENTS.OUT.CHANGED, (e) => {
+    if (!e.detail || e.detail.id !== OTHER_MODAL_ID || e.detail.visible || !otherModalTriggerClicked) {
+      return;
+    }
+    otherModalTriggerClicked = false;
+    modalEl.setAttribute(ATTRS.VISIBLE, '');
+  });
+});
+```
