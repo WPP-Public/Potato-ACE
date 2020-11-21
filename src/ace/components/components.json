@@ -24,6 +24,12 @@
   "listbox": {
     "name": "Listbox"
   },
+  "modal": {
+    "name": "Modal",
+    "aliases": [
+      "Dialog"
+    ]
+  },
   "select": {
     "name": "Select",
     "aliases": [
