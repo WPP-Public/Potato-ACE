@@ -1,6 +1,7 @@
-/* CONSTANTS AVAILABLE TO ALL COMPONENTS */
+import {KeysType} from './types.js';
 
 export const NAME = 'ace';
+
 export const DISPLAY_NAME = 'ACE';
 
 export const UTIL_ATTRS = {
@@ -8,16 +9,7 @@ export const UTIL_ATTRS = {
   FLOAT_LEFT: `${NAME}-u-float-left`,
 };
 
-export type Key = {
-  CODE: number;
-  KEY: string;
-}
-
-export type Keys = {
-  [name: string]: Key;
-}
-
-export const KEYS: Keys = {
+export const KEYS: KeysType = {
   A: {
     CODE: 65,
     KEY: 'a',
@@ -64,9 +56,10 @@ export const KEYS: Keys = {
   },
 };
 
-
-// Browser-specific, page visibility API strings
-// From https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+/*
+  Browser-specific, page visibility API strings
+  From https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+*/
 let HIDDEN, VISIBILITY_CHANGE;
 if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
   HIDDEN = 'hidden';
@@ -78,5 +71,28 @@ if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and 
   HIDDEN = 'webkitHidden';
   VISIBILITY_CHANGE = 'webkitvisibilitychange';
 }
-
 export const PAGE_VISIBILITY_API_STRINGS = {HIDDEN, VISIBILITY_CHANGE};
+
+/*
+  Focusable element selectors
+*/
+const FOCUSABLE_ELEMENT_SELECTORS = [
+  'a[href]',
+  'area[href]',
+  'audio controls',
+  'button',
+  '[contentEditable="true"]',
+  'datalist',
+  'details',
+  'embed',
+  'iframe',
+  'input',
+  'object',
+  'progress',
+  'select',
+  'summary',
+  '[tabindex]',
+  'textarea',
+  'video controls',
+];
+export const FOCUSABLE_ELEMENTS_SELECTOR = FOCUSABLE_ELEMENT_SELECTORS.join(':not([tabindex="-1"]),');
