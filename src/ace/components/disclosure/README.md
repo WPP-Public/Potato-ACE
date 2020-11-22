@@ -35,7 +35,7 @@ Triggers will by default toggle the visibiility of the Disclosure, but the `ace-
 The following SASS is applied to the component, each declaration of which can be overridden by a single class selector.
 
 ```scss
-[ace-disclosure-visible="false"] {
+ace-disclosure:not([ace-disclosure-visible="true"]) {
   display: none;
 }
 ```
@@ -77,14 +77,14 @@ This event is dispatched when Disclosure's visibility changes. The event name is
 
 ### Listened for events
 
-Disclosure listens for the following events, which should be dispatched by the user's code on the specific `ace-disclosure` element.
+Disclosure listens for the following event, which should be dispatched on the specific `ace-disclosure` element.
 
 
-#### Hide, Show and Toggle
+#### Toggle
 
-`ace-disclosure-hide`, `ace-disclosure-show` & `ace-disclosure-toggle`
+`ace-disclosure-toggle`
 
-These events should be dispatched to hide, show and toggle Disclosure respectively. The event names are available as `EVENTS.IN.HIDE`, `EVENTS.IN.SHOW` & `EVENTS.IN.TOGGLE`.
+This event should be dispatched to toggle the visibility of the Disclosure and the event name is available as `EVENTS.IN.TOGGLE`.
 
 
 ## Examples
@@ -144,18 +144,12 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 ```
 
 
-### Disclosure controlled using custom events
+### Disclosure controlled using custom event
 
-The buttons in this example are **not** trigger buttons and instead dispatch the `ace-disclosure-show`, `ace-disclosure-hide` & `ace-disclosure-toggle` custom events on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The extra JavaScript used by this example is also shown below.
+The button in this example is **not** a trigger button but is a button that instead dispatches the `ace-disclosure-toggle` custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The extra JavaScript used by this example is also shown below.
 
 ```html
-<button id="custom-events-show-btn">
-  Show disclosure using custom event
-</button>
-<button id="custom-events-hide-btn">
-  Hide disclosure using custom event
-</button>
-<button id="custom-events-toggle-btn">
+<button id="toggle-custom-event-btn">
   Toggle disclosure using custom event
 </button>
 <hr>
@@ -171,24 +165,10 @@ import {EVENTS} from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const disclosureEl = document.getElementById('custom-events-disclosure');
-  window.addEventListener('click', (e) => {
-    const customEventHideBtnClicked = e.target.closest('#custom-events-hide-btn');
-    const customEventShowBtnClicked = e.target.closest('#custom-events-show-btn');
-    const customEventToggleBtnClicked = e.target.closest('#custom-events-toggle-btn');
+  const customEventBtn = document.getElementById('toggle-custom-event-btn');
 
-    if (!customEventToggleBtnClicked && !customEventShowBtnClicked && !customEventHideBtnClicked) {
-      return;
-    }
-
-    let eventType = EVENTS.IN.TOGGLE;
-    if (customEventShowBtnClicked) {
-      eventType = EVENTS.IN.SHOW;
-    }
-    if (customEventHideBtnClicked) {
-      eventType = EVENTS.IN.HIDE;
-    }
-
-    disclosureEl.dispatchEvent(new CustomEvent(eventType));
+  customEventBtn.addEventListener('click', () => {
+    disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE));
   });
 });
 ```
