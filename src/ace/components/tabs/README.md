@@ -165,7 +165,7 @@ The event `detail` object is composed as follows:
 
 ### Listened for events
 
-Tabs listens for the following events, which should be dispatched by the user's code on the specific `ace-tabs` element.
+Tabs listens for the following events, which should be dispatched on the specific `ace-tabs` element.
 
 #### Previous tab
 

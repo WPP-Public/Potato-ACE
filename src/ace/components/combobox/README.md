@@ -186,7 +186,7 @@ This event is dispatched when Select has finished updating its options. The even
 
 ### Listened for events
 
-Combobox listens for the following events, which should be dispatched by the user's code on the specific `ace-combobox` element.
+Combobox listens for the following events, which should be dispatched on the specific `ace-combobox` element.
 
 #### Hide and show list
 

@@ -133,7 +133,7 @@ These events are dispatched when the automatic slide show is started, stopped or
 
 ### Listened for events
 
-Carousel listens for the following events, which should be dispatched by the user's code on the specific `ace-carousel` element.
+Carousel listens for the following events, which should be dispatched on the specific `ace-carousel` element.
 
 
 #### Set previous slide

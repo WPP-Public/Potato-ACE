@@ -113,7 +113,7 @@ This event is dispatched when an option is chosen by the user. The event name is
 
 ### Listened for events
 
-Listbox listens for the following events, which should be dispatched by the user's code on the specific `ace-listbox` element.
+Select listens for the following events, which should be dispatched on the specific `ace-listbox` element.
 
 
 #### Update options
@@ -184,7 +184,7 @@ A Select with options containing images.
 
 ### Select with dynamic options
 
-In this example the Select instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can be removed using the **Remove option**. Both these buttons dispatch the `ace-select-update-options` event that updates the Listbox and the trigger text. The extra JavaScript code required by this example is also included below.
+In this example the Select instantiates with an empty `<ul>` that can be populated with options using **Add option**. The first option can be removed using the **Remove option**. Both these buttons dispatch the `ace-select-update-options` event that updates the listbox and the trigger text. The extra JavaScript code required by this example is also included below.
 
 ```html
 <button id="add-option">

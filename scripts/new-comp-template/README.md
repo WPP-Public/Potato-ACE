@@ -76,7 +76,7 @@ This event is dispatched when Template finishes initialising. The event name is 
 
 ### Listened for events
 
-Template listens for the following events, which should be dispatched by the developer's code on the specific `ace-template` element.
+Template listens for the following events, which should be dispatched on the specific `ace-template` element.
 
 
 <!-- TODO: Replace 'Listened for event name' with a descriptive name -->

@@ -97,7 +97,7 @@ This event is dispatched when Listbox finishes initialising. The event name is a
 
 ### Listened for events
 
-Listbox listens for the following events, which should be dispatched by the user's code on the specific `ace-listbox` element.
+Listbox listens for the following events, which should be dispatched on the specific `ace-listbox` element.
 
 
 #### Update options
