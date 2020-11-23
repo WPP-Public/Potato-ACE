@@ -12,7 +12,7 @@ const IDS = {
 
 
 // TODO: Define templateBeforeEach function that will get Template's elements to be tested in most tests.
-// Use combinations of `.get()`, `.find()`, `.first()`, `.last()` and `.eq()`, and store them as aliases using `.as`
+// Use combinations of `.get()`, `.find()`, `.first()`, `.last()` and `.eq()`, and store them as aliases using `.as()`
 // Call this function in the beforeEach of each variant test block giving it the variant ID, as shown below.
 const getEls = (id) => {
   return cy.get(`#${id}`)

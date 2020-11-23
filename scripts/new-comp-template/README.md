@@ -44,7 +44,8 @@ After the event `DOMContentLoaded` is fired on `document`, an instance of Templa
 
 ## Styles
 
-The following SASS is applied to Template, each declaration of which can be overridden by a single class selector. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by developers.
+The following SASS is applied to Template. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by developers. <!-- TODO: If SASS variable from common/constants.scss file used add the following sentence --> SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
+
 
 ```scss
 

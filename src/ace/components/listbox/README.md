@@ -45,12 +45,15 @@ The active option is automatically selected in a single-select Listbox. In a mul
 
 ## Styles
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single class selector, with the addition of `[aria-selected="true"]` for targetting selected options.  The SASS variables use `!default` so can also be easily overridden by users.
+The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
 
 To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color, respectively.
 
 
 ```scss
+@import '../../common/constants';
+
+
 /* VARIABLES */
 $ace-listbox-active-option-outline: 1px dashed slategray !default;
 $ace-listbox-selected-option-bg-color: $ace-color-selected !default;

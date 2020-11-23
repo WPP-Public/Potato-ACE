@@ -33,7 +33,7 @@ To create a new component:
     ```
     will add an entry for the component in *./src/ace/components/components.json* and generate the necessary core files in the *./src/ace/components/component-name/* directory.
   
-2. Import the component into *./src/scss/styles.scss* maintaining alphabetical order using
+2. Import the component into *./src/sass/styles.scss* maintaining alphabetical order using
     ```scss
     @import '../ace/components/<component-name>/<component-name>';
     ```

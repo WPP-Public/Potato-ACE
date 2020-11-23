@@ -1,0 +1,220 @@
+<h1>Modal</h1>
+<blockquote>
+<p>A dialog is a window overlaid on either the primary window or another dialog window. Windows under a modal dialog are inert. That is, users cannot interact with content outside an active dialog window. Inert content outside an active dialog is typically visually obscured or dimmed so it is difficult to discern, and in some implementations, attempts to interact with the inert content cause the dialog to close.</p>
+</blockquote>
+<p>Modal conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal">W3C WAI-ARIA authoring practices</a>.</p>
+<h2>Setup</h2>
+<p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
+<pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/modal/modal'
+</code></pre>
+<p>Then import the class into your JavaScript entry point:</p>
+<pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/modal/modal';
+</code></pre>
+<p>For convenience the ES6 class is exported as <code>Modal</code> <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Modal is instantiated within each <code>&lt;ace-modal&gt;</code> element, and an ID <code>ace-modal-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-modal-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
+<!-- 1. Required elements that developers must provide before page load. For each, mention the custom attribute it can be given for explicit assignment, and whether this attribute can be omitted and the component can implicitly determine which element to use based on its position in the DOM hierarchy. Example: -->
+<blockquote>
+<p>Modal must have a nested button to _____, and will use a descendant <code>&lt;button&gt;</code> with attribute <code>ace-modal-btn</code>. If no descendant has this attribute then the first decendant <code>&lt;button&gt;</code> will be used and given this attribute.</p>
+</blockquote>
+<!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or  or `aria-labelledby`. -->
+<blockquote>
+<p>It is strongly recommended that Modal be provided with an accessible label using either <code>aria-label</code> or <code>aria-labelledby</code>.</p>
+</blockquote>
+<!-- 3. Optional elements that can be added dynamically after page load, explaining which custom event is needed to prompt the component to initialise them. -->
+<h2>Usage</h2>
+<!-- EXPLAINING COMPONENT FEATURES AND HOW IT CAN BE INTERACTED WITH. COMPONENT VARIANTS MAY BE BRIEFLY LISTED HERE BUT NOT IN DETAIL AS EACH VARIANT SHOULD HAVE AN EXAMPLE BELOW CONTAINING ALL THE DETAILS -->
+<h2>Styles</h2>
+<p>The following SASS is applied to Modal. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use <code>!default</code> so can also be easily overridden by developers.</p>
+<pre><code class="language-scss">@import '../../common/constants';
+
+
+/* VARIABLES */
+$ace-modal-backdrop-bg-colour: rgba(0, 0, 0, .5) !default;
+$ace-modal-bg-colour: #fff !default;
+$ace-modal-padding: $ace-spacing-3 !default;
+$ace-modal-switch-breakpoint: 768px;
+
+
+/* STYLES */
+ace-modal {
+  background: $ace-modal-bg-colour;
+  padding: $ace-modal-padding;
+  position: fixed;
+  z-index: $ace-modal-z-index;
+
+  @media (max-width: #{$ace-modal-switch-breakpoint - 1px}) {
+    height: 100vh;
+    left: 0;
+    top: 0;
+    width: 100vw;
+  }
+
+  @media (min-width: #{$ace-modal-switch-breakpoint}) {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &amp;:not([ace-modal-visible]) {
+    display: none;
+  }
+}
+
+// Placed on body and backdrop when a Modal is visible
+[ace-modal-is-visible] {
+  overflow: hidden;
+  // prevent reflow due to scroll bar disappearing;
+  padding-right: $ace-scrollbar-width;
+}
+
+[ace-modal-backdrop] {
+  background: $ace-modal-backdrop-bg-colour;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: $ace-modal-backdrop-z-index;
+
+  &amp;:not([ace-modal-is-visible]) {
+    display: none;
+  }
+}
+</code></pre>
+<h2>Custom events</h2>
+<p>Modal uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
+<h3>Dispatched events</h3>
+<p>The following events are dispatched on <code>window</code> by Modal.</p>
+<h4>Ready</h4>
+<p><code>ace-modal-ready</code></p>
+<p>This event is dispatched when Modal finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of Modal [string]
+}
+</code></pre>
+<h3>Listened for events</h3>
+<p>Modal listens for the following events, which should be dispatched on the specific <code>ace-modal</code> element.</p>
+<!-- TODO: Replace 'Listened for event name' with a descriptive name -->
+<h4>Event name</h4>
+<!-- TODO: Replace 'event-name' with actual value -->
+<p><code>ace-modal-event-name</code></p>
+<!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
+<p>This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value --><code>EVENTS.IN.&lt;EVENT-NAME&gt;</code></p>
+<!-- TODO: If detail property used add the following and describe each of its properties --> 
+<p>, and its <code>detail</code> object should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'prop': // Description of prop [prop type (string/boolean etc.)]
+}
+</code></pre>
+<h2>Examples</h2>
+<p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
+<!-- TODO: Replace 'Example' with more descriptive name -->
+<h3>Example</h3>
+<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
+<p>The extra JavaScript used by this example is also shown below.</p>
+<div class="example-block"><button ace-modal-trigger-for="modal-1">Modal trigger 1</button>
+<button ace-modal-trigger-for="modal-1">Modal trigger 2</button>
+<ace-modal aria-label="Example Modal" id="modal-1" ace-modal-visible>
+  <h3>Modal heading</h3>
+  <p>This modal was shown on page load as it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
+  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+<p><button id="add-link-btn">Add link to Modal</button>
+<button id="remove-link-btn">Remove link from Modal</button></p>
+<p><button id="toggle-disabled-btn-btn">Toggle disabled button</button>
+<button id="disabled-btn" disabled>Disabled Button</button>
+</ace-modal></p>
+</div>
+<pre><code class="language-html">&lt;button ace-modal-trigger-for=&quot;modal-1&quot;&gt;Modal trigger 1&lt;/button&gt;
+&lt;button ace-modal-trigger-for=&quot;modal-1&quot;&gt;Modal trigger 2&lt;/button&gt;
+
+&lt;ace-modal aria-label=&quot;Example Modal&quot; id=&quot;modal-1&quot; ace-modal-visible&gt;
+  &lt;h3&gt;Modal heading&lt;/h3&gt;
+  &lt;p&gt;This modal was shown on page load as it had attribute &lt;code&gt;ace-modal-visible&lt;/code&gt; when the page was loaded.&lt;/p&gt;
+  &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
+
+  &lt;button id=&quot;add-link-btn&quot;&gt;Add link to Modal&lt;/button&gt;
+  &lt;button id=&quot;remove-link-btn&quot;&gt;Remove link from Modal&lt;/button&gt;
+
+  &lt;button id=&quot;toggle-disabled-btn-btn&quot;&gt;Toggle disabled button&lt;/button&gt;
+  &lt;button id=&quot;disabled-btn&quot; disabled&gt;Disabled Button&lt;/button&gt;
+&lt;/ace-modal&gt;
+</code></pre>
+<pre><code class="language-js">import {EVENTS} from '/ace/components/modal/modal.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const modalEl = document.getElementById('modal-1');
+  const disabledBtn = document.getElementById('disabled-btn');
+
+  modalEl.addEventListener('click', (e) =&gt; {
+    const targetId = e.target.id;
+    const toggleDisabledBtnBtnClicked = targetId === 'toggle-disabled-btn-btn';
+    if (toggleDisabledBtnBtnClicked) {
+      disabledBtn.disabled = !disabledBtn.disabled;
+      return;
+    }
+
+    const addLinkBtnClicked = targetId === 'add-link-btn';
+    if (addLinkBtnClicked) {
+      const linkEl = document.createElement('a');
+      linkEl.href = '#';
+      linkEl.textContent = 'Dummy link';
+      modalEl.appendChild(linkEl);
+    }
+
+    const removeLinkBtnClicked = targetId === 'remove-link-btn';
+    if (removeLinkBtnClicked) {
+      const linkEl = modalEl.querySelector('a');
+      if (linkEl) {
+        linkEl.remove();
+      }
+    }
+    modalEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_FOCUS_TRAP));
+  });
+});
+</code></pre>
+<h3>Example</h3>
+<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
+<p>The extra JavaScript used by this example is also shown below.</p>
+<div class="example-block"><button ace-modal-trigger-for="modal-from-modal">
+  Second Modal's trigger
+</button>
+<ace-modal aria-label="Second Modal" id="modal-from-modal">
+  <h3>Second Modal</h3>
+  <p>Second Modal</p>
+  <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+<p><button ace-modal-hide-modal-btn ace-modal-trigger-for="modal-1">Show first modal</button>
+</ace-modal></p>
+</div>
+<pre><code class="language-html">&lt;button ace-modal-trigger-for=&quot;modal-from-modal&quot;&gt;
+  Second Modal's trigger
+&lt;/button&gt;
+
+&lt;ace-modal aria-label=&quot;Second Modal&quot; id=&quot;modal-from-modal&quot;&gt;
+  &lt;h3&gt;Second Modal&lt;/h3&gt;
+  &lt;p&gt;Second Modal&lt;/p&gt;
+  &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
+
+  &lt;button ace-modal-hide-modal-btn ace-modal-trigger-for=&quot;modal-1&quot;&gt;Show first modal&lt;/button&gt;
+&lt;/ace-modal&gt;
+</code></pre>
+<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
+
+document.addEventListener('DOMContentLoaded', () =&gt; {
+  const OTHER_MODAL_ID = 'modal-1';
+  const modalEl = document.getElementById('modal-from-modal');
+  let otherModalTriggerClicked;
+
+  // If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden
+  const otherModalTrigger = modalEl.querySelector(`[ace-modal-trigger-for=&quot;${OTHER_MODAL_ID}&quot;]`);
+  otherModalTrigger.addEventListener('click', () =&gt; otherModalTriggerClicked = true);
+
+  window.addEventListener(EVENTS.OUT.CHANGED, (e) =&gt; {
+    if (!e.detail || e.detail.id !== OTHER_MODAL_ID || e.detail.visible || !otherModalTriggerClicked) {
+      return;
+    }
+    otherModalTriggerClicked = false;
+    modalEl.setAttribute(ATTRS.VISIBLE, '');
+  });
+});
+</code></pre>

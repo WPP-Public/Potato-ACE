@@ -29,13 +29,12 @@
 <h3>Inline and list auto-completion Combobox</h3>
 <p>A Combobox with input and list auto-completion behaves the same as that with list auto-completion and additionally changes the input value to match the text of the selected option. For the automatic selection variant the input textbox value is auto-completed as the user types, with the portion of the string not typed by the user highlighted as selected text so it can be overwritten.  To instantiate a Combobox with inline and list auto-completion add <code>aria-autocomplete=&quot;both&quot;</code> to the <code>&lt;input&gt;</code> element.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users. <code>@import '../../common/constants'</code> imports shared styles used for making sure the that the entire listbox is always visible within a window.</p>
+<p>The following SASS is applied to the component. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>ace/common/constants.scss</em>, which also contains styles used for making sure the entire listbox is always visible within a window.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
 
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
-$ace-combobox-list-z-index: 1 !default;
 $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 
@@ -60,15 +59,9 @@ ace-combobox {
   white-space: nowrap;
   width: 100%;
   z-index: $ace-combobox-list-z-index;
-}
 
-[ace-combobox-list-visible=&quot;false&quot;] {
-  display: none;
-}
-
-[ace-combobox-option] {
-  &amp;:hover {
-    background-color: $ace-combobox-option-selected-bg-color;
+  &amp;:not([ace-combobox-list-visible=&quot;true&quot;]) {
+    display: none;
   }
 }
 
@@ -76,7 +69,12 @@ ace-combobox {
   background-color: $ace-combobox-option-selected-bg-color;
 }
 
+[ace-combobox-option]:hover {
+  background-color: $ace-combobox-option-selected-bg-color;
+}
 
+
+// Import styles that ensure that the listbox doesn't overflow outside the viewport.
 @import '../../common/utils';
 </code></pre>
 <h2>Custom events</h2>

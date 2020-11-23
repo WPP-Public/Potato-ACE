@@ -9,3 +9,12 @@ $ace-spacing-1: $ace-spacing-base;
 $ace-spacing-2: $ace-spacing-base * 2;
 $ace-spacing-3: $ace-spacing-base * 3;
 $ace-spacing-4: $ace-spacing-base * 4;
+
+$ace-scrollbar-width: 15px;
+
+
+/* Z INDEXES */
+$ace-combobox-list-z-index: 1 !default;
+$ace-select-list-z-index: 1 !default;
+$ace-modal-z-index: 10 !default;
+$ace-modal-backdrop-z-index: calc(#{$ace-modal-z-index} - 1) !default;

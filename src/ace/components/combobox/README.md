@@ -55,7 +55,7 @@ A Combobox with input and list auto-completion behaves the same as that with lis
 
 ## Styles
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use `!default` so can also be easily overridden by users. `@import '../../common/constants'` imports shared styles used for making sure the that the entire listbox is always visible within a window.
+The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*, which also contains styles used for making sure the entire listbox is always visible within a window.
 
 ```scss
 @import '../../common/constants';
@@ -63,7 +63,6 @@ The following SASS is applied to the component, each declaration of which can be
 
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
-$ace-combobox-list-z-index: 1 !default;
 $ace-combobox-option-selected-bg-color: $ace-color-selected !default;
 
 
@@ -88,15 +87,9 @@ ace-combobox {
   white-space: nowrap;
   width: 100%;
   z-index: $ace-combobox-list-z-index;
-}
 
-[ace-combobox-list-visible="false"] {
-  display: none;
-}
-
-[ace-combobox-option] {
-  &:hover {
-    background-color: $ace-combobox-option-selected-bg-color;
+  &:not([ace-combobox-list-visible="true"]) {
+    display: none;
   }
 }
 
@@ -104,7 +97,12 @@ ace-combobox {
   background-color: $ace-combobox-option-selected-bg-color;
 }
 
+[ace-combobox-option]:hover {
+  background-color: $ace-combobox-option-selected-bg-color;
+}
 
+
+// Import styles that ensure that the listbox doesn't overflow outside the viewport.
 @import '../../common/utils';
 ```
 
