@@ -1,12 +1,6 @@
 /* IMPORTS */
-import {FOCUSABLE_ELEMENTS_SELECTOR, KEYS, NAME} from '../../common/constants.js';
-import {
-  autoID,
-  browserSupportsInert,
-  isInteractable,
-  keyPressedMatches,
-  warnIfElHasNoAriaLabel
-} from '../../common/functions.js';
+import {BROWSER_SUPPORTS_INERT, FOCUSABLE_ELEMENTS_SELECTOR, KEYS, NAME} from '../../common/constants.js';
+import {autoID, isInteractable, keyPressedMatches, warnIfElHasNoAriaLabel} from '../../common/functions.js';
 import FocusTrap from '../../common/focus-trap.js';
 
 
@@ -20,8 +14,6 @@ export const ATTRS = {
   HIDE_BTN: `${MODAL}-hide-modal-btn`,
   IS_VISIBLE: `${MODAL}-is-visible`,
   TRIGGER: `${MODAL}-trigger-for`,
-  TRIGGER_HIDE: `${MODAL}-trigger-hide`,
-  TRIGGER_SHOW: `${MODAL}-trigger-show`,
   VISIBLE: `${MODAL}-visible`,
 };
 
@@ -43,7 +35,7 @@ export default class Modal extends HTMLElement {
   private canUseInert = false;
   private firstInteractableDescendant: HTMLElement;
   private focusTrap: FocusTrap;
-  private inertableElements: Array<Element>;
+  private inertedEls: Array<Element> = [];
   private initialised = false;
   private lastActiveElement: HTMLElement;
 
@@ -89,7 +81,7 @@ export default class Modal extends HTMLElement {
 
   public connectedCallback(): void {
     // Determine if Modal instance can use HTML inert attribute (browser supports it and Modal is a child of body)
-    this.canUseInert = browserSupportsInert() && this.parentElement === document.body;
+    this.canUseInert = BROWSER_SUPPORTS_INERT && this.parentElement === document.body;
 
 
     /* GET DOM ELEMENTS */
@@ -195,7 +187,8 @@ export default class Modal extends HTMLElement {
 
     // Remove inert HTML attribute from all body children to which it was added when Modal was shown
     if (this.canUseInert) {
-      this.inertableElements.forEach(child => (child as any).inert = false);
+      this.inertedEls.forEach((el) => (el as any).inert = false);
+      this.inertedEls = [];
     }
 
     this.lastActiveElement.focus();
@@ -227,9 +220,13 @@ export default class Modal extends HTMLElement {
 
     // Add inert HTML attribute to all body children except backdrop and this Modal
     if (this.canUseInert) {
-      this.inertableElements = [...document.body.children]
-        .filter((child) => child !== this && !child.hasAttribute(ATTRS.BACKDROP) && child.tagName !== 'SCRIPT');
-      this.inertableElements.forEach(child => (child as any).inert = true);
+      [...document.body.children].forEach((child) => {
+        if (child == this || child.hasAttribute(ATTRS.BACKDROP) || child.tagName === 'SCRIPT') {
+          return;
+        }
+        (child as any).inert = true;
+        this.inertedEls.push(child);
+      });
     }
 
     this.firstInteractableDescendant.focus();

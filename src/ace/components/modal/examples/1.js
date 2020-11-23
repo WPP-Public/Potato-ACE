@@ -1,7 +1,7 @@
 import {EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const modalEl = document.getElementById('modal-1');
+  const modalEl = document.getElementById('simple-modal');
   const disabledBtn = document.getElementById('disabled-btn');
 
   modalEl.addEventListener('click', (e) => {
