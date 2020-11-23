@@ -20,7 +20,7 @@
 <p>Tabs can be given the attribute <code>ace-tabs-manual</code> which will cause the arrow keys to change the focused tab without changing the displayed panel. For these Tabs the focused tab's corresponding panel can be displayed manually by pressing <kbd>Space</kbd> or <kbd>Enter</kbd>.</p>
 <p>Tabs with the attribute <code>ace-tabs-deep-linked</code> are deep-linked meaning that whenever the displayed panel changes, the page URL is dynamically updated to include a search parameter with key and value equal to the Tabs ID and the displayed panel respectively. Deep linking works with multiple Tabs components, each adding a search parameter to the URL. When a page is loaded if the URL contains a search parameter for a deep-linked Tabs component, the panel whose number matched the search parameter value is displayed. This is a useful feature for sharing pages with specific tabs diplayed.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use <code>!default</code> so can also be easily overridden by users.</p>
+<p>The following SASS is applied to the component. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
 
@@ -59,7 +59,6 @@ $ace-tabs-selected-tab-border-width: 3px !default;
   }
 
   &amp;:focus {
-    // TODO: Add keyboard only focus
     background-color: $ace-tabs-tab-hover-bg-colour;
     outline: none;
   }
@@ -72,7 +71,6 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 [ace-tabs-tab-selected] {
   border-bottom-color: $ace-tabs-selected-tab-border-colour;
 }
-
 
 // Vertical variant
 [ace-tabs-tablist-vertical] {

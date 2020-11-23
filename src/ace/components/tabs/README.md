@@ -45,7 +45,7 @@ Tabs with the attribute `ace-tabs-deep-linked` are deep-linked meaning that when
 
 ## Styles
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single class selector. The SASS variables use `!default` so can also be easily overridden by users.
+The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
 
 ```scss
 @import '../../common/constants';
@@ -86,7 +86,6 @@ $ace-tabs-selected-tab-border-width: 3px !default;
   }
 
   &:focus {
-    // TODO: Add keyboard only focus
     background-color: $ace-tabs-tab-hover-bg-colour;
     outline: none;
   }
@@ -99,7 +98,6 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 [ace-tabs-tab-selected] {
   border-bottom-color: $ace-tabs-selected-tab-border-colour;
 }
-
 
 // Vertical variant
 [ace-tabs-tablist-vertical] {

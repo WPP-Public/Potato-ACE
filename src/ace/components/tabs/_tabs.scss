@@ -36,7 +36,6 @@ $ace-tabs-selected-tab-border-width: 3px !default;
   }
 
   &:focus {
-    // TODO: Add keyboard only focus
     background-color: $ace-tabs-tab-hover-bg-colour;
     outline: none;
   }
@@ -49,7 +48,6 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 [ace-tabs-tab-selected] {
   border-bottom-color: $ace-tabs-selected-tab-border-colour;
 }
-
 
 // Vertical variant
 [ace-tabs-tablist-vertical] {

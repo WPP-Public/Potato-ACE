@@ -1,0 +1,55 @@
+@import '../../common/constants';
+
+
+/* VARIABLES */
+$ace-modal-backdrop-bg-colour: rgba(0, 0, 0, .5) !default;
+$ace-modal-bg-colour: #fff !default;
+$ace-modal-padding: $ace-spacing-3 !default;
+$ace-modal-switch-breakpoint: 768px;
+
+
+/* STYLES */
+ace-modal {
+  background: $ace-modal-bg-colour;
+  padding: $ace-modal-padding;
+  position: fixed;
+  z-index: $ace-modal-z-index;
+
+  @media (max-width: #{$ace-modal-switch-breakpoint - 1px}) {
+    height: 100vh;
+    left: 0;
+    top: 0;
+    width: 100vw;
+  }
+
+  @media (min-width: #{$ace-modal-switch-breakpoint}) {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  &:not([ace-modal-visible]) {
+    display: none;
+  }
+}
+
+// Placed on body and backdrop when a Modal is visible
+[ace-modal-is-visible] {
+  overflow: hidden;
+  // prevent reflow due to scroll bar disappearing;
+  padding-right: $ace-scrollbar-width;
+}
+
+[ace-modal-backdrop] {
+  background: $ace-modal-backdrop-bg-colour;
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: $ace-modal-backdrop-z-index;
+
+  &:not([ace-modal-is-visible]) {
+    display: none;
+  }
+}

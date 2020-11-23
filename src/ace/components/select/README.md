@@ -37,7 +37,7 @@ Type-ahead can also be used to select an option by typing one or more characters
 
 ## Styles
 
-The following SASS is applied to the component, each declaration of which can be overridden by a single CSS class selector. The SASS variables use `!default` so can also be easily overridden by users. The list also inherits Listbox styles detailed in the *SASS* section [here](/listbox).
+The following SASS is applied to the component. The list also inherits Listbox styles detailed in the *SASS* section of [Listbox](/listbox). The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
 
 ```scss
 @import '../listbox/listbox';
@@ -46,7 +46,6 @@ The following SASS is applied to the component, each declaration of which can be
 /* VARIABLES */
 $ace-select-list-background-color: #fff !default;
 $ace-select-list-height: auto !default;
-$ace-select-list-z-index: 1 !default;
 
 
 /* STYLES */
@@ -64,13 +63,14 @@ ace-select {
   top: 100%;
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
+
+  &:not([ace-select-list-visible="true"]) {
+    display: none;
+  }
 }
 
-[ace-select-list-visible="false"] {
-  display: none;
-}
 
-
+// Import styles that ensure that the listbox doesn't overflow outside the viewport.
 @import '../../common/utils';
 ```
 

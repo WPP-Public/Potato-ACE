@@ -4,7 +4,6 @@
 /* VARIABLES */
 $ace-select-list-background-color: #fff !default;
 $ace-select-list-height: auto !default;
-$ace-select-list-z-index: 1 !default;
 
 
 /* STYLES */
@@ -22,11 +21,12 @@ ace-select {
   top: 100%;
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
+
+  &:not([ace-select-list-visible="true"]) {
+    display: none;
+  }
 }
 
-[ace-select-list-visible="false"] {
-  display: none;
-}
 
-
+// Import styles that ensure that the listbox doesn't overflow outside the viewport.
 @import '../../common/utils';

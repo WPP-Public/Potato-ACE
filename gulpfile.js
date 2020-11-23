@@ -71,7 +71,7 @@ gulp.task('css', () => {
 
 
 // ///////////
-// IMGS
+// MEDIA
 // ///////////
 // Copy component mp4s to ./dist/img directory
 gulp.task('vid', () => {
@@ -192,10 +192,11 @@ gulp.task('serve', () => {
       await runCmd(BUILD_DOCS_CMD);
       await runCmd('gulp pug');
     } else {
-      // If SASS file changed run compile SASS files
+      // If SASS file changed compile SASS files
       if (path.includes('.scss')) {
         runCmd('gulp sass');
       }
+      // If JS file changed run JS gulp task
       if (path.includes('.js')) {
         runCmd('gulp js');
       }
