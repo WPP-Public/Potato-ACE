@@ -210,7 +210,7 @@ context(`Modal`, () => {
       checkModalState(visible);
 
       cy.get('@modal')
-        .find('button')
+        .find(`[${ATTRS.TRIGGER}="${IDS.SIMPLE_MODAL}"]`)
         .click()
         .get('@modal')
         .should('not.have.attr', ATTRS.VISIBLE)
