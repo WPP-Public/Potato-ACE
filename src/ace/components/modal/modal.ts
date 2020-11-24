@@ -93,6 +93,16 @@ export default class Modal extends HTMLElement {
       document.body.append(this.backdropEl);
     }
 
+    // Create a hide Modal button if none are present and add as first child of Modal
+    let hideModalBtn = this.querySelector(`button[${ATTRS.HIDE_BTN}]`);
+    if (!hideModalBtn) {
+      hideModalBtn = document.createElement('button');
+      hideModalBtn.setAttribute(ATTRS.HIDE_BTN, '');
+      hideModalBtn.setAttribute('aria-label', 'Exit modal');
+      hideModalBtn.innerHTML = '&#x2715;';
+      this.prepend(hideModalBtn);
+    }
+
 
     /* GET DOM DATA */
 
@@ -112,16 +122,6 @@ export default class Modal extends HTMLElement {
 
     /* INITIALISATION */
     warnIfElHasNoAriaLabel(this, 'Modal');
-
-    // Create a hide Modal button if none are present and add as first child of Modal
-    let hideModalBtn = this.querySelector(`button[${ATTRS.HIDE_BTN}]`);
-    if (!hideModalBtn) {
-      hideModalBtn = document.createElement('button');
-      hideModalBtn.setAttribute(ATTRS.HIDE_BTN, '');
-      hideModalBtn.setAttribute('aria-label', 'Exit modal');
-      hideModalBtn.innerHTML = '&#x2715;';
-      this.prepend(hideModalBtn);
-    }
 
 
     // If HTML attribute inert can be used (supported by browser and Modal is child of body) use it to trap focus, else use FocusTrap
@@ -161,9 +161,10 @@ export default class Modal extends HTMLElement {
     Handle click events
   */
   private clickHandler(e: MouseEvent): void {
-    // Hide Modal if a hide Modal button clicked
+    // Hide Modal if a hide Modal button or a trigger button for another Modal is clicked
     const hideModalBtnClicked = (e.target as HTMLElement).closest(`button[${ATTRS.HIDE_BTN}]`);
-    if (hideModalBtnClicked) {
+    const otherModalTriggerClicked = (e.target as HTMLElement).closest(`button[${ATTRS.TRIGGER}]`);
+    if (hideModalBtnClicked || otherModalTriggerClicked) {
       this.removeAttribute(ATTRS.VISIBLE);
     }
   }
