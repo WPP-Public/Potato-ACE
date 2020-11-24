@@ -118,7 +118,7 @@ export default class Modal extends HTMLElement {
     if (!hideModalBtn) {
       hideModalBtn = document.createElement('button');
       hideModalBtn.setAttribute(ATTRS.HIDE_BTN, '');
-      hideModalBtn.setAttribute('aria-label', 'Hide modal');
+      hideModalBtn.setAttribute('aria-label', 'Exit modal');
       hideModalBtn.innerHTML = '&#x2715;';
       this.prepend(hideModalBtn);
     }

@@ -222,6 +222,8 @@ The extra JavaScript used by this example is also shown below.
 </button>
 
 <ace-modal aria-label="Example of Modal that opens another Modal" id="modal-from-modal">
+  <button ace-modal-hide-modal-btn aria-label="Exit modal">&#x2715;</button>
+
   <h3>Second Modal</h3>
   <p>Second Modal</p>
   <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
