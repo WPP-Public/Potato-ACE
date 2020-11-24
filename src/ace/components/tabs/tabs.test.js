@@ -545,7 +545,7 @@ context(`Tabs`, () => {
           .and('not.have.attr', 'tabindex')
           .get('@tabsPanels')
           .eq(0)
-          .should('have.attr', ATTRS.PANEL)
+          .should('have.attr', ATTRS.PANEL, '')
           .and('not.have.attr', ATTRS.TAB_SELECTED)
           .get('@tabsButton3')
           // Check that LEFT works
@@ -584,7 +584,7 @@ context(`Tabs`, () => {
           .and('have.attr', 'tabindex', '-1')
           .get('@tabsPanels')
           .eq(0)
-          .should('have.attr', ATTRS.PANEL)
+          .should('have.attr', ATTRS.PANEL, '')
           .and('not.have.attr', ATTRS.TAB_SELECTED)
           .get('@tabsButton3')
           .should('have.focus')

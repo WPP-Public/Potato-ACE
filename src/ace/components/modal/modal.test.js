@@ -35,14 +35,15 @@ const initChecks = () => {
 
 
 const checkModalState = (visible) => {
-  return cy.get('@modal')
+  cy.get('@modal')
     .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.VISIBLE)
-    .get('@modalHideBtn')
-    .should(`${visible ? '' : 'not.'}have.focus`)
     .get('body')
     .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE)
     .get('@modalBackdrop')
     .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE);
+  if (visible) {
+    cy.get('@modalHideBtn').should(`have.focus`);
+  }
 };
 
 
