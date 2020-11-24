@@ -23,7 +23,7 @@ import '<path-to-node_modules>/@potato/ace/components/template/template';
 
 For convenience the ES6 class is exported as `Template` <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Template is instantiated within each `<ace-template>` element, and an ID `ace-template-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-template-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Template is instantiated within each `<ace-template>` element and an ID `ace-template-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-template-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 <!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
 
@@ -44,7 +44,7 @@ After the event `DOMContentLoaded` is fired on `document`, an instance of Templa
 
 ## Styles
 
-The following SASS is applied to Template. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by developers. <!-- TODO: If SASS variable from common/constants.scss file used add the following sentence --> SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
+The following SASS is applied to Template. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by developers. <!-- TODO: If SASS variable from common/constants.scss file used add the following sentence --> SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 
 ```scss

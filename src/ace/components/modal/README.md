@@ -1,6 +1,6 @@
 # Modal
 
-> A dialog is a window overlaid on either the primary window or another dialog window. Windows under a modal dialog are inert. That is, users cannot interact with content outside an active dialog window. Inert content outside an active dialog is typically visually obscured or dimmed so it is difficult to discern, and in some implementations, attempts to interact with the inert content cause the dialog to close.
+Modal is a component that is overlaid on top of other site content, and prevents users from interacting with content outside of it.
 
 Modal conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal).
 
@@ -19,30 +19,32 @@ Then import the class into your JavaScript entry point:
 import '<path-to-node_modules>/@potato/ace/components/modal/modal';
 ```
 
-For convenience the ES6 class is exported as `Modal` <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of `ATTRS`.
+For convenience the ES6 class is exported as `Modal` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Modal is instantiated within each `<ace-modal>` element, and an ID `ace-modal-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-modal-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Modal is instantiated within each `<ace-modal>` element and an ID `ace-modal-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-modal-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-<!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
+Visible Modals take up the full screen on mobile, and have a fixed width and height for all other devices as well as a backdrop that overlays site content outside the Modal, visually obscuring it. Modal uses any element on the page with attribute `ace-modal-backdrop` as the backdrop. If no element has this attribute then an `<div>` element will be appended to `body` and given this attribute.
 
-<!-- 1. Required elements that developers must provide before page load. For each, mention the custom attribute it can be given for explicit assignment, and whether this attribute can be omitted and the component can implicitly determine which element to use based on its position in the DOM hierarchy. Example: -->
+Modal must have at least one button to hide it. Modal will look for a descendant with attribute `ace-modal-hide-btn` and if none are present it will add a `<button>` element as it's first child and will give it this attribute.
 
-> Modal must have a nested button to \_\_\_\_\_, and will use a descendant `<button>` with attribute `ace-modal-btn`. If no descendant has this attribute then the first decendant `<button>` will be used and given this attribute.
-
-<!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or  or `aria-labelledby`. -->
-
-> It is strongly recommended that Modal be provided with an accessible label using either `aria-label` or `aria-labelledby`.
-
-<!-- 3. Optional elements that can be added dynamically after page load, explaining which custom event is needed to prompt the component to initialise them. -->
+It is strongly recommended that Modal be provided with an accessible label using either `aria-label` or `aria-labelledby`.
 
 ## Usage
 
-<!-- EXPLAINING COMPONENT FEATURES AND HOW IT CAN BE INTERACTED WITH. COMPONENT VARIANTS MAY BE BRIEFLY LISTED HERE BUT NOT IN DETAIL AS EACH VARIANT SHOULD HAVE AN EXAMPLE BELOW CONTAINING ALL THE DETAILS -->
+Modals are hidden by default but can be initially shown on page load by adding the `ace-modal-visible` attribute to them, which is an observed attribute that can be added or removed to dynamically show or hide the Modal. When a Modal is shown the first focusable descendant is focused, and when hidden focus returns to the element that was focused before the Modal was shown, which in most cases is the trigger. 
+
+The attribute `ace-modal-trigger-for` must be added to elements that trigger the Modal with its value set to the Modal ID. For accessibility reasons it is recommended that only `<button>` elements are used for triggers. Modals can contain triggers for other Modals, which when clicked will hide the Modal they are in and show their target Modal. When a Modal becomes visible the attribute `ace-modal-is-visible` is added to `body` and the backdrop to pervent scrolling in the former and show the latter. Modals can be hidden by either clicking on any descendant with attribute `ace-modal-hide-btn`, clicking on the backdrop element or pressing <kbd>Esc</kbd>. When a Modal is hidden it still remains in the DOM with its content unchanged.
+
+Visible Modals prevent users from interacting with content outside of it by either visually obscuring the content using the backdrop element or taking up the full screen of mobile devices, and by either making the content inert or by trapping keyboard focus within itself.
+
+Modal first attempts to use the [HTML `inert` property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/inert, currently part of the [HTML Living Standard specification](https://html.spec.whatwg.org/multipage/interaction.html#inert-subtrees). If the browser supports `inert` and the Modal is a direct child of `body` it will add the `inert` attribute to all of its siblings except the backdrop, thereby preventing users from interacting with them.
+
+For browsers that don't support inert or for Modals that are not children of `body`, a fallback focus trap technique is used. This method involves determining Modal's first and last interactable descendants by getting all its focusable descendants and filtering out elements that are disabled or hidden using CSS declarations `display: none` or `visibility: hidden`. Focus can then be moved to the first interactable descendant from the last when <kbd>Tab</kbd> is pressed, and to the last from the first when <kbd>Shift</kbd> + <kbd>Tab</kbd> are pressed. To allow for dynamically changing focusable descendants the focus trap listens for changes to the `style`, `class` and `disabled` attributes of all Modal's focusable descendants using a [mutation observer](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) and updates the first and last interactable descendants. An example use case for this is having a disabled form submission button as the last focusable descendant, which is enabled upon form validation thereby becoming the last interactable descendant due to the mutation observer, without which this button would be unfocusable. The first and last interactable descendants can also be manually updated by developers through a custom event. See the **Custom events** section below for more details.
 
 
 ## Styles
 
-The following SASS is applied to Modal. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by developers.
+The following SASS is applied to Modal. The SASS variables use `!default` so can also be easily overridden by developers. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 ```scss
 @import '../../common/constants';
@@ -125,39 +127,37 @@ This event is dispatched when Modal finishes initialising. The event name is ava
 }
 ```
 
+#### Changed
 
-### Listened for events
+`ace-modal-changed`
 
-Modal listens for the following events, which should be dispatched on the specific `ace-modal` element.
-
-
-<!-- TODO: Replace 'Listened for event name' with a descriptive name -->
-#### Event name
-
-<!-- TODO: Replace 'event-name' with actual value -->
-`ace-modal-event-name`
-
-<!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
-This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
-
-<!-- TODO: If detail property used add the following and describe each of its properties --> 
-, and its `detail` object should be composed as follows:
+This event is dispatched when Modal finishes initialising. The event name is available as `EVENTS.OUT.CHANGED`, and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'prop': // Description of prop [prop type (string/boolean etc.)]
+  'id': // ID of Modal [string]
+  'visible': // Whether the Modal is visible or not [boolean]
 }
 ```
 
+
+### Listened for event
+
+Modal listens for the following event, which should be dispatched on the specific `ace-modal` element.
+
+#### Update focus trap
+
+`ace-disclosure-update-focus-trap`
+
+This event should be dispatched to manually update the focus trap on the Modal and the event name is available as `EVENTS.IN.UPDATE_FOCUS_TRAP`. For example if an element is dynamically added to the Modal as the first or last focusable descendant this custom event must be dispatched so that the focus trap can be updated appropriately.
 
 ## Examples
 
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
-<!-- TODO: Replace 'Example' with more descriptive name -->
+### Simple Modal
+Example of a simple modal with two triggers that is shown on page load. The example also demonstrates how the focus trap and the `ace-disclosure-update-focus-trap` custom event work. After triggering the Modal, use **Toggle disabled button** button to toggle the disabled state of the disabled button, and notice that the mutation observer updates the focus trap. Next use the **Add link to Modal** and **Remove link from Modal** buttons to add and remove links and dispatch the custom event, and notice how the focus trap is again updated.
 
-### Example
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
 The extra JavaScript used by this example is also shown below.
 
 ```html
@@ -169,10 +169,11 @@ The extra JavaScript used by this example is also shown below.
   <p>This modal was shown on page load as it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
   <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 
+  <button id="toggle-disabled-btn-btn">Toggle disabled button</button>
+
   <button id="add-link-btn">Add link to Modal</button>
   <button id="remove-link-btn">Remove link from Modal</button>
 
-  <button id="toggle-disabled-btn-btn">Toggle disabled button</button>
   <button id="disabled-btn" disabled>Disabled Button</button>
 </ace-modal>
 ```
@@ -212,8 +213,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
-### Example
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
+### Modal that triggers another Modal
+Example of a Modal that has a trigger for another Modal and makes use of the `ace-modal-changed` custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its `ace-modal-changed` custom event is dispatched, the first Modal is shown again.
+
 The extra JavaScript used by this example is also shown below.
 
 ```html
@@ -221,14 +223,14 @@ The extra JavaScript used by this example is also shown below.
   Second Modal's trigger
 </button>
 
-<ace-modal aria-label="Example of Modal that opens another Modal" id="modal-from-modal">
+<ace-modal aria-label="Example of Modal that shows another Modal" id="modal-from-modal">
   <button ace-modal-hide-modal-btn aria-label="Exit modal">&#x2715;</button>
 
   <h3>Second Modal</h3>
   <p>Second Modal</p>
   <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 
-  <button ace-modal-hide-modal-btn ace-modal-trigger-for="simple-modal">Show first modal</button>
+  <button ace-modal-trigger-for="simple-modal">Show first modal</button>
 </ace-modal>
 ```
 

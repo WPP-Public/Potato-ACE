@@ -21,7 +21,7 @@ import '<path-to-node_modules>/@potato/ace/components/tabs/tabs';
 
 For convenience the ES6 class is exported as `Tabs` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Tabs is instantiated within each `<ace-tabs>` element, and an ID `ace-tabs-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-tabs-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Tabs is instantiated within each `<ace-tabs>` element and an ID `ace-tabs-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-tabs-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 The buttons that display the panels, known as tabs, must be nested within a tablist element with attribute `ace-tabs-tablist`. If no descendant has this attribute then the first child `<div>` will be used and given this attribute. It is strongly recommended that this tablist element be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "tablist" should not be included in the label as Tabs has `role="tablist"` which is read out by screen readers.
 
@@ -45,7 +45,7 @@ Tabs with the attribute `ace-tabs-deep-linked` are deep-linked meaning that when
 
 ## Styles
 
-The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
+The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 ```scss
 @import '../../common/constants';

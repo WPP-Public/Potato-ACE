@@ -9,7 +9,7 @@
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/listbox/listbox';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Listbox</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code>, an instance of Listbox is instantiated within each <code>&lt;ace-listbox&gt;</code> element, and an ID <code>ace-listbox-&lt;n&gt;</code> is addded for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-listbox-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Listbox is instantiated within each <code>&lt;ace-listbox&gt;</code> element and an ID <code>ace-listbox-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-listbox-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Listbox must have a nested list and will use a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> with attribute <code>ace-listbox-list</code>. If no descendant has this attribute then the first decendant <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using <code>aria-labelledby</code>. The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-listbox-update-options</code> is dispatched on the Listbox instance afterwards.</p>
 <h2>Usage</h2>
 <p>There are two main types of Listboxes, single-select and multi-select. A single-select Listbox allows selection of only a single option at a time, and are instantiated by default. A Multi-select Listbox allows selection of multiple options, and are instantiated in Listboxes with an <code>ace-listbox-multiselect</code> attribute.</p>
@@ -24,7 +24,7 @@
 <li><kbd>Ctrl</kbd>/<kbd>⌘</kbd> + <kbd>A</kbd>: Toggles selected state of all options.</li>
 </ul>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>ace/common/constants.scss</em>.</p>
+<p>The following SASS is applied to the component. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
 <p>To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color, respectively.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 

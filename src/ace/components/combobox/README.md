@@ -21,7 +21,7 @@ import '<path-to-node_modules>/@potato/ace/components/combobox/combobox';
 
 For convenience the ES6 class is exported as `Combobox` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Combobox is instantiated within each `<ace-combobox>` element, and an ID `ace-combobox-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-combobox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Combobox is instantiated within each `<ace-combobox>` element and an ID `ace-combobox-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-combobox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 Combobox must have a nested input box and will use a `<input>` with attribute `ace-combobox-input`. If no descendant has this attribute then the first decendant `<input>` will be used and given the attribute. It is strongly recommended that this `<input>` is given an accessible label using either `aria-label` or `aria-labelledby`. Similarly, Combobox must have a nested list and will use a `<ul>` with attribute `ace-combobox-list`. If no descendant has this attribute then the first decendant `<ul>` will be used and given the attribute. It is strongly recommended that the `<ul>` is given an accessible label using `aria-label`, describing its options.
 
@@ -55,7 +55,7 @@ A Combobox with input and list auto-completion behaves the same as that with lis
 
 ## Styles
 
-The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*, which also contains styles used for making sure the entire listbox is always visible within a window.
+The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*, which also contains styles used for making sure the entire listbox is always visible within a window.
 
 ```scss
 @import '../../common/constants';
