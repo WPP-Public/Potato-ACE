@@ -1,152 +1,226 @@
-// // TODO: Remove 'TODO:' comments
-// // TODO: Remove ATTRS and/or EVENTS if not used
-// import {ATTRS, EVENTS, MODAL} from './modal';
+import {ATTRS, EVENTS} from './modal';
 
 
-// // TODO: Add IDs used to find elements here
-// const IDS = {
-//   CUSTOM_EVENTS_MODAL: 'custom-events-modal',
-//   CUSTOM_EVENT_BTN: 'custom-event-1-btn',
-//   SIMPLE_MODAL: 'simple-modal',
-// };
+const IDS = {
+  MODAL_FROM_MODAL: 'modal-from-modal',
+  SIMPLE_MODAL: 'simple-modal',
+};
 
 
-// // TODO: Define modalBeforeEach function that will get Modal's elements to be tested in most tests.
-// // Use combinations of `.get()`, `.find()`, `.first()`, `.last()` and `.eq()`, and store them as aliases using `.as()`
-// // Call this function in the beforeEach of each variant test block giving it the variant ID, as shown below.
-// const getEls = (id) => {
-//   return cy.get(`#${id}`)
-//     .as('modal')
-//     .find('foo')
-//     .as('modalFoo')
-//     .find('bars')
-//     .as('modalBars')
-//     .first()
-//     .as('modalBar1')
-//     .get('@modal')
-//     .find('baz')
-//     .as('modalBaz');
-// };
+const getEls = (id) => {
+  cy.get(`#${id}`)
+    .as('modal')
+    .find(`[${ATTRS.HIDE_BTN}]`)
+    .as('modalHideBtn')
+    .get(`[${ATTRS.TRIGGER}="${id}"]`)
+    .as('modalTriggers')
+    .get(`[${ATTRS.BACKDROP}]`)
+    .as('modalBackdrop');
+};
 
 
-// // TODO: Define set of assertions that indicate that Modal initialised correctly
-// const modalInitChecks = (id) => {
-//   const FOO_ID = `${id}-foo`;
-//   const BAZ_ID = `${id}-baz`;
-
-//   return cy.get('@modal')
-//     .should('have.id', id)
-//     .get('@modalFoo')
-//     .should('have.id', FOO_ID)
-//     .and('have.attr', ATTRS.FOO, '')
-//     .and('have.attr', 'aria-owns', BAZ_ID)
-//     .get('@modalBars')
-//     .each(($bar, index) => {
-//       const selected = index === 0 ? 'true' : 'false';
-//       cy.wrap($bar)
-//         .should('have.id', `${id}-bar-${index + 1}`)
-//         .and('have.attr', ATTRS.BAR, '')
-//         .and('have.attr', 'aria-selected', selected);
-//     })
-//     .get('@modalBaz')
-//     .should('have.id', BAZ_ID)
-//     .and('have.attr', ATTRS.BAZ, '')
-//     .and('have.attr', 'aria-describedby', FOO_ID)
-//     .and('not.have.attr', ATTRS.ACTIVE_BAZ);
-// };
+const initChecks = () => {
+  return cy.get('@modal')
+    .should('have.attr', 'aria-modal', 'true')
+    .and('have.attr', 'role', 'dialog')
+    .invoke('attr', ATTRS.VISIBLE)
+    .then((visibleString) => {
+      const visible = visibleString === '';
+      cy.get('body')
+        .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE)
+        .get('@modalBackdrop')
+        .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE);
+    });
+};
 
 
-
-// // TODO: If there are sets of assertions you make a lot then define them in functions
-// const setOfAssertions = () => {
-//   return cy.get('@modalFoo')
-//     .should('have.attr', ATTRS.SOME_ATTR, 'true')
-//     .and('have.attr', 'aria-selected', 'true')
-//     .get('@modalBaz')
-//     .should('have.attr', ATTRS.SOME_OTHER_ATTR, '');
-// };
-
-
-
-// context(`Modal`, () => {
-//   before(() => cy.visit(`/modal`));
+const checkModalState = (visible) => {
+  cy.get('@modal')
+    .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.VISIBLE)
+    .get('body')
+    .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE)
+    .get('@modalBackdrop')
+    .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE);
+  if (visible) {
+    cy.get('@modalHideBtn').should(`have.focus`);
+  }
+};
 
 
-//   // TODO: test that at least one Modal without an ID will be automatically given one by the autoID function
-//   it(`Modal without ID should initialise with an ID`, () => {
-//     cy.get(MODAL)
-//       .first()
-//       .should('have.id', `${MODAL}-1`);
-//   });
+context(`Modal`, () => {
+  before(() => cy.visit(`/modal`));
 
 
-//   // TODO: Group tests for different variants together using `context`
-//   context(`Simple Modal`, () => {
-//     const MODAL_ID = IDS.SIMPLE_MODAL;
+  context(`Simple Modal`, () => {
+    const ID = IDS.SIMPLE_MODAL;
 
 
-//     beforeEach(() => getEls(MODAL_ID));
+    beforeEach(() => getEls(ID));
 
 
-//     // TODO: Check that Modal and children initialise with correct IDs and a11y attributes
-//     it(`Should initialise correctly`, () => modalInitChecks());
+    it(`Should initialise correctly`, () => {
+      cy.get('@modal').should('have.attr', ATTRS.VISIBLE, '');
+      initChecks();
+    });
 
 
-//     // TODO: Undo effects of test, resetting components to initial state, either at the end of each test or in the
-//     // `beforeEach()`.
-//     it(`Should do something else`, () => {
-//       // TODO: If test results in Modal dispatching a custom event, add listener to check custom event dispatched correctly
-//       const expectedDetail = {
-//         foo: 'bar',
-//         id: MODAL_ID,
-//       };
-//       cy.addCustomEventListener(EVENTS.OUT.SOME_EVENT, expectedDetail);
+    it(`Should be hidden or shown in response to observed attribute changes`, () => {
+      // Check that Modal hidden when observed attribute removed
+      let visible = false;
+      let expectedDetail = {
+        id: ID,
+        visible: visible,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@modal')
+        .invoke('removeAttr', ATTRS.VISIBLE);
+      checkModalState(visible);
 
-//       cy.get('@modalFoo').click();
-//       setOfAssertions();
-
-//       // TODO: Undo effects of test, resetting components to initial state, e.g.
-//       cy.get('@modalFoo')
-//         .click()
-//         .blur();
-//     });
-
-
-//     describe(`Mouse interactions`, () => {
-//       // TODO: Group mouse interaction tests together here
-//     });
-
-
-//     describe(`Keyboard interactions`, () => {
-//       // TODO: Group keyboard interaction tests together here
-//     });
+      // Check that Modal shown when observed attribute re-added
+      visible = true;
+      expectedDetail = {
+        id: ID,
+        visible: visible,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@modal')
+        .invoke('attr', ATTRS.VISIBLE, '');
+      checkModalState(visible);
+    });
 
 
-//     // TODO: Group other similar tests together
-//   });
+    it(`Should be hidden when it's hide button clicked and become visible when any of it's triggers clicked`, () => {
+      // Check that Modal hidden by hide button
+      let visible = false;
+      let expectedDetail = {
+        id: ID,
+        visible: visible,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@modalHideBtn')
+        .click();
+      checkModalState(visible);
 
 
-//   context(`Custom events Modal`, () => {
-//     const MODAL_ID = IDS.CUSTOM_EVENTS_MODAL;
+      // Check that Modal shown by trigger button
+      visible = true;
+      expectedDetail = {
+        id: ID,
+        visible: visible,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+        cy.get('@modalTriggers')
+        .eq(0)
+        .click()
+        .get(`#${IDS.MODAL_FROM_MODAL}`)
+        .should('not.have.attr', ATTRS.VISIBLE);
+      checkModalState(visible);
+
+      // Check that focus is returned to trigger after Modal hidden
+      cy.get('@modal')
+        .invoke('removeAttr', ATTRS.VISIBLE)
+        .get('@modalTriggers')
+        .eq(0)
+        .should('have.focus')
+
+      // Check second trigger shows Modal
+        .get('@modalTriggers')
+        .eq(1)
+        .click()
+        .get(`#${IDS.MODAL_FROM_MODAL}`)
+        .should('not.have.attr', ATTRS.VISIBLE);
+      checkModalState(visible);
+
+      // Check that focus is returned to trigger after Modal hidden
+      cy.get('@modal')
+        .invoke('removeAttr', ATTRS.VISIBLE)
+        .get('@modalTriggers')
+        .eq(1)
+        .should('have.focus')
+        .click();
+    });
 
 
-//     beforeEach(() => {
-//       getEls(MODAL_ID);
-//       // TODO: Check attributes that are unique to this variant
-//       cy.get('@modal').should('have.attr', ATTRS.VARIANT_ATTR, '');
-//       cy.get(`#${IDS.CUSTOM_EVENT_BTN}`).as('customEventBtn');
-//     });
+    it(`Should be hidden when backdrop clicked`, () => {
+      // Check that Modal hidden by clicking on backdrop
+      const visible = false;
+      const expectedDetail = {
+        id: ID,
+        visible: visible,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@modalBackdrop')
+        .click({force: true});
+      checkModalState(visible);
+
+      // Reset state
+      cy.get('@modalTriggers')
+        .eq(0)
+        .click();
+    });
 
 
-//     // TODO: Test dispatched custom events
-//     it(`Dipatching custom event 1 should lead to something`, () => {
-//       // TODO: Perform action that dispatches custom event
-//       cy.get('@customEvent1Btn')
-//         .click()
-//         // TODO: Check that custom event results in expected behaviour
-//         .get('@customEventModal').should('have.attr', ATTRS.CUSTOM_EVENT_TRIGGERED, '');
+    it(`Should be hidden when ESC key pressed`, () => {
+      // Check that Modal hidden by clicking on backdrop
+      const visible = false;
+      const expectedDetail = {
+        id: ID,
+        visible: visible,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@modalHideBtn')
+        .type('{esc}');
+      checkModalState(visible);
 
-//       // TODO: Undo effects of test, resetting components to initial state
-//     });
-//   });
-// });
+      // Reset state
+      cy.get('@modalTriggers')
+        .eq(0)
+        .click();
+    });
+  });
+
+
+  context(`Modal that opens another Modal`, () => {
+    const ID = IDS.MODAL_FROM_MODAL;
+
+
+    beforeEach(() => {
+      cy.get(`#${IDS.SIMPLE_MODAL}`)
+        .as('simpleModal')
+        .invoke('removeAttr', ATTRS.VISIBLE);
+      getEls(ID);
+    });
+
+
+    it(`Should initialise correctly`, () => initChecks());
+
+
+    it(`Should be hidden when another Modal is triggered from it`, () => {
+      // Check that Modal is shown when trigger clicked
+      const visible = true;
+      const expectedDetail = {
+        id: ID,
+        visible: visible,
+      };
+      cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+        .get('@modalTriggers')
+        .eq(0)
+        .click()
+        .get('@simpleModal')
+        .should('not.have.attr', ATTRS.VISIBLE);
+      checkModalState(visible);
+
+      cy.get('@modal')
+        .find(`[${ATTRS.TRIGGER}="${IDS.SIMPLE_MODAL}"]`)
+        .click()
+        .get('@modal')
+        .should('not.have.attr', ATTRS.VISIBLE)
+        .get('@simpleModal')
+        .should('have.attr', ATTRS.VISIBLE, '')
+        .get('body')
+        .should('have.attr', ATTRS.IS_VISIBLE, '')
+        .get('@modalBackdrop')
+        .should('have.attr', ATTRS.IS_VISIBLE, '');
+    });
+  });
+});

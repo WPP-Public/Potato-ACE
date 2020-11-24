@@ -1,7 +1,7 @@
 import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const OTHER_MODAL_ID = 'modal-1';
+  const OTHER_MODAL_ID = 'simple-modal';
   const modalEl = document.getElementById('modal-from-modal');
   let otherModalTriggerClicked;
 

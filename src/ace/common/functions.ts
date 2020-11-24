@@ -28,15 +28,6 @@ export const autoID = (component: string): void => {
 
 
 /*
-  Determine if browser supports HTML inert attribute
-*/
-export const browserSupportsInert = (): boolean => {
-  const documentBody = (document.body as any);
-  return (documentBody.inert === true || documentBody.inert === false);
-};
-
-
-/*
   Search a given container for an element using a given attribute, if not found find element using given selector, set the given attribute on it, then return the element.
 */
 export const getElByAttrOrSelector = (container: Element, attr: string, selector: string): HTMLElement =>  {
