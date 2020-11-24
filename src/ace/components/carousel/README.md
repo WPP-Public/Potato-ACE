@@ -21,7 +21,7 @@ import '<path-to-node_modules>/@potato/ace/components/carousel/carousel';
 
 For convenience the ES6 class is exported as `Carousel` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Carousel is instantiated within each `<ace-carousel>` element, and an ID `ace-carousel-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-carousel-ready` is dispatched on `window`.
+After the event `DOMContentLoaded` is fired on `document` an instance of Carousel is instantiated within each `<ace-carousel>` element and an ID `ace-carousel-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-carousel-ready` is dispatched on `window`.
 
 It is strongly recommended that Carousel be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "carousel" should not be included in the label as Carousel has `aria-roledescription="carousel"` which is read out by screen readers.
 
@@ -47,7 +47,7 @@ The automatic slide show can be stopped and started again using the automatic sl
 
 ## Styles
 
-The following SASS is applied to Carousel. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
+The following SASS is applied to Carousel. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 ```scss
 @import '../../common/constants';

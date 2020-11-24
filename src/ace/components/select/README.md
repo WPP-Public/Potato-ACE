@@ -21,7 +21,7 @@ import '<path-to-node_modules>/@potato/ace/components/select/select';
 
 For convenience the ES6 class is exported as `Select` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Select is instantiated within each `<ace-select>` element, and an ID `ace-select-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-select-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Select is instantiated within each `<ace-select>` element and an ID `ace-select-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-select-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 Select must have a nested button to show the hidden list of options, so if one is not present Select will create a `<button>` to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a nested list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-select-update-options` is dispatched on the Select instance afterwards.
 
@@ -37,7 +37,7 @@ Type-ahead can also be used to select an option by typing one or more characters
 
 ## Styles
 
-The following SASS is applied to the component. The list also inherits Listbox styles detailed in the *SASS* section of [Listbox](/listbox). The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
+The following SASS is applied to the component. The list also inherits Listbox styles detailed in the *SASS* section of [Listbox](/listbox). The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 ```scss
 @import '../listbox/listbox';

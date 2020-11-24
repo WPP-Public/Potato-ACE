@@ -1,6 +1,6 @@
 # Disclosure
 
-Disclosure is a component whose visibility can be changed using trigger buttons and custom events.
+Disclosure is a component whose visibility is changed using trigger buttons.
 
 Disclosure conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
 
@@ -21,11 +21,11 @@ import '<path-to-node_modules>/@potato/ace/components/disclosure/disclosure';
 
 For convenience the ES6 class is exported as `Disclosure` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Disclosure is instantiated within each `<ace-disclosure>` element, and an ID `ace-disclosure-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Disclosure is instantiated within each `<ace-disclosure>` element and an ID `ace-disclosure-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 ## Usage
 
-Disclosures are hidden by default but can be initially shown by adding the `ace-disclosure-visible="true"` attribute to it. The attribute `ace-disclosure-trigger-for` should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>` elements are used for triggers. Disclosures can also be triggered using custom events, as described in the **Custom events** section below.
+Disclosures are hidden by default but can be initially shown on page load by adding the `ace-disclosure-visible="true"` attribute to it. The attribute `ace-disclosure-trigger-for` should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>` elements are used for triggers. Disclosures can also be triggered using a custom event. See the **Custom events** section below for more details.
 
 Triggers will by default toggle the visibiility of the Disclosure, but the `ace-disclosure-show-trigger` or `ace-disclosure-hide-trigger` attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.
 
@@ -75,7 +75,7 @@ This event is dispatched when Disclosure's visibility changes. The event name is
 }
 ```
 
-### Listened for events
+### Listened for event
 
 Disclosure listens for the following event, which should be dispatched on the specific `ace-disclosure` element.
 

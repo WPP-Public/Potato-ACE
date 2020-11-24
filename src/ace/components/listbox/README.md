@@ -21,7 +21,7 @@ import '<path-to-node_modules>/@potato/ace/components/listbox/listbox';
 
 For convenience the ES6 class is exported as `Listbox` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document`, an instance of Listbox is instantiated within each `<ace-listbox>` element, and an ID `ace-listbox-<n>` is addded for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Listbox is instantiated within each `<ace-listbox>` element and an ID `ace-listbox-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 Listbox must have a nested list and will use a `<ul>` or `<ol>` with attribute `ace-listbox-list`. If no descendant has this attribute then the first decendant `<ul>` or `<ol>` will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using `aria-labelledby`. The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-listbox-update-options` is dispatched on the Listbox instance afterwards.
 
@@ -45,7 +45,7 @@ The active option is automatically selected in a single-select Listbox. In a mul
 
 ## Styles
 
-The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *ace/common/constants.scss*.
+The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color, respectively.
 
