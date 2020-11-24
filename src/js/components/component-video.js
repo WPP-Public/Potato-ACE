@@ -29,7 +29,6 @@ export default class ComponentVideo extends HTMLElement {
 
 
   hoverAndFocusHandler(e) {
-    console.log(e.type);
     const active = (e.type === 'mouseenter' || e.type === 'focus');
 
     if (active) {

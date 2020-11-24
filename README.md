@@ -50,12 +50,12 @@ To create a new component:
     - Set the browser width to minimum unless the component changes visually on mobile 
     - Use Mac OS built in screen recorder:
         - Use the **Record Selected Portion** mode
-        - Under **Options** > **Options** make sure **Show clicks** is ticked
+        - Under **Options** > **Options** make sure **Show Mouse Clicks** is ticked
         - Under **Options** > **Microphone** make sure **None** is ticked
         - Set the portion size to be a square. If using the minimum browser width use 420px x 420px.
         - Make sure the component is completely surrounded by whitespace within the portion square. Add padding to `example-block` elements if necessary.
     - Use the most simple variant of the component
-    - For smoother video looping, try to have the component start and end the video in it's initial state.
+    - For smoother video looping have the component start and end the video in it's initial state.
     - Save the file as *\<component-name>.mov*
     - Make sure video is as short as possible with a maximum length of 15 seconds
     - Convert to mp4 using the following command, replacing `<component-name>` with the component name

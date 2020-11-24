@@ -1,13 +1,40 @@
 import {KeysType} from './types.js';
 
-export const NAME = 'ace';
+
+/*
+  Does browser support HTML attribute `inert`?
+*/
+const documentBody = (document.body as any);
+export const BROWSER_SUPPORTS_INERT = (documentBody.inert === true || documentBody.inert === false);
+
 
 export const DISPLAY_NAME = 'ACE';
 
-export const UTIL_ATTRS = {
-  FLOAT_ABOVE: `${NAME}-u-float-above`,
-  FLOAT_LEFT: `${NAME}-u-float-left`,
-};
+
+/*
+  Focusable element selectors
+*/
+const FOCUSABLE_ELEMENT_SELECTORS = [
+  'a[href]',
+  'area[href]',
+  'audio controls',
+  'button',
+  '[contentEditable="true"]',
+  'datalist',
+  'details',
+  'embed',
+  'iframe',
+  'input',
+  'object',
+  'progress',
+  'select',
+  'summary',
+  '[tabindex]',
+  'textarea',
+  'video controls',
+];
+export const FOCUSABLE_ELEMENTS_SELECTOR = FOCUSABLE_ELEMENT_SELECTORS.join(':not([tabindex="-1"]),');
+
 
 export const KEYS: KeysType = {
   A: {
@@ -56,6 +83,10 @@ export const KEYS: KeysType = {
   },
 };
 
+
+export const NAME = 'ace';
+
+
 /*
   Browser-specific, page visibility API strings
   From https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
@@ -73,26 +104,8 @@ if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and 
 }
 export const PAGE_VISIBILITY_API_STRINGS = {HIDDEN, VISIBILITY_CHANGE};
 
-/*
-  Focusable element selectors
-*/
-const FOCUSABLE_ELEMENT_SELECTORS = [
-  'a[href]',
-  'area[href]',
-  'audio controls',
-  'button',
-  '[contentEditable="true"]',
-  'datalist',
-  'details',
-  'embed',
-  'iframe',
-  'input',
-  'object',
-  'progress',
-  'select',
-  'summary',
-  '[tabindex]',
-  'textarea',
-  'video controls',
-];
-export const FOCUSABLE_ELEMENTS_SELECTOR = FOCUSABLE_ELEMENT_SELECTORS.join(':not([tabindex="-1"]),');
+
+export const UTIL_ATTRS = {
+  FLOAT_ABOVE: `${NAME}-u-float-above`,
+  FLOAT_LEFT: `${NAME}-u-float-left`,
+};

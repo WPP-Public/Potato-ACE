@@ -161,10 +161,10 @@ Each example contains a live demo and the HTML code that produced it. The code s
 The extra JavaScript used by this example is also shown below.
 
 ```html
-<button ace-modal-trigger-for="modal-1">Modal trigger 1</button>
-<button ace-modal-trigger-for="modal-1">Modal trigger 2</button>
+<button ace-modal-trigger-for="simple-modal">Modal trigger 1</button>
+<button ace-modal-trigger-for="simple-modal">Modal trigger 2</button>
 
-<ace-modal aria-label="Example Modal" id="modal-1" ace-modal-visible>
+<ace-modal aria-label="Example Modal" id="simple-modal" ace-modal-visible>
   <h3>Modal heading</h3>
   <p>This modal was shown on page load as it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
   <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
@@ -181,7 +181,7 @@ The extra JavaScript used by this example is also shown below.
 import {EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const modalEl = document.getElementById('modal-1');
+  const modalEl = document.getElementById('simple-modal');
   const disabledBtn = document.getElementById('disabled-btn');
 
   modalEl.addEventListener('click', (e) => {
@@ -221,12 +221,14 @@ The extra JavaScript used by this example is also shown below.
   Second Modal's trigger
 </button>
 
-<ace-modal aria-label="Second Modal" id="modal-from-modal">
+<ace-modal aria-label="Example of Modal that opens another Modal" id="modal-from-modal">
+  <button ace-modal-hide-modal-btn aria-label="Exit modal">&#x2715;</button>
+
   <h3>Second Modal</h3>
   <p>Second Modal</p>
   <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 
-  <button ace-modal-hide-modal-btn ace-modal-trigger-for="modal-1">Show first modal</button>
+  <button ace-modal-hide-modal-btn ace-modal-trigger-for="simple-modal">Show first modal</button>
 </ace-modal>
 ```
 
@@ -234,7 +236,7 @@ The extra JavaScript used by this example is also shown below.
 import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const OTHER_MODAL_ID = 'modal-1';
+  const OTHER_MODAL_ID = 'simple-modal';
   const modalEl = document.getElementById('modal-from-modal');
   let otherModalTriggerClicked;
 

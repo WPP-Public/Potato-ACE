@@ -11,8 +11,9 @@
     "plugin:@typescript-eslint/eslint-recommended"
   ],
   "plugins": [
+    "@typescript-eslint",
     "cypress",
-    "@typescript-eslint"
+    "no-autofix"
   ],
   "globals": {
     "Atomics": "readonly",
@@ -26,6 +27,7 @@
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "no-autofix/prefer-const": "error",
     "no-multiple-empty-lines": [
       "error",
       {
@@ -35,12 +37,7 @@
     "no-unused-vars": [
       "warn"
     ],
-    "prefer-const": [
-      "error",
-      {
-        "destructuring": "all"
-      }
-    ],
+    "prefer-const": "off",
     "semi": [
       "error",
       "always"
