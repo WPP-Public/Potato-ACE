@@ -8,6 +8,7 @@
     "build-docs": "npm run nxm -- ./scripts/build-docs.mjs",
     "cypress:cli": "cypress run -c video=false",
     "cypress:chrome": "npm run cypress:cli -- -b chrome",
+    "cypress:edge": "npm run cypress:cli -- -b edge",
     "cypress:firefox": "npm run cypress:cli -- -b firefox",
     "lint": "npm run lint:scss && npm run lint:ts",
     "lint:ts": "eslint \"src/**/*.ts\"",
@@ -22,6 +23,7 @@
     "test": "start-server-and-test serve:build 3030 'cypress open'",
     "test:ci": "start-server-and-test serve:ci 3030",
     "test:ci:chrome": "npm run test:ci -- cypress:chrome",
+    "test:ci:edge": "npm run test:ci -- cypress:edge",
     "test:ci:firefox": "npm run test:ci -- cypress:firefox",
     "test:ci:prep": "npm rebuild node-sass && gulp ts"
   },
