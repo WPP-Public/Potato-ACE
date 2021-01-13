@@ -1,11 +1,11 @@
-import {ATTRS, EVENTS, SELECT} from './select';
-import {ATTRS as LB_ATTRS, searchTimeoutTime} from '../listbox/listbox';
+import {ATTRS, EVENTS, SEARCH_TIMEOUT, SELECT} from './select';
 import {getOptionId} from '../../../../cypress/functions';
 
 
 const IDS = {
   ADD_OPTION_BTN: 'add-option',
   CUSTOM_EVENTS_SELECT: 'custom-events-select',
+  FOR_FORM_SELECT: `for-form-select`,
   REMOVE_OPTION_BTN: 'remove-option',
   SIMPLE_SELECT: `${SELECT}-1`,
 };
@@ -33,7 +33,7 @@ const initChecks = () => {
         .get('@selectList')
         .should('have.attr', ATTRS.LIST, '')
         .and('have.attr', ATTRS.LIST_VISIBLE, 'false')
-        .and('have.attr', LB_ATTRS.LIST, '')
+        .and('have.attr', ATTRS.LIST, '')
         .and('have.attr', 'tabindex', '-1')
         .and('have.attr', 'role', 'listbox');
     });
@@ -49,11 +49,9 @@ const optionsInitChecks = () => {
         .get('@selectOptions')
         .each(($option, index) => {
           cy.wrap($option)
-            .should('have.attr', LB_ATTRS.OPTION_INDEX, index)
-            .and('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
+            .should('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
             .and('have.id', getOptionId($select.attr('id'), index))
-            .and('have.attr', 'role', 'option')
-            .and('not.have.attr', LB_ATTRS.ACTIVE_OPTION);
+            .and('have.attr', 'role', 'option');
         });
     });
 };
@@ -90,11 +88,10 @@ context(`Select`, () => {
   before(() => cy.visit(`/select`));
 
 
-  it(`Selects without IDs should initialise with IDs`, () => {
-    cy.get(`${SELECT}:not(#${IDS.CUSTOM_EVENTS_SELECT})`)
-      .each(($option, index) => {
-        cy.wrap($option).should('have.id', `${SELECT}-${index + 1}`);
-      });
+  it(`Should initialise with an ID even if one not provided`, () => {
+    cy.get(SELECT)
+      .first()
+      .should('have.id', `${SELECT}-1`);
   });
 
 
@@ -229,19 +226,19 @@ context(`Select`, () => {
           // Character that leads to no match does nothing
           cy.get('@selectTrigger')
             .focus()
-            .type('z', {delay: searchTimeoutTime});
+            .type('z', {delay: SEARCH_TIMEOUT});
           checkOptionChosen(0);
 
           // Typing single character
-          cy.get('@selectTrigger').type('t', {delay: searchTimeoutTime});
+          cy.get('@selectTrigger').type('t', {delay: SEARCH_TIMEOUT});
           checkOptionChosen(5);
 
           // Typing character twice without delay then again after delay
           cy.get('@selectTrigger')
             .type('b')
-            .type('b', {delay: searchTimeoutTime});
+            .type('b', {delay: SEARCH_TIMEOUT});
           checkOptionChosen(10);
-          cy.get('@selectTrigger').type('b', {delay: searchTimeoutTime});
+          cy.get('@selectTrigger').type('b', {delay: SEARCH_TIMEOUT});
           checkOptionChosen(4);
 
           // Character sequence that leads to match
@@ -300,19 +297,19 @@ context(`Select`, () => {
             .click()
             .get('@selectList')
             .focus()
-            .type('z', {delay: searchTimeoutTime});
+            .type('z', {delay: SEARCH_TIMEOUT});
           checkOptionSelected(0);
 
           // Typing single character
-          cy.get('@selectList').type('t', {delay: searchTimeoutTime});
+          cy.get('@selectList').type('t', {delay: SEARCH_TIMEOUT});
           checkOptionSelected(5);
 
           // Typing character twice without delay then again after delay
           cy.get('@selectList')
             .type('b')
-            .type('b', {delay: searchTimeoutTime});
+            .type('b', {delay: SEARCH_TIMEOUT});
           checkOptionSelected(10);
-          cy.get('@selectList').type('b', {delay: searchTimeoutTime});
+          cy.get('@selectList').type('b', {delay: SEARCH_TIMEOUT});
           checkOptionSelected(4);
 
           // Character sequence that leads to match
@@ -322,6 +319,79 @@ context(`Select`, () => {
           checkOptionSelected(9);
         });
       });
+    });
+  });
+
+
+  context(`Select for form`, () => {
+    const SELECT_ID = IDS.FOR_FORM_SELECT;
+
+
+    beforeEach(() => {
+      getEls(SELECT_ID);
+      cy.get('@select')
+        .find(`input[${ATTRS.INPUT}]`)
+        .as('selectInput')
+        .get('@selectList')
+        .find('li')
+        .as('selectOptions')
+        .first()
+        .as('selectOption1')
+        // Reset state
+        .get('@selectTrigger')
+        .click()
+        .get('@selectOption1')
+        .click()
+        .get('@select')
+        .parent()
+        .click();
+    });
+
+
+    it(`Should initialise correctly`, () => {
+      initChecks();
+
+      const inputId = `${SELECT_ID}-input`;
+      cy.get('@selectInput')
+        .should('have.id', inputId)
+        .and('have.attr', 'name', inputId)
+        .and('have.attr', 'type', 'hidden');
+    });
+
+
+    it(`Should dynamically set the value and data attribute of hidden input to selected options`, () => {
+      const selectedOptionIndex = 2;
+      cy.get('@selectTrigger')
+        .click()
+        .get('@selectOptions')
+        .eq(selectedOptionIndex)
+        .click()
+        .invoke('text')
+        .then((selectedOptionText) => {
+          const id = `${SELECT_ID}-list-option-${selectedOptionIndex + 1}`;
+          const val = selectedOptionText;
+
+          cy.get('@selectInput')
+            .should('have.attr', ATTRS.SELECTED_OPTION_ID, id)
+            .and('have.value', encodeURIComponent(val));
+        });
+
+      const secondSelectedOptionIndex = 8;
+      cy.get('@selectTrigger')
+        .click()
+        .get('@selectOptions')
+        .eq(secondSelectedOptionIndex)
+        .click()
+        .invoke('text')
+        .then((selectedOptionText) => {
+          const id = `${SELECT_ID}-list-option-${secondSelectedOptionIndex + 1}`;
+          const val = selectedOptionText;
+
+          cy.get('@selectInput')
+            .should('have.attr', ATTRS.SELECTED_OPTION_ID, id)
+            .and('have.value', encodeURIComponent(val));
+        });
+
     });
   });
 
@@ -337,7 +407,8 @@ context(`Select`, () => {
 
 
     it(`Should repond to custom events correctly`, () => {
-      cy.get(`#${IDS.ADD_OPTION_BTN}`)
+      cy.addCustomEventListener(EVENTS.OUT.READY, {id: SELECT_ID})
+        .get(`#${IDS.ADD_OPTION_BTN}`)
         .click()
         .click()
         .click()
@@ -357,10 +428,8 @@ context(`Select`, () => {
         .get('@selectOptions')
         .each(($option, index) => {
           cy.wrap($option)
-            .should('have.attr', LB_ATTRS.OPTION_INDEX, index)
-            .and('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
-            .and('have.attr', 'role', 'option')
-            .and('not.have.attr', LB_ATTRS.ACTIVE_OPTION);
+            .should('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
+            .and('have.attr', 'role', 'option');
         });
     });
   });

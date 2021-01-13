@@ -113,8 +113,6 @@ export default class Disclosure extends HTMLElement {
 /* INITIALISE AND REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
   autoID(DISCLOSURE);
-  customElements.define(DISCLOSURE, Disclosure);
-
 
   // Add window click handler for disclosure triggers
   window.addEventListener('click', (e) => {
@@ -140,4 +138,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     disclosureEl.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
   });
+
+  customElements.define(DISCLOSURE, Disclosure);
 });

@@ -7,6 +7,7 @@ import {isInteractable, keyPressedMatches} from './functions.js';
 
 export default class FocusTrap {
   private element: HTMLElement;
+  private mutationObserver: MutationObserver;
   public focusableDescendants: Array<HTMLElement>;
   public interactableDescendants: Array<HTMLElement>;
 
@@ -26,23 +27,22 @@ export default class FocusTrap {
 
 
     // Update the interactable descendants if 'style', 'class' or 'disabled' attributes of an interactable descendant changes
-    const mutationObserverOptions = {
-      attributeFilter: ['style', 'class', 'disabled'],
-      attributes: true,
-    };
-    const observer = new MutationObserver((mutations) => mutations.forEach(() => this.getInteractableDescendants()));
-    this.focusableDescendants.forEach((element) => observer.observe(element, mutationObserverOptions));
+    const mutationObserverOptions = {attributeFilter: ['style', 'class', 'disabled']};
+    this.mutationObserver = new MutationObserver((mutations) => {
+      mutations.forEach(() => this.getInteractableDescendants());
+    });
+    this.focusableDescendants.forEach((element) => this.mutationObserver.observe(element, mutationObserverOptions));
   }
 
 
   public getInteractableDescendants(): void {
-    this.focusableDescendants =
-      ([...this.element.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR)] as Array<HTMLElement>);
+    this.focusableDescendants = ([...this.element.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR)] as Array<HTMLElement>);
     this.interactableDescendants = this.focusableDescendants.filter(isInteractable);
   }
 
 
   public destroy(): void {
+    this.mutationObserver.disconnect();
     this.element.removeEventListener('keydown', this.keydownHandler);
   }
 

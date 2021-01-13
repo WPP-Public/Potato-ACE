@@ -1,12 +1,13 @@
-import {ATTRS, LISTBOX, searchTimeoutTime} from './listbox';
+import {ATTRS, EVENTS, LISTBOX, SEARCH_TIMEOUT} from './listbox';
 import {getOptionId} from '../../../../cypress/functions';
 
 
 const IDS = {
   ADD_OPTION_BTN: 'add-option',
   CUSTOM_EVENTS_LB: 'custom-events-listbox',
-  MULTI_SELECT_LB: 'multi-select-listbox',
-  SINGLE_SELECT_LB: 'single-select-listbox',
+  FOR_FORM_LB: 'listbox-for-form',
+  MULTI_SELECT_LB: 'multiselect-listbox',
+  SINGLE_SELECT_LB: `${LISTBOX}-1`,
 };
 
 
@@ -20,20 +21,24 @@ const getEls = (id) => {
 };
 
 
-const initChecks = (multiSelect=false) => {
-  cy.get('@listbox')
+const initChecks = () => {
+  return cy.get('@listbox')
     .then(($listbox) => {
-      cy.get('@listboxList')
-        .should('have.attr', ATTRS.LIST, '')
-        .and('have.attr', 'role', 'listbox')
-        .and('have.attr', 'tabindex', '0')
-        .get('@listboxOptions')
-        .each(($option, index) => {
-          cy.wrap($option)
-            .should('have.attr', ATTRS.OPTION_INDEX, index.toString())
-            .and('have.attr', 'aria-selected', (!multiSelect && index === 0) ? 'true' : 'false')
-            .and('have.id', getOptionId($listbox.attr('id'), index))
-            .and('have.attr', 'role', 'option');
+      cy.wrap($listbox)
+        .invoke('attr', ATTRS.MULTISELECT)
+        .then((multiselect) => {
+          const isMultiselect = multiselect === '';
+          cy.get('@listboxList')
+            .should('have.attr', ATTRS.LIST, '')
+            .and('have.attr', 'role', 'listbox')
+            .and('have.attr', 'tabindex', '0')
+            .get('@listboxOptions')
+            .each(($option, index) => {
+              cy.wrap($option)
+                .should('have.attr', 'aria-selected', (!isMultiselect && index === 0) ? 'true' : 'false')
+                .and('have.id', getOptionId($listbox.attr('id'), index))
+                .and('have.attr', 'role', 'option');
+            });
         });
     });
 };
@@ -45,8 +50,8 @@ context(`Listbox`, () => {
 
   it(`Listbox without ID should initialise with an ID`, () => {
     cy.get(LISTBOX)
-      .eq(1)
-      .should('have.id', `${LISTBOX}-1`);
+      .eq(0)
+      .should('have.id', IDS.SINGLE_SELECT_LB);
   });
 
 
@@ -214,13 +219,13 @@ context(`Listbox`, () => {
         // Character that leads to no match does nothing
         cy.get('@listboxList')
           .focus()
-          .type('z', {delay: searchTimeoutTime})
+          .type('z', {delay: SEARCH_TIMEOUT})
           .should('have.attr', 'aria-activedescendant', getOptionId(LISTBOX_ID, 0));
 
         // Typing single character
         let optionIndex = 2;
         cy.get('@listboxList')
-          .type('h', {delay: searchTimeoutTime})
+          .type('h', {delay: SEARCH_TIMEOUT})
           .should('have.attr', 'aria-activedescendant', getOptionId(LISTBOX_ID, 2))
           .get('@listboxOptions')
           .eq(optionIndex)
@@ -230,14 +235,14 @@ context(`Listbox`, () => {
         optionIndex = 5;
         cy.get('@listboxList')
           .type('b')
-          .type('b', {delay: searchTimeoutTime})
+          .type('b', {delay: SEARCH_TIMEOUT})
           .should('have.attr', 'aria-activedescendant', getOptionId(LISTBOX_ID, optionIndex))
           .get('@listboxOptions')
           .eq(optionIndex)
           .should('have.attr', 'aria-selected', 'true');
         optionIndex = 8;
         cy.get('@listboxList')
-          .type('b', {delay: searchTimeoutTime})
+          .type('b', {delay: SEARCH_TIMEOUT})
           .should('have.attr', 'aria-activedescendant', getOptionId(LISTBOX_ID, optionIndex))
           .get('@listboxOptions')
           .eq(optionIndex)
@@ -281,7 +286,7 @@ context(`Listbox`, () => {
     });
 
 
-    it(`Should initialise correctly`, () => initChecks(true));
+    it(`Should initialise correctly`, () => initChecks());
 
 
     it(`Should set first option as active but not selected on initial focus and deactivate it on blur`, () => {
@@ -492,13 +497,13 @@ context(`Listbox`, () => {
         // Test CTRL + A selection & deselection
         cy.get('@listboxList')
           .focus()
-          .type('{ctrl}a')
+          .type('{meta+a}')
           .get('@listboxOptions')
           .each(($option) => {
             cy.wrap($option).should('have.attr', 'aria-selected', 'true');
           })
           .get('@listboxList')
-          .type('{ctrl}a')
+          .type('{meta+a}')
           .get('@listboxOptions')
           .each(($option) => {
             cy.wrap($option).should('have.attr', 'aria-selected', 'false');
@@ -534,6 +539,71 @@ context(`Listbox`, () => {
   });
 
 
+  context(`Listbox for form`, () => {
+    const LISTBOX_ID = IDS.FOR_FORM_LB;
+
+
+    beforeEach(() => {
+      cy.get(`#${LISTBOX_ID}`)
+        .as('listbox')
+        .find('ol')
+        .as('listboxList')
+        .find('li')
+        .as('listboxOptions')
+        .get('@listbox')
+        .find(`input[${ATTRS.INPUT}]`)
+        .as('listboxInput');
+
+      // Reset state
+      cy.get('@listboxOptions')
+        .eq(0)
+        .click()
+        .get('@listboxList')
+        .type('{ctrl}a{ctrl}a')
+        .blur();
+    });
+
+
+    it(`Should initialise correctly`, () => {
+      initChecks();
+
+      const inputId = `${LISTBOX_ID}-input`;
+      cy.get('@listboxInput')
+        .should('have.id', inputId)
+        .and('have.attr', 'name', inputId)
+        .and('have.attr', 'type', 'hidden');
+    });
+
+
+    it(`Should dynamically set the value and data attribute of hidden input to selected options`, () => {
+      const firstSelectedOptionIndex = 2;
+      const secondSelectedOptionIndex = 8;
+
+      cy.get('@listboxOptions')
+        .eq(firstSelectedOptionIndex)
+        .click()
+        .invoke('text')
+        .then((firstSelectedOptionText) => {
+          cy.get('@listboxOptions')
+            .eq(secondSelectedOptionIndex)
+            .click()
+            .invoke('text')
+            .then((secondSelectedOptionText) => {
+              const vals = [firstSelectedOptionText, secondSelectedOptionText];
+              const ids = [
+                `${LISTBOX_ID}-list-option-${firstSelectedOptionIndex + 1}`,
+                `${LISTBOX_ID}-list-option-${secondSelectedOptionIndex + 1}`,
+              ];
+
+              cy.get('@listboxInput')
+                .should('have.attr', ATTRS.SELECTED_OPTION_IDS, JSON.stringify(ids))
+                .and('have.value', encodeURIComponent(JSON.stringify(vals)));
+            });
+        });
+    });
+  });
+
+
   context(`Custom events Listbox`, () => {
     const LISTBOX_ID = IDS.CUSTOM_EVENTS_LB;
 
@@ -555,9 +625,10 @@ context(`Listbox`, () => {
     });
 
 
-    it(`Should repond to custom events correctly`, () => {
+    it(`Should respond to custom events correctly`, () => {
       const selectedOptionIndex = 2;
-      cy.get('@addOptionBtn')
+      cy.addCustomEventListener(EVENTS.OUT.READY, {id: LISTBOX_ID})
+        .get('@addOptionBtn')
         .click()
         .click()
         .click()
@@ -569,8 +640,7 @@ context(`Listbox`, () => {
         .get('@listboxOptions')
         .each(($option, index) => {
           cy.wrap($option)
-            .should('have.attr', ATTRS.OPTION_INDEX, `${index}`)
-            .and('have.id', `${LISTBOX_ID}-option-${(index + 1)}`)
+            .should('have.id', `${LISTBOX_ID}-list-option-${(index + 1)}`)
             .and('have.attr', 'aria-selected', (index === selectedOptionIndex) ? 'true' : 'false')
             .and('have.attr', 'role', 'option')
             .and(`${index === selectedOptionIndex ? '' : 'not.'}have.attr`, ATTRS.ACTIVE_OPTION);

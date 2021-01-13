@@ -63,7 +63,9 @@ The following SASS is applied to the component. The SASS variables use `!default
 
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
-$ace-combobox-option-selected-bg-color: $ace-color-selected !default;
+$ace-combobox-list-height: auto !default;
+$ace-combobox-selected-option-color: #fff !default;
+$ace-combobox-selected-option-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
@@ -78,12 +80,14 @@ ace-combobox {
 
 [ace-combobox-list] {
   background: $ace-combobox-list-bg-color;
-  height: auto;
+  height: $ace-combobox-list-height;
   left: 0;
   list-style: none;
+  overflow-y: auto;
   position: absolute;
   text-align: left;
   top: 100%;
+  user-select: none;
   white-space: nowrap;
   width: 100%;
   z-index: $ace-combobox-list-z-index;
@@ -91,18 +95,15 @@ ace-combobox {
   &:not([ace-combobox-list-visible="true"]) {
     display: none;
   }
-}
 
-[ace-combobox-option-selected] {
-  background-color: $ace-combobox-option-selected-bg-color;
-}
-
-[ace-combobox-option]:hover {
-  background-color: $ace-combobox-option-selected-bg-color;
+  [aria-selected="true"] {
+    background: $ace-combobox-selected-option-bg-color;
+    color: $ace-combobox-selected-option-color;
+  }
 }
 
 
-// Import styles that ensure that the listbox doesn't overflow outside the viewport.
+// Import styles that ensure that the list doesn't overflow outside the viewport.
 @import '../../common/utils';
 ```
 
@@ -436,65 +437,73 @@ document.addEventListener('DOMContentLoaded', () => {
 
 This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute `aria-live="polite"` is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the `ace-combobox-update-options` custom event. The `aria-live="polite"` element is finally updated to announce how many results were found.
 
-Custom styles, shown below, have been applied to this example using HTML classes, to make it look like a Google Material component. The extra JavaScript used by this example is also shown below.
+Custom styles that mimic Google Material Design have been applied to this example and are shown below. The extra JavaScript used by this example is also shown below.
 
 
 ```html
-<label id="combobox-label-8">Search:</label>
+<label id="styled-combobox-label" class="styled-combobox-label">Search:</label>
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <div class="styled-combobox__wrapper">
-    <input aria-labelledby="combobox-label-8" class="styled-combobox__input">
+    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input">
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>
-  <p aria-live="polite" class="styled-combobox__status"></p>
-  <p id="chosen-search-result" aria-live="polite"></p>
+  <div>
+    <p aria-live="polite" class="styled-combobox__status"></p>
+  </div>
 </ace-combobox>
+
+<p id="chosen-search-result" aria-live="polite"></p>
 ```
 
 ```scss
 .styled-combobox {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  letter-spacing: .5px;
+  align-items: center;
+  display: flex;
+  margin: 8px 0;
 
-  &__wrapper {
-    margin: 10px 0;
+  &-label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+  }
+
+  &__input,
+  &__list {
+    border: 1px solid rgba(0, 0, 0, .42);
+    border-radius: 4px;
     width: 300px;
+
+    &:focus {
+      outline-color: #0893a7;
+    }
+  }
+
+  &__input,
+  [ace-combobox-option],
+  &__status {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
   }
 
   &__input {
-    border: 1px solid rgba(0, 0, 0, .38);
-    border-radius: 4px;
-    font-size: 1em;
-    padding: 12px 16px 14px;
+    padding: 20px 16px;
+  }
+
+  [ace-combobox-option] {
+    padding: 10px 16px;
+
+    &[aria-selected="true"] {
+      background: #0893a7;
+    }
   }
 
   &__status {
-    padding: 8px;
-  }
-
-  &__list {
-    border: 1px solid #e5e5e5;
-    padding: 8px 0;
-
-    li {
-      padding: 8px 16px;
-      user-select: none;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, .1);
-      }
-    }
-
-    [ace-combobox-option-selected] {
-      background-color: rgba(0, 0, 0, .1);
-    }
+    margin: 0 0 0 8px;
   }
 }
 ```
 
 ```js
-import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
+import {EVENTS} from '/ace/components/combobox/combobox.js';
 import {KEYS} from '../../../common/constants.js';
 import {keyPressedMatches} from '../../../common/functions.js';
 
@@ -505,9 +514,9 @@ const comboboxId = 'search-combobox';
 document.addEventListener('DOMContentLoaded', () => {
   let optionChosen, searching = false;
   const comboboxEl = document.getElementById(comboboxId);
-  const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
-  const comboboxStatusEl = comboboxEl.querySelector('[aria-live="polite"]');
-  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
+  const comboboxInputEl = comboboxEl.querySelector('.styled-combobox__input');
+  const comboboxStatusEl = comboboxEl.querySelector('.styled-combobox__status');
+  const comboboxListEl = comboboxEl.querySelector('.styled-combobox__list');
   const chosenResultEl = document.getElementById('chosen-search-result');
 
   // Search when ENTER key pressed

@@ -4,7 +4,7 @@ import {
   autoID,
   getElByAttrOrSelector,
   getElsByAttrOrSelector,
-  getIndexOfNextItem,
+  getIndexBasedOnDirection,
   keyPressedMatches,
   warnIfElHasNoAriaLabel
 } from '../../common/functions.js';
@@ -177,7 +177,7 @@ export default class Tabs extends HTMLElement {
       case EVENTS.IN.SET_PREV_TAB:
       case EVENTS.IN.SET_NEXT_TAB: {
         const direction = (e.type === EVENTS.IN.SET_PREV_TAB) ? -1 : 1;
-        const newTabIndex = getIndexOfNextItem(this.selectedTabIndex, direction, this.tabCount, this.infinite);
+        const newTabIndex = getIndexBasedOnDirection(this.selectedTabIndex, direction, this.tabCount, this.infinite);
         this.setSelectedTab(newTabIndex);
         break;
       }
@@ -302,7 +302,7 @@ export default class Tabs extends HTMLElement {
     if (prevTabKeyPressed || nextTabKeyPressed) {
       const direction = prevTabKeyPressed ? -1 : 1;
       const startingPoint = this.manualSelection ? this.activeTabIndex : this.selectedTabIndex;
-      desiredTabIndex = getIndexOfNextItem(startingPoint, direction, this.tabCount, this.infinite);
+      desiredTabIndex = getIndexBasedOnDirection(startingPoint, direction, this.tabCount, this.infinite);
     }
     if (this.manualSelection) {
       this.tabEls[this.activeTabIndex].setAttribute('tabindex', '-1');

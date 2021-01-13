@@ -58,7 +58,7 @@ export const getElsByAttrOrSelector = (container: Element, attr: string, selecto
 /*
   Increments or decrements a given index based on direction and total number of items, looping around if necessary, and returns new index.
 */
-export const getIndexOfNextItem = (startIndex: number, direction: -1|1, itemsTotal: number, loopAround=false): number => {
+export const getIndexBasedOnDirection = (startIndex: number, direction: -1|1, itemsTotal: number, loopAround=false): number => {
   let newIndex = startIndex + direction;
   if (newIndex < 0) {
     newIndex = loopAround ? itemsTotal - 1 : 0;

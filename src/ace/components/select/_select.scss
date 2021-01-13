@@ -1,9 +1,11 @@
-@import '../listbox/listbox';
+@import '../../common/constants';
 
 
 /* VARIABLES */
-$ace-select-list-background-color: #fff !default;
+$ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
+$ace-select-selected-option-color: #fff !default;
+$ace-select-selected-option-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
@@ -12,21 +14,28 @@ ace-select {
 }
 
 [ace-select-list] {
-  background: $ace-select-list-background-color;
+  background: $ace-select-list-bg-color;
   height: $ace-select-list-height;
   left: 0;
   list-style: none;
+  overflow-y: auto;
   position: absolute;
   text-align: left;
   top: 100%;
+  user-select: none;
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
 
   &:not([ace-select-list-visible="true"]) {
     display: none;
   }
+
+  [aria-selected="true"] {
+    background: $ace-select-selected-option-bg-color;
+    color: $ace-select-selected-option-color;
+  }
 }
 
 
-// Import styles that ensure that the listbox doesn't overflow outside the viewport.
+// Import styles that ensure that the list doesn't overflow outside the viewport.
 @import '../../common/utils';

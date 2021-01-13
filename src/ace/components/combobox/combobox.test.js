@@ -66,11 +66,10 @@ const comboboxInitChecks = () => {
         .get('@comboboxOptions')
         .each(($option, index) => {
           cy.wrap($option)
-            .should('have.id', `${id}-option-${index + 1}`)
+            .should('have.id', getOptionId(id, index))
             .and('have.attr', ATTRS.OPTION, '')
             .and('have.attr', 'aria-selected', 'false')
-            .and('have.attr', 'role', 'option')
-            .and('not.have.attr', ATTRS.OPTION_SELECTED);
+            .and('have.attr', 'role', 'option');
         });
     });
 };
@@ -85,8 +84,7 @@ const checkOptionSelected = (optionIndex) => {
         .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
         .get('@comboboxOptions')
         .eq(optionIndex)
-        .should('have.attr', ATTRS.OPTION_SELECTED, '')
-        .and('have.attr', 'aria-selected', 'true');
+        .should('have.attr', 'aria-selected', 'true');
     });
 };
 
