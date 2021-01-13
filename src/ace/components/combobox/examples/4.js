@@ -1,4 +1,4 @@
-import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
+import {EVENTS} from '/ace/components/combobox/combobox.js';
 import {KEYS} from '../../../common/constants.js';
 import {keyPressedMatches} from '../../../common/functions.js';
 
@@ -9,9 +9,9 @@ const comboboxId = 'search-combobox';
 document.addEventListener('DOMContentLoaded', () => {
   let optionChosen, searching = false;
   const comboboxEl = document.getElementById(comboboxId);
-  const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
-  const comboboxStatusEl = comboboxEl.querySelector('[aria-live="polite"]');
-  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
+  const comboboxInputEl = comboboxEl.querySelector('.styled-combobox__input');
+  const comboboxStatusEl = comboboxEl.querySelector('.styled-combobox__status');
+  const comboboxListEl = comboboxEl.querySelector('.styled-combobox__list');
   const chosenResultEl = document.getElementById('chosen-search-result');
 
   // Search when ENTER key pressed

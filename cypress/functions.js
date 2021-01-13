@@ -9,4 +9,4 @@ export const getKeycodeAndWhich = (key) => {
 };
 
 
-export const getOptionId = (id, index) => {return `${id}-option-${index + 1}`;};
+export const getOptionId = (id, index) => { return `${id}-list-option-${index + 1}`; };

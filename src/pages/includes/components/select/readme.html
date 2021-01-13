@@ -1,5 +1,5 @@
 <h1>Select</h1>
-<p>Select is a special type of <a href="/listbox">Listbox</a> component that mimics the native HTML <code>&lt;select&gt;</code> while allowing more styling flexibility.</p>
+<p>Select is a dropdown list of options that mimics a native HTML <code>&lt;select&gt;</code> that has attribute <code>size</code> with a value of 1 or without it, while allowing more styling flexibility.</p>
 <p>Select conforms to the <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
@@ -11,18 +11,21 @@
 <p>For convenience the ES6 class is exported as <code>Select</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Select is instantiated within each <code>&lt;ace-select&gt;</code> element and an ID <code>ace-select-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-select-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Select must have a nested button to show the hidden list of options, so if one is not present Select will create a <code>&lt;button&gt;</code> to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a nested list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-select-update-options</code> is dispatched on the Select instance afterwards.</p>
+<p>If using a Select in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-select-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-select-input</code>. The value of the selected option is stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded string. Similarly, the selected option ID is stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-id</code>.</p>
 <h2>Usage</h2>
 <p>The list is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed. The list is aware of it's position in the window and will appear below the trigger if there is enough space, otherwise it will appear above.</p>
 <p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option.</p>
 <p>Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options. Type-ahead can be used on a focussed trigger, which will select the option and update the trigger text, or in a list where it will only select the option but not update the trigger text until <kbd>Enter</kbd> or <kbd>Space</kbd> are pressed to confirm. Pressing <kdb>Esc</kbd> or clicking outside the element closes an open list without confirming a change in selected option.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component. The list also inherits Listbox styles detailed in the <em>SASS</em> section of <a href="/listbox">Listbox</a>. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
-<pre><code class="language-scss">@import '../listbox/listbox';
+<p>The following SASS is applied to the component. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
+<pre><code class="language-scss">@import '../../common/constants';
 
 
 /* VARIABLES */
-$ace-select-list-background-color: #fff !default;
+$ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
+$ace-select-selected-option-color: #fff !default;
+$ace-select-selected-option-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
@@ -31,23 +34,30 @@ ace-select {
 }
 
 [ace-select-list] {
-  background: $ace-select-list-background-color;
+  background: $ace-select-list-bg-color;
   height: $ace-select-list-height;
   left: 0;
   list-style: none;
+  overflow-y: auto;
   position: absolute;
   text-align: left;
   top: 100%;
+  user-select: none;
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
 
   &amp;:not([ace-select-list-visible=&quot;true&quot;]) {
     display: none;
   }
+
+  [aria-selected=&quot;true&quot;] {
+    background: $ace-select-selected-option-bg-color;
+    color: $ace-select-selected-option-color;
+  }
 }
 
 
-// Import styles that ensure that the listbox doesn't overflow outside the viewport.
+// Import styles that ensure that the list doesn't overflow outside the viewport.
 @import '../../common/utils';
 </code></pre>
 <h2>Custom events</h2>
@@ -72,18 +82,18 @@ ace-select {
   },
 }
 </code></pre>
-<h3>Listened for events</h3>
-<p>Select listens for the following events, which should be dispatched on the specific <code>ace-listbox</code> element.</p>
+<h3>Listened for event</h3>
+<p>Select listens for the following event, which should be dispatched on the specific <code>ace-select</code> element.</p>
 <h4>Update options</h4>
 <p><code>ace-select-update-options</code></p>
-<p>This event should be dispatched when options are added or deleted to the listbox, and causes Select to reinitialise itself. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
+<p>This event should be dispatched when options are added or deleted to the list, and causes Select to reinitialise the list options. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Select</h3>
 <p>The default Select.</p>
-<div class="example-block"><span id="select-label-1">Choose an Avenger:</span>
+<div class="example-block"><label id="ace-select-1-label">Choose an Avenger:</label>
 <ace-select>
-  <ul aria-labelledby="select-label-1">
+  <ul aria-labelledby="ace-select-1-label">
     <li>Select an option</li>
     <li>Iron Man</li>
     <li>Nick Fury</li>
@@ -100,9 +110,9 @@ ace-select {
   </ul>
 </ace-select>
 </div>
-<pre><code class="language-html">&lt;span id=&quot;select-label-1&quot;&gt;Choose an Avenger:&lt;/span&gt;
+<pre><code class="language-html">&lt;label id=&quot;ace-select-1-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
 &lt;ace-select&gt;
-  &lt;ul aria-labelledby=&quot;select-label-1&quot;&gt;
+  &lt;ul aria-labelledby=&quot;ace-select-1-label&quot;&gt;
     &lt;li&gt;Select an option&lt;/li&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
@@ -119,54 +129,48 @@ ace-select {
   &lt;/ul&gt;
 &lt;/ace-select&gt;
 </code></pre>
-<h3>Select with options containing images</h3>
-<p>A Select with options containing images.</p>
-<div class="example-block"><span id="select-label-2">Choose an Avenger:</span>
-<ace-select>
-  <ul aria-labelledby="select-label-2">
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Iron Man
-    </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Hulk
-    </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Thor
-    </li>
-    <li style="align-items: center; display: flex;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Captain America
-    </li>
+<h3>Select for forms</h3>
+<p>A Select to be used with HTML forms, with a hidden <code>&lt;input&gt;</code> with the selected option data.</p>
+<div class="example-block"><label id="ace-select-1-label">Choose an Avenger:</label>
+<ace-select ace-select-for-form id="for-form-select">
+  <ul aria-labelledby="ace-select-1-label">
+    <li>Select an option</li>
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Black Widow</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Spider-man</li>
+    <li>Black Panther</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
   </ul>
 </ace-select>
 </div>
-<pre><code class="language-html">&lt;span id=&quot;select-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
-&lt;ace-select&gt;
-  &lt;ul aria-labelledby=&quot;select-label-2&quot;&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Iron Man
-    &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Hulk
-    &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Thor
-    &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Captain America
-    &lt;/li&gt;
+<pre><code class="language-html">&lt;label id=&quot;ace-select-1-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+&lt;ace-select ace-select-for-form id=&quot;for-form-select&quot;&gt;
+  &lt;ul aria-labelledby=&quot;ace-select-1-label&quot;&gt;
+    &lt;li&gt;Select an option&lt;/li&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
   &lt;/ul&gt;
 &lt;/ace-select&gt;
 </code></pre>
 <h3>Select with dynamic options</h3>
-<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-select-update-options</code> event that updates the listbox and the trigger text. The extra JavaScript code required by this example is also included below.</p>
+<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-select-update-options</code> event that updates the list options, and the trigger text. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="add-option">
   Add option
 </button>
@@ -174,10 +178,10 @@ ace-select {
   Remove option
 </button>
 <hr>
-<span id="select-label-3">Choose an Avenger:</span>
+<label id="custom-events-select-label">Choose an Avenger:</label>
 <ace-select id="custom-events-select">
-  <button>No options available</button>
-  <ul aria-labelledby="select-label-3"></ul>
+  <button><span ace-select-trigger-text>No options available</span></button>
+  <ul aria-labelledby="custom-events-select-label"></ul>
 </ace-select>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
@@ -187,10 +191,10 @@ ace-select {
   Remove option
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;span id=&quot;select-label-3&quot;&gt;Choose an Avenger:&lt;/span&gt;
+&lt;label id=&quot;custom-events-select-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
 &lt;ace-select id=&quot;custom-events-select&quot;&gt;
-  &lt;button&gt;No options available&lt;/button&gt;
-  &lt;ul aria-labelledby=&quot;select-label-3&quot;&gt;&lt;/ul&gt;
+  &lt;button&gt;&lt;span ace-select-trigger-text&gt;No options available&lt;/span&gt;&lt;/button&gt;
+  &lt;ul aria-labelledby=&quot;custom-events-select-label&quot;&gt;&lt;/ul&gt;
 &lt;/ace-select&gt;
 </code></pre>
 <pre><code class="language-js">import {EVENTS} from '/ace/components/select/select.js';
@@ -217,4 +221,150 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
     updateOptions();
   });
 });
+</code></pre>
+<h3>Styled Select</h3>
+<p>Example of a styled Select with options containing images.</p>
+<p>Custom styles that mimic Google Material Design have been applied to this example and are shown below.</p>
+<div class="example-block"><label id="styled-select-label" class="styled-select-label">Choose an Avenger:</label>
+<ace-select class="styled-select">
+  <button ace-select-trigger class="styled-select__trigger">
+  </button>
+  <ul aria-labelledby="styled-select-label" class="styled-select__list">
+    <li class="styled-select__option">
+      Select an option
+    </li>
+    <li class="styled-select__option">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      Iron Man
+    </li>
+    <li class="styled-select__option">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      Nick Fury
+    </li>
+    <li class="styled-select__option">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      Hulk
+    </li>
+    <li class="styled-select__option">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      Thor
+    </li>
+    <li class="styled-select__option">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      Captain America
+    </li>
+    <li class="styled-select__option">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      Black Widow
+    </li>
+    <li class="styled-select__option">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      Scarlet Witch
+    </li>
+  </ul>
+</ace-select>
+</div>
+<pre><code class="language-html">&lt;label id=&quot;styled-select-label&quot; class=&quot;styled-select-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+&lt;ace-select class=&quot;styled-select&quot;&gt;
+  &lt;button ace-select-trigger class=&quot;styled-select__trigger&quot;&gt;
+  &lt;/button&gt;
+  &lt;ul aria-labelledby=&quot;styled-select-label&quot; class=&quot;styled-select__list&quot;&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      Select an option
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-select__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Iron Man
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-select__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Nick Fury
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-select__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Hulk
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-select__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Thor
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-select__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Captain America
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-select__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Black Widow
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-select__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-select__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Scarlet Witch
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ace-select&gt;
+</code></pre>
+<pre><code class="language-scss">.styled-select {
+  display: block;
+  margin-top: 8px;
+  width: 300px;
+
+  &amp;-label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  &amp;__trigger,
+  &amp;__list {
+    border: 1px solid rgba(0, 0, 0, .42);
+    border-radius: 4px;
+    width: 100%;
+
+    &amp;:focus {
+      outline-color: #0893a7;
+    }
+  }
+
+  &amp;__trigger,
+  &amp;__option {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+  }
+
+  &amp;__trigger {
+    background: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 16px;
+
+    &amp;::after {
+      color: rgba(0, 0, 0, .42);
+      content: '\25B2';
+      transform: rotate(180deg);
+    }
+
+    &amp;:focus::after {
+      color: #0893a7;
+    }
+  }
+
+  &amp;__list {
+    height: 350px;
+  }
+
+  &amp;__option {
+    align-items: center;
+    display: flex;
+    padding: 10px 16px;
+
+    &amp;[aria-selected=&quot;true&quot;] {
+      background: #0893a7;
+    }
+  }
+
+  &amp;__img {
+    height: 2em;
+    margin-right: 10px;
+  }
+}
 </code></pre>

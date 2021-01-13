@@ -3,7 +3,7 @@ import {DISPLAY_NAME, KEYS, NAME, PAGE_VISIBILITY_API_STRINGS} from '../../commo
 import {
   autoID,
   getElByAttrOrSelector,
-  getIndexOfNextItem,
+  getIndexBasedOnDirection,
   keyPressedMatches,
   warnIfElHasNoAriaLabel
 } from '../../common/functions.js';
@@ -348,7 +348,7 @@ export default class Carousel extends HTMLElement {
       case EVENTS.IN.SET_PREV_SLIDE:
       case EVENTS.IN.SET_NEXT_SLIDE: {
         const direction = (e.type === EVENTS.IN.SET_PREV_SLIDE) ? -1 : 1;
-        const newSlideIndex = getIndexOfNextItem(this.selectedSlideIndex, direction, this.slideCount, this.infinite);
+        const newSlideIndex = getIndexBasedOnDirection(this.selectedSlideIndex, direction, this.slideCount, this.infinite);
         this.setSelectedSlide(newSlideIndex);
         break;
       }
@@ -527,7 +527,7 @@ export default class Carousel extends HTMLElement {
     Select a new slide based on a given direction
   */
   private selectSlideBasedOnDirection(direction: -1|1): void {
-    const slideToSelectIndex = getIndexOfNextItem(this.selectedSlideIndex, direction, this.slideCount, this.infinite);
+    const slideToSelectIndex = getIndexBasedOnDirection(this.selectedSlideIndex, direction, this.slideCount, this.infinite);
     this.setSelectedSlide(slideToSelectIndex);
   }
 

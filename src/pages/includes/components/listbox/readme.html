@@ -1,5 +1,5 @@
 <h1>Listbox</h1>
-<p>Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard.</p>
+<p>Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard. It mimics a native HTML <code>&lt;select&gt;</code> that has attribute <code>size</code> with a value or 1 or higher, while allows more styling flexibility.</p>
 <p>Listbox conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
@@ -10,12 +10,13 @@
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Listbox</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Listbox is instantiated within each <code>&lt;ace-listbox&gt;</code> element and an ID <code>ace-listbox-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-listbox-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>Listbox must have a nested list and will use a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> with attribute <code>ace-listbox-list</code>. If no descendant has this attribute then the first decendant <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using <code>aria-labelledby</code>. The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-listbox-update-options</code> is dispatched on the Listbox instance afterwards.</p>
+<p>Listbox must have a nested list and will use a <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> with attribute <code>ace-listbox-list</code>. If no descendant has this attribute then the first decendant <code>&lt;ul&gt;</code> or <code>&lt;ol&gt;</code> will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using <code>aria-label</code> or <code>aria-labelledby</code>. The list can be empty upon instantiation and options can be dynamically added or removed as long as custom event <code>ace-listbox-update-options</code> is dispatched on the Listbox instance afterwards.</p>
+<p>There are two main types of Listboxes, single-select and multi-select. Single-select Listboxes allow selection of only a single option at a time and are instantiated by default. Multi-select Listboxes allow selection of multiple options and are instantiated in Listboxes with attribute <code>ace-listbox-multiselect</code>.</p>
+<p>Listbox options can be active and/or selected. Only a single option can be active at once and only when the Listbox list has focus. The active option is given the <code>ace-listbox-active-option</code> attribute and its ID is stored as the value of Listbox list's <code>aria-activedescendant</code> attribute. Both attributes are removed when the Listbox list loses focus as no option is active then.</p>
+<p>If using a Listbox in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-listbox-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-listbox-input</code>. The values of any selected options are stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded, JSON-strigified array. Similarly, the IDs of any selected options are stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-ids</code> in the form of a JSON strigified array.</p>
 <h2>Usage</h2>
-<p>There are two main types of Listboxes, single-select and multi-select. A single-select Listbox allows selection of only a single option at a time, and are instantiated by default. A Multi-select Listbox allows selection of multiple options, and are instantiated in Listboxes with an <code>ace-listbox-multiselect</code> attribute.</p>
-<p>Listbox options can be active and/or selected. Only a single option can be active at once and only when the Listbox list has focus. The active option is given the <code>ace-listbox-active-option</code> attribute and its ID is stored as the Listbox's <code>aria-activedescendant</code> attribute. Both these attributes are removed when the Listbox list loses focus as no option is active at that point.</p>
-<p>The active option can be changed by clicking on an option, using <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Home</kbd> or <kbd>End</kbd>, or by typing one or more characters making the next option with text starting with the typed string active. <kbd>↑</kbd> will loop around from the top of the list to the bottom, while <kbd>↓</kbd> will loop from the bottom to the top. Similarly, when a character is typed if the bottom of the list is reached the search will loop around and continute from the top until a match or the active option is reached. Repeatedly pressing the same character with a short delay in-between will loop through all matching options.</p>
-<p>The active option is automatically selected in a single-select Listbox. In a multi-select Listbox an option's selected state can be toggled by clicking on it or pressing <kbd>Space</kbd> if it's active. Selection of multiple options can be achieved by clicking on an option and then clicking on another one while holding <kbd>⇧</kbd>, which will select all options in between the two clicked ones. Users can also select multiple options using the keyboard in the following ways:</p>
+<p>The active option can be changed by clicking on an option, using <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Home</kbd> or <kbd>End</kbd>, or by typing one or more characters making the next option with text starting with the typed string active. <kbd>↑</kbd> will loop around from the top of the list to the bottom, while <kbd>↓</kbd> will loop from the bottom to the top. Similarly, when a character is typed if the bottom of the list is reached the search will loop around and continute from the top until a match or the starting option is reached. Repeatedly pressing the same character with a delay in-between will loop through all matching options. The value of this delay is 500ms and is exported by Listbox as <code>SEARCH_TIMEOUT</code>.</p>
+<p>The active option is always the selecteed option in a single-select Listbox. In a multi-select Listbox an option's selected state can be toggled by clicking on it or pressing <kbd>Space</kbd> if it's active. Selection of multiple options can be achieved by clicking on an option and then clicking on another one while holding <kbd>⇧</kbd>, which will select all options in between the two clicked ones. Multiple options can also be selected using the keyboard in the following ways:</p>
 <ul>
 <li><kbd>⇧</kbd> + <kbd>↑</kbd> or <kbd>⇧</kbd> + <kbd>↓</kbd>: Toggles selected state of previous or next option respectively, and makes it active.</li>
 <li><kbd>⇧</kbd> + <kbd>Space</kbd>: Selects all items between the most recently selected item and the active item.</li>
@@ -25,54 +26,59 @@
 </ul>
 <h2>Styles</h2>
 <p>The following SASS is applied to the component. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
-<p>To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color, respectively.</p>
+<p>To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color respectively.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
 
 /* VARIABLES */
-$ace-listbox-active-option-outline: 1px dashed slategray !default;
+$ace-listbox-active-option-outline-width: 2px !default;
+$ace-listbox-active-option-outline-style: dotted !default;
+$ace-listbox-active-option-outline-color: slategrey !default;
+$ace-listbox-list-height: auto !default;
+$ace-listbox-selected-option-color: #fff !default;
 $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
 [ace-listbox-list] {
+  height: $ace-listbox-list-height;
   list-style-position: inside;
-}
+  overflow-y: auto;
+  user-select: none;
 
-[ace-listbox-option-index] {
-  &amp;[aria-selected=&quot;true&quot;] {
+  [aria-selected=&quot;true&quot;] {
     background: $ace-listbox-selected-option-bg-color;
-    color: white;
+    color: $ace-listbox-selected-option-color;
   }
 }
 
-[ace-listbox-active-option] {
-  outline: $ace-listbox-active-option-outline;
+[ace-listbox-multiselect] [ace-listbox-option-active] {
+  outline: $ace-listbox-active-option-outline-width $ace-listbox-active-option-outline-style $ace-listbox-active-option-outline-color;
 }
 </code></pre>
 <h2>Custom events</h2>
 <p>Listbox uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
-<h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Listbox.</p>
+<h3>Dispatched event</h3>
+<p>The following event is dispatched on <code>window</code> by Listbox.</p>
 <h4>Ready</h4>
 <p><code>ace-listbox-ready</code></p>
-<p>This event is dispatched when Listbox finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Listbox finishes initialising, or updating after the <code>ace-listbox-update-options</code> event is dispatched. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Listbox [string]
 }
 </code></pre>
-<h3>Listened for events</h3>
-<p>Listbox listens for the following events, which should be dispatched on the specific <code>ace-listbox</code> element.</p>
+<h3>Listened for event</h3>
+<p>Listbox listens for the following event, which should be dispatched on the specific <code>ace-listbox</code> element.</p>
 <h4>Update options</h4>
 <p><code>ace-listbox-update-options</code></p>
 <p>This event should be dispatched when options are added or deleted, and causes Listbox to reinitialise itself. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Single-select Listbox</h3>
-<p>A single-select Listbox with a nested <code>&lt;ul&gt;</code> list.</p>
-<div class="example-block"><span id="listbox-label-1">Choose an Avenger:</span>
-<ace-listbox id="single-select-listbox">
-  <ul aria-labelledby="listbox-label-1">
+<p>A single-select Listbox with a nested <code>&lt;ul&gt;</code> list and <code>&lt;label&gt;</code>.</p>
+<div class="example-block"><ace-listbox>
+  <label id="single-select-listbox-label">Choose an Avenger:</label>
+  <ul aria-labelledby="single-select-listbox-label">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -88,9 +94,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   </ul>
 </ace-listbox>
 </div>
-<pre><code class="language-html">&lt;span id=&quot;listbox-label-1&quot;&gt;Choose an Avenger:&lt;/span&gt;
-&lt;ace-listbox id=&quot;single-select-listbox&quot;&gt;
-  &lt;ul aria-labelledby=&quot;listbox-label-1&quot;&gt;
+<pre><code class="language-html">&lt;ace-listbox&gt;
+  &lt;label id=&quot;single-select-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;ul aria-labelledby=&quot;single-select-listbox-label&quot;&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
     &lt;li&gt;Hulk&lt;/li&gt;
@@ -106,10 +112,49 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   &lt;/ul&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
-<p>A single-select listbox with a nested <code>&lt;ol&gt;</code> list.</p>
-<div class="example-block"><span id="listbox-label-2">Choose an Avenger:</span>
-<ace-listbox>
-  <ol aria-labelledby="listbox-label-2">
+<h3>Multi-select Listbox</h3>
+<p>A multi-select Listbox.</p>
+<div class="example-block"><ace-listbox ace-listbox-multiselect id="multiselect-listbox">
+  <label id="multiselect-listbox-label">Choose an Avenger:</label>
+  <ul aria-labelledby="multiselect-listbox-label">
+    <li>Iron Man</li>
+    <li>Nick Fury</li>
+    <li>Hulk</li>
+    <li>Thor</li>
+    <li>Captain America</li>
+    <li>Black Widow</li>
+    <li>Scarlet Witch</li>
+    <li>Ant-Man</li>
+    <li>Black Panther</li>
+    <li>Spider-man</li>
+    <li>Doctor Strange</li>
+    <li>Captain Marvel</li>
+  </ul>
+</ace-listbox>
+</div>
+<pre><code class="language-html">&lt;ace-listbox ace-listbox-multiselect id=&quot;multiselect-listbox&quot;&gt;
+  &lt;label id=&quot;multiselect-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;ul aria-labelledby=&quot;multiselect-listbox-label&quot;&gt;
+    &lt;li&gt;Iron Man&lt;/li&gt;
+    &lt;li&gt;Nick Fury&lt;/li&gt;
+    &lt;li&gt;Hulk&lt;/li&gt;
+    &lt;li&gt;Thor&lt;/li&gt;
+    &lt;li&gt;Captain America&lt;/li&gt;
+    &lt;li&gt;Black Widow&lt;/li&gt;
+    &lt;li&gt;Scarlet Witch&lt;/li&gt;
+    &lt;li&gt;Ant-Man&lt;/li&gt;
+    &lt;li&gt;Black Panther&lt;/li&gt;
+    &lt;li&gt;Spider-man&lt;/li&gt;
+    &lt;li&gt;Doctor Strange&lt;/li&gt;
+    &lt;li&gt;Captain Marvel&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ace-listbox&gt;
+</code></pre>
+<h3>Listbox for forms</h3>
+<p>A multi-select Listbox to be used with HTML forms with a nested <code>&lt;ol&gt;</code> list, an external <code>&lt;label&gt;</code> and a hidden <code>&lt;input&gt;</code> with the selected option data.</p>
+<div class="example-block"><label id="ol-listbox-label">Choose an Avenger:</label>
+<ace-listbox ace-listbox-multiselect ace-listbox-for-form id="listbox-for-form">
+  <ol aria-labelledby="ol-listbox-label">
     <li>Iron Man</li>
     <li>Nick Fury</li>
     <li>Hulk</li>
@@ -125,9 +170,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   </ol>
 </ace-listbox>
 </div>
-<pre><code class="language-html">&lt;span id=&quot;listbox-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
-&lt;ace-listbox&gt;
-  &lt;ol aria-labelledby=&quot;listbox-label-2&quot;&gt;
+<pre><code class="language-html">&lt;label id=&quot;ol-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+&lt;ace-listbox ace-listbox-multiselect ace-listbox-for-form id=&quot;listbox-for-form&quot;&gt;
+  &lt;ol aria-labelledby=&quot;ol-listbox-label&quot;&gt;
     &lt;li&gt;Iron Man&lt;/li&gt;
     &lt;li&gt;Nick Fury&lt;/li&gt;
     &lt;li&gt;Hulk&lt;/li&gt;
@@ -143,90 +188,6 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   &lt;/ol&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
-<h3>Multi-select Listbox</h3>
-<p>A multi-select Listbox.</p>
-<div class="example-block"><span id="listbox-label-3">Choose an Avenger:</span>
-<ace-listbox ace-listbox-multiselect id="multi-select-listbox">
-  <ul aria-labelledby="listbox-label-3">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
-</ace-listbox>
-</div>
-<pre><code class="language-html">&lt;span id=&quot;listbox-label-3&quot;&gt;Choose an Avenger:&lt;/span&gt;
-&lt;ace-listbox ace-listbox-multiselect id=&quot;multi-select-listbox&quot;&gt;
-  &lt;ul aria-labelledby=&quot;listbox-label-3&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/ace-listbox&gt;
-</code></pre>
-<h3>Listbox with options containing images</h3>
-<p>A Listbox with options containing images.</p>
-<div class="example-block"><span id="listbox-label-4">Choose an Avenger:</span>
-<ace-listbox>
-  <ul aria-labelledby="listbox-label-4">
-    <li style="align-items: center; display: flex; padding: 4px;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Iron Man
-    </li>
-    <li style="align-items: center; display: flex; padding: 4px;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Hulk
-    </li>
-    <li style="align-items: center; display: flex; padding: 4px;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Thor
-    </li>
-    <li style="align-items: center; display: flex; padding: 4px;">
-      <img src="/img/logo.svg" alt="Potato logo" width="60px">&nbsp;
-      Captain America
-    </li>
-  </ul>
-</ace-listbox>
-</div>
-<pre><code class="language-html">&lt;span id=&quot;listbox-label-4&quot;&gt;Choose an Avenger:&lt;/span&gt;
-&lt;ace-listbox&gt;
-  &lt;ul aria-labelledby=&quot;listbox-label-4&quot;&gt;
-    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Iron Man
-    &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Hulk
-    &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Thor
-    &lt;/li&gt;
-    &lt;li style=&quot;align-items: center; display: flex; padding: 4px;&quot;&gt;
-      &lt;img src=&quot;/img/logo.svg&quot; alt=&quot;Potato logo&quot; width=&quot;60px&quot;&gt;&amp;nbsp;
-      Captain America
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/ace-listbox&gt;
-</code></pre>
 <h3>Listbox with dynamic options</h3>
 <p>In this example the Listbox instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the <code>ace-listbox-update-options</code> event that updates the Listbox. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="add-option">
@@ -236,9 +197,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   Remove option
 </button>
 <hr>
-<span id="listbox-label-5">Choose an Avenger:</span>
 <ace-listbox id="custom-events-listbox">
-  <ul aria-labelledby="listbox-label-5"></ul>
+  <label id="custom-events-listbox-label">Choose an Avenger:</label>
+  <ul aria-labelledby="custom-events-listbox-label"></ul>
 </ace-listbox>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
@@ -248,9 +209,9 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
   Remove option
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;span id=&quot;listbox-label-5&quot;&gt;Choose an Avenger:&lt;/span&gt;
 &lt;ace-listbox id=&quot;custom-events-listbox&quot;&gt;
-  &lt;ul aria-labelledby=&quot;listbox-label-5&quot;&gt;&lt;/ul&gt;
+  &lt;label id=&quot;custom-events-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;ul aria-labelledby=&quot;custom-events-listbox-label&quot;&gt;&lt;/ul&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
 <pre><code class="language-js">import {EVENTS} from '/ace/components/listbox/listbox.js';
@@ -277,4 +238,114 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
       updateOptions();
     });
 });
+</code></pre>
+<h3>Styled Listbox</h3>
+<p>Example of a styled Listbox with options containing images. Custom styles that mimic Google Material Design have been applied to this example and are shown below.</p>
+<div class="example-block"><ace-listbox class="styled-listbox">
+  <label id="styled-listbox-label">Choose an Avenger:</label>
+  <ul aria-labelledby="styled-listbox-label" class="styled-listbox__list">
+    <li class="styled-listbox__option">
+      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+      Iron Man
+    </li>
+    <li class="styled-listbox__option">
+      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+      Nick Fury
+    </li>
+    <li class="styled-listbox__option">
+      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+      Hulk
+    </li>
+    <li class="styled-listbox__option">
+      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+      Thor
+    </li>
+    <li class="styled-listbox__option">
+      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+      Captain America
+    </li>
+    <li class="styled-listbox__option">
+      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+      Black Widow
+    </li>
+    <li class="styled-listbox__option">
+      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+      Scarlet Witch
+    </li>
+  </ul>
+</ace-listbox>
+</div>
+<pre><code class="language-html">&lt;ace-listbox class=&quot;styled-listbox&quot;&gt;
+  &lt;label id=&quot;styled-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+  &lt;ul aria-labelledby=&quot;styled-listbox-label&quot; class=&quot;styled-listbox__list&quot;&gt;
+    &lt;li class=&quot;styled-listbox__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Iron Man
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-listbox__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Nick Fury
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-listbox__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Hulk
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-listbox__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Thor
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-listbox__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Captain America
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-listbox__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Black Widow
+    &lt;/li&gt;
+    &lt;li class=&quot;styled-listbox__option&quot;&gt;
+      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+      Scarlet Witch
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/ace-listbox&gt;
+</code></pre>
+<pre><code class="language-scss">.styled-listbox {
+  display: block;
+  margin-top: 8px;
+  width: 300px;
+
+  &amp;-label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  &amp;__list {
+    border: 1px solid rgba(0, 0, 0, .42);
+    border-radius: 4px;
+    height: 225px;
+
+    &amp;:focus {
+      outline-color: #0893a7;
+    }
+  }
+
+  &amp;__option {
+    align-items: center;
+    border-radius: 2px;
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    padding: 10px 16px;
+
+    &amp;[aria-selected=&quot;true&quot;] {
+      background: #0893a7;
+    }
+  }
+
+  &amp;__img {
+    height: 2em;
+    margin-right: 10px;
+  }
+}
 </code></pre>

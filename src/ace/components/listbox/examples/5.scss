@@ -1,36 +1,30 @@
-.styled-combobox {
-  align-items: center;
-  display: flex;
-  margin: 8px 0;
+.styled-listbox {
+  display: block;
+  margin-top: 8px;
+  width: 300px;
 
   &-label {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
+    margin-bottom: 8px;
   }
 
-  &__input,
   &__list {
     border: 1px solid rgba(0, 0, 0, .42);
     border-radius: 4px;
-    width: 300px;
+    height: 225px;
 
     &:focus {
       outline-color: #0893a7;
     }
   }
 
-  &__input,
-  [ace-combobox-option],
-  &__status {
+  &__option {
+    align-items: center;
+    border-radius: 2px;
+    display: flex;
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-  }
-
-  &__input {
-    padding: 20px 16px;
-  }
-
-  [ace-combobox-option] {
     padding: 10px 16px;
 
     &[aria-selected="true"] {
@@ -38,7 +32,8 @@
     }
   }
 
-  &__status {
-    margin: 0 0 0 8px;
+  &__img {
+    height: 2em;
+    margin-right: 10px;
   }
 }

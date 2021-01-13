@@ -35,7 +35,9 @@
 
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
-$ace-combobox-option-selected-bg-color: $ace-color-selected !default;
+$ace-combobox-list-height: auto !default;
+$ace-combobox-selected-option-color: #fff !default;
+$ace-combobox-selected-option-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
@@ -50,12 +52,14 @@ ace-combobox {
 
 [ace-combobox-list] {
   background: $ace-combobox-list-bg-color;
-  height: auto;
+  height: $ace-combobox-list-height;
   left: 0;
   list-style: none;
+  overflow-y: auto;
   position: absolute;
   text-align: left;
   top: 100%;
+  user-select: none;
   white-space: nowrap;
   width: 100%;
   z-index: $ace-combobox-list-z-index;
@@ -63,18 +67,15 @@ ace-combobox {
   &amp;:not([ace-combobox-list-visible=&quot;true&quot;]) {
     display: none;
   }
-}
 
-[ace-combobox-option-selected] {
-  background-color: $ace-combobox-option-selected-bg-color;
-}
-
-[ace-combobox-option]:hover {
-  background-color: $ace-combobox-option-selected-bg-color;
+  [aria-selected=&quot;true&quot;] {
+    background: $ace-combobox-selected-option-bg-color;
+    color: $ace-combobox-selected-option-color;
+  }
 }
 
 
-// Import styles that ensure that the listbox doesn't overflow outside the viewport.
+// Import styles that ensure that the list doesn't overflow outside the viewport.
 @import '../../common/utils';
 </code></pre>
 <h2>Custom events</h2>
@@ -474,68 +475,78 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </code></pre>
 <h3>Combobox with dynamically updated options</h3>
 <p>This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the <code>ace-combobox-update-options</code> custom event. The <code>aria-live=&quot;polite&quot;</code> element is finally updated to announce how many results were found.</p>
-<p>Custom styles, shown below, have been applied to this example using HTML classes, to make it look like a Google Material component. The extra JavaScript used by this example is also shown below.</p>
-<div class="example-block"><label id="combobox-label-8">Search:</label>
+<p>Custom styles that mimic Google Material Design have been applied to this example and are shown below. The extra JavaScript used by this example is also shown below.</p>
+<div class="example-block"><label id="styled-combobox-label" class="styled-combobox-label">Search:</label>
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <div class="styled-combobox__wrapper">
-    <input aria-labelledby="combobox-label-8" class="styled-combobox__input">
+    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input">
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>
-  <p aria-live="polite" class="styled-combobox__status"></p>
-  <p id="chosen-search-result" aria-live="polite"></p>
+  <div>
+    <p aria-live="polite" class="styled-combobox__status"></p>
+  </div>
 </ace-combobox>
+<p id="chosen-search-result" aria-live="polite"></p>
 </div>
-<pre><code class="language-html">&lt;label id=&quot;combobox-label-8&quot;&gt;Search:&lt;/label&gt;
+<pre><code class="language-html">&lt;label id=&quot;styled-combobox-label&quot; class=&quot;styled-combobox-label&quot;&gt;Search:&lt;/label&gt;
 &lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update class=&quot;styled-combobox&quot;&gt;
   &lt;div class=&quot;styled-combobox__wrapper&quot;&gt;
-    &lt;input aria-labelledby=&quot;combobox-label-8&quot; class=&quot;styled-combobox__input&quot;&gt;
+    &lt;input aria-labelledby=&quot;styled-combobox-label&quot; class=&quot;styled-combobox__input&quot;&gt;
     &lt;ul aria-label=&quot;Search results&quot; class=&quot;styled-combobox__list&quot;&gt;&lt;/ul&gt;
   &lt;/div&gt;
-  &lt;p aria-live=&quot;polite&quot; class=&quot;styled-combobox__status&quot;&gt;&lt;/p&gt;
-  &lt;p id=&quot;chosen-search-result&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
+  &lt;div&gt;
+    &lt;p aria-live=&quot;polite&quot; class=&quot;styled-combobox__status&quot;&gt;&lt;/p&gt;
+  &lt;/div&gt;
 &lt;/ace-combobox&gt;
+
+&lt;p id=&quot;chosen-search-result&quot; aria-live=&quot;polite&quot;&gt;&lt;/p&gt;
 </code></pre>
 <pre><code class="language-scss">.styled-combobox {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  letter-spacing: .5px;
+  align-items: center;
+  display: flex;
+  margin: 8px 0;
 
-  &amp;__wrapper {
-    margin: 10px 0;
+  &amp;-label {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+  }
+
+  &amp;__input,
+  &amp;__list {
+    border: 1px solid rgba(0, 0, 0, .42);
+    border-radius: 4px;
     width: 300px;
+
+    &amp;:focus {
+      outline-color: #0893a7;
+    }
+  }
+
+  &amp;__input,
+  [ace-combobox-option],
+  &amp;__status {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
   }
 
   &amp;__input {
-    border: 1px solid rgba(0, 0, 0, .38);
-    border-radius: 4px;
-    font-size: 1em;
-    padding: 12px 16px 14px;
+    padding: 20px 16px;
+  }
+
+  [ace-combobox-option] {
+    padding: 10px 16px;
+
+    &amp;[aria-selected=&quot;true&quot;] {
+      background: #0893a7;
+    }
   }
 
   &amp;__status {
-    padding: 8px;
-  }
-
-  &amp;__list {
-    border: 1px solid #e5e5e5;
-    padding: 8px 0;
-
-    li {
-      padding: 8px 16px;
-      user-select: none;
-
-      &amp;:hover {
-        background-color: rgba(0, 0, 0, .1);
-      }
-    }
-
-    [ace-combobox-option-selected] {
-      background-color: rgba(0, 0, 0, .1);
-    }
+    margin: 0 0 0 8px;
   }
 }
 </code></pre>
-<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
+<pre><code class="language-js">import {EVENTS} from '/ace/components/combobox/combobox.js';
 import {KEYS} from '../../../common/constants.js';
 import {keyPressedMatches} from '../../../common/functions.js';
 
@@ -546,9 +557,9 @@ const comboboxId = 'search-combobox';
 document.addEventListener('DOMContentLoaded', () =&gt; {
   let optionChosen, searching = false;
   const comboboxEl = document.getElementById(comboboxId);
-  const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
-  const comboboxStatusEl = comboboxEl.querySelector('[aria-live=&quot;polite&quot;]');
-  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
+  const comboboxInputEl = comboboxEl.querySelector('.styled-combobox__input');
+  const comboboxStatusEl = comboboxEl.querySelector('.styled-combobox__status');
+  const comboboxListEl = comboboxEl.querySelector('.styled-combobox__list');
   const chosenResultEl = document.getElementById('chosen-search-result');
 
   // Search when ENTER key pressed

@@ -2,22 +2,27 @@
 
 
 /* VARIABLES */
-$ace-listbox-active-option-outline: 1px dashed slategray !default;
+$ace-listbox-active-option-outline-width: 2px !default;
+$ace-listbox-active-option-outline-style: dotted !default;
+$ace-listbox-active-option-outline-color: slategrey !default;
+$ace-listbox-list-height: auto !default;
+$ace-listbox-selected-option-color: #fff !default;
 $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 
 
 /* STYLES */
 [ace-listbox-list] {
+  height: $ace-listbox-list-height;
   list-style-position: inside;
-}
+  overflow-y: auto;
+  user-select: none;
 
-[ace-listbox-option-index] {
-  &[aria-selected="true"] {
+  [aria-selected="true"] {
     background: $ace-listbox-selected-option-bg-color;
-    color: white;
+    color: $ace-listbox-selected-option-color;
   }
 }
 
-[ace-listbox-active-option] {
-  outline: $ace-listbox-active-option-outline;
+[ace-listbox-multiselect] [ace-listbox-option-active] {
+  outline: $ace-listbox-active-option-outline-width $ace-listbox-active-option-outline-style $ace-listbox-active-option-outline-color;
 }
