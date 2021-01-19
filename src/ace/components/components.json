@@ -50,5 +50,8 @@
       "Tablist",
       "Tabbed Interface"
     ]
+  },
+  "tooltip": {
+    "name": "Tooltip"
   }
 }

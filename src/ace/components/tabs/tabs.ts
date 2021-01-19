@@ -115,7 +115,7 @@ export default class Tabs extends HTMLElement {
     /* GET DOM ELEMENTS */
     this.tablistEl = getElByAttrOrSelector(this, ATTRS.TABLIST, `#${this.id} > div`);
     if (!this.tablistEl) {
-      console.error(`${DISPLAY_NAME}: Tabs with ID '${this.id}' requires a child <div> or a descendant with attribute '${ATTRS.TABLIST}', to be used as a 'tablist'.`);
+      console.warn(`${DISPLAY_NAME}: Tabs with ID ${this.id} requires a child <div> or a descendant with attribute ${ATTRS.TABLIST}, to be used as a 'tablist'.`);
       return;
     }
 
@@ -170,7 +170,7 @@ export default class Tabs extends HTMLElement {
 
 
   /*
-    Handler for listened for custom events
+    Handler for incoming custom events
   */
   private customEventsHander(e: CustomEvent): void {
     switch (e.type) {
@@ -231,7 +231,7 @@ export default class Tabs extends HTMLElement {
 
     // Check number of tabs matches number of panels
     if (this.panelEls.length !== this.tabCount) {
-      console.error(`${DISPLAY_NAME}: Number of tabs doesn't match number of panels for Tabs component with ID '${this.id}'.`);
+      console.warn(`${DISPLAY_NAME}: Number of tabs doesn't match number of panels for Tabs component with ID ${this.id}.`);
       return;
     }
 

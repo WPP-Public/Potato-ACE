@@ -80,7 +80,7 @@ This event is dispatched when Template finishes initialising. The event name is 
 Template listens for the following events, which should be dispatched on the specific `ace-template` element.
 
 
-<!-- TODO: Replace 'Listened for event name' with a descriptive name -->
+<!-- TODO: Replace 'Event name' with a descriptive name -->
 #### Event name
 
 <!-- TODO: Replace 'event-name' with actual value -->

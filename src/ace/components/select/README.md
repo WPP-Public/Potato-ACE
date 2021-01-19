@@ -252,23 +252,23 @@ Custom styles that mimic Google Material Design have been applied to this exampl
       Select an option
     </li>
     <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
       Iron Man
     </li>
     <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
       Nick Fury
     </li>
     <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
       Hulk
     </li>
     <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
       Thor
     </li>
     <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
       Captain America
     </li>
     <li class="styled-select__option">
@@ -276,7 +276,7 @@ Custom styles that mimic Google Material Design have been applied to this exampl
       Black Widow
     </li>
     <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
       Scarlet Witch
     </li>
   </ul>

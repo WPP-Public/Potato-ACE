@@ -76,6 +76,7 @@ export const getIndexBasedOnDirection = (startIndex: number, direction: -1|1, it
 */
 export const handleOverflow = (elem: HTMLElement, verticalOnly = false): void => {
   if (!verticalOnly) {
+    elem.removeAttribute(UTIL_ATTRS.FLOAT_RIGHT);
     elem.removeAttribute(UTIL_ATTRS.FLOAT_LEFT);
   }
   elem.removeAttribute(UTIL_ATTRS.FLOAT_ABOVE);
@@ -86,7 +87,16 @@ export const handleOverflow = (elem: HTMLElement, verticalOnly = false): void =>
     elem.setAttribute(UTIL_ATTRS.FLOAT_ABOVE, '');
   }
 
-  if (!verticalOnly && bounding.right > (window.innerWidth || document.documentElement.clientWidth)) {
+  if (verticalOnly) {
+    return;
+  }
+
+  if (bounding.left < 0) {
+    elem.setAttribute(UTIL_ATTRS.FLOAT_RIGHT, '');
+    return;
+  }
+
+  if (bounding.right > (window.innerWidth || document.documentElement.clientWidth)) {
     elem.setAttribute(UTIL_ATTRS.FLOAT_LEFT, '');
   }
 };

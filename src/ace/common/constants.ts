@@ -108,4 +108,5 @@ export const PAGE_VISIBILITY_API_STRINGS = {HIDDEN, VISIBILITY_CHANGE};
 export const UTIL_ATTRS = {
   FLOAT_ABOVE: `${NAME}-u-float-above`,
   FLOAT_LEFT: `${NAME}-u-float-left`,
+  FLOAT_RIGHT: `${NAME}-u-float-right`,
 };

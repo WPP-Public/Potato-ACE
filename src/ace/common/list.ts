@@ -71,7 +71,7 @@ export default class List {
 
     /* INITIALISATION */
     if (!this.listEl.id) {
-      console.error(`${DISPLAY_NAME}: This list requires an ID.`, this.listEl);
+      console.warn(`${DISPLAY_NAME}: This list requires an ID:`, this.listEl);
       return;
     }
 

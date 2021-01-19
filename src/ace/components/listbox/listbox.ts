@@ -56,7 +56,7 @@ export default class Listbox extends HTMLElement {
     this.listEl = this.querySelector('ul') || this.querySelector('ol');
     // Error if no <ul> nor <ol> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
     if (!this.listEl) {
-      console.error(`${DISPLAY_NAME}: Listbox with ID '${this.id} requires a <ul> or <ol> ancestor.`);
+      console.warn(`${DISPLAY_NAME}: Listbox with ID ${this.id} requires a <ul> or <ol> ancestor.`);
       return;
     }
 
