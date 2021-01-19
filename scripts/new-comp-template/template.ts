@@ -94,9 +94,9 @@ export default class Template extends HTMLElement {
   // For each method, first add a block comment that describes the method
   // Use two blank lines between methods
   // /*
-  //   Handler for listened for custom events
+  //   Handler for incoming custom events
   // */
-  // customEventHandler(e: CustomEvent) {
+  // customEventsHandler(e: CustomEvent) {
   //   // Check if event has a 'detail' property and if detail has an id that matches this class instance id
   //   const detail = e['detail'];
   //   if (!detail || (detail['id'] !== this.id)) {

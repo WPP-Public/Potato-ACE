@@ -144,7 +144,7 @@ This event is dispatched when Tabs finishes initialising. The event name is avai
 
 This event is dispatched when the selected tab changes. Listening for this event can be useful for timing and triggering animations on Tabs.
 
-The event `detail` object is composed as follows:
+The event `detail` property is composed as follows:
 
 ```js
 'detail': {

@@ -127,7 +127,7 @@ ace-combobox {
 <p>These events should be dispatched to hide &amp; show the listbox respectively. The event names are available as <code>EVENTS.IN.HIDE_LIST</code> &amp; <code>EVENTS.IN.SHOW_LIST</code>.</p>
 <h4>Select option</h4>
 <p><code>ace-combobox-select-option</code></p>
-<p>This event should be dispatched to programatically select an option. The event name is available as <code>EVENTS.IN.SELECT_OPTION</code>, and its <code>detail</code> object should be composed as follows:</p>
+<p>This event should be dispatched to programatically select an option. The event name is available as <code>EVENTS.IN.SELECT_OPTION</code>, and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'optionId': // ID of option to select [string]
 }
@@ -404,14 +404,14 @@ ace-combobox {
 <form id="select-option-form">
   <label>
     Select option:
-    <input id="select-option-input" max="3" min="1" name="option-number" type="number">
+    <input id="select-option-input" max="3" min="1" name="option-number" type="number"/>
   </label>
   <button type="submit">Go</button>
 </form>
 <hr>
 <span id="combobox-label-7">Custom events controlled Combobox:</span>
 <ace-combobox id="custom-events-combobox">
-  <input aria-labelledby="combobox-label-7">
+  <input aria-labelledby="combobox-label-7"/>
   <ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
 </div>
@@ -421,14 +421,14 @@ ace-combobox {
 &lt;form id=&quot;select-option-form&quot;&gt;
   &lt;label&gt;
     Select option:
-    &lt;input id=&quot;select-option-input&quot; max=&quot;3&quot; min=&quot;1&quot; name=&quot;option-number&quot; type=&quot;number&quot;&gt;
+    &lt;input id=&quot;select-option-input&quot; max=&quot;3&quot; min=&quot;1&quot; name=&quot;option-number&quot; type=&quot;number&quot;/&gt;
   &lt;/label&gt;
   &lt;button type=&quot;submit&quot;&gt;Go&lt;/button&gt;
 &lt;/form&gt;
 &lt;hr&gt;
 &lt;span id=&quot;combobox-label-7&quot;&gt;Custom events controlled Combobox:&lt;/span&gt;
 &lt;ace-combobox id=&quot;custom-events-combobox&quot;&gt;
-  &lt;input aria-labelledby=&quot;combobox-label-7&quot;&gt;
+  &lt;input aria-labelledby=&quot;combobox-label-7&quot;/&gt;
   &lt;ul aria-label=&quot;Custom events combobox options&quot;&gt;&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <div class="example-block"><label id="styled-combobox-label" class="styled-combobox-label">Search:</label>
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <div class="styled-combobox__wrapper">
-    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input">
+    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input"/>
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>
   <div>
@@ -491,7 +491,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-html">&lt;label id=&quot;styled-combobox-label&quot; class=&quot;styled-combobox-label&quot;&gt;Search:&lt;/label&gt;
 &lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update class=&quot;styled-combobox&quot;&gt;
   &lt;div class=&quot;styled-combobox__wrapper&quot;&gt;
-    &lt;input aria-labelledby=&quot;styled-combobox-label&quot; class=&quot;styled-combobox__input&quot;&gt;
+    &lt;input aria-labelledby=&quot;styled-combobox-label&quot; class=&quot;styled-combobox__input&quot;/&gt;
     &lt;ul aria-label=&quot;Search results&quot; class=&quot;styled-combobox__list&quot;&gt;&lt;/ul&gt;
   &lt;/div&gt;
   &lt;div&gt;

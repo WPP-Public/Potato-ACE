@@ -198,7 +198,7 @@ These events should be dispatched to hide & show the listbox respectively. The e
 
 `ace-combobox-select-option`
 
-This event should be dispatched to programatically select an option. The event name is available as `EVENTS.IN.SELECT_OPTION`, and its `detail` object should be composed as follows:
+This event should be dispatched to programatically select an option. The event name is available as `EVENTS.IN.SELECT_OPTION`, and its `detail` property should be composed as follows:
 
 ```js
 'detail': {
@@ -376,14 +376,14 @@ The **Add options** button adds options to the initially empty Combobox then dis
 <form id="select-option-form">
   <label>
     Select option:
-    <input id="select-option-input" max="3" min="1" name="option-number" type="number">
+    <input id="select-option-input" max="3" min="1" name="option-number" type="number"/>
   </label>
   <button type="submit">Go</button>
 </form>
 <hr>
 <span id="combobox-label-7">Custom events controlled Combobox:</span>
 <ace-combobox id="custom-events-combobox">
-  <input aria-labelledby="combobox-label-7">
+  <input aria-labelledby="combobox-label-7"/>
   <ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
 ```
@@ -443,7 +443,7 @@ Custom styles that mimic Google Material Design have been applied to this exampl
 <label id="styled-combobox-label" class="styled-combobox-label">Search:</label>
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <div class="styled-combobox__wrapper">
-    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input">
+    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input"/>
     <ul aria-label="Search results" class="styled-combobox__list"></ul>
   </div>
   <div>
