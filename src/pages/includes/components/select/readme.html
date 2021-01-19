@@ -1,6 +1,6 @@
 <h1>Select</h1>
 <p>Select is a dropdown list of options that mimics a native HTML <code>&lt;select&gt;</code> that has attribute <code>size</code> with a value of 1 or without it, while allowing more styling flexibility.</p>
-<p>Select conforms to the <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">W3C WAI-ARIA authoring practices</a>.</p>
+<p>Select conforms to the <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">W3C WAI-ARIA authoring practices</a>, with the exception of a few minor interactions that allow it to more closely mimic a native HTML <code>&lt;select&gt;</code> element.</p>
 <h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select'
@@ -10,21 +10,23 @@
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Select</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Select is instantiated within each <code>&lt;ace-select&gt;</code> element and an ID <code>ace-select-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-select-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>Select must have a nested button to show the hidden list of options, so if one is not present Select will create a <code>&lt;button&gt;</code> to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a nested list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-select-update-options</code> is dispatched on the Select instance afterwards.</p>
+<p>Select must have a descendant button to show the hidden list of options, so if one is not present Select will create a <code>&lt;button&gt;</code> to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a descendant list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-select-update-options</code> is dispatched on the Select instance afterwards.</p>
+<p>If using a Select in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-select-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-select-input</code>. The value of the selected option is stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded string. Similarly, the selected option ID is stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-id</code>.</p>
 <p>If using a Select in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-select-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-select-input</code>. The value of the selected option is stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded string. Similarly, the selected option ID is stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-id</code>.</p>
 <h2>Usage</h2>
-<p>The list is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed. The list is aware of it's position in the window and will appear below the trigger if there is enough space, otherwise it will appear above.</p>
-<p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option.</p>
-<p>Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options. Type-ahead can be used on a focussed trigger, which will select the option and update the trigger text, or in a list where it will only select the option but not update the trigger text until <kbd>Enter</kbd> or <kbd>Space</kbd> are pressed to confirm. Pressing <kdb>Esc</kbd> or clicking outside the element closes an open list without confirming a change in selected option.</p>
+<p>The list of options is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed, with <kbd>↑</kbd> selecting the last option in the list and the other three keys selecting the first. The list is aware of it's position in the window and ensures that it is fully visible in the viewport. It will hence appear below the trigger and aligned to it's left edge if there is enough space, otherwise it will appear above and/or aligned to the right edge, as necessary.</p>
+<p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option, and then dispatch the <code>ace-select-option-chosen</code> custom event.</p>
+<p>Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options. Type-ahead can be used on a focussed trigger, which will select the option and update the trigger text, or in a list where it will only select the option but not update the trigger text until <kbd>Enter</kbd> or <kbd>Space</kbd> are pressed to confirm. Pressing <kdb>Esc</kbd> or clicking outside the Select component hides a shown list without confirming a change in the selected option.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
+<p>The following SASS is applied to Select. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
 
 /* VARIABLES */
 $ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
-$ace-select-selected-option-color: #fff !default;
+$ace-select-option-text-color: #000 !default;
+$ace-select-selected-option-text-color: #fff !default;
 $ace-select-selected-option-bg-color: $ace-color-selected !default;
 
 
@@ -35,13 +37,12 @@ ace-select {
 
 [ace-select-list] {
   background: $ace-select-list-bg-color;
+  color: $ace-select-option-text-color;
   height: $ace-select-list-height;
   left: 0;
   list-style: none;
   overflow-y: auto;
   position: absolute;
-  text-align: left;
-  top: 100%;
   user-select: none;
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
@@ -52,7 +53,7 @@ ace-select {
 
   [aria-selected=&quot;true&quot;] {
     background: $ace-select-selected-option-bg-color;
-    color: $ace-select-selected-option-color;
+    color: $ace-select-selected-option-text-color;
   }
 }
 
@@ -66,14 +67,14 @@ ace-select {
 <p>The following events are dispatched on <code>window</code> by Select.</p>
 <h4>Ready</h4>
 <p><code>ace-select-ready</code></p>
-<p>This event is dispatched when Select finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Select finishes initialising, or updating after the <code>ace-select-update-options</code> event is dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Select [string]
 }
 </code></pre>
 <h4>Option chosen</h4>
 <p><code>ace-select-option-chosen</code></p>
-<p>This event is dispatched when an option is chosen by the user. The event name is available as <code>EVENTS.OUT.OPTION_CHOSEN</code>, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when an option is chosen by the user. The event name is available as <code>EVENTS.OUT.OPTION_CHOSEN</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Select [string],
   'chosenOption': {
@@ -86,7 +87,7 @@ ace-select {
 <p>Select listens for the following event, which should be dispatched on the specific <code>ace-select</code> element.</p>
 <h4>Update options</h4>
 <p><code>ace-select-update-options</code></p>
-<p>This event should be dispatched when options are added or deleted to the list, and causes Select to reinitialise the list options. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
+<p>This event should be dispatched when options are added or deleted to the list, and causes Select to reinitialise the list options and then dispatch the <code>ace-select-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Select</h3>
@@ -170,7 +171,7 @@ ace-select {
 &lt;/ace-select&gt;
 </code></pre>
 <h3>Select with dynamic options</h3>
-<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-select-update-options</code> event that updates the list options, and the trigger text. The extra JavaScript code required by this example is also included below.</p>
+<p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The last option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-select-update-options</code> event that updates the list options, and the trigger text. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="add-option">
   Add option
 </button>
@@ -207,18 +208,17 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
   document.getElementById('add-option').addEventListener('click', () =&gt; {
     const optionEl = document.createElement('li');
-    optionEl.textContent = 'New Option';
+    optionEl.textContent = 'Option';
     selectListEl.appendChild(optionEl);
     updateOptions();
   });
 
   document.getElementById('remove-option').addEventListener('click', () =&gt; {
     const lastOptionEl = selectListEl.querySelector('li:last-child');
-    if (!lastOptionEl) {
-      return;
+    if (lastOptionEl) {
+      selectListEl.removeChild(lastOptionEl);
+      updateOptions();
     }
-    selectListEl.removeChild(lastOptionEl);
-    updateOptions();
   });
 });
 </code></pre>

@@ -23,7 +23,7 @@ For convenience the ES6 class is exported as `Listbox` and the attribute names u
 
 After the event `DOMContentLoaded` is fired on `document` an instance of Listbox is instantiated within each `<ace-listbox>` element and an ID `ace-listbox-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-Listbox must have a nested list and will use a `<ul>` or `<ol>` with attribute `ace-listbox-list`. If no descendant has this attribute then the first decendant `<ul>` or `<ol>` will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using `aria-label` or `aria-labelledby`. The list can be empty upon instantiation and options can be dynamically added or removed as long as custom event `ace-listbox-update-options` is dispatched on the Listbox instance afterwards.
+Listbox must have a descendant list and will use a `<ul>` or `<ol>` with attribute `ace-listbox-list`. If no descendant has this attribute then the first decendant `<ul>` or `<ol>` will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using `aria-label` or `aria-labelledby`. The list can be empty upon instantiation and options can be dynamically added or removed as long as custom event `ace-listbox-update-options` is dispatched on the Listbox instance afterwards.
 
 There are two main types of Listboxes, single-select and multi-select. Single-select Listboxes allow selection of only a single option at a time and are instantiated by default. Multi-select Listboxes allow selection of multiple options and are instantiated in Listboxes with attribute `ace-listbox-multiselect`.
 
@@ -46,7 +46,7 @@ The active option is always the selecteed option in a single-select Listbox. In 
 
 ## Styles
 
-The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
+The following SASS is applied to Listbox. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 To conform to W3 WAI-ARIA practices, active and selected options must be visually distinct from other options and one another. For this reason the active and selected option were given an outline and a background color respectively.
 
@@ -60,7 +60,7 @@ $ace-listbox-active-option-outline-width: 2px !default;
 $ace-listbox-active-option-outline-style: dotted !default;
 $ace-listbox-active-option-outline-color: slategrey !default;
 $ace-listbox-list-height: auto !default;
-$ace-listbox-selected-option-color: #fff !default;
+$ace-listbox-selected-option-text-color: #fff !default;
 $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 
 
@@ -73,7 +73,7 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 
   [aria-selected="true"] {
     background: $ace-listbox-selected-option-bg-color;
-    color: $ace-listbox-selected-option-color;
+    color: $ace-listbox-selected-option-text-color;
   }
 }
 
@@ -95,7 +95,7 @@ The following event is dispatched on `window` by Listbox.
 
 `ace-listbox-ready`
 
-This event is dispatched when Listbox finishes initialising, or updating after the `ace-listbox-update-options` event is dispatched. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
+This event is dispatched when Listbox finishes initialising, or updating after the `ace-listbox-update-options` event is dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -113,7 +113,7 @@ Listbox listens for the following event, which should be dispatched on the speci
 
 `ace-listbox-update-options`
 
-This event should be dispatched when options are added or deleted, and causes Listbox to reinitialise itself. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+This event should be dispatched when options are added or deleted, and causes Listbox to reinitialise itself and then dispatch the `ace-listbox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
 
 
 ## Examples
@@ -123,7 +123,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 ### Single-select Listbox
 
-A single-select Listbox with a nested `<ul>` list and `<label>`.
+A single-select Listbox with a descendant `<ul>` list and `<label>`.
 
 ```html
 <ace-listbox>
@@ -171,7 +171,7 @@ A multi-select Listbox.
 
 ### Listbox for forms
 
-A multi-select Listbox to be used with HTML forms with a nested `<ol>` list, an external `<label>` and a hidden `<input>` with the selected option data.
+A multi-select Listbox to be used with HTML forms with a descendant `<ol>` list, an external `<label>` and a hidden `<input>` with the selected option data.
 
 ```html
 <label id="ol-listbox-label">Choose an Avenger:</label>

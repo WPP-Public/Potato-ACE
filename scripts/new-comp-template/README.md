@@ -29,7 +29,7 @@ After the event `DOMContentLoaded` is fired on `document` an instance of Templat
 
 <!-- 1. Required elements that developers must provide before page load. For each, mention the custom attribute it can be given for explicit assignment, and whether this attribute can be omitted and the component can implicitly determine which element to use based on its position in the DOM hierarchy. Example: -->
 
-> Template must have a nested button to \_\_\_\_\_, and will use a descendant `<button>` with attribute `ace-template-btn`. If no descendant has this attribute then the first decendant `<button>` will be used and given this attribute.
+> Template must have a descendant button to \_\_\_\_\_, and will use a descendant `<button>` with attribute `ace-template-btn`. If no descendant has this attribute then the first decendant `<button>` will be used and given this attribute.
 
 <!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or  or `aria-labelledby`. -->
 
@@ -66,7 +66,7 @@ The following events are dispatched on `window` by Template.
 
 `ace-template-ready`
 
-This event is dispatched when Template finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
+This event is dispatched when Template finishes initialising. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -90,7 +90,7 @@ Template listens for the following events, which should be dispatched on the spe
 This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
 
 <!-- TODO: If detail property used add the following and describe each of its properties --> 
-, and its `detail` object should be composed as follows:
+and its `detail` object should be composed as follows:
 
 ```js
 'detail': {
@@ -109,6 +109,8 @@ Each example contains a live demo and the HTML code that produced it. The code s
 <!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
 <!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
 <!-- Custom styles have been applied to this example using HTML classes and are shown below. -->
+<!-- OR -->
+<!-- Custom styles that mimic Google Material Design have been applied to this example and are shown below. -->
 <!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
 <!-- The extra JavaScript used by this example is also shown below. -->
 

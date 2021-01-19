@@ -33,9 +33,8 @@ const initChecks = () => {
         .get('@selectList')
         .should('have.attr', ATTRS.LIST, '')
         .and('have.attr', ATTRS.LIST_VISIBLE, 'false')
-        .and('have.attr', ATTRS.LIST, '')
-        .and('have.attr', 'tabindex', '-1')
-        .and('have.attr', 'role', 'listbox');
+        .and('have.attr', 'role', 'listbox')
+        .and('have.attr', 'tabindex', '-1');
     });
 };
 
@@ -49,8 +48,8 @@ const optionsInitChecks = () => {
         .get('@selectOptions')
         .each(($option, index) => {
           cy.wrap($option)
-            .should('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
-            .and('have.id', getOptionId($select.attr('id'), index))
+            .should('have.id', getOptionId($select.attr('id'), index))
+            .and('have.attr', 'aria-selected', index === 0 ? 'true' : 'false')
             .and('have.attr', 'role', 'option');
         });
     });
@@ -67,8 +66,9 @@ const checkOptionSelected = (optionIndex) => {
         .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
         .and('have.attr', 'aria-activedescendant', getOptionId($select.attr('id'), optionIndex))
         .get('@selectOptions')
-        .eq(optionIndex)
-        .should('have.attr', 'aria-selected', 'true');
+        .each(($option, index) => {
+          cy.wrap($option).should('have.attr', 'aria-selected', index === optionIndex ? 'true' : 'false');
+        });
     });
 };
 
@@ -95,7 +95,7 @@ context(`Select`, () => {
   });
 
 
-  context(`Basic Select`, () => {
+  context(`Simple Select`, () => {
     const SELECT_ID = IDS.SIMPLE_SELECT;
     const option1Id = getOptionId(SELECT_ID, 0);
 
@@ -202,18 +202,6 @@ context(`Select`, () => {
           cy.get('@selectTrigger')
             .focus()
             .type('{uparrow}')
-            .should('have.attr', 'aria-expanded', 'true')
-            .get('@selectList')
-            .and('have.attr', 'aria-activedescendant', option1Id)
-            .get('@selectOption1')
-            .should('have.attr', 'aria-selected', 'true');
-        });
-
-
-        it(`Pressing SPACE key on trigger should show list`, () => {
-          cy.get('@selectTrigger')
-            .focus()
-            .type(' ')
             .should('have.attr', 'aria-expanded', 'true')
             .get('@selectList')
             .and('have.attr', 'aria-activedescendant', option1Id)
@@ -406,7 +394,7 @@ context(`Select`, () => {
     it(`Should initialise correctly`, () => initChecks());
 
 
-    it(`Should repond to custom events correctly`, () => {
+    it(`Should respond to custom 'ace-select-update-options' event correctly`, () => {
       cy.addCustomEventListener(EVENTS.OUT.READY, {id: SELECT_ID})
         .get(`#${IDS.ADD_OPTION_BTN}`)
         .click()

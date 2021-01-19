@@ -119,7 +119,7 @@ The following events are dispatched on `window` by Modal.
 
 `ace-modal-ready`
 
-This event is dispatched when Modal finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
+This event is dispatched when Modal finishes initialising. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -131,7 +131,7 @@ This event is dispatched when Modal finishes initialising. The event name is ava
 
 `ace-modal-changed`
 
-This event is dispatched when Modal finishes initialising. The event name is available as `EVENTS.OUT.CHANGED`, and its `detail` property is composed as follows:
+This event is dispatched when Modal finishes initialising. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {

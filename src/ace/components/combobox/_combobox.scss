@@ -4,7 +4,7 @@
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
 $ace-combobox-list-height: auto !default;
-$ace-combobox-selected-option-color: #fff !default;
+$ace-combobox-selected-option-text-color: #fff !default;
 $ace-combobox-selected-option-bg-color: $ace-color-selected !default;
 
 
@@ -38,7 +38,7 @@ ace-combobox {
 
   [aria-selected="true"] {
     background: $ace-combobox-selected-option-bg-color;
-    color: $ace-combobox-selected-option-color;
+    color: $ace-combobox-selected-option-text-color;
   }
 }
 
