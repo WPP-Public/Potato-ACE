@@ -8,17 +8,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.getElementById('add-option').addEventListener('click', () => {
     const optionEl = document.createElement('li');
-    optionEl.textContent = 'New Option';
+    optionEl.textContent = 'Option';
     selectListEl.appendChild(optionEl);
     updateOptions();
   });
 
   document.getElementById('remove-option').addEventListener('click', () => {
     const lastOptionEl = selectListEl.querySelector('li:last-child');
-    if (!lastOptionEl) {
-      return;
+    if (lastOptionEl) {
+      selectListEl.removeChild(lastOptionEl);
+      updateOptions();
     }
-    selectListEl.removeChild(lastOptionEl);
-    updateOptions();
   });
 });

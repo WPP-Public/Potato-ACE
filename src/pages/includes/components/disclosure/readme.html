@@ -14,7 +14,7 @@
 <p>Disclosures are hidden by default but can be initially shown on page load by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for</code> should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code> elements are used for triggers. Disclosures can also be triggered using a custom event. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>ace-disclosure-show-trigger</code> or <code>ace-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to the component.</p>
+<p>The following SASS is applied to Disclosure.</p>
 <pre><code class="language-scss">ace-disclosure:not([ace-disclosure-visible=&quot;true&quot;]) {
   display: none;
 }
@@ -25,14 +25,14 @@
 <p>The following events are dispatched on <code>window</code> by Disclosure.</p>
 <h4>Ready</h4>
 <p><code>ace-disclosure-ready</code></p>
-<p>This event is dispatched when Disclosure finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code>, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Disclosure finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Disclosure [string]
 }
 </code></pre>
 <h4>Changed</h4>
 <p><code>ace-disclosure-changed</code></p>
-<p>This event is dispatched when Disclosure's visibility changes. The event name is available as <code>EVENTS.OUT.CHANGED</code>, and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Disclosure's visibility changes. The event name is available as <code>EVENTS.OUT.CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Disclosure [string]
   'visible': // Whether the Disclosure is visible or not [boolean]
@@ -69,14 +69,11 @@
 </code></pre>
 <h3>Initially visible Disclosure</h3>
 <p>In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute <code>ace-disclosure-visible=&quot;true&quot;</code>.</p>
-<div class="example-block"><button ace-disclosure-trigger-for="simple-disclosure">
-  Disclosure 1 toggle trigger 1
-</button>
-<button ace-disclosure-trigger-for="simple-disclosure">
-  Disclosure 1 toggle trigger 2
+<div class="example-block"><button ace-disclosure-trigger-for="initially-visible-disclosure">
+  Disclosure 2 toggle trigger 1
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure 2 toggle trigger
+  Disclosure 2 toggle trigger 2
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
   Disclosure 2 show trigger
@@ -85,25 +82,17 @@
   Disclosure 2 hide trigger
 </button>
 <hr>
-<ace-disclosure id="simple-disclosure">
-  <h2>Disclosure 1</h2>
-  <p>This Disclosure is initially hidden.</p>
-  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-</ace-disclosure>
 <ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
-  <h2>Disclosure 2</h2>
-  <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
+  <h2>Initially visible disclosure</h2>
+  <p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
   <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 </ace-disclosure>
 </div>
-<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;simple-disclosure&quot;&gt;
-  Disclosure 1 toggle trigger 1
-&lt;/button&gt;
-&lt;button ace-disclosure-trigger-for=&quot;simple-disclosure&quot;&gt;
-  Disclosure 1 toggle trigger 2
+<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot;&gt;
+  Disclosure 2 toggle trigger 1
 &lt;/button&gt;
 &lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot;&gt;
-  Disclosure 2 toggle trigger
+  Disclosure 2 toggle trigger 2
 &lt;/button&gt;
 &lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot; ace-disclosure-trigger-show&gt;
   Disclosure 2 show trigger
@@ -112,15 +101,9 @@
   Disclosure 2 hide trigger
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-disclosure id=&quot;simple-disclosure&quot;&gt;
-  &lt;h2&gt;Disclosure 1&lt;/h2&gt;
-  &lt;p&gt;This Disclosure is initially hidden.&lt;/p&gt;
-  &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
-&lt;/ace-disclosure&gt;
-
 &lt;ace-disclosure ace-disclosure-visible=&quot;true&quot; id=&quot;initially-visible-disclosure&quot;&gt;
-  &lt;h2&gt;Disclosure 2&lt;/h2&gt;
-  &lt;p&gt;This Disclosure is initially visible becasue it has the attribute &lt;code&gt;ace-disclosure-visible=&quot;true&quot;&lt;/code&gt;.&lt;/p&gt;
+  &lt;h2&gt;Initially visible disclosure&lt;/h2&gt;
+  &lt;p&gt;This Disclosure is initially visible because it has the attribute &lt;code&gt;ace-disclosure-visible=&quot;true&quot;&lt;/code&gt;.&lt;/p&gt;
   &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>

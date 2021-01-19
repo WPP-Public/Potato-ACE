@@ -24,6 +24,13 @@
   "listbox": {
     "name": "Listbox"
   },
+  "menu": {
+    "name": "Menu",
+    "aliases": [
+      "Pop-Up Menu",
+      "Dropdown Menu"
+    ]
+  },
   "modal": {
     "name": "Modal",
     "aliases": [

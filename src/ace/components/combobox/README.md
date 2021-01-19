@@ -23,7 +23,7 @@ For convenience the ES6 class is exported as `Combobox` and the attribute names 
 
 After the event `DOMContentLoaded` is fired on `document` an instance of Combobox is instantiated within each `<ace-combobox>` element and an ID `ace-combobox-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-combobox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-Combobox must have a nested input box and will use a `<input>` with attribute `ace-combobox-input`. If no descendant has this attribute then the first decendant `<input>` will be used and given the attribute. It is strongly recommended that this `<input>` is given an accessible label using either `aria-label` or `aria-labelledby`. Similarly, Combobox must have a nested list and will use a `<ul>` with attribute `ace-combobox-list`. If no descendant has this attribute then the first decendant `<ul>` will be used and given the attribute. It is strongly recommended that the `<ul>` is given an accessible label using `aria-label`, describing its options.
+Combobox must have a descendant input box and will use a `<input>` with attribute `ace-combobox-input`. If no descendant has this attribute then the first decendant `<input>` will be used and given the attribute. It is strongly recommended that this `<input>` is given an accessible label using either `aria-label` or `aria-labelledby`. Similarly, Combobox must have a descendant list and will use a `<ul>` with attribute `ace-combobox-list`. If no descendant has this attribute then the first decendant `<ul>` will be used and given the attribute. It is strongly recommended that the `<ul>` is given an accessible label using `aria-label`, describing its options.
 
 The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-combobox-update-options` is dispatched on the Combobox instance afterwards.
 
@@ -55,7 +55,7 @@ A Combobox with input and list auto-completion behaves the same as that with lis
 
 ## Styles
 
-The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*, which also contains styles used for making sure the entire listbox is always visible within a window.
+The following SASS is applied to Combobox. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*, which also contains styles used for making sure the entire listbox is always visible within a window.
 
 ```scss
 @import '../../common/constants';
@@ -64,7 +64,7 @@ The following SASS is applied to the component. The SASS variables use `!default
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
 $ace-combobox-list-height: auto !default;
-$ace-combobox-selected-option-color: #fff !default;
+$ace-combobox-selected-option-text-color: #fff !default;
 $ace-combobox-selected-option-bg-color: $ace-color-selected !default;
 
 
@@ -98,7 +98,7 @@ ace-combobox {
 
   [aria-selected="true"] {
     background: $ace-combobox-selected-option-bg-color;
-    color: $ace-combobox-selected-option-color;
+    color: $ace-combobox-selected-option-text-color;
   }
 }
 
@@ -120,7 +120,7 @@ The following events are dispatched on `window` by Combobox.
 
 `ace-combobox-ready`
 
-This event is dispatched when Combobox finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
+This event is dispatched when Combobox finishes initialising. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -132,7 +132,7 @@ This event is dispatched when Combobox finishes initialising. The event name is 
 
 `ace-combobox-list-toggled`
 
-This event is dispatched when the listbox is toggled. The event name is available as `EVENTS.OUT.LIST_TOGGLED`, and its `detail` property is composed as follows:
+This event is dispatched when the listbox is toggled. The event name is available as `EVENTS.OUT.LIST_TOGGLED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -146,7 +146,7 @@ This event is dispatched when the listbox is toggled. The event name is availabl
 
 `ace-combobox-option-selected`
 
-This event is dispatched when a listbox option is selected. The event name is available as `EVENTS.OUT.OPTION_SELECTED`, and its `detail` property is composed as follows:
+This event is dispatched when a listbox option is selected. The event name is available as `EVENTS.OUT.OPTION_SELECTED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -160,7 +160,7 @@ This event is dispatched when a listbox option is selected. The event name is av
 
 `ace-combobox-option-chosen`
 
-This event is dispatched when an option is chosen by the user, either by clicking on an option or by pressing <kbd>Enter</kbd> when the listbox has a selected option. The event name is available as `EVENTS.OUT.OPTION_CHOSEN`, and its `detail` property is composed as follows:
+This event is dispatched when an option is chosen by the user, either by clicking on an option or by pressing <kbd>Enter</kbd> when the listbox has a selected option. The event name is available as `EVENTS.OUT.OPTION_CHOSEN` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -174,7 +174,7 @@ This event is dispatched when an option is chosen by the user, either by clickin
 
 `ace-combobox-options-updated`
 
-This event is dispatched when Select has finished updating its options. The event name is available as `EVENTS.OUT.OPTIONS_UPDATED`, and its `detail` property is composed as follows:
+This event is dispatched when Combobox has finished updating its options. The event name is available as `EVENTS.OUT.OPTIONS_UPDATED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -210,8 +210,7 @@ This event should be dispatched to programatically select an option. The event n
 
 `ace-combobox-update-options`
 
-This event should be dispatched when options are added or deleted, and causes Combobox to reinitialise itself. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
-
+This event should be dispatched when options are added or deleted, and causes Combobox to reinitialise itself and then dispatch the `ace-combobox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
 
 
 ## Examples

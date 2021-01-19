@@ -45,7 +45,7 @@ Tabs with the attribute `ace-tabs-deep-linked` are deep-linked meaning that when
 
 ## Styles
 
-The following SASS is applied to the component. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
+The following SASS is applied to Tabs. The SASS variables use `!default` so can also be easily overridden by users. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 ```scss
 @import '../../common/constants';
@@ -129,7 +129,7 @@ The following events are dispatched on `window` by Tabs.
 
 `ace-tabs-ready`
 
-This event is dispatched when Tabs finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
+This event is dispatched when Tabs finishes initialising. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {

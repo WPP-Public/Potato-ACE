@@ -53,7 +53,7 @@ To create a new component:
         - Under **Options** > **Options** make sure **Show Mouse Clicks** is ticked
         - Under **Options** > **Microphone** make sure **None** is ticked
         - Set the portion size to be a square. If using the minimum browser width use 420px x 420px.
-        - Make sure the component is completely surrounded by whitespace within the portion square. Add padding to `example-block` elements if necessary.
+        - Make sure the component is completely surrounded by whitespace within the portion square. Add padding to it's `example-block` element if necessary.
     - Use the most simple variant of the component
     - For smoother video looping have the component start and end the video in it's initial state.
     - Save the file as *\<component-name>.mov*

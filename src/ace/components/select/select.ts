@@ -9,14 +9,12 @@ export const SELECT = `${NAME}-select`;
 
 
 /* CONSTANTS */
-const OPTION_ATTR = `${SELECT}-option`;
-
 export const ATTRS = {
   FOR_FORM: `${SELECT}-for-form`,
   INPUT: `${SELECT}-input`,
   LIST: `${SELECT}-list`,
   LIST_VISIBLE: `${SELECT}-list-visible`,
-  OPTION: OPTION_ATTR,
+  OPTION: `${SELECT}-option`,
   SELECTED_OPTION_ID: `data-${SELECT}-selected-option-id`,
   TRIGGER: `${SELECT}-trigger`,
   TRIGGER_TEXT: `${SELECT}-trigger-text`,
@@ -34,7 +32,7 @@ export const EVENTS = {
 };
 
 
-// Time Listbox will wait before considering a character as start of new string when using type-ahead search
+// Time Select will wait before considering a character as start of new string when using type-ahead search
 export const SEARCH_TIMEOUT = List.SEARCH_TIMEOUT;
 
 
@@ -58,6 +56,7 @@ export default class Select extends HTMLElement {
     this.cancelOptionChange = this.cancelOptionChange.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.confirmOptionChange = this.confirmOptionChange.bind(this);
+    this.blurHandler = this.blurHandler.bind(this);
     this.hideList = this.hideList.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
     this.showList = this.showList.bind(this);
@@ -69,6 +68,14 @@ export default class Select extends HTMLElement {
 
   public connectedCallback(): void {
     /* GET DOM ELEMENTS */
+    // Get list element
+    this.listEl = this.querySelector('ul') || this.querySelector('ol');
+    if (!this.listEl) {
+      // Error if no <ul> nor <ol> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
+      console.error(`${DISPLAY_NAME}: This Select requires a <ul> or <ol> descendant.`, this);
+      return;
+    }
+
     // Get or create trigger element
     this.triggerEl = this.querySelector('button');
     // Create <button> if not present
@@ -86,13 +93,6 @@ export default class Select extends HTMLElement {
       this.triggerEl.append(this.triggerTextEl);
     }
 
-    // Get list element
-    this.listEl = this.querySelector('ul') || this.querySelector('ol');
-    // Error if no <ul> nor <ol> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
-    if (!this.listEl) {
-      console.error(`${DISPLAY_NAME}: Select with ID '${this.id} requires a <ul> or <ol> ancestor.`);
-      return;
-    }
 
     // If Select has attribute ATTRS.FOR_FORM find or create hidden form input for submission
     this.selectForForm = this.hasAttribute(ATTRS.FOR_FORM);
@@ -119,12 +119,14 @@ export default class Select extends HTMLElement {
     const triggerId = this.triggerEl.id || `${this.id}-trigger`;
     this.triggerEl.id = triggerId;
     this.triggerEl.setAttribute(ATTRS.TRIGGER, '');
+    this.triggerEl.setAttribute('aria-expanded', 'false');
     this.triggerEl.setAttribute('aria-haspopup', 'listbox');
     this.triggerEl.setAttribute('aria-labelledby', `${listLabelElId} ${triggerId}`);
 
     // Set list attrs
     this.listEl.id = `${this.id}-list`;
     this.listEl.setAttribute(ATTRS.LIST, '');
+    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
     this.listEl.setAttribute('tabindex', '-1');
 
 
@@ -136,13 +138,13 @@ export default class Select extends HTMLElement {
 
 
     /* ADD EVENT LISTENERS */
+    this.listEl.addEventListener('blur', this.blurHandler);
+    this.addEventListener('click', this.clickHandler);
     this.addEventListener('keydown', this.keydownHandler);
     this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
-    window.addEventListener('click', this.clickHandler);
 
 
     /* INITIALISATION */
-    this.hideList();
     this.chosenOptionIndex = this.list.lastSelectedOptionIndex;
     this.updateTriggerText();
     if (this.selectForForm) {
@@ -161,9 +163,10 @@ export default class Select extends HTMLElement {
     this.list.destroy();
 
     /* REMOVE EVENT LISTENERS */
+    this.listEl.removeEventListener('blur', this.blurHandler);
+    this.removeEventListener('click', this.clickHandler);
     this.removeEventListener('keydown', this.keydownHandler);
     this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
-    window.removeEventListener('click', this.clickHandler);
   }
 
 
@@ -191,16 +194,12 @@ export default class Select extends HTMLElement {
 
 
   /*
-    Handle click events on window
+    Handle click events
   */
   private clickHandler(e: MouseEvent): void {
-    const optionClicked = (e.target as HTMLElement).closest(`#${this.id} [role="option"]`);
-    const triggerClicked = (e.target as HTMLElement).closest(`#${this.id} [${ATTRS.TRIGGER}]`);
-    const listHidden = this.listEl.getAttribute(ATTRS.LIST_VISIBLE) === 'false';
-
-    if (!optionClicked && !triggerClicked && listHidden) {
-      return;
-    }
+    const target = e.target as HTMLElement;
+    const optionClicked = target.closest(`[${ATTRS.OPTION}]`);
+    const triggerClicked = target.closest(`[${ATTRS.TRIGGER}]`);
 
     if (triggerClicked) {
       this.showList();
@@ -209,10 +208,7 @@ export default class Select extends HTMLElement {
 
     if (optionClicked) {
       this.confirmOptionChange();
-      return;
     }
-
-    this.cancelOptionChange();
   }
 
 
@@ -242,7 +238,18 @@ export default class Select extends HTMLElement {
 
 
   /*
-    Hide dropdown list and update trigger text
+    Handle focus events on list
+  */
+  private blurHandler(e: MouseEvent): void {
+    const relatedTarget = e.relatedTarget as HTMLElement;
+    if (!relatedTarget || !relatedTarget.closest(SELECT)) {
+      this.cancelOptionChange();
+    }
+  }
+
+
+  /*
+    Hide dropdown list
   */
   private hideList(): void {
     this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
@@ -254,14 +261,15 @@ export default class Select extends HTMLElement {
     Handle keydown events
   */
   private keydownHandler(e: KeyboardEvent): void {
-    const keydownOnTrigger = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`);
-    const keydownOnList = (e.target as HTMLElement).closest(`[${ATTRS.LIST}]`);
+    const target = e.target as HTMLElement;
+    const keydownOnTrigger = target.closest(`[${ATTRS.TRIGGER}]`);
+    const keydownOnList = target.closest(`[${ATTRS.LIST}]`);
     if (!keydownOnTrigger && !keydownOnList) {
       return;
     }
 
     const keyPressed = e.key || e.which || e.keyCode;
-    // TAB pressed on list
+    // Prevent TAB from changing focus when pressed on list
     if (keydownOnList && keyPressedMatches(keyPressed, KEYS.TAB)) {
       e.preventDefault();
       return;
@@ -274,22 +282,6 @@ export default class Select extends HTMLElement {
       return;
     }
 
-    // UP or DOWN pressed
-    if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
-      if (keydownOnTrigger) {
-        e.preventDefault();
-        this.showList();
-      }
-      return;
-    }
-
-    // SPACE pressed on trigger
-    if (keydownOnTrigger && keyPressedMatches(keyPressed, KEYS.SPACE)) {
-      e.preventDefault();
-      this.showList();
-      return;
-    }
-
     // ENTER or SPACE pressed on list
     if (keydownOnList && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
       e.preventDefault();
@@ -297,7 +289,14 @@ export default class Select extends HTMLElement {
       return;
     }
 
-    // Letter pressed
+    // UP or DOWN pressed on trigger
+    if (keydownOnTrigger && keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
+      e.preventDefault();
+      this.showList();
+      return;
+    }
+
+    // Letter pressed on trigger
     if (keydownOnTrigger) {
       this.list.keydownHandler(e);
       this.confirmOptionChange();

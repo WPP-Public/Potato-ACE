@@ -1,4 +1,3 @@
-
 /*
   Class that instantiates a single-select or multi-select list in a given element.
 
@@ -14,23 +13,24 @@ import {getIndexBasedOnDirection, keyPressedMatches, warnIfElHasNoAriaLabel} fro
 const DEFAULT_OPTION_ATTR = `${NAME}-list-option`;
 
 export default class List {
-  private allSelected = false;
+  public activeOptionAttr: string;
   private activeOptionIndex = 0;
+  private allSelected = false;
+  private isMenu: boolean;
+  public lastSelectedOptionIndex: number;
   private listEl: HTMLUListElement|HTMLOListElement;
-  multiselectable: boolean;
-  optionElsCount: number;
+  public multiselectable: boolean;
+  public optionAttr: string;
+  public optionEls: NodeListOf<HTMLLIElement>;
+  public optionElsCount: number;
   private query = '';
   private searchTimeout: number|null = null;
-  activeOptionAttr: string;
-  lastSelectedOptionIndex: number;
-  optionAttr: string;
-  optionEls: NodeListOf<HTMLLIElement>;
 
   // Time List will wait before considering a character as start of new string when using type-ahead search
   static SEARCH_TIMEOUT = 500;
 
 
-  constructor(element: Element, optionAttr?: string) {
+  constructor(element: HTMLUListElement|HTMLOListElement, optionAttr?: string) {
     if (!(element instanceof HTMLUListElement) && !(element instanceof HTMLOListElement)) {
       return;
     }
@@ -52,6 +52,7 @@ export default class List {
 
     /* GET DOM DATA */
     this.listEl = element;
+    this.isMenu = this.listEl.getAttribute('role') === 'menu';
     this.multiselectable = this.listEl.getAttribute('aria-multiselectable') === 'true';
 
 
@@ -83,7 +84,7 @@ export default class List {
   }
 
 
-  destroy(): void {
+  public destroy(): void {
     /* REMOVE EVENT LISTENERS */
     this.listEl.removeEventListener('blur', this.focusHandler);
     this.listEl.removeEventListener('click', this.clickHandler);
@@ -176,7 +177,7 @@ export default class List {
     Will select last option with aria-selected="true" and make active the last option with attribute LIST_OPTION_ACTIVE
     Must be run after options are dynamically changed, i.e. added or removed.
   */
-  initOptionEls(): void {
+  public initOptionEls(): void {
     let allSelected = true;
 
     this.optionEls = this.listEl.querySelectorAll('li');
@@ -188,7 +189,7 @@ export default class List {
       optionEl.id = `${this.listEl.id}-option-${i + 1}`;
       optionEl.setAttribute(this.optionAttr, '');
       optionEl.setAttribute('aria-selected', optionIsSelected.toString());
-      optionEl.setAttribute('role', 'option');
+      optionEl.setAttribute('role', this.isMenu ? 'menuitem' : 'option');
 
 
       if (optionIsSelected) {
@@ -219,7 +220,7 @@ export default class List {
   /*
     Handle keystrokes on list
   */
-  keydownHandler(e: KeyboardEvent): void {
+  public keydownHandler(e: KeyboardEvent): void {
     const keyPressed = e.key || e.which || e.keyCode;
 
     if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
@@ -235,10 +236,8 @@ export default class List {
       } else {
         this.selectOption(indexOfOptionToUpdate);
       }
-
       return;
     }
-
 
     if (keyPressedMatches(keyPressed, [KEYS.HOME, KEYS.END])) {
       e.preventDefault();
@@ -257,7 +256,6 @@ export default class List {
       return;
     }
 
-
     if (this.multiselectable && keyPressedMatches(keyPressed, KEYS.SPACE)) {
       e.preventDefault();
       if (e.shiftKey) {
@@ -270,7 +268,6 @@ export default class List {
       return;
     }
 
-
     // Select or deselect all with 'Ctrl + A'
     if (this.multiselectable && keyPressedMatches(keyPressed, KEYS.A) && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
@@ -278,7 +275,6 @@ export default class List {
       this.optionEls.forEach(option => option.setAttribute('aria-selected', (this.allSelected).toString()));
       return;
     }
-
 
     // "Type-ahead" search functionality
     // Ignore non-alphanumeric keys
@@ -334,7 +330,7 @@ export default class List {
   /*
     Select option at given index
   */
-  selectOption(index: number): void {
+  public selectOption(index: number): void {
     if (!this.multiselectable) {
       // Deselect currently selected option
       const currentlySelectedOption = this.optionEls[this.lastSelectedOptionIndex];

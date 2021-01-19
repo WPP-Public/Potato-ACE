@@ -32,7 +32,7 @@ Triggers will by default toggle the visibiility of the Disclosure, but the `ace-
 
 ## Styles
 
-The following SASS is applied to the component.
+The following SASS is applied to Disclosure.
 
 ```scss
 ace-disclosure:not([ace-disclosure-visible="true"]) {
@@ -53,7 +53,7 @@ The following events are dispatched on `window` by Disclosure.
 
 `ace-disclosure-ready`
 
-This event is dispatched when Disclosure finishes initialising. The event name is available as `EVENTS.OUT.READY`, and its `detail` property is composed as follows:
+This event is dispatched when Disclosure finishes initialising. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -66,7 +66,7 @@ This event is dispatched when Disclosure finishes initialising. The event name i
 
 `ace-disclosure-changed`
 
-This event is dispatched when Disclosure's visibility changes. The event name is available as `EVENTS.OUT.CHANGED`, and its `detail` property is composed as follows:
+This event is dispatched when Disclosure's visibility changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -114,14 +114,11 @@ This is a simple, button-triggered Disclosure.
 In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute `ace-disclosure-visible="true"`.
 
 ```html
-<button ace-disclosure-trigger-for="simple-disclosure">
-  Disclosure 1 toggle trigger 1
-</button>
-<button ace-disclosure-trigger-for="simple-disclosure">
-  Disclosure 1 toggle trigger 2
+<button ace-disclosure-trigger-for="initially-visible-disclosure">
+  Disclosure 2 toggle trigger 1
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure 2 toggle trigger
+  Disclosure 2 toggle trigger 2
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
   Disclosure 2 show trigger
@@ -130,15 +127,9 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
   Disclosure 2 hide trigger
 </button>
 <hr>
-<ace-disclosure id="simple-disclosure">
-  <h2>Disclosure 1</h2>
-  <p>This Disclosure is initially hidden.</p>
-  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-</ace-disclosure>
-
 <ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
-  <h2>Disclosure 2</h2>
-  <p>This Disclosure is initially visible becasue it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
+  <h2>Initially visible disclosure</h2>
+  <p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
   <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 </ace-disclosure>
 ```

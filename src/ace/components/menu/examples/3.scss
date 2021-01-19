@@ -1,0 +1,53 @@
+.styled-menu {
+  &-container {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+
+  &__trigger {
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0;
+    height: 40px;
+    transition: background-color .2s;
+    width: 40px;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:focus,
+    &:hover {
+      background-color: #ccc;
+      color: white;
+    }
+  }
+
+  &__list {
+    border-radius: 4px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .42);
+    padding: 8px 0;
+  }
+
+  &__option {
+    align-items: center;
+    border-radius: 2px;
+    cursor: pointer;
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    padding: 10px 16px;
+
+    &:hover,
+    &[aria-selected="true"] {
+      background: #0893a7;
+    }
+
+    img {
+      height: 2em;
+      margin-right: 10px;
+    }
+  }
+}
