@@ -1,4 +1,5 @@
 /* IMPORTS */
+import FocusTrap from '../../ace/common/focus-trap.js';
 import {KEYS} from '../../ace/common/constants.js';
 import {keyPressedMatches} from '../../ace/common/functions.js';
 
@@ -18,31 +19,39 @@ export default class Sidebar extends HTMLElement {
 
     this.animEndHandler = this.animEndHandler.bind(this);
     this.animStartHandler = this.animStartHandler.bind(this);
-    this.keydownHandler = this.keydownHandler.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
+    this.keydownHandler = this.keydownHandler.bind(this);
   }
 
 
   connectedCallback() {
+    this.focusTrap = new FocusTrap(this);
     this.sidebarBtn = document.querySelector(`[${ATTRS.SIDEBAR_BTN}]`);
-    this.sidebarBtn.addEventListener('keydown', this.keydownHandler);
-    this.sidebarBtn.addEventListener('click', this.clickHandler);
+
     this.addEventListener('animationend', this.animEndHandler);
     this.addEventListener('animationstart', this.animStartHandler);
+    this.addEventListener('keydown', this.keydownHandler);
+    this.sidebarBtn.addEventListener('click', this.clickHandler);
   }
 
 
   disconnectedCallback() {
-    this.sidebarBtn.removeEventListener('keydown', this.keydownHandler);
-    this.sidebarBtn.removeEventListener('click', this.clickHandler);
+    this.focusTrap.destroy();
+
     this.removeEventListener('animationend', this.animEndHandler);
     this.removeEventListener('animationstart', this.animStartHandler);
+    this.removeEventListener('keydown', this.keydownHandler);
+    this.sidebarBtn.removeEventListener('click', this.clickHandler);
   }
 
 
   animEndHandler() {
-    if (!this.hasAttribute(ATTRS.SIDEBAR_VISIBLE)) {
+    if (this.hasAttribute(ATTRS.SIDEBAR_VISIBLE)) {
+      this.focusTrap.getInteractableDescendants();
+      this.focusTrap.interactableDescendants[0].focus();
+    } else {
       this.style.visibility = '';
+      this.sidebarBtn.focus();
     }
 
     this.sidebarBtn.blur();
