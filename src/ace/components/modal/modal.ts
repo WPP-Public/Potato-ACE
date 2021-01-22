@@ -108,7 +108,9 @@ export default class Modal extends HTMLElement {
 
 
     /* SET DOM DATA */
-    this.setAttribute('role', 'dialog');
+    if (this.getAttribute('role') !== 'alertdialog') {
+      this.setAttribute('role', 'dialog');
+    }
     this.setAttribute('aria-modal', 'true');
 
 
