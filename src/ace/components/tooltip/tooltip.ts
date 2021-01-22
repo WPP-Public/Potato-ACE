@@ -180,7 +180,6 @@ export default class Tooltip extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-  // Use autoID to automatically increment the IDs of class instances
   autoID(TOOLTIP);
   customElements.define(TOOLTIP, Tooltip);
 });

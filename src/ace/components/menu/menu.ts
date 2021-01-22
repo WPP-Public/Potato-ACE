@@ -259,7 +259,6 @@ export default class Menu extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-  // Use autoID to automatically increment the IDs of class instances
   autoID(MENU);
   customElements.define(MENU, Menu);
 });

@@ -1,0 +1,37 @@
+@import '../../common/constants';
+
+
+/* VARIABLES */
+$ace-toast-bg-color: #000 !default;
+$ace-toast-border-radius: 8px !default;
+$ace-toast-breakpoint: 600px !default;
+$ace-toast-distance-from-bottom: 32px !default;
+$ace-toast-font-size: 16px !default;
+$ace-toast-max-width: 500px !default;
+$ace-toast-mobile-max-width: 300px !default;
+$ace-toast-padding: 16px !default;
+$ace-toast-text-color: #fff !default;
+
+
+/* STYLES */
+ace-toast {
+  background: $ace-toast-bg-color;
+  border-radius: $ace-toast-border-radius;
+  bottom: $ace-toast-distance-from-bottom;
+  color: $ace-toast-text-color;
+  font-size: $ace-toast-font-size;
+  left: 50%;
+  max-width: $ace-toast-mobile-max-width;
+  padding: $ace-toast-padding;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: $ace-toast-z-index;
+
+  @media (min-width: $ace-toast-breakpoint) {
+    max-width: $ace-toast-max-width;
+  }
+
+  &:not([ace-toast-visible="true"]) {
+    display: none;
+  }
+}

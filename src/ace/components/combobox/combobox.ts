@@ -522,7 +522,6 @@ export default class Combobox extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-  // Use autoID to automatically increment the IDs of class instances
   autoID(COMBOBOX);
   customElements.define(COMBOBOX, Combobox);
 });

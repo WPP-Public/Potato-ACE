@@ -198,7 +198,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const linkEl = document.createElement('a');
       linkEl.href = '#';
       linkEl.textContent = 'Dummy link';
-      modalEl.appendChild(linkEl);
+      const pEl = document.createElement('p');
+      pEl.appendChild(linkEl);
+      modalEl.appendChild(pEl);
     }
 
     const removeLinkBtnClicked = targetId === 'remove-link-btn';

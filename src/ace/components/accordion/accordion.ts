@@ -342,7 +342,6 @@ export default class Accordion extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-  // Use autoID to automatically increment the IDs of class instances
   autoID(ACCORDION);
   customElements.define(ACCORDION, Accordion);
 });
