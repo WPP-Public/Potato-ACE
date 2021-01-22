@@ -57,6 +57,13 @@
       "Tabbed Interface"
     ]
   },
+  "toast": {
+    "name": "Toast",
+    "aliases": [
+      "Snackbar",
+      "Notification"
+    ]
+  },
   "tooltip": {
     "name": "Tooltip"
   }

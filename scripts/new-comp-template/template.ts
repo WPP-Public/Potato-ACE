@@ -96,7 +96,7 @@ export default class Template extends HTMLElement {
   // /*
   //   Handler for incoming custom events
   // */
-  // customEventsHandler(e: CustomEvent) {
+  // customEventsHandler(e: CustomEvent): void {
   //   // Check if event has a 'detail' property and if detail has an id that matches this class instance id
   //   const detail = e['detail'];
   //   if (!detail || (detail['id'] !== this.id)) {
@@ -108,7 +108,6 @@ export default class Template extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-  // Use autoID to automatically increment the IDs of class instances
   autoID(TEMPLATE);
   customElements.define(TEMPLATE, Template);
 });

@@ -114,7 +114,7 @@ export default class Disclosure extends HTMLElement {
 document.addEventListener('DOMContentLoaded', () => {
   autoID(DISCLOSURE);
 
-  // Add window click handler for disclosure triggers
+  // Add window click handler for Disclosure triggers
   window.addEventListener('click', (e) => {
     const triggerClicked = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`);
     if (!triggerClicked) {
