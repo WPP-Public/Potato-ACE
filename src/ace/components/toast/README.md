@@ -1,10 +1,8 @@
-<!-- USE WORD 'developer' TO REFER TO PEOPLE THAT WILL USE THE COMPONENTS TO BUILD SOMETHING, USE WORD 'user' TO REFER TO THE END USER THAT WILL INTERACT WITH WHAT THE DEVELOPER HAS BUILT -->
-
 # Toast
 
-<!-- ADD AN OVERVIEW OF COMPONENT AND ITS FUNCTIONALITY HERE -->
+A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use a [Modal](/modal) instead.  
 
-<!-- TODO: Replace '<w3c-component-name>' -->Toast conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>).
+Toast conforms to the [W3C WAI-ARIA authoring practices](http://w3.org/WAI/WCAG21/Techniques/aria/ARIA22.html).
 
 
 ## Setup
@@ -21,30 +19,18 @@ Then import the class into your JavaScript entry point:
 import '<path-to-node_modules>/@potato/ace/components/toast/toast';
 ```
 
-For convenience the ES6 class is exported as `Toast` <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of `ATTRS`.
+For convenience the ES6 class is exported as `Toast` and the attribute names used by the class are exported as properties of `ATTRS`.
 
 After the event `DOMContentLoaded` is fired on `document` an instance of Toast is instantiated within each `<ace-toast>` element and an ID `ace-toast-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-toast-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-<!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
-
-<!-- 1. Required elements that developers must provide before page load. For each, mention the custom attribute it can be given for explicit assignment, and whether this attribute can be omitted and the component can implicitly determine which element to use based on its position in the DOM hierarchy. Example: -->
-
-> Toast must have a descendant button to \_\_\_\_\_, and will use a descendant `<button>` with attribute `ace-toast-btn`. If no descendant has this attribute then the first decendant `<button>` will be used and given this attribute.
-
-<!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or  or `aria-labelledby`. -->
-
-> It is strongly recommended that Toast be provided with an accessible label using either `aria-label` or `aria-labelledby`.
-
-<!-- 3. Optional elements that can be added dynamically after page load, explaining which custom event is needed to prompt the component to initialise them. -->
-
 ## Usage
 
-<!-- EXPLAINING COMPONENT FEATURES AND HOW IT CAN BE INTERACTED WITH. COMPONENT VARIANTS MAY BE BRIEFLY LISTED HERE BUT NOT IN DETAIL AS EACH VARIANT SHOULD HAVE AN EXAMPLE BELOW CONTAINING ALL THE DETAILS -->
+Toasts have an attribute `ace-toast-visible` which is initially set to `false`. This is an observed attribute and therefore dynamically be set to `true` which will cause the Toast to appear for a default show time of 4 seconds before disappearing. Developers can specify a custom show time by setting attribute `ace-toast-show-time` to the value of the show time in milliseconds as demonstrated in the example below.
 
 
 ## Styles
 
-The following SASS is applied to Toast. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by developers. <!-- TODO: If SASS variable from common/constants.scss file used add the following sentence --> SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
+The following SASS is applied to Toast. The SASS variables use `!default` so can also be easily overridden by developers. SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 
 ```scss
@@ -97,7 +83,6 @@ Toast uses the following custom events, the names of which are available in its 
 
 The following events are dispatched on `window` by Toast.
 
-
 #### Ready
 
 `ace-toast-ready`
@@ -110,27 +95,16 @@ This event is dispatched when Toast finishes initialising. The event name is ava
 }
 ```
 
+#### Changed
 
-### Listened for events
+`ace-toast-changed`
 
-Toast listens for the following events, which should be dispatched on the specific `ace-toast` element.
-
-
-<!-- TODO: Replace 'Event name' with a descriptive name -->
-#### Event name
-
-<!-- TODO: Replace 'event-name' with actual value -->
-`ace-toast-event-name`
-
-<!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
-This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
-
-<!-- TODO: If detail property used add the following and describe each of its properties --> 
-and its `detail` property should be composed as follows:
+This event is dispatched when Toast visibility changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
-  'prop': // Description of prop [prop type (string/boolean etc.)]
+  'id': // ID of Toast [string]
+  'visible': // Whether Toast is visible or not [boolean]
 }
 ```
 
@@ -139,18 +113,9 @@ and its `detail` property should be composed as follows:
 
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
-<!-- TODO: Replace 'Example' with more descriptive name -->
+### Simple Toast and long show time Toast
+A Toast with a default 4 second show time and one with a custom 7 second show time. The JavaScript used by this example is also shown below.
 
-### Example
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
-<!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
-<!-- Custom styles have been applied to this example and are shown below. -->
-<!-- OR -->
-<!-- Custom styles that mimic Google Material Design have been applied to this example and are shown below. -->
-<!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
-<!-- The JavaScript used by this example is also shown below. -->
-
-<!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
 ```html
 <button id="simple-toast-btn">Show Toast</button>
 <button id="long-show-time-toast-btn">Show Toast with 7 second show time</button>
@@ -178,20 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
-### Example
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
-<!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
-<!-- Custom styles have been applied to this example and are shown below. -->
-<!-- OR -->
-<!-- Custom styles that mimic Google Material Design have been applied to this example and are shown below. -->
-<!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
-<!-- The JavaScript used by this example is also shown below. -->
+### Multiple Toasts at the same time
 
-<!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
+All Toasts occupy the same fixed position at the bottom of the viewport window. Developers should therefore add a way of dealing with multiple Toasts appearing at the same time if this is a possibility. An example of how this can be achieved using JavaScript is shown below.
+
 ```html
 <button id="show-1st-toast-btn">Show first Toast</button>
 <button id="show-2nd-toast-btn">Show second Toast</button>
-<button id="show-3rd-toast-btn">Show thirds Toast</button>
+<button id="show-3rd-toast-btn">Show third Toast</button>
 
 <ace-toast>
   First Toast
@@ -210,32 +169,39 @@ document.addEventListener('DOMContentLoaded', () => {
 import {ATTRS} from '/ace/components/toast/toast.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const firstToastEl = document.getElementById('ace-toast-3');
-  const secondToastEl = document.getElementById('ace-toast-4');
-  const thirdToastEl = document.getElementById('ace-toast-5');
+  const firstToastId = 'ace-toast-3';
+  const secondToastId = 'ace-toast-4';
+  const thirdToastId = 'ace-toast-5';
+  const firstToastEl = document.getElementById(firstToastId);
+  const secondToastEl = document.getElementById(secondToastId);
+  const thirdToastEl = document.getElementById(thirdToastId);
 
   const positionToast = (toastEl) => {
+    const TOAST_GAP = 10;
+    let offsetTopOfHighestToast;
     const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}="true"]`);
-    visibleToasts.forEach((visibleToast) => {
-      const TOAST_GAP = 10;
-      toastEl.style.bottom = `${window.innerHeight - visibleToast.offsetTop + TOAST_GAP}px`;
+
+    visibleToasts.forEach((visibleToast, index) => {
+      const visibleToastOffsetTop = visibleToast.offsetTop;
+
+      if (index === 0) {
+        offsetTopOfHighestToast = visibleToastOffsetTop;
+        return;
+      }
+
+      if (visibleToastOffsetTop < offsetTopOfHighestToast) {
+        offsetTopOfHighestToast = visibleToastOffsetTop;
+      }
     });
+    toastEl.style.bottom = visibleToasts.length ? `${window.innerHeight - offsetTopOfHighestToast + TOAST_GAP}px` : '';
   };
 
   window.addEventListener('click', (e) => {
     const targetId = e.target.id;
     let toastEl;
-    switch (targetId) {
-      case 'show-1st-toast-btn':
-        toastEl = firstToastEl;
-        break;
-      case 'show-2nd-toast-btn':
-        toastEl = secondToastEl;
-        break;
-      case 'show-3rd-toast-btn':
-        toastEl = thirdToastEl;
-        break;
-    }
+    toastEl = targetId === 'show-1st-toast-btn' ? firstToastEl : toastEl;
+    toastEl = targetId === 'show-2nd-toast-btn' ? secondToastEl : toastEl;
+    toastEl = targetId === 'show-3rd-toast-btn' ? thirdToastEl : toastEl;
 
     if (!toastEl) {
       return;
