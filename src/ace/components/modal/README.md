@@ -5,7 +5,7 @@ Modal is a component that is overlaid on top of other site content, and prevents
 Modal conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -149,7 +149,7 @@ Modal listens for the following event, which should be dispatched on the specifi
 
 `ace-disclosure-update-focus-trap`
 
-This event should be dispatched to manually update the focus trap on the Modal and the event name is available as `EVENTS.IN.UPDATE_FOCUS_TRAP`. For example if an element is dynamically added to the Modal as the first or last focusable descendant this custom event must be dispatched so that the focus trap can be updated appropriately.
+This event should be dispatched when an element is dynamically added to the Modal as its first or last focusable descendant and updates the focus trap accordingly. The event name is available as `EVENTS.IN.UPDATE_FOCUS_TRAP`.
 
 ## Examples
 
@@ -158,7 +158,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 ### Simple Modal
 Example of a simple modal with two triggers that is shown on page load. The example also demonstrates how the focus trap and the `ace-disclosure-update-focus-trap` custom event work. After triggering the Modal, use **Toggle disabled button** button to toggle the disabled state of the disabled button, and notice that the mutation observer updates the focus trap. Next use the **Add link to Modal** and **Remove link from Modal** buttons to add and remove links and dispatch the custom event, and notice how the focus trap is again updated.
 
-The extra JavaScript used by this example is also shown below.
+The JavaScript used by this example is also shown below.
 
 ```html
 <button ace-modal-trigger-for="simple-modal">Modal trigger 1</button>
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ### Modal that triggers another Modal
 Example of a Modal that has a trigger for another Modal and makes use of the `ace-modal-changed` custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its `ace-modal-changed` custom event is dispatched, the first Modal is shown again.
 
-The extra JavaScript used by this example is also shown below.
+The JavaScript used by this example is also shown below.
 
 ```html
 <button ace-modal-trigger-for="modal-from-modal">

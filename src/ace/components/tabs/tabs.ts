@@ -10,7 +10,7 @@ import {
 } from '../../common/functions.js';
 
 
-/* TEMPLATE NAME */
+/* COMPONENT NAME */
 export const TABS = `${NAME}-tabs`;
 
 
@@ -79,6 +79,7 @@ export default class Tabs extends HTMLElement {
     this.setOrientation = this.setOrientation.bind(this);
     this.setSelectedTab = this.setSelectedTab.bind(this);
     this.setTabNumberInUrl = this.setTabNumberInUrl.bind(this);
+    this.setTabsAttributes = this.setTabsAttributes.bind(this);
   }
 
 
@@ -115,7 +116,7 @@ export default class Tabs extends HTMLElement {
     /* GET DOM ELEMENTS */
     this.tablistEl = getElByAttrOrSelector(this, ATTRS.TABLIST, `#${this.id} > div`);
     if (!this.tablistEl) {
-      console.warn(`${DISPLAY_NAME}: Tabs with ID ${this.id} requires a child <div> or a descendant with attribute ${ATTRS.TABLIST}, to be used as a 'tablist'.`);
+      console.error(`${DISPLAY_NAME}: Tabs with ID ${this.id} requires a child <div> or a descendant with attribute ${ATTRS.TABLIST} that will be used as a tablist.`);
       return;
     }
 
@@ -141,16 +142,21 @@ export default class Tabs extends HTMLElement {
 
     /* INITIALISATION */
     warnIfElHasNoAriaLabel(this, 'Tabs');
-
     this.initTabs();
     this.initialised = true;
+
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
   }
 
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    window.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
-    window.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
+    this.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
+    this.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
     this.tablistEl.removeEventListener('click', this.clickHandler);
     this.tablistEl.removeEventListener('keydown', this.keydownHandler);
   }
@@ -220,7 +226,7 @@ export default class Tabs extends HTMLElement {
 
 
   /*
-    Initialises Tabs attributes. Should be run whenever the Tabs markup changes
+    Initialises Tabs panel and tab elements. Should be run whenever Tabs markup changes
   */
   private initTabs(): void {
     this.tabEls = this.tablistEl.querySelectorAll('button');
@@ -229,43 +235,19 @@ export default class Tabs extends HTMLElement {
     // If ATTRS.PANEL not given then take all children except first (which is the tablist)
     this.panelEls = getElsByAttrOrSelector(this, ATTRS.PANEL, `${TABS} > :not(:first-child)`);
 
-    // Check number of tabs matches number of panels
+    // Check number of panels matches number of tabs
     if (this.panelEls.length !== this.tabCount) {
-      console.warn(`${DISPLAY_NAME}: Number of tabs doesn't match number of panels for Tabs component with ID ${this.id}.`);
+      console.error(`${DISPLAY_NAME}: Number of panels doesn't match number of tabs for Tabs with ID ${this.id}.`);
       return;
     }
 
     this.determineStartingSelectedTab();
-
-    // Initialise tab and panel attributes
-    this.tabEls.forEach((tabEl, index) => {
-      const tabId = tabEl.id || `${this.id}-tab-${index + 1}`;
-      const correspondingPanel = this.panelEls[index];
-      const correspondingPanelId = correspondingPanel.id || `${this.id}-panel-${index + 1}`;
-
-      // Set panel attributes
-      correspondingPanel.id = correspondingPanelId;
-      correspondingPanel.setAttribute(ATTRS.PANEL, '');
-      correspondingPanel.setAttribute(ATTRS.PANEL_VISIBLE, index === this.selectedTabIndex ? 'true' : 'false');
-      correspondingPanel.setAttribute('aria-labelledby', tabId);
-      correspondingPanel.setAttribute('role', 'tabpanel');
-      correspondingPanel.setAttribute('tabindex', '0');
-
-      // Set tab attributes
-      tabEl.id = tabId;
-      tabEl.setAttribute(ATTRS.TAB, '');
-      tabEl.setAttribute('aria-controls', correspondingPanelId);
-      tabEl.setAttribute('aria-selected',  index === this.selectedTabIndex ? 'true' : 'false');
-      tabEl.setAttribute('role', 'tab');
-      if (index === this.selectedTabIndex) {
-        tabEl.setAttribute(ATTRS.TAB_SELECTED, '');
-        tabEl.removeAttribute('tabindex');
-      } else {
-        tabEl.setAttribute('tabindex', '-1');
-      }
-    });
-
+    this.setTabsAttributes();
     this.setOrientation();
+
+    if (!this.initialised) {
+      return;
+    }
 
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
@@ -414,6 +396,43 @@ export default class Tabs extends HTMLElement {
     const params = new URLSearchParams(location.search);
     params.set(this.id, tabNumber);
     window.history.replaceState({}, '', `${location.pathname}?${params}`);
+  }
+
+
+  /*
+    Set panel and tab attributes
+  */
+  private setTabsAttributes(): void {
+    this.tabEls.forEach((tabEl, index) => {
+      const correspondingPanel = this.panelEls[index];
+
+      // Set IDs
+      if (!tabEl.id || tabEl.id.includes(`${this.id}-tab-`)) {
+        tabEl.id = `${this.id}-tab-${index + 1}`;
+      }
+      if (!correspondingPanel.id || correspondingPanel.id.includes(`${this.id}-panel-`)) {
+        correspondingPanel.id = `${this.id}-panel-${index + 1}`;
+      }
+
+      // Set tab attributes
+      tabEl.setAttribute(ATTRS.TAB, '');
+      tabEl.setAttribute('aria-controls', correspondingPanel.id);
+      tabEl.setAttribute('aria-selected', index === this.selectedTabIndex ? 'true' : 'false');
+      tabEl.setAttribute('role', 'tab');
+      if (index === this.selectedTabIndex) {
+        tabEl.setAttribute(ATTRS.TAB_SELECTED, '');
+        tabEl.removeAttribute('tabindex');
+      } else {
+        tabEl.setAttribute('tabindex', '-1');
+      }
+
+      // Set panel attributes
+      correspondingPanel.setAttribute(ATTRS.PANEL, '');
+      correspondingPanel.setAttribute(ATTRS.PANEL_VISIBLE, index === this.selectedTabIndex ? 'true' : 'false');
+      correspondingPanel.setAttribute('aria-labelledby', tabEl.id);
+      correspondingPanel.setAttribute('role', 'tabpanel');
+      correspondingPanel.setAttribute('tabindex', '0');
+    });
   }
 }
 

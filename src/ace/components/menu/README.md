@@ -5,7 +5,7 @@ Menu is a component that contains a button that shows a hidden menu comprised of
 Menu conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#menubutton).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -23,7 +23,7 @@ For convenience the ES6 class is exported as `Menu` and the attribute names used
 
 After the event `DOMContentLoaded` is fired on `document` an instance of Menu is instantiated within each `<ace-menu>` element and an ID `ace-menu-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-menu-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-A Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-menu-update-options` is dispatched on the Menu instance afterwards.
+Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-menu-update-options` is dispatched on the Menu instance afterwards.
 
 
 ## Usage
@@ -101,7 +101,7 @@ The following events are dispatched on `window` by Menu.
 
 `ace-menu-ready`
 
-This event is dispatched when Menu finishes initialising, or updating after the `ace-menu-update-options` event is dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when Menu finishes initialising just after page load, and after dynamically added options are initialised in response to the `ace-menu-update-options` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -136,8 +136,7 @@ Menu listens for the following event, which should be dispatched on the specific
 
 `ace-menu-update-options`
 
-This event should be dispatched when options are added or deleted to the list, and causes Menu to reinitialise the list options and then dispatch the `ace-select-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
-
+This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the `ace-menu-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
 
 
 ## Examples

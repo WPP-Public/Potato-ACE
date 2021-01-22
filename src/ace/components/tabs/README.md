@@ -5,7 +5,7 @@ Tabs is a set of sections of content known as panels, of which only is displayed
 Tabs conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -129,7 +129,7 @@ The following events are dispatched on `window` by Tabs.
 
 `ace-tabs-ready`
 
-This event is dispatched when Tabs finishes initialising. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when Tabs finishes initialising just after page load, and after dynamically added descendants are initialised in response to the `ace-tabs-update` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -183,7 +183,7 @@ This event should be dispatched to select the next tab, or the first tab if the 
 
 `ace-tabs-update`
 
-This event should be dispatched if tabs are added or removed to re-initialise Tabs. The event name is available as `EVENTS.IN.UPDATE`.
+This event should be dispatched when tabs are added or removed and causes Tabs to initialise them and then dispatch the `ace-tabs-ready` event.tgabs The event name is available as `EVENTS.IN.UPDATE`.
 
 
 ## Examples
@@ -367,7 +367,7 @@ Two Tabs components with deep linking enabled.
 
 ### Tabs controlled using custom events
 
-The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs. The extra JavaScript used by this example is also shown below.
+The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs. The JavaScript used by this example is also shown below.
 
 ```html
 <p>These buttons dispatch custom events</p>

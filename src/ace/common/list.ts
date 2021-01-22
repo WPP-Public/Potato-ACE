@@ -186,7 +186,11 @@ export default class List {
       const optionIsSelected = optionEl.getAttribute('aria-selected') === 'true';
       const optionIsActive = optionEl.hasAttribute(this.activeOptionAttr);
 
-      optionEl.id = `${this.listEl.id}-option-${i + 1}`;
+      // Set ID only if it was not given or we have previously provided it automatically
+      if (!optionEl.id || optionEl.id.includes(`${this.listEl.id}-option-`)) {
+        optionEl.id = `${this.listEl.id}-option-${i + 1}`;
+      }
+
       optionEl.setAttribute(this.optionAttr, '');
       optionEl.setAttribute('aria-selected', optionIsSelected.toString());
       optionEl.setAttribute('role', this.isMenu ? 'menuitem' : 'option');

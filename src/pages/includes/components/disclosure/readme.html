@@ -1,7 +1,7 @@
 <h1>Disclosure</h1>
 <p>Disclosure is a component whose visibility is changed using trigger buttons.</p>
 <p>Disclosure conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Setup</h2>
+<h2>Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/disclosure'
 </code></pre>
@@ -108,7 +108,7 @@
 &lt;/ace-disclosure&gt;
 </code></pre>
 <h3>Disclosure controlled using custom event</h3>
-<p>The button in this example is <strong>not</strong> a trigger button but is a button that instead dispatches the <code>ace-disclosure-toggle</code> custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The extra JavaScript used by this example is also shown below.</p>
+<p>The button in this example is <strong>not</strong> a trigger button but is a button that instead dispatches the <code>ace-disclosure-toggle</code> custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button id="toggle-custom-event-btn">
   Toggle disclosure using custom event
 </button>

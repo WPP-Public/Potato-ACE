@@ -5,7 +5,7 @@ Select is a dropdown list of options that mimics a native HTML `<select>` that h
 Select conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/examples/listbox/listbox-collapsible.html), with the exception of a few minor interactions that allow it to more closely mimic a native HTML `<select>` element.
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -100,7 +100,7 @@ The following events are dispatched on `window` by Select.
 
 `ace-select-ready`
 
-This event is dispatched when Select finishes initialising, or updating after the `ace-select-update-options` event is dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when Select finishes initialising just after page load, and after dynamically added options are initialised in response to the `ace-select-update-options` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -133,7 +133,7 @@ Select listens for the following event, which should be dispatched on the specif
 
 `ace-select-update-options`
 
-This event should be dispatched when options are added or deleted to the list, and causes Select to reinitialise the list options and then dispatch the `ace-select-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+This event should be dispatched when options are added to or removed from the list and causes Select to initialise them and then dispatch the `ace-select-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
 
 
 ## Examples

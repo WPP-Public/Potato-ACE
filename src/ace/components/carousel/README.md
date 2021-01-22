@@ -5,7 +5,7 @@ Carousel is a set of slides, only one of which is displayed at a time, and butto
 Carousel conforms to [W3C's WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -43,6 +43,12 @@ For automatic Carousels the automatic slide show is paused while the mouse point
 
 The automatic slide show can be stopped and started again using the automatic slide show toggle button or using custom events, with both methods setting Carousel attribute `ace-carousel-auto-slide-show-stopped` to `true` or `false`. This attribute can therefore be used to change the text string or icon of the toggle button simply using CSS. Note that this attribute will have value `false` while the Carousel is temporarily paused due to mouse hover or descendant keyboard focus.
 
+
+## Animating slide changes
+
+Since animations can be achieved using many different methods Carousel does not animate slide changes. Developers interested in doing so can listen for the `ace-carousel-slide-changed` custom event and then apply their own animations, as demonstrated in one of the examples below.
+
+In order to implement animations without hindering accessibility developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
 
 
 ## Styles
@@ -96,7 +102,7 @@ The following events are dispatched on `window` by Carousel.
 
 `ace-carousel-ready`
 
-This event is dispatched when Carousel finishes initialising, after page load or in response to the `ace-carousel-update-slides` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when Carousel finishes initialising just after page load, and after dynamically added descendants are initialised in response to the `ace-carousel-update-slides` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -154,7 +160,7 @@ This event should be dispatched to display the next slide, or the first slide if
 
 `ace-carousel-update-slides`
 
-This event should be dispatched if slides have been added or removed and causes the Carousel to initialise them. The event name is available as `EVENTS.IN.UPDATE_SLIDES`.
+This event should be dispatched when slides are added or removed and causes Carousel to initialise them and then dispatch the `ace-carousel-ready` event. The event name is available as `EVENTS.IN.UPDATE_SLIDES`.
 
 #### Automatic slide show events
 
@@ -198,7 +204,7 @@ Simple Carousel with 3 slides.
 
 ### Carousel controlled using custom events
 
-The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-carousel-set-next-slide` and `ace-carousel-update-slides` custom events on the Carousel. The extra JavaScript used by this example is also shown below.
+The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-carousel-set-next-slide` and `ace-carousel-update-slides` custom events on the Carousel. The JavaScript used by this example is also shown below.
 
 ```html
 <p>These buttons dispatch custom events</p>
@@ -332,7 +338,7 @@ Carousel with slide picker buttons and automatic slide show.
 
 ### Carousel with automatic slide show
 
-Carousel with automatic slide show. Two buttons have also been included, which dispatch the `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show` custom events. The extra JavaScript used by this example is also shown below.
+Carousel with automatic slide show. Two buttons have also been included, which dispatch the `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show` custom events. The JavaScript used by this example is also shown below.
 
 ```html
 <button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
@@ -385,9 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Animated Carousel
 
-Although Carousel does not animate slide changes, developers can listen for the `ace-carousel-slide-changed` event and apply their own animations, as demonstrated in this example. In order to implement animations without hindering accessibility developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them.
-
-For better accessibility animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
+Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is also shown below.
 
 ```html
 <ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
@@ -507,8 +511,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Styled Carousel
 
-An example of how Carousel can be styled to resemble a common use case design.
-
+An example of how Carousel can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is also shown below.
+ 
 ```html
 <ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="styled-carousel" class="styled-carousel">
   <button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span class="pause-icon">&#10074; &#10074;</span></button>

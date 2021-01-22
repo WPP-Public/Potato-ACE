@@ -5,7 +5,7 @@ A Tooltip is a hidden component that contains information related to a target el
 Tooltip conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#tooltip).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -245,7 +245,7 @@ Tooltips are not compatible with disabled targets as they are not focusable nor 
 
 ### Tooltip controlled using custom events
 
-The first two buttons in this example dispatch the `ace-tooltip-show` and `ace-tooltip-hide` events that show and hide the Tooltip. The extra JavaScript used by this example is also shown below.
+The first two buttons in this example dispatch the `ace-tooltip-show` and `ace-tooltip-hide` events that show and hide the Tooltip. The JavaScript used by this example is also shown below.
 
 ```html
 <button id="show-tooltip-btn">Show Tooltip</button>
@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Styled Tooltip
 
-This Tooltip has been styled to resemble a common use case design pattern. Custom styles have been applied to this example and are shown below. To view this example properly use a viewport width between 720px and 1023px.
+An example of how Tooltip can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. To view this example properly use a viewport width between 720px and 1023px.
 
 ```html
 <div style="display: flex; justify-content: space-between;">

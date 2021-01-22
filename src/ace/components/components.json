@@ -1,4 +1,10 @@
 {
+  "accordion": {
+    "name": "Accordion",
+    "aliases": [
+      "Expansion Panels"
+    ]
+  },
   "carousel": {
     "name": "Carousel",
     "aliases": [
