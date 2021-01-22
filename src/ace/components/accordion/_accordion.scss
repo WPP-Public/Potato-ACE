@@ -1,0 +1,5 @@
+[ace-accordion-panel] {
+  &:not([ace-accordion-panel-visible="true"]) {
+    display: none;
+  }
+}

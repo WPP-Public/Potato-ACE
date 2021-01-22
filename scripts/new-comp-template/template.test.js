@@ -29,30 +29,42 @@ const getEls = (id) => {
 };
 
 
-// TODO: Define set of assertions that indicate that Template initialised correctly
-const templateInitChecks = (id) => {
-  const FOO_ID = `${id}-foo`;
-  const BAZ_ID = `${id}-baz`;
-
+// TODO: Define set of assertions that check if Template initialised correctly
+const templateInitChecks = () => {
   return cy.get('@template')
-    .should('have.id', id)
-    .get('@templateFoo')
-    .should('have.id', FOO_ID)
-    .and('have.attr', ATTRS.FOO, '')
-    .and('have.attr', 'aria-owns', BAZ_ID)
-    .get('@templateBars')
-    .each(($bar, index) => {
-      const selected = index === 0 ? 'true' : 'false';
-      cy.wrap($bar)
-        .should('have.id', `${id}-bar-${index + 1}`)
-        .and('have.attr', ATTRS.BAR, '')
-        .and('have.attr', 'aria-selected', selected);
-    })
-    .get('@templateBaz')
-    .should('have.id', BAZ_ID)
-    .and('have.attr', ATTRS.BAZ, '')
-    .and('have.attr', 'aria-describedby', FOO_ID)
-    .and('not.have.attr', ATTRS.ACTIVE_BAZ);
+    // Access an attribute of template in JS context use if you need to access multiple attributes
+    .then(($template) => {
+      const TEMPLATE_ID = $template.attr('id');
+      const bazId = `${TEMPLATE_ID}-baz`;
+      const fooId = `${TEMPLATE_ID}-foo`;
+
+      const templateVisible = $template.attr(ATTRS.VISIBLE) === '';
+
+      cy.wrap($template)
+        .should('have.attr', 'attribute', '')
+        .get('@templateFoo')
+        .should('have.id', fooId)
+        .and('have.attr', 'aria-owns', bazId)
+        .should(`${templateVisible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE)
+        .get('@templateBaz')
+        .should('have.id', bazId)
+        .should('have.attr', 'aria-labelledby', fooId)
+        // Access an attribute of templateBaz in Cypress context
+        .invoke('attr', ATTRS.VISIBLE)
+        .then((visibleAttrVal) => {
+          const visible = visibleAttrVal === '';
+          cy.get('@templateBaz')
+            .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE)
+            .get('@templateBars')
+            .each(($bar, index) => {
+              const selected = index === 0 ? 'true' : 'false';
+              cy.wrap($bar)
+                .should('have.id', `${TEMPLATE_ID}-bar-${index + 1}`)
+                .and('have.attr', ATTRS.BAR, '')
+                .and('have.attr', 'aria-selected', selected);
+            });
+        });
+    });
 };
 
 
@@ -126,7 +138,7 @@ context(`Template`, () => {
   });
 
 
-  context(`Custom events Template`, () => {
+  context(`Custom events controlled Template`, () => {
     const TEMPLATE_ID = IDS.CUSTOM_EVENTS_TEMPLATE;
 
 

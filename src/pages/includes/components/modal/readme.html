@@ -1,7 +1,7 @@
 <h1>Modal</h1>
 <p>Modal is a component that is overlaid on top of other site content, and prevents users from interacting with content outside of it.</p>
 <p>Modal conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Setup</h2>
+<h2>Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/modal/modal'
 </code></pre>
@@ -100,12 +100,12 @@ ace-modal {
 <p>Modal listens for the following event, which should be dispatched on the specific <code>ace-modal</code> element.</p>
 <h4>Update focus trap</h4>
 <p><code>ace-disclosure-update-focus-trap</code></p>
-<p>This event should be dispatched to manually update the focus trap on the Modal and the event name is available as <code>EVENTS.IN.UPDATE_FOCUS_TRAP</code>. For example if an element is dynamically added to the Modal as the first or last focusable descendant this custom event must be dispatched so that the focus trap can be updated appropriately.</p>
+<p>This event should be dispatched when an element is dynamically added to the Modal as its first or last focusable descendant and updates the focus trap accordingly. The event name is available as <code>EVENTS.IN.UPDATE_FOCUS_TRAP</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Modal</h3>
 <p>Example of a simple modal with two triggers that is shown on page load. The example also demonstrates how the focus trap and the <code>ace-disclosure-update-focus-trap</code> custom event work. After triggering the Modal, use <strong>Toggle disabled button</strong> button to toggle the disabled state of the disabled button, and notice that the mutation observer updates the focus trap. Next use the <strong>Add link to Modal</strong> and <strong>Remove link from Modal</strong> buttons to add and remove links and dispatch the custom event, and notice how the focus trap is again updated.</p>
-<p>The extra JavaScript used by this example is also shown below.</p>
+<p>The JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button ace-modal-trigger-for="simple-modal">Modal trigger 1</button>
 <button ace-modal-trigger-for="simple-modal">Modal trigger 2</button>
 <ace-modal aria-label="Example Modal" id="simple-modal" ace-modal-visible>
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </code></pre>
 <h3>Modal that triggers another Modal</h3>
 <p>Example of a Modal that has a trigger for another Modal and makes use of the <code>ace-modal-changed</code> custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its <code>ace-modal-changed</code> custom event is dispatched, the first Modal is shown again.</p>
-<p>The extra JavaScript used by this example is also shown below.</p>
+<p>The JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button ace-modal-trigger-for="modal-from-modal">
   Second Modal's trigger
 </button>

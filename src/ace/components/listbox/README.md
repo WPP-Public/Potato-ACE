@@ -5,7 +5,7 @@ Listbox is a list of options that allows users to select one (single-select) or 
 Listbox conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -95,7 +95,7 @@ The following event is dispatched on `window` by Listbox.
 
 `ace-listbox-ready`
 
-This event is dispatched when Listbox finishes initialising, or updating after the `ace-listbox-update-options` event is dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when Listbox finishes initialising just after page load, and after dynamically added options are initialised in response to the `ace-listbox-update-options` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -113,7 +113,7 @@ Listbox listens for the following event, which should be dispatched on the speci
 
 `ace-listbox-update-options`
 
-This event should be dispatched when options are added or deleted, and causes Listbox to reinitialise itself and then dispatch the `ace-listbox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+This event should be dispatched when options are added to or removed from the list and causes Listbox to initialise them and then dispatch the `ace-listbox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
 
 
 ## Examples

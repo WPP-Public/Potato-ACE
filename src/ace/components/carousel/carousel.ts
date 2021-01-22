@@ -100,6 +100,7 @@ export default class Carousel extends HTMLElement {
     this.keydownHandler = this.keydownHandler.bind(this);
     this.selectSlide = this.selectSlide.bind(this);
     this.selectSlideBasedOnDirection = this.selectSlideBasedOnDirection.bind(this);
+    this.setSlideAttributes = this.setSlideAttributes.bind(this);
     this.setNavBtnAttributes = this.setNavBtnAttributes.bind(this);
     this.setSelectedSlide = this.setSelectedSlide.bind(this);
     this.startAutoSlideShow = this.startAutoSlideShow.bind(this);
@@ -142,7 +143,7 @@ export default class Carousel extends HTMLElement {
       this.autoSlideShowBtn = this.querySelector('button');
 
       if (!this.autoSlideShowBtn) {
-        console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show Carousel that in turn  requires a descendant <button> element that is the first focusable element in order to toggle the automatic slide show.`);
+        console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show Carousel that in turn requires a descendant <button> element that is the first focusable element in order to toggle the automatic slide show.`);
         return;
       }
     }
@@ -158,7 +159,7 @@ export default class Carousel extends HTMLElement {
       this.querySelector(nextSlideBtnSelector);
 
     if (!this.prevSlideBtn || !this.nextSlideBtn) {
-      console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to ${this.autoSlideShowCarousel ? 'toggle the automatic slide show and' : ''} display the previous and next slides.`);
+      console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to ${this.autoSlideShowCarousel ? 'toggle the automatic slide show and' : ''} display the previous and next slides.`);
       return;
     }
 
@@ -273,10 +274,14 @@ export default class Carousel extends HTMLElement {
 
     /* INITIALISATION */
     warnIfElHasNoAriaLabel(this, 'Carousel');
-
-    // Initialise slides
     this.initSlides();
     this.initialised = true;
+
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
+      'detail': {
+        'id': this.id,
+      }
+    }));
   }
 
 
@@ -413,7 +418,7 @@ export default class Carousel extends HTMLElement {
         this.slideEls.forEach(() => this.slidePickerEl.appendChild(document.createElement('button')));
         slidePickerBtns = this.slidePickerEl.querySelectorAll('button');
       } else if (slidePickerBtnsCount !== this.slideCount) {
-        console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has decendant with '${ATTRS.SLIDE_PICKER}' that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
+        console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has decendant with attribute ${ATTRS.SLIDE_PICKER} that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
         return;
       }
 
@@ -430,26 +435,16 @@ export default class Carousel extends HTMLElement {
     }
 
     // Slides
-    this.slideEls.forEach((slide, index) => {
-      slide.setAttribute(ATTRS.SLIDE, '');
-      if (index === this.selectedSlideIndex) {
-        slide.setAttribute(ATTRS.SLIDE_SELECTED, '');
-      } else {
-        slide.removeAttribute(ATTRS.SLIDE_SELECTED);
-      }
-      slide.setAttribute('aria-label', `${index + 1} ${this.slideAriaLabelInfix || 'of'} ${this.slideCount}`);
-      slide.setAttribute('aria-roledescription', 'slide');
-      slide.setAttribute('role', this.carouselHasSlidePicker ? 'tabpanel' : 'group');
-      slide.id = `${this.id}-slide-${index + 1}`;
-    });
-
+    this.setSlideAttributes();
     this.setNavBtnAttributes();
 
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
-      'detail': {
-        'id': this.id,
-      }
-    }));
+    if (this.initialised) {
+      window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
+        'detail': {
+          'id': this.id,
+        }
+      }));
+    }
 
     if (this.autoSlideShowCarousel && this.slideEls.length > 0) {
       this.startAutoSlideShow();
@@ -531,6 +526,28 @@ export default class Carousel extends HTMLElement {
     this.setSelectedSlide(slideToSelectIndex);
   }
 
+
+  /*
+    Set panel and tab attributes
+  */
+  private setSlideAttributes(): void {
+    this.slideEls.forEach((slide, index) => {
+      // Set ID only if it was not given or we have previously provided it automatically
+      if (!slide.id || slide.id.includes(`${this.id}-slide-`)) {
+        slide.id = `${this.id}-slide-${index + 1}`;
+      }
+
+      slide.setAttribute(ATTRS.SLIDE, '');
+      if (index === this.selectedSlideIndex) {
+        slide.setAttribute(ATTRS.SLIDE_SELECTED, '');
+      } else {
+        slide.removeAttribute(ATTRS.SLIDE_SELECTED);
+      }
+      slide.setAttribute('aria-label', `${index + 1} ${this.slideAriaLabelInfix || 'of'} ${this.slideCount}`);
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('role', this.carouselHasSlidePicker ? 'tabpanel' : 'group');
+    });
+  }
 
   /*
     Disables next and previous buttons if there are no more slides

@@ -94,7 +94,7 @@ export default class Menu extends HTMLElement {
 
     /* INITIALISATION */
     if (!this.triggerEl.textContent && !this.triggerEl.getAttribute('aria-label')) {
-      console.warn(`${DISPLAY_NAME}: Menu trigger with ID ${triggerId} requires text content or an 'aria-label'.`);
+      console.warn(`${DISPLAY_NAME}: The action of Menu trigger with ID ${triggerId} must be labelled by text or using an aria-label attribute.`);
     }
     // Remove nested anchor tags from tab sequence
     this.listEl.querySelectorAll('a').forEach(link => link.setAttribute('tabindex', '-1'));

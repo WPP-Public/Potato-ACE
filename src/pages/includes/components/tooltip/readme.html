@@ -1,7 +1,7 @@
 <h1>Tooltip</h1>
 <p>A Tooltip is a hidden component that contains information related to a target element, which becomes visible when the target receives keyboard focus, the mouse hovers over the target, or a user touches the target on a touch screen device for a short period of time.</p>
 <p>Tooltip conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#tooltip">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Setup</h2>
+<h2>Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/tooltip/tooltip'
 </code></pre>
@@ -222,7 +222,7 @@ ace-tooltip {
 }
 </code></pre>
 <h3>Tooltip controlled using custom events</h3>
-<p>The first two buttons in this example dispatch the <code>ace-tooltip-show</code> and <code>ace-tooltip-hide</code> events that show and hide the Tooltip. The extra JavaScript used by this example is also shown below.</p>
+<p>The first two buttons in this example dispatch the <code>ace-tooltip-show</code> and <code>ace-tooltip-hide</code> events that show and hide the Tooltip. The JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button id="show-tooltip-btn">Show Tooltip</button>
 <button id="hide-tooltip-btn">Hide Tooltip</button>
 <hr>
@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 });
 </code></pre>
 <h3>Styled Tooltip</h3>
-<p>This Tooltip has been styled to resemble a common use case design pattern. Custom styles have been applied to this example and are shown below. To view this example properly use a viewport width between 720px and 1023px.</p>
+<p>An example of how Tooltip can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. To view this example properly use a viewport width between 720px and 1023px.</p>
 <div class="example-block"><div style="display: flex; justify-content: space-between;">
   <button>
     Tooltip target

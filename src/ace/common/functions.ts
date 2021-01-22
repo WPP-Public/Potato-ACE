@@ -134,11 +134,11 @@ export const warnIfElHasNoAriaLabel = (element: HTMLElement, elementName: string
   if (elementLabelledById) {
     const labelEl = document.getElementById(elementLabelledById);
     if (!labelEl) {
-      console.warn(`${DISPLAY_NAME}: ${elementName} with ID '${elementWithId.id}' has 'aria-labelledby' attribute set to an element that does not exist.`);
+      console.warn(`${DISPLAY_NAME}: ${elementName} with ID ${elementWithId.id} has aria-labelledby attribute set to an element that does not exist.`);
     } else if (!labelEl.textContent.length) {
-      console.warn(`${DISPLAY_NAME}: ${elementName} with ID '${elementWithId.id}' has 'aria-labelledby' attribute set to an element with no text content.`);
+      console.warn(`${DISPLAY_NAME}: ${elementName} with ID ${elementWithId.id} has aria-labelledby attribute set to an element with no text content.`);
     }
   } else if (!elementHasLabel) {
-    console.warn(`${DISPLAY_NAME}: ${elementName} with ID '${elementWithId.id}' requires an 'aria-label' or an 'aria-labelledby' attribute.`);
+    console.warn(`${DISPLAY_NAME}: ${elementName} with ID ${elementWithId.id} requires an aria-label or aria-labelledby attribute.`);
   }
 };

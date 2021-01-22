@@ -1,7 +1,7 @@
 <h1>Tabs</h1>
 <p>Tabs is a set of sections of content known as panels, of which only is displayed at a time, each with an associated button, or tab, used to display the panel.</p>
 <p>Tabs conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#tabpanel">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Setup</h2>
+<h2>Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/tabs/tabs'
 </code></pre>
@@ -93,7 +93,7 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 <p>The following events are dispatched on <code>window</code> by Tabs.</p>
 <h4>Ready</h4>
 <p><code>ace-tabs-ready</code></p>
-<p>This event is dispatched when Tabs finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Tabs finishes initialising just after page load, and after dynamically added descendants are initialised in response to the <code>ace-tabs-update</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Tabs [string]
 }
@@ -124,7 +124,7 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 <p>This event should be dispatched to select the next tab, or the first tab if the last tab is selected and Tabs has attribute <code>ace-tabs-infinite</code>. The event name is available as <code>EVENTS.IN.SET_NEXT_TAB</code>.</p>
 <h4>Update tabs</h4>
 <p><code>ace-tabs-update</code></p>
-<p>This event should be dispatched if tabs are added or removed to re-initialise Tabs. The event name is available as <code>EVENTS.IN.UPDATE</code>.</p>
+<p>This event should be dispatched when tabs are added or removed and causes Tabs to initialise them and then dispatch the <code>ace-tabs-ready</code> event.tgabs The event name is available as <code>EVENTS.IN.UPDATE</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Tabs</h3>
@@ -422,7 +422,7 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 &lt;/ace-tabs&gt;
 </code></pre>
 <h3>Tabs controlled using custom events</h3>
-<p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events on the Tabs. The extra JavaScript used by this example is also shown below.</p>
+<p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events on the Tabs. The JavaScript used by this example is also shown below.</p>
 <div class="example-block"><p>These buttons dispatch custom events</p>
 <button id="prev-tab-btn">Prev tab</button>
 <button id="next-tab-btn">Next tab</button>

@@ -5,7 +5,7 @@ Combobox is a combination of a text box and a pop-up listbox containing options 
 Combobox conforms to the ARIA 1.0 pattern of [W3C's WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#combobox).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -210,7 +210,7 @@ This event should be dispatched to programatically select an option. The event n
 
 `ace-combobox-update-options`
 
-This event should be dispatched when options are added or deleted, and causes Combobox to reinitialise itself and then dispatch the `ace-combobox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+This event should be dispatched when options are added to or removed from the list and causes Combobox to initialise them and then dispatch the `ace-combobox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
 
 
 ## Examples
@@ -367,7 +367,7 @@ Same as previous example but with automatic selection enabled.
 
 The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs.
 
-The **Add options** button adds options to the initially empty Combobox then dispatches the `ace-combobox-update-options` custom event. The **Show list** and **Hide list** buttons dispatch the `ace-combobox-show-list` and `ace-combobox-hide-list` custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the **Select option** input and clicking **Go**, which dispatches the `ace-combobox-select-option` custom event. The extra JavaScript used by this example is also shown below.
+The **Add options** button adds options to the initially empty Combobox then dispatches the `ace-combobox-update-options` custom event. The **Show list** and **Hide list** buttons dispatch the `ace-combobox-show-list` and `ace-combobox-hide-list` custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the **Select option** input and clicking **Go**, which dispatches the `ace-combobox-select-option` custom event. The JavaScript used by this example is also shown below.
 
 ```html
 <button id="add-options-btn">Add options</button>
@@ -432,11 +432,11 @@ document.addEventListener('DOMContentLoaded', () => {
 ```
 
 
-### Combobox with dynamically updated options
+### Styled Combobox with dynamically updated options
 
 This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute `aria-live="polite"` is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the `ace-combobox-update-options` custom event. The `aria-live="polite"` element is finally updated to announce how many results were found.
 
-Custom styles that mimic Google Material Design have been applied to this example and are shown below. The extra JavaScript used by this example is also shown below.
+Custom styles that mimic Google Material Design have been applied to this example and are shown below. The JavaScript used by this example is also shown below.
 
 
 ```html

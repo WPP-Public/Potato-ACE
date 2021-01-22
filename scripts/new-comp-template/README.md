@@ -90,7 +90,7 @@ Template listens for the following events, which should be dispatched on the spe
 This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
 
 <!-- TODO: If detail property used add the following and describe each of its properties --> 
-and its `detail` object should be composed as follows:
+and its `detail` property should be composed as follows:
 
 ```js
 'detail': {
@@ -108,11 +108,11 @@ Each example contains a live demo and the HTML code that produced it. The code s
 ### Example
 <!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
 <!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
-<!-- Custom styles have been applied to this example using HTML classes and are shown below. -->
+<!-- Custom styles have been applied to this example and are shown below. -->
 <!-- OR -->
 <!-- Custom styles that mimic Google Material Design have been applied to this example and are shown below. -->
 <!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
-<!-- The extra JavaScript used by this example is also shown below. -->
+<!-- The JavaScript used by this example is also shown below. -->
 
 <!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
 ```html

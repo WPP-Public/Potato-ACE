@@ -1,7 +1,7 @@
 <h1>Select</h1>
 <p>Select is a dropdown list of options that mimics a native HTML <code>&lt;select&gt;</code> that has attribute <code>size</code> with a value of 1 or without it, while allowing more styling flexibility.</p>
 <p>Select conforms to the <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">W3C WAI-ARIA authoring practices</a>, with the exception of a few minor interactions that allow it to more closely mimic a native HTML <code>&lt;select&gt;</code> element.</p>
-<h2>Setup</h2>
+<h2>Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select'
 </code></pre>
@@ -67,7 +67,7 @@ ace-select {
 <p>The following events are dispatched on <code>window</code> by Select.</p>
 <h4>Ready</h4>
 <p><code>ace-select-ready</code></p>
-<p>This event is dispatched when Select finishes initialising, or updating after the <code>ace-select-update-options</code> event is dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Select finishes initialising just after page load, and after dynamically added options are initialised in response to the <code>ace-select-update-options</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Select [string]
 }
@@ -87,7 +87,7 @@ ace-select {
 <p>Select listens for the following event, which should be dispatched on the specific <code>ace-select</code> element.</p>
 <h4>Update options</h4>
 <p><code>ace-select-update-options</code></p>
-<p>This event should be dispatched when options are added or deleted to the list, and causes Select to reinitialise the list options and then dispatch the <code>ace-select-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
+<p>This event should be dispatched when options are added to or removed from the list and causes Select to initialise them and then dispatch the <code>ace-select-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Select</h3>

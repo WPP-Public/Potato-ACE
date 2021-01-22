@@ -1,7 +1,7 @@
 <h1>Listbox</h1>
 <p>Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard. It mimics a native HTML <code>&lt;select&gt;</code> that has attribute <code>size</code> with a value or 1 or higher, while allows more styling flexibility.</p>
 <p>Listbox conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Setup</h2>
+<h2>Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/listbox/listbox'
 </code></pre>
@@ -62,7 +62,7 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 <p>The following event is dispatched on <code>window</code> by Listbox.</p>
 <h4>Ready</h4>
 <p><code>ace-listbox-ready</code></p>
-<p>This event is dispatched when Listbox finishes initialising, or updating after the <code>ace-listbox-update-options</code> event is dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Listbox finishes initialising just after page load, and after dynamically added options are initialised in response to the <code>ace-listbox-update-options</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Listbox [string]
 }
@@ -71,7 +71,7 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 <p>Listbox listens for the following event, which should be dispatched on the specific <code>ace-listbox</code> element.</p>
 <h4>Update options</h4>
 <p><code>ace-listbox-update-options</code></p>
-<p>This event should be dispatched when options are added or deleted, and causes Listbox to reinitialise itself and then dispatch the <code>ace-listbox-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
+<p>This event should be dispatched when options are added to or removed from the list and causes Listbox to initialise them and then dispatch the <code>ace-listbox-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Single-select Listbox</h3>

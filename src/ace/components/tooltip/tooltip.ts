@@ -57,7 +57,7 @@ export default class Tooltip extends HTMLElement {
       !this.targetEl.closest(FOCUSABLE_ELEMENTS_SELECTOR) &&
       (this.targetEl.getAttribute('tabindex') && parseInt(this.targetEl.getAttribute('tabindex')) <= 0)
     ) {
-      console.warn(`${DISPLAY_NAME}: The target of Tooltip with ID ${this.id} is not a focusable element making the tooltip inaccessible to keyboard users.`);
+      console.error(`${DISPLAY_NAME}: The target of Tooltip with ID ${this.id} is not a focusable element making the tooltip inaccessible to keyboard users.`);
       return;
     }
 

@@ -1,7 +1,7 @@
 <h1>Combobox</h1>
 <p>Combobox is a combination of a text box and a pop-up listbox containing options that help the user set the value of the text box.</p>
 <p>Combobox conforms to the ARIA 1.0 pattern of <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#combobox">W3C's WAI-ARIA authoring practices</a>.</p>
-<h2>Setup</h2>
+<h2>Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/combobox'
 </code></pre>
@@ -134,7 +134,7 @@ ace-combobox {
 </code></pre>
 <h4>Update options</h4>
 <p><code>ace-combobox-update-options</code></p>
-<p>This event should be dispatched when options are added or deleted, and causes Combobox to reinitialise itself and then dispatch the <code>ace-combobox-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
+<p>This event should be dispatched when options are added to or removed from the list and causes Combobox to initialise them and then dispatch the <code>ace-combobox-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Comboboxes with manual selection</h3>
@@ -397,7 +397,7 @@ ace-combobox {
 </code></pre>
 <h3>Combobox controlled using custom events</h3>
 <p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events on the Tabs.</p>
-<p>The <strong>Add options</strong> button adds options to the initially empty Combobox then dispatches the <code>ace-combobox-update-options</code> custom event. The <strong>Show list</strong> and <strong>Hide list</strong> buttons dispatch the <code>ace-combobox-show-list</code> and <code>ace-combobox-hide-list</code> custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select option</strong> input and clicking <strong>Go</strong>, which dispatches the <code>ace-combobox-select-option</code> custom event. The extra JavaScript used by this example is also shown below.</p>
+<p>The <strong>Add options</strong> button adds options to the initially empty Combobox then dispatches the <code>ace-combobox-update-options</code> custom event. The <strong>Show list</strong> and <strong>Hide list</strong> buttons dispatch the <code>ace-combobox-show-list</code> and <code>ace-combobox-hide-list</code> custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select option</strong> input and clicking <strong>Go</strong>, which dispatches the <code>ace-combobox-select-option</code> custom event. The JavaScript used by this example is also shown below.</p>
 <div class="example-block"><button id="add-options-btn">Add options</button>
 <button id="show-list-btn">Show list</button>
 <button id="hide-list-btn">Hide list</button>
@@ -473,9 +473,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   });
 });
 </code></pre>
-<h3>Combobox with dynamically updated options</h3>
+<h3>Styled Combobox with dynamically updated options</h3>
 <p>This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the <code>ace-combobox-update-options</code> custom event. The <code>aria-live=&quot;polite&quot;</code> element is finally updated to announce how many results were found.</p>
-<p>Custom styles that mimic Google Material Design have been applied to this example and are shown below. The extra JavaScript used by this example is also shown below.</p>
+<p>Custom styles that mimic Google Material Design have been applied to this example and are shown below. The JavaScript used by this example is also shown below.</p>
 <div class="example-block"><label id="styled-combobox-label" class="styled-combobox-label">Search:</label>
 <ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
   <div class="styled-combobox__wrapper">

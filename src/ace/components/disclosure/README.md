@@ -5,7 +5,7 @@ Disclosure is a component whose visibility is changed using trigger buttons.
 Disclosure conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure).
 
 
-## Setup
+## Set up
 
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
@@ -137,7 +137,7 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 
 ### Disclosure controlled using custom event
 
-The button in this example is **not** a trigger button but is a button that instead dispatches the `ace-disclosure-toggle` custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The extra JavaScript used by this example is also shown below.
+The button in this example is **not** a trigger button but is a button that instead dispatches the `ace-disclosure-toggle` custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The JavaScript used by this example is also shown below.
 
 ```html
 <button id="toggle-custom-event-btn">
