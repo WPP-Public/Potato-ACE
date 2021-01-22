@@ -1,7 +1,6 @@
-<!-- USE WORD 'developer' TO REFER TO PEOPLE THAT WILL USE THE COMPONENTS TO BUILD SOMETHING, USE WORD 'user' TO REFER TO THE END USER THAT WILL INTERACT WITH WHAT THE DEVELOPER HAS BUILT -->
 <h1>Toast</h1>
-<!-- ADD AN OVERVIEW OF COMPONENT AND ITS FUNCTIONALITY HERE -->
-<!-- TODO: Replace '<w3c-component-name>' -->Toast conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#<w3c-component-name>).
+<p>A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use a <a href="/modal">Modal</a> instead.</p>
+<p>Toast conforms to the <a href="http://w3.org/WAI/WCAG21/Techniques/aria/ARIA22.html">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/toast/toast'
@@ -9,22 +8,12 @@
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/toast/toast';
 </code></pre>
-<p>For convenience the ES6 class is exported as <code>Toast</code> <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
+<p>For convenience the ES6 class is exported as <code>Toast</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Toast is instantiated within each <code>&lt;ace-toast&gt;</code> element and an ID <code>ace-toast-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-toast-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
-<!-- 1. Required elements that developers must provide before page load. For each, mention the custom attribute it can be given for explicit assignment, and whether this attribute can be omitted and the component can implicitly determine which element to use based on its position in the DOM hierarchy. Example: -->
-<blockquote>
-<p>Toast must have a descendant button to _____, and will use a descendant <code>&lt;button&gt;</code> with attribute <code>ace-toast-btn</code>. If no descendant has this attribute then the first decendant <code>&lt;button&gt;</code> will be used and given this attribute.</p>
-</blockquote>
-<!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or  or `aria-labelledby`. -->
-<blockquote>
-<p>It is strongly recommended that Toast be provided with an accessible label using either <code>aria-label</code> or <code>aria-labelledby</code>.</p>
-</blockquote>
-<!-- 3. Optional elements that can be added dynamically after page load, explaining which custom event is needed to prompt the component to initialise them. -->
 <h2>Usage</h2>
-<!-- EXPLAINING COMPONENT FEATURES AND HOW IT CAN BE INTERACTED WITH. COMPONENT VARIANTS MAY BE BRIEFLY LISTED HERE BUT NOT IN DETAIL AS EACH VARIANT SHOULD HAVE AN EXAMPLE BELOW CONTAINING ALL THE DETAILS -->
+<p>Toasts have an attribute <code>ace-toast-visible</code> which is initially set to <code>false</code>. This is an observed attribute and therefore dynamically be set to <code>true</code> which will cause the Toast to appear for a default show time of 4 seconds before disappearing. Developers can specify a custom show time by setting attribute <code>ace-toast-show-time</code> to the value of the show time in milliseconds as demonstrated in the example below.</p>
 <h2>Styles</h2>
-<p>The following SASS is applied to Toast. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use <code>!default</code> so can also be easily overridden by developers. <!-- TODO: If SASS variable from common/constants.scss file used add the following sentence --> SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
+<p>The following SASS is applied to Toast. The SASS variables use <code>!default</code> so can also be easily overridden by developers. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
 
@@ -74,33 +63,20 @@ ace-toast {
   'id': // ID of Toast [string]
 }
 </code></pre>
-<h3>Listened for events</h3>
-<p>Toast listens for the following events, which should be dispatched on the specific <code>ace-toast</code> element.</p>
-<!-- TODO: Replace 'Event name' with a descriptive name -->
-<h4>Event name</h4>
-<!-- TODO: Replace 'event-name' with actual value -->
-<p><code>ace-toast-event-name</code></p>
-<!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
-<p>This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value --><code>EVENTS.IN.&lt;EVENT-NAME&gt;</code></p>
-<!-- TODO: If detail property used add the following and describe each of its properties --> 
-<p>and its <code>detail</code> property should be composed as follows:</p>
+<h4>Changed</h4>
+<p><code>ace-toast-changed</code></p>
+<p>This event is dispatched when Toast visibility changes. The event name is available as <code>EVENTS.OUT.CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'prop': // Description of prop [prop type (string/boolean etc.)]
+  'id': // ID of Toast [string]
+  'visible': // Whether Toast is visible or not [boolean]
 }
 </code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<!-- TODO: Replace 'Example' with more descriptive name -->
-<h3>Example</h3>
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
-<!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
-<!-- Custom styles have been applied to this example and are shown below. -->
-<!-- OR -->
-<!-- Custom styles that mimic Google Material Design have been applied to this example and are shown below. -->
-<!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
-<!-- The JavaScript used by this example is also shown below. -->
-<!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE --><div class="example-block"><button id="simple-toast-btn">Show Toast</button>
-<p><button id="long-show-time-toast-btn">Show Toast with 7 second show time</button></p>
+<h3>Simple Toast and long show time Toast</h3>
+<p>A Toast with a default 4 second show time and one with a custom 7 second show time. The JavaScript used by this example is also shown below.</p>
+<div class="example-block"><button id="simple-toast-btn">Show Toast</button>
+<button id="long-show-time-toast-btn">Show Toast with 7 second show time</button>
 <ace-toast>
   Toast with standard 4 second show time
 </ace-toast>
@@ -131,17 +107,11 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   showSecondToastBtn.addEventListener('click', () =&gt; secondToastEl.setAttribute(ATTRS.VISIBLE, 'true'));
 });
 </code></pre>
-<h3>Example</h3>
-<!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
-<!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
-<!-- Custom styles have been applied to this example and are shown below. -->
-<!-- OR -->
-<!-- Custom styles that mimic Google Material Design have been applied to this example and are shown below. -->
-<!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
-<!-- The JavaScript used by this example is also shown below. -->
-<!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE --><div class="example-block"><button id="show-1st-toast-btn">Show first Toast</button>
-<p><button id="show-2nd-toast-btn">Show second Toast</button>
-<button id="show-3rd-toast-btn">Show thirds Toast</button></p>
+<h3>Multiple Toasts at the same time</h3>
+<p>All Toasts occupy the same fixed position at the bottom of the viewport window. Developers should therefore add a way of dealing with multiple Toasts appearing at the same time if this is a possibility. An example of how this can be achieved using JavaScript is shown below.</p>
+<div class="example-block"><button id="show-1st-toast-btn">Show first Toast</button>
+<button id="show-2nd-toast-btn">Show second Toast</button>
+<button id="show-3rd-toast-btn">Show third Toast</button>
 <ace-toast>
   First Toast
 </ace-toast>
@@ -154,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </div>
 <pre><code class="language-html">&lt;button id=&quot;show-1st-toast-btn&quot;&gt;Show first Toast&lt;/button&gt;
 &lt;button id=&quot;show-2nd-toast-btn&quot;&gt;Show second Toast&lt;/button&gt;
-&lt;button id=&quot;show-3rd-toast-btn&quot;&gt;Show thirds Toast&lt;/button&gt;
+&lt;button id=&quot;show-3rd-toast-btn&quot;&gt;Show third Toast&lt;/button&gt;
 
 &lt;ace-toast&gt;
   First Toast
@@ -171,32 +141,39 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-js">import {ATTRS} from '/ace/components/toast/toast.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const firstToastEl = document.getElementById('ace-toast-3');
-  const secondToastEl = document.getElementById('ace-toast-4');
-  const thirdToastEl = document.getElementById('ace-toast-5');
+  const firstToastId = 'ace-toast-3';
+  const secondToastId = 'ace-toast-4';
+  const thirdToastId = 'ace-toast-5';
+  const firstToastEl = document.getElementById(firstToastId);
+  const secondToastEl = document.getElementById(secondToastId);
+  const thirdToastEl = document.getElementById(thirdToastId);
 
   const positionToast = (toastEl) =&gt; {
+    const TOAST_GAP = 10;
+    let offsetTopOfHighestToast;
     const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}=&quot;true&quot;]`);
-    visibleToasts.forEach((visibleToast) =&gt; {
-      const TOAST_GAP = 10;
-      toastEl.style.bottom = `${window.innerHeight - visibleToast.offsetTop + TOAST_GAP}px`;
+
+    visibleToasts.forEach((visibleToast, index) =&gt; {
+      const visibleToastOffsetTop = visibleToast.offsetTop;
+
+      if (index === 0) {
+        offsetTopOfHighestToast = visibleToastOffsetTop;
+        return;
+      }
+
+      if (visibleToastOffsetTop &lt; offsetTopOfHighestToast) {
+        offsetTopOfHighestToast = visibleToastOffsetTop;
+      }
     });
+    toastEl.style.bottom = visibleToasts.length ? `${window.innerHeight - offsetTopOfHighestToast + TOAST_GAP}px` : '';
   };
 
   window.addEventListener('click', (e) =&gt; {
     const targetId = e.target.id;
     let toastEl;
-    switch (targetId) {
-      case 'show-1st-toast-btn':
-        toastEl = firstToastEl;
-        break;
-      case 'show-2nd-toast-btn':
-        toastEl = secondToastEl;
-        break;
-      case 'show-3rd-toast-btn':
-        toastEl = thirdToastEl;
-        break;
-    }
+    toastEl = targetId === 'show-1st-toast-btn' ? firstToastEl : toastEl;
+    toastEl = targetId === 'show-2nd-toast-btn' ? secondToastEl : toastEl;
+    toastEl = targetId === 'show-3rd-toast-btn' ? thirdToastEl : toastEl;
 
     if (!toastEl) {
       return;
