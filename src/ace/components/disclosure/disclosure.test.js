@@ -17,30 +17,29 @@ const getEls = (id) => {
 };
 
 
-const initChecks = (visible) => {
-  const visibleString = visible.toString();
-
+const initChecks = () => {
   return cy.get('@disclosure')
     .then(($disclosure) => {
       cy.wrap($disclosure)
-        .should('have.attr', ATTRS.VISIBLE, visibleString)
-        .get('@disclosureTriggers')
-        .each($trigger => {
-          cy.wrap($trigger)
-            .should('have.attr', 'aria-controls', $disclosure.attr('id'))
-            .and('have.attr', 'aria-expanded', visibleString);
+        .invoke('attr', ATTRS.VISIBLE)
+        .then((visibleAttrVal) => {
+          cy.get('@disclosureTriggers')
+            .each($trigger => {
+              cy.wrap($trigger)
+                .should('have.attr', 'aria-controls', $disclosure.attr('id'))
+                .and('have.attr', 'aria-expanded', visibleAttrVal === '' ? 'true' : 'false');
+            });
         });
     });
 };
 
 
 const checkDislosureState = (visible) => {
-  const visibleString = visible.toString();
   return cy.get('@disclosure')
-    .should('have.attr', ATTRS.VISIBLE, visibleString)
+    .should(`${visible ? '' : 'not.'}have.attr`, ATTRS.VISIBLE)
     .get('@disclosureTriggers')
     .each($trigger => {
-      cy.wrap($trigger).should('have.attr', 'aria-expanded', visibleString);
+      cy.wrap($trigger).should('have.attr', 'aria-expanded', visible.toString());
     });
 };
 
@@ -56,13 +55,13 @@ context(`Disclosure`, () => {
     beforeEach(() => getEls(ID));
 
 
-    it(`Should initialise correctly`, () => initChecks(false));
+    it(`Should initialise correctly`, () => initChecks());
 
 
     it(`Should only toggle its own visibility and update only it's own trigger when toggle trigger clicked`, () => {
       let expectedDetail = {
-        id: ID,
-        visible: true,
+        'id': ID,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
 
@@ -76,14 +75,14 @@ context(`Disclosure`, () => {
       // Check that other disclosure is not affected
       cy.get(`#${IDS.INIT_VISIBLE_DISCLOSURE}`)
         .as('otherDisclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'true')
+        .should('have.attr', ATTRS.VISIBLE, '')
         .get(`[${ATTRS.TRIGGER}="${IDS.INIT_VISIBLE_DISCLOSURE}"]`)
         .as('otherDisclosureTriggers')
         .each($trigger => cy.wrap($trigger).should('have.attr', 'aria-expanded', 'true'));
 
       expectedDetail = {
-        id: ID,
-        visible: false,
+        'id': ID,
+        'visible': false,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
 
@@ -95,7 +94,7 @@ context(`Disclosure`, () => {
 
       // Check that other disclosure is not affected
       cy.get('@otherDisclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'true')
+        .should('have.attr', ATTRS.VISIBLE, '')
         .get('@otherDisclosureTriggers')
         .each($trigger => cy.wrap($trigger).should('have.attr', 'aria-expanded', 'true'));
     });
@@ -103,25 +102,25 @@ context(`Disclosure`, () => {
 
     it(`Should change visibility when observed attribute changed`, () => {
       let expectedDetail = {
-        id: ID,
-        visible: true,
+        'id': ID,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
 
       cy.get('@disclosure')
-        .invoke('attr', ATTRS.VISIBLE, 'true')
+        .invoke('attr', ATTRS.VISIBLE, '')
         .get('@disclosureTriggers')
         .each(($trigger) => {
           cy.wrap($trigger).should('have.attr', 'aria-expanded', 'true');
         });
 
       expectedDetail = {
-        id: ID,
-        visible: false,
+        'id': ID,
+        'visible': false,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
       cy.get('@disclosure')
-        .invoke('attr', ATTRS.VISIBLE, 'false')
+        .invoke('removeAttr', ATTRS.VISIBLE)
         .get('@disclosureTriggers')
         .each(($trigger) => {
           cy.wrap($trigger).should('have.attr', 'aria-expanded', 'false');
@@ -137,13 +136,13 @@ context(`Disclosure`, () => {
     beforeEach(() => getEls(ID));
 
 
-    it(`Should initialise correctly`, () => initChecks(true));
+    it(`Should initialise correctly`, () => initChecks());
 
 
     it(`Should only toggle its own visibility and update all it's own triggers only when a toggle trigger of it is clicked`, () => {
       let expectedDetail = {
-        id: ID,
-        visible: false,
+        'id': ID,
+        'visible': false,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
 
@@ -156,15 +155,15 @@ context(`Disclosure`, () => {
       // Check that other disclosure not affected
       cy.get(`#${IDS.SIMPLE_DISCLOSURE}`)
         .as('otherDisclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'false')
+        .should('not.have.attr', ATTRS.VISIBLE)
         .get(`[${ATTRS.TRIGGER}="${IDS.SIMPLE_DISCLOSURE}"]`)
         .as('otherDisclosureTriggers')
         .each($trigger => cy.wrap($trigger).should('have.attr', 'aria-expanded', 'false'));
 
 
       expectedDetail = {
-        id: ID,
-        visible: true,
+        'id': ID,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
 
@@ -176,7 +175,7 @@ context(`Disclosure`, () => {
 
       // Check that other disclosure not affected
       cy.get('@otherDisclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'false')
+        .should('not.have.attr', ATTRS.VISIBLE)
         .get('@otherDisclosureTriggers')
         .each($trigger => cy.wrap($trigger).should('have.attr', 'aria-expanded', 'false'));
     });
@@ -184,8 +183,8 @@ context(`Disclosure`, () => {
 
     it(`Should only show or only hide only itself and update all of it's own triggers only when it's show or hide triggers clicked`, () => {
       let expectedDetail = {
-        id: ID,
-        visible: false,
+        'id': ID,
+        'visible': false,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get(`[${ATTRS.TRIGGER}="${ID}"][${ATTRS.TRIGGER_SHOW}]`)
@@ -194,49 +193,49 @@ context(`Disclosure`, () => {
         .as('disclosureHideTrigger')
         .click()
         .get('@disclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'false');
+        .should('not.have.attr', ATTRS.VISIBLE);
 
       expectedDetail = {
-        id: ID,
-        visible: true,
+        'id': ID,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@disclosureHideTrigger')
         .click()
         .get('@disclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'false')
+        .should('not.have.attr', ATTRS.VISIBLE)
         .get('@disclosureShowTrigger')
         .click()
         .get('@disclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'true')
+        .should('have.attr', ATTRS.VISIBLE, '')
         .get('@disclosureShowTrigger')
         .click()
         .get('@disclosure')
-        .should('have.attr', ATTRS.VISIBLE, 'true');
+        .should('have.attr', ATTRS.VISIBLE, '');
     });
 
 
     it(`Should change visibility when observed attribute changed`, () => {
       let expectedDetail = {
-        id: ID,
-        visible: false,
+        'id': ID,
+        'visible': false,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
 
       cy.get('@disclosure')
-        .invoke('attr', ATTRS.VISIBLE, 'false')
+        .invoke('removeAttr', ATTRS.VISIBLE)
         .get('@disclosureTriggers')
         .each(($trigger) => {
           cy.wrap($trigger).should('have.attr', 'aria-expanded', 'false');
         });
 
       expectedDetail = {
-        id: ID,
-        visible: true,
+        'id': ID,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
       cy.get('@disclosure')
-        .invoke('attr', ATTRS.VISIBLE, 'true')
+        .invoke('attr', ATTRS.VISIBLE, '')
         .get('@disclosureTriggers')
         .each(($trigger) => {
           cy.wrap($trigger).should('have.attr', 'aria-expanded', 'true');
@@ -249,8 +248,8 @@ context(`Disclosure`, () => {
     const ID = IDS.CUSTOM_EVENTS_DISCLOSURE;
 
     let expectedDetail = {
-        id: ID,
-        visible: true,
+        'id': ID,
+        'visible': true,
       };
     cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
       .get(`#${IDS.CUSTOM_EVENTS_DISCLOSURE}`)
@@ -259,16 +258,16 @@ context(`Disclosure`, () => {
       .as('toggleBtn')
       .click()
       .get('@disclosure')
-      .should('have.attr', ATTRS.VISIBLE, 'true');
+      .should('have.attr', ATTRS.VISIBLE, '');
 
     expectedDetail = {
-        id: ID,
-        visible: false,
+        'id': ID,
+        'visible': false,
       };
     cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
       .get('@toggleBtn')
       .click()
       .get('@disclosure')
-      .should('have.attr', ATTRS.VISIBLE, 'false');
+      .should('not.have.attr', ATTRS.VISIBLE);
   });
 });

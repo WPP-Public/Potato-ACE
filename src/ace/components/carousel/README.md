@@ -69,12 +69,8 @@ ace-carousel {
   display: block;
 }
 
-[ace-carousel-slide] {
+[ace-carousel-slide]:not([ace-carousel-slide-selected]) {
   display: none;
-}
-
-[ace-carousel-slide-selected] {
-  display: unset;
 }
 
 [ace-carousel-slide-picker-btn] {
@@ -204,7 +200,7 @@ Simple Carousel with 3 slides.
 
 ### Carousel controlled using custom events
 
-The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-carousel-set-next-slide` and `ace-carousel-update-slides` custom events on the Carousel. The JavaScript used by this example is also shown below.
+The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-carousel-set-next-slide` and `ace-carousel-update-slides` custom events on the Carousel. The JavaScript used by this example is shown below.
 
 ```html
 <p>These buttons dispatch custom events</p>
@@ -338,7 +334,7 @@ Carousel with slide picker buttons and automatic slide show.
 
 ### Carousel with automatic slide show
 
-Carousel with automatic slide show. Two buttons have also been included, which dispatch the `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show` custom events. The JavaScript used by this example is also shown below.
+Carousel with automatic slide show. Two buttons have also been included, which dispatch the `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show` custom events. The JavaScript used by this example is shown below.
 
 ```html
 <button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
@@ -391,7 +387,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Animated Carousel
 
-Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is also shown below.
+Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
 
 ```html
 <ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
@@ -432,12 +428,15 @@ Example of Carousel with animated slide changes. Custom styles have been applied
     }
 
     &__slide {
-      display: block;
       flex-shrink: 0;
       width: 100%;
 
       &--hidden {
         visibility: hidden;
+      }
+
+      &:not([ace-carousel-slide-selected]) {
+        display: block;
       }
     }
   }
@@ -511,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Styled Carousel
 
-An example of how Carousel can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is also shown below.
+An example of how Carousel can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
  
 ```html
 <ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="styled-carousel" class="styled-carousel">
@@ -523,21 +522,18 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
     <div class="styled-carousel__slide">
       <h3>Slide 1 heading</h3>
       <button>Button</button>
-      <a href="#">Link</a>
       <p>Slide 1 content.</p>
       <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
     </div>
     <div class="styled-carousel__slide">
       <h3>Slide 2 heading</h3>
       <button>Button</button>
-      <a href="#">Link</a>
       <p>Slide 2 content.</p>
       <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
     </div>
     <div class="styled-carousel__slide">
       <h3>Slide 3 heading</h3>
       <button>Button</button>
-      <a href="#">Link</a>
       <p>Slide 3 content.</p>
       <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
     </div>
@@ -547,24 +543,42 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
 
 ```scss
 .styled-carousel {
-  margin: 0 auto;
+  color: #fff;
   max-width: 600px;
   position: relative;
 
   &__auto-slide-show-btn,
   &__slide-btn {
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: inherit;
     cursor: pointer;
+    height: 45px;
     margin: 8px;
     position: absolute;
+    width: 45px;
+
+    &:focus,
+    &:hover {
+      background: #00bed0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
+  &[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
+    display: none;
   }
 
   &__slide-btn {
     border-radius: 50%;
     font-size: 24px;
-    height: 48px;
     top: 50%;
     transform: translateY(-50%);
-    width: 48px;
 
     &--next {
       right: 0;
@@ -579,10 +593,10 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
   }
 
   [ace-carousel-slide-picker-btn] {
-    $slide-picker-btn-diameter: 8px;
+    $slide-picker-btn-diameter: 10px;
 
     background-color: transparent;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
     border-radius: 50%;
     cursor: pointer;
     height: $slide-picker-btn-diameter * 2.5;
@@ -592,12 +606,12 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
 
     &:active,
     &:focus {
-      border-color: steelblue;
+      border-color: #fff;
       outline: none;
     }
 
     &::after {
-      border: 1px solid black;
+      border: 1px solid #fff;
       border-radius: 50%;
       content: '';
       height: $slide-picker-btn-diameter;
@@ -608,48 +622,43 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
       width: $slide-picker-btn-diameter;
     }
 
+    &:hover::after {
+      background: #00bed0;
+    }
+
     &[aria-selected="true"]::after {
-      background-color: black;
+      background-color: #fff;
     }
   }
 
   &__slide {
-    padding: 48px 80px 32px;
+    padding: 50px 80px 30px;
 
-    &:nth-of-type(1) {
-      background: #7ddde6;
-    }
-
-    &:nth-of-type(2) {
-      background: #d089a8;
-    }
-
-    &:nth-of-type(3) {
-      background: #eef08f;
+    $bg-colors: #173d57, #66204a, #20122e;
+    @for $i from 1 through length($bg-colors) {
+      &:nth-of-type(#{$i}) {
+        background: nth($bg-colors, $i);
+      }
     }
   }
 
-  &[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
-  &[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
-    display: none;
-  }
-}
-
-// Animation styles
-@media (prefers-reduced-motion: no-preference) {
-  .styled-carousel {
+  // Animation styles
+  @media (prefers-reduced-motion: no-preference) {
     &__slides {
       display: flex;
       overflow-x: hidden;
     }
 
     &__slide {
-      display: block;
       flex-shrink: 0;
       width: 100%;
 
       &--hidden {
         visibility: hidden;
+      }
+
+      &:not([ace-carousel-slide-selected]) {
+        display: block;
       }
     }
   }

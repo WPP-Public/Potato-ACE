@@ -1,15 +1,13 @@
-.styled-select {
-  display: block;
-  margin-top: 10px;
-
+.styled-combobox {
   &-label,
-  &__trigger,
-  &__option {
+  &__input,
+  &__option,
+  &__status {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
   }
 
-  &__trigger,
+  &__input,
   &__list {
     border: 1px solid #837b8b;
     border-radius: 4px;
@@ -20,28 +18,13 @@
     }
   }
 
-  &__trigger,
+  &__input,
   &__option {
     padding: 10px 16px;
   }
 
-  &__trigger {
-    background: transparent;
-    display: flex;
-    justify-content: space-between;
-
-    &::after {
-      color: #837b8b;
-      content: '\25BC';
-    }
-
-    &:focus::after {
-      color: #41354d;
-    }
-  }
-
   &__list {
-    height: 225px;
+    max-height: 225px;
   }
 
   &__option {

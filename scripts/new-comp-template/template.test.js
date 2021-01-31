@@ -48,7 +48,7 @@ const templateInitChecks = () => {
         .should(`${templateVisible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE)
         .get('@templateBaz')
         .should('have.id', bazId)
-        .should('have.attr', 'aria-labelledby', fooId)
+        .and('have.attr', 'aria-labelledby', fooId)
         // Access an attribute of templateBaz in Cypress context
         .invoke('attr', ATTRS.VISIBLE)
         .then((visibleAttrVal) => {
@@ -109,8 +109,8 @@ context(`Template`, () => {
     it(`Should do something else`, () => {
       // TODO: If test results in Template dispatching a custom event, add listener to check custom event dispatched correctly
       const expectedDetail = {
-        foo: 'bar',
-        id: TEMPLATE_ID,
+        'foo': 'bar',
+        'id': TEMPLATE_ID,
       };
       cy.addCustomEventListener(EVENTS.OUT.SOME_EVENT, expectedDetail);
 
@@ -138,7 +138,7 @@ context(`Template`, () => {
   });
 
 
-  context(`Custom events controlled Template`, () => {
+  context(`Template controlled using custom events`, () => {
     const TEMPLATE_ID = IDS.CUSTOM_EVENTS_TEMPLATE;
 
 

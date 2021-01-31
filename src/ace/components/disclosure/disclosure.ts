@@ -29,6 +29,7 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Disclosure extends HTMLElement {
+  private initialised = false;
   private triggerEls: NodeListOf<Element>;
 
 
@@ -37,7 +38,7 @@ export default class Disclosure extends HTMLElement {
 
 
     /* CLASS METHOD BINDINGS */
-    this.customEventsHandler = this.customEventsHandler.bind(this);
+    this.toggleCustomEventHandler = this.toggleCustomEventHandler.bind(this);
   }
 
 
@@ -47,11 +48,11 @@ export default class Disclosure extends HTMLElement {
 
 
   private attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
-    if (oldValue === null || oldValue === newValue) {
+    if (!this.initialised || oldValue === newValue) {
       return;
     }
 
-    const disclosureVisible = newValue === 'true';
+    const disclosureVisible = newValue === '';
     this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', disclosureVisible.toString()));
 
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
@@ -69,22 +70,21 @@ export default class Disclosure extends HTMLElement {
 
 
     /* GET DOM DATA */
-    const visible = (this.getAttribute(ATTRS.VISIBLE) === 'true').toString();
 
 
     /* SET DOM DATA */
     this.triggerEls.forEach((triggerEl) => {
       triggerEl.setAttribute('aria-controls', this.id);
-      triggerEl.setAttribute('aria-expanded', visible);
+      triggerEl.setAttribute('aria-expanded', this.hasAttribute(ATTRS.VISIBLE).toString());
     });
 
 
     /* ADD EVENT LISTENERS */
-    this.addEventListener(EVENTS.IN.TOGGLE, this.customEventsHandler);
+    this.addEventListener(EVENTS.IN.TOGGLE, this.toggleCustomEventHandler);
 
 
     /* INITIALISATION */
-    this.setAttribute(ATTRS.VISIBLE, visible);
+    this.initialised = true;
 
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
       'detail': {
@@ -96,16 +96,19 @@ export default class Disclosure extends HTMLElement {
 
   public disconnectedCallback(): void {
     /* REMOVE EVENT LISTENERS */
-    this.removeEventListener(EVENTS.IN.TOGGLE, this.customEventsHandler);
+    this.removeEventListener(EVENTS.IN.TOGGLE, this.toggleCustomEventHandler);
   }
 
 
   /*
     Handle custom events
   */
-  private customEventsHandler(): void {
-    const showDisclosure = !(this.getAttribute(ATTRS.VISIBLE) === 'true');
-    this.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
+  private toggleCustomEventHandler(): void {
+    if (this.hasAttribute(ATTRS.VISIBLE)) {
+      this.removeAttribute(ATTRS.VISIBLE);
+    } else {
+      this.setAttribute(ATTRS.VISIBLE, '');
+    }
   }
 }
 
@@ -133,10 +136,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     else {
       // Trigger is toggle
-      showDisclosure = !(disclosureEl.getAttribute(ATTRS.VISIBLE) === 'true');
+      showDisclosure = !disclosureEl.hasAttribute(ATTRS.VISIBLE);
     }
 
-    disclosureEl.setAttribute(ATTRS.VISIBLE, showDisclosure.toString());
+    if (showDisclosure) {
+      disclosureEl.setAttribute(ATTRS.VISIBLE, '');
+    } else {
+      disclosureEl.removeAttribute(ATTRS.VISIBLE);
+    }
   });
 
   customElements.define(DISCLOSURE, Disclosure);

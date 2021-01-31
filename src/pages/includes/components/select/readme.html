@@ -26,8 +26,8 @@
 $ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
 $ace-select-option-text-color: #000 !default;
-$ace-select-selected-option-text-color: #fff !default;
 $ace-select-selected-option-bg-color: $ace-color-selected !default;
+$ace-select-selected-option-text-color: #fff !default;
 
 
 /* STYLES */
@@ -47,7 +47,7 @@ ace-select {
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
 
-  &amp;:not([ace-select-list-visible=&quot;true&quot;]) {
+  &amp;:not([ace-select-list-visible]) {
     display: none;
   }
 
@@ -223,8 +223,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 });
 </code></pre>
 <h3>Styled Select</h3>
-<p>Example of a styled Select with options containing images.</p>
-<p>Custom styles that mimic Google Material Design have been applied to this example and are shown below.</p>
+<p>An example of how Select can be styled, with the applied CSS shown below.</p>
 <div class="example-block"><label id="styled-select-label" class="styled-select-label">Choose an Avenger:</label>
 <ace-select class="styled-select">
   <button ace-select-trigger class="styled-select__trigger">
@@ -305,60 +304,56 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </code></pre>
 <pre><code class="language-scss">.styled-select {
   display: block;
-  margin-top: 8px;
-  width: 300px;
+  margin-top: 10px;
 
-  &amp;-label {
+  &amp;-label,
+  &amp;__trigger,
+  &amp;__option {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
-    margin-bottom: 8px;
   }
 
   &amp;__trigger,
   &amp;__list {
-    border: 1px solid rgba(0, 0, 0, .42);
+    border: 1px solid #837b8b;
     border-radius: 4px;
-    width: 100%;
+    width: 300px;
 
     &amp;:focus {
-      outline-color: #0893a7;
+      outline-color: #41354d;
     }
   }
 
   &amp;__trigger,
   &amp;__option {
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    padding: 10px 16px;
   }
 
   &amp;__trigger {
-    background: #fff;
+    background: transparent;
     display: flex;
     justify-content: space-between;
-    padding: 20px 16px;
 
     &amp;::after {
-      color: rgba(0, 0, 0, .42);
-      content: '\25B2';
-      transform: rotate(180deg);
+      color: #837b8b;
+      content: '\25BC';
     }
 
     &amp;:focus::after {
-      color: #0893a7;
+      color: #41354d;
     }
   }
 
   &amp;__list {
-    height: 350px;
+    height: 225px;
   }
 
   &amp;__option {
     align-items: center;
     display: flex;
-    padding: 10px 16px;
 
     &amp;[aria-selected=&quot;true&quot;] {
-      background: #0893a7;
+      background: #41354d;
     }
   }
 

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         accordionEl.dispatchEvent(new CustomEvent(customEvent, {
           'detail': {
-            [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelNumber,
+            'panelNumber': panelNumber,
           }
         }));
         break;

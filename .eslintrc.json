@@ -27,6 +27,7 @@
   "rules": {
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",
+    "cypress/no-unnecessary-waiting": 0,
     "no-autofix/prefer-const": "error",
     "no-multiple-empty-lines": [
       "error",
@@ -53,6 +54,12 @@
       "files": ["*.ts", "*.tsx"],
       "rules": {
         "@typescript-eslint/explicit-function-return-type": ["error"]
+      }
+    },
+    {
+      "files": ["*.d.ts"],
+      "rules": {
+        "no-unused-vars": 0
       }
     }
   ]

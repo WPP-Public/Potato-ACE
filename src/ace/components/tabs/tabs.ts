@@ -17,20 +17,19 @@ export const TABS = `${NAME}-tabs`;
 /* CONSTANTS */
 export const TABLIST = `${TABS}-tablist`;
 export const TAB = `${TABS}-tab`;
+export const PANEL = `${TABS}-panel`;
 
 
 export const ATTRS = {
   DEEP_LINKED: `${TABS}-deep-linked`,
   INFINITE: `${TABS}-infinite`,
   MANUAL: `${TABS}-manual`,
-  PANEL: `${TABS}-panel`,
-  PANEL_VISIBLE: `${TAB}-visible`,
+  PANEL,
+  PANEL_VISIBLE: `${PANEL}-visible`,
   SELECTED_TAB: `${TABS}-selected-tab`,
   TAB,
   TABLIST,
-  TABLIST_VERTICAL: `${TABLIST}-vertical`,
   TAB_SELECTED: `${TAB}-selected`,
-  TAB_VERTICAL: `${TAB}-vertical`,
   VERTICAL: `${TABS}-vertical`,
 };
 
@@ -141,7 +140,7 @@ export default class Tabs extends HTMLElement {
 
 
     /* INITIALISATION */
-    warnIfElHasNoAriaLabel(this, 'Tabs');
+    warnIfElHasNoAriaLabel(this.tablistEl, 'Tabs');
     this.initTabs();
     this.initialised = true;
 
@@ -319,7 +318,7 @@ export default class Tabs extends HTMLElement {
     oldTabEl.removeAttribute(ATTRS.TAB_SELECTED);
     oldTabEl.setAttribute('aria-selected', 'false');
     oldTabEl.setAttribute('tabindex', '-1');
-    oldPanelEl.setAttribute(ATTRS.PANEL_VISIBLE, 'false');
+    oldPanelEl.removeAttribute(ATTRS.PANEL_VISIBLE);
 
     // Select tab and panel
     const tabToSelectEl = this.tabEls[tabToSelectIndex];
@@ -327,7 +326,7 @@ export default class Tabs extends HTMLElement {
     tabToSelectEl.setAttribute(ATTRS.TAB_SELECTED, '');
     tabToSelectEl.setAttribute('aria-selected', 'true');
     tabToSelectEl.removeAttribute('tabindex');
-    panelToSelectEl.setAttribute(ATTRS.PANEL_VISIBLE, 'true');
+    panelToSelectEl.setAttribute(ATTRS.PANEL_VISIBLE, '');
 
     this.selectedTabIndex = tabToSelectIndex;
 
@@ -357,21 +356,7 @@ export default class Tabs extends HTMLElement {
   private setOrientation(): void {
     this.prevTabKey = this.vertical ? KEYS.UP : KEYS.LEFT;
     this.nextTabKey = this.vertical ? KEYS.DOWN : KEYS.RIGHT;
-
     this.tablistEl.setAttribute('aria-orientation', this.vertical ? 'vertical' : 'horizontal');
-    if (this.vertical) {
-      this.tablistEl.setAttribute(ATTRS.TABLIST_VERTICAL, '');
-    } else {
-      this.tablistEl.removeAttribute(ATTRS.TABLIST_VERTICAL);
-    }
-
-    this.tabEls.forEach((tab) => {
-      if (this.vertical) {
-        tab.setAttribute(ATTRS.TAB_VERTICAL, '');
-      } else {
-        tab.removeAttribute(ATTRS.TAB_VERTICAL);
-      }
-    });
   }
 
 
@@ -428,10 +413,14 @@ export default class Tabs extends HTMLElement {
 
       // Set panel attributes
       correspondingPanel.setAttribute(ATTRS.PANEL, '');
-      correspondingPanel.setAttribute(ATTRS.PANEL_VISIBLE, index === this.selectedTabIndex ? 'true' : 'false');
       correspondingPanel.setAttribute('aria-labelledby', tabEl.id);
       correspondingPanel.setAttribute('role', 'tabpanel');
       correspondingPanel.setAttribute('tabindex', '0');
+      if (index === this.selectedTabIndex) {
+        correspondingPanel.setAttribute(ATTRS.PANEL_VISIBLE, '');
+      } else {
+        correspondingPanel.removeAttribute(ATTRS.PANEL_VISIBLE);
+      }
     });
   }
 }

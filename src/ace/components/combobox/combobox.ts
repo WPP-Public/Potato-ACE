@@ -56,8 +56,8 @@ export default class Combobox extends HTMLElement {
   private listEl: HTMLUListElement;
   private listVisible = false;
   private noInputUpdate: boolean;
-  private selectedOptionIndex: number = null;
   private query = '';
+  private selectedOptionIndex: number = null;
 
 
   constructor() {
@@ -109,7 +109,6 @@ export default class Combobox extends HTMLElement {
     // Set listEl attributes
     this.listEl.id = this.listEl.id || `${this.id}-list`;
     this.listEl.setAttribute(ATTRS.LIST, '');
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
 
     // Set inputEl attributes
     this.inputEl.id = this.inputEl.id || `${this.id}-input`;
@@ -181,7 +180,7 @@ export default class Combobox extends HTMLElement {
     if (!this.list.optionElsCount) {
       return;
     }
-    const selectedOptionText = this.list.optionEls[0].textContent;
+    const selectedOptionText = this.list.optionEls[0].textContent.trim();
     this.inputEl.value = selectedOptionText;
     this.inputEl.setSelectionRange(this.query.length, selectedOptionText.length);
   }
@@ -198,7 +197,7 @@ export default class Combobox extends HTMLElement {
 
     // If input value empty append all option els to list, else only append option els whose text starts with input value
     this.allOptionEls.forEach((optionEl) => {
-      const optionElTextStartsWithInputVal = optionEl.textContent.toLowerCase().startsWith(inputVal);
+      const optionElTextStartsWithInputVal = optionEl.textContent.trim().toLowerCase().startsWith(inputVal);
       if (inputEmpty || optionElTextStartsWithInputVal) {
         this.listEl.appendChild(optionEl.cloneNode(true));
       }
@@ -260,7 +259,7 @@ export default class Combobox extends HTMLElement {
       return;
     }
 
-    const optionText = chosenOption.textContent;
+    const optionText = chosenOption.textContent.trim();
     if (optionText.length > 0) {
       this.inputEl.value = optionText;
 
@@ -387,7 +386,7 @@ export default class Combobox extends HTMLElement {
 
     this.deselectSelectedOption();
     this.inputEl.setAttribute('aria-expanded', 'false');
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
+    this.listEl.removeAttribute(ATTRS.LIST_VISIBLE);
     this.listVisible = false;
 
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.LIST_TOGGLED, {
@@ -479,7 +478,7 @@ export default class Combobox extends HTMLElement {
 
       // If input autocompletes make input value match option text
       if (this.inputAutocompletes) {
-        this.inputEl.value = this.list.optionEls[this.selectedOptionIndex].textContent;
+        this.inputEl.value = this.list.optionEls[this.selectedOptionIndex].textContent.trim();
         const inputValLength = this.inputEl.value.length;
         this.inputEl.setSelectionRange(inputValLength, inputValLength);
       }
@@ -506,7 +505,7 @@ export default class Combobox extends HTMLElement {
     }
 
     this.inputEl.setAttribute('aria-expanded', 'true');
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'true');
+    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, '');
     handleOverflow(this.listEl, true);
     this.listVisible = true;
 

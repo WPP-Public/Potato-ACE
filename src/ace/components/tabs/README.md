@@ -52,65 +52,66 @@ The following SASS is applied to Tabs. The SASS variables use `!default` so can 
 
 
 /* VARIABLES */
-$ace-tabs-tablist-margin: $ace-spacing-2 !default;
-$ace-tabs-tab-bg-colour: transparent !default;
+$ace-tabs-selected-tab-border-color: $ace-color-selected !default;
+$ace-tabs-selected-tab-border-width: 4px !default;
+$ace-tabs-tab-bg-color: transparent !default;
 $ace-tabs-tab-padding-horizontal: $ace-spacing-4 !default;
 $ace-tabs-tab-padding-vertical: $ace-spacing-2 !default;
-$ace-tabs-tab-hover-bg-colour: $ace-color-hover !default;
-$ace-tabs-selected-tab-border-colour: $ace-color-selected !default;
-$ace-tabs-selected-tab-border-width: 3px !default;
+$ace-tabs-tab-padding: $ace-spacing-3 !default;
+$ace-tabs-tab-focus-and-hover-bg-color: $ace-color-hover !default;
+$ace-tabs-tablist-margin: $ace-spacing-2 !default;
+$ace-tabs-panel-padding: 16px !default;
 
 
 /* STYLES */
-[ace-tabs-vertical] {
-  display: flex;
-}
-
 [ace-tabs-tablist] {
   display: flex;
-  margin: 0 0 $ace-tabs-tablist-margin 0;
   overflow: auto hidden;
   white-space: nowrap;
 }
 
 [ace-tabs-tab] {
-  background-color: $ace-tabs-tab-bg-colour;
+  background-color: $ace-tabs-tab-bg-color;
   border-color: transparent;
   border-style: solid;
   border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
   cursor: pointer;
   padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
 
+  &:focus,
   &:hover {
-    background-color: $ace-tabs-tab-hover-bg-colour;
+    background-color: $ace-tabs-tab-focus-and-hover-bg-color;
   }
 
   &:focus {
-    background-color: $ace-tabs-tab-hover-bg-colour;
     outline: none;
   }
 }
 
-[ace-tabs-tab-visible="false"] {
-  display: none;
-}
-
 [ace-tabs-tab-selected] {
-  border-bottom-color: $ace-tabs-selected-tab-border-colour;
+  border-color: $ace-tabs-selected-tab-border-color;
 }
 
-// Vertical variant
-[ace-tabs-tablist-vertical] {
-  flex-direction: column;
-  margin: 0 $ace-tabs-tablist-margin 0 0;
-  overflow: hidden auto;
+[ace-tabs-panel] {
+  padding: $ace-tabs-panel-padding;
+
+  &:not([ace-tabs-panel-visible]) {
+    display: none;
+  }
 }
 
-[ace-tabs-tab-vertical] {
-  border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
 
-  &[ace-tabs-tab-selected] {
-    border-right-color: $ace-tabs-selected-tab-border-colour;
+// Vertical Tabs
+[ace-tabs-vertical] {
+  display: flex;
+
+  [ace-tabs-tablist] {
+    flex-direction: column;
+    overflow: hidden auto;
+  }
+
+  [ace-tabs-tab] {
+    border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
   }
 }
 ```
@@ -367,7 +368,7 @@ Two Tabs components with deep linking enabled.
 
 ### Tabs controlled using custom events
 
-The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs. The JavaScript used by this example is also shown below.
+The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs. The JavaScript used by this example is shown below.
 
 ```html
 <p>These buttons dispatch custom events</p>
@@ -452,4 +453,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+```
+
+
+### Styled Tabs
+
+An example of how Tabs can be styled, with the applied CSS shown below.
+
+```html
+<ace-tabs class="styled-tabs">
+  <div aria-label="Basic Tabs" class="styled-tabs__tablist">
+    <button class="styled-tabs__tab">Tab 1</button>
+    <button class="styled-tabs__tab">Tab 2</button>
+    <button class="styled-tabs__tab">Tab 3</button>
+  </div>
+  <div class="styled-tabs__panel">
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+  </div>
+  <div class="styled-tabs__panel">
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+  </div>
+  <div class="styled-tabs__panel">
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+  </div>
+</ace-tabs>
+```
+
+```scss
+.styled-tabs {
+  display: block;
+  max-width: 500px;
+
+  &__tab,
+  &__panel {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+  }
+
+  &__tab {
+    border-color: #41354d;
+    flex-grow: 1;
+
+    &:focus,
+    &:hover {
+      background: #41354d;
+      color: #fff;
+    }
+  }
+
+  &__panel {
+    border: 4px solid #41354d;
+    border-top: none;
+  }
+
+  [ace-tabs-tab-selected] {
+    background: #41354d;
+    border-color: #41354d;
+    color: #fff;
+
+    &:focus {
+      border-color: #00bed0;
+    }
+  }
+}
+
 ```

@@ -1,22 +1,40 @@
 .styled-carousel {
-  margin: 0 auto;
+  color: #fff;
   max-width: 600px;
   position: relative;
 
   &__auto-slide-show-btn,
   &__slide-btn {
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: inherit;
     cursor: pointer;
+    height: 45px;
     margin: 8px;
     position: absolute;
+    width: 45px;
+
+    &:focus,
+    &:hover {
+      background: #00bed0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
+  &[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
+    display: none;
   }
 
   &__slide-btn {
     border-radius: 50%;
     font-size: 24px;
-    height: 48px;
     top: 50%;
     transform: translateY(-50%);
-    width: 48px;
 
     &--next {
       right: 0;
@@ -31,10 +49,10 @@
   }
 
   [ace-carousel-slide-picker-btn] {
-    $slide-picker-btn-diameter: 8px;
+    $slide-picker-btn-diameter: 10px;
 
     background-color: transparent;
-    border: 3px solid transparent;
+    border: 2px solid transparent;
     border-radius: 50%;
     cursor: pointer;
     height: $slide-picker-btn-diameter * 2.5;
@@ -44,12 +62,12 @@
 
     &:active,
     &:focus {
-      border-color: steelblue;
+      border-color: #fff;
       outline: none;
     }
 
     &::after {
-      border: 1px solid black;
+      border: 1px solid #fff;
       border-radius: 50%;
       content: '';
       height: $slide-picker-btn-diameter;
@@ -60,48 +78,43 @@
       width: $slide-picker-btn-diameter;
     }
 
+    &:hover::after {
+      background: #00bed0;
+    }
+
     &[aria-selected="true"]::after {
-      background-color: black;
+      background-color: #fff;
     }
   }
 
   &__slide {
-    padding: 48px 80px 32px;
+    padding: 50px 80px 30px;
 
-    &:nth-of-type(1) {
-      background: #7ddde6;
-    }
-
-    &:nth-of-type(2) {
-      background: #d089a8;
-    }
-
-    &:nth-of-type(3) {
-      background: #eef08f;
+    $bg-colors: #173d57, #66204a, #20122e;
+    @for $i from 1 through length($bg-colors) {
+      &:nth-of-type(#{$i}) {
+        background: nth($bg-colors, $i);
+      }
     }
   }
 
-  &[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
-  &[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
-    display: none;
-  }
-}
-
-// Animation styles
-@media (prefers-reduced-motion: no-preference) {
-  .styled-carousel {
+  // Animation styles
+  @media (prefers-reduced-motion: no-preference) {
     &__slides {
       display: flex;
       overflow-x: hidden;
     }
 
     &__slide {
-      display: block;
       flex-shrink: 0;
       width: 100%;
 
       &--hidden {
         visibility: hidden;
+      }
+
+      &:not([ace-carousel-slide-selected]) {
+        display: block;
       }
     }
   }

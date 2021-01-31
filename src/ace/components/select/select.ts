@@ -43,8 +43,8 @@ export default class Select extends HTMLElement {
   private list: List;
   private listEl: HTMLUListElement|HTMLOListElement;
   private mutationObserver: MutationObserver;
-  private triggerEl: HTMLButtonElement;
   private selectForForm: boolean;
+  private triggerEl: HTMLButtonElement;
   private triggerTextEl: HTMLSpanElement;
 
 
@@ -126,7 +126,6 @@ export default class Select extends HTMLElement {
     // Set list attrs
     this.listEl.id = `${this.id}-list`;
     this.listEl.setAttribute(ATTRS.LIST, '');
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
     this.listEl.setAttribute('tabindex', '-1');
 
 
@@ -252,7 +251,7 @@ export default class Select extends HTMLElement {
     Hide dropdown list
   */
   private hideList(): void {
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
+    this.listEl.removeAttribute(ATTRS.LIST_VISIBLE);
     this.triggerEl.setAttribute('aria-expanded', 'false');
   }
 
@@ -309,7 +308,7 @@ export default class Select extends HTMLElement {
   */
   private showList(): void {
     this.triggerEl.setAttribute('aria-expanded', 'true');
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'true');
+    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, '');
     handleOverflow(this.listEl);
     this.listEl.focus();
   }

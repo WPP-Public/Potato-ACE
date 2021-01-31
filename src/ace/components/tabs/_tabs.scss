@@ -2,64 +2,65 @@
 
 
 /* VARIABLES */
-$ace-tabs-tablist-margin: $ace-spacing-2 !default;
-$ace-tabs-tab-bg-colour: transparent !default;
+$ace-tabs-selected-tab-border-color: $ace-color-selected !default;
+$ace-tabs-selected-tab-border-width: 4px !default;
+$ace-tabs-tab-bg-color: transparent !default;
 $ace-tabs-tab-padding-horizontal: $ace-spacing-4 !default;
 $ace-tabs-tab-padding-vertical: $ace-spacing-2 !default;
-$ace-tabs-tab-hover-bg-colour: $ace-color-hover !default;
-$ace-tabs-selected-tab-border-colour: $ace-color-selected !default;
-$ace-tabs-selected-tab-border-width: 3px !default;
+$ace-tabs-tab-padding: $ace-spacing-3 !default;
+$ace-tabs-tab-focus-and-hover-bg-color: $ace-color-hover !default;
+$ace-tabs-tablist-margin: $ace-spacing-2 !default;
+$ace-tabs-panel-padding: 16px !default;
 
 
 /* STYLES */
-[ace-tabs-vertical] {
-  display: flex;
-}
-
 [ace-tabs-tablist] {
   display: flex;
-  margin: 0 0 $ace-tabs-tablist-margin 0;
   overflow: auto hidden;
   white-space: nowrap;
 }
 
 [ace-tabs-tab] {
-  background-color: $ace-tabs-tab-bg-colour;
+  background-color: $ace-tabs-tab-bg-color;
   border-color: transparent;
   border-style: solid;
   border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
   cursor: pointer;
   padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
 
+  &:focus,
   &:hover {
-    background-color: $ace-tabs-tab-hover-bg-colour;
+    background-color: $ace-tabs-tab-focus-and-hover-bg-color;
   }
 
   &:focus {
-    background-color: $ace-tabs-tab-hover-bg-colour;
     outline: none;
   }
 }
 
-[ace-tabs-tab-visible="false"] {
-  display: none;
-}
-
 [ace-tabs-tab-selected] {
-  border-bottom-color: $ace-tabs-selected-tab-border-colour;
+  border-color: $ace-tabs-selected-tab-border-color;
 }
 
-// Vertical variant
-[ace-tabs-tablist-vertical] {
-  flex-direction: column;
-  margin: 0 $ace-tabs-tablist-margin 0 0;
-  overflow: hidden auto;
+[ace-tabs-panel] {
+  padding: $ace-tabs-panel-padding;
+
+  &:not([ace-tabs-panel-visible]) {
+    display: none;
+  }
 }
 
-[ace-tabs-tab-vertical] {
-  border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
 
-  &[ace-tabs-tab-selected] {
-    border-right-color: $ace-tabs-selected-tab-border-colour;
+// Vertical Tabs
+[ace-tabs-vertical] {
+  display: flex;
+
+  [ace-tabs-tablist] {
+    flex-direction: column;
+    overflow: hidden auto;
+  }
+
+  [ace-tabs-tab] {
+    border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
   }
 }

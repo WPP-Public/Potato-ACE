@@ -41,9 +41,9 @@ The following features apply to all Combobox types:
 - When the Combobox loses focus the listbox is automatically hidden. If the listbox had a selected option before it was hidden that option is automatically chosen.
 
 
-### Basic Combobox
+### Simple Combobox
 
-The basic Combobox, instantiated by default, has no auto-complete behaviour and therefore contains a list of options that remain unchanged regardless of user input. This type is typically used to suggest recently entered strings, for example recently searched for values. The listbox of a basic Combobox is automatically shown when the Combobox gains focus.
+The Combobox, instantiated by default, has no auto-complete behaviour and therefore contains a list of options that remain unchanged regardless of user input. This type is typically used to suggest recently entered strings, for example recently searched for values. The listbox of a simple Combobox is automatically shown when the Combobox gains focus.
 
 ### List auto-completion Combobox
 
@@ -64,8 +64,8 @@ The following SASS is applied to Combobox. The SASS variables use `!default` so 
 /* VARIABLES */
 $ace-combobox-list-bg-color: #fff !default;
 $ace-combobox-list-height: auto !default;
-$ace-combobox-selected-option-text-color: #fff !default;
 $ace-combobox-selected-option-bg-color: $ace-color-selected !default;
+$ace-combobox-selected-option-text-color: #fff !default;
 
 
 /* STYLES */
@@ -92,7 +92,7 @@ ace-combobox {
   width: 100%;
   z-index: $ace-combobox-list-z-index;
 
-  &:not([ace-combobox-list-visible="true"]) {
+  &:not([ace-combobox-list-visible]) {
     display: none;
   }
 
@@ -298,7 +298,7 @@ Same as previous example but with automatic selection enabled.
 <h4>No auto-complete</h4>
 <span id="combobox-label-4">Choose an Avenger:</span>
 
-<ace-combobox ace-combobox-autoselect id="basic-autoselect-combobox">
+<ace-combobox ace-combobox-autoselect id="simple-autoselect-combobox">
   <input aria-labelledby="combobox-label-4"/>
   <ul aria-label="Avengers">
     <li>Iron Man</li>
@@ -367,7 +367,7 @@ Same as previous example but with automatic selection enabled.
 
 The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-next-tab` and `ace-tabs-update-tabs` custom events on the Tabs.
 
-The **Add options** button adds options to the initially empty Combobox then dispatches the `ace-combobox-update-options` custom event. The **Show list** and **Hide list** buttons dispatch the `ace-combobox-show-list` and `ace-combobox-hide-list` custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the **Select option** input and clicking **Go**, which dispatches the `ace-combobox-select-option` custom event. The JavaScript used by this example is also shown below.
+The **Add options** button adds options to the initially empty Combobox then dispatches the `ace-combobox-update-options` custom event. The **Show list** and **Hide list** buttons dispatch the `ace-combobox-show-list` and `ace-combobox-hide-list` custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the **Select option** input and clicking **Go**, which dispatches the `ace-combobox-select-option` custom event. The JavaScript used by this example is shown below.
 
 ```html
 <button id="add-options-btn">Add options</button>
@@ -432,96 +432,48 @@ document.addEventListener('DOMContentLoaded', () => {
 ```
 
 
-### Styled Combobox with dynamically updated options
+### Search Combobox with dynamically updated options
 
-This example demonstrated how Combobox can be used as a search box with results optained through an API call. The user types in a search string and hits <kbd>Enter</kbd> to start the search. This starts a timeout of 3 seconds to simulate the delay associated with a slow API call. An element with the attribute `aria-live="polite"` is used to announce to the user via the screen reader that the search is underway. After the timeout, results are added to the listbox, which is then update by dispatching the `ace-combobox-update-options` custom event. The `aria-live="polite"` element is finally updated to announce how many results were found.
-
-Custom styles that mimic Google Material Design have been applied to this example and are shown below. The JavaScript used by this example is also shown below.
+This example demonstrates how Combobox can be used as a search box with results optained through an API call, where the user types a search string into the combobox then presses <kbd>Enter</kbd> to start the search. In the example the delay associated with a slow API call is simulated using a 3 second timeout. An element with attributes `role="status"` and `aria-live="polite"` is used to announce to the user via assistive technologies that the search is underway. After the timeout, results are added to the combobox's list, and are initialised by dispatching the `ace-combobox-update-options` custom event. The `role="status"` element is finally updated to announce how many results were found. The JavaScript used by this example is shown below.
 
 
 ```html
-<label id="styled-combobox-label" class="styled-combobox-label">Search:</label>
-<ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
-  <div class="styled-combobox__wrapper">
-    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input"/>
-    <ul aria-label="Search results" class="styled-combobox__list"></ul>
-  </div>
-  <div>
-    <p aria-live="polite" class="styled-combobox__status"></p>
-  </div>
-</ace-combobox>
+<p aria-live="polite" role="status" id="combobox-status"></p>
 
-<p id="chosen-search-result" aria-live="polite"></p>
-```
+<div>
+  <label id="search-combobox-label">Search:</label>
+  <ace-combobox id="search-combobox" ace-combobox-no-input-update>
+    <input aria-labelledby="search-combobox-label"/>
+    <ul aria-label="Search results"></ul>
+  </ace-combobox>
+</div>
 
-```scss
-.styled-combobox {
-  align-items: center;
-  display: flex;
-  margin: 8px 0;
+<p aria-live="polite" role="status" id="chosen-search-result"></p>
 
-  &-label {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+<hr>
 
-  &__input,
-  &__list {
-    border: 1px solid rgba(0, 0, 0, .42);
-    border-radius: 4px;
-    width: 300px;
-
-    &:focus {
-      outline-color: #0893a7;
-    }
-  }
-
-  &__input,
-  [ace-combobox-option],
-  &__status {
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
-  }
-
-  &__input {
-    padding: 20px 16px;
-  }
-
-  [ace-combobox-option] {
-    padding: 10px 16px;
-
-    &[aria-selected="true"] {
-      background: #0893a7;
-    }
-  }
-
-  &__status {
-    margin: 0 0 0 8px;
-  }
-}
+<button id="reset-example-btn">Reset example</button>
 ```
 
 ```js
-import {EVENTS} from '/ace/components/combobox/combobox.js';
-import {KEYS} from '../../../common/constants.js';
-import {keyPressedMatches} from '../../../common/functions.js';
+import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
 
-export const fakeDelay = 3000;
-
-const comboboxId = 'search-combobox';
+export const FAKE_DELAY = 3000;
+const COMBOBOX_ID = 'search-combobox';
 
 document.addEventListener('DOMContentLoaded', () => {
   let optionChosen, searching = false;
-  const comboboxEl = document.getElementById(comboboxId);
-  const comboboxInputEl = comboboxEl.querySelector('.styled-combobox__input');
-  const comboboxStatusEl = comboboxEl.querySelector('.styled-combobox__status');
-  const comboboxListEl = comboboxEl.querySelector('.styled-combobox__list');
   const chosenResultEl = document.getElementById('chosen-search-result');
+  const comboboxStatusEl = document.getElementById('combobox-status');
+  const comboboxEl = document.getElementById(COMBOBOX_ID);
+  const resetExampleBtn = document.getElementById('reset-example-btn');
+  const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
+  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
 
   // Search when ENTER key pressed
   comboboxInputEl.addEventListener('keydown', async (e) => {
     const keyPressed = e.key || e.which || e.keyCode;
-    if (!keyPressedMatches(keyPressed, KEYS.ENTER)) {
+    if (!(keyPressed === 13 || keyPressed === 'Enter')) {
       return;
     }
 
@@ -531,13 +483,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Fake search
-    if (searching) {
+    if (searching || comboboxInputEl.value === '') {
       return;
     }
     searching = true;
     // Update status element to inform user there will be a delay
     comboboxStatusEl.textContent = 'Searching...';
+    comboboxStatusEl.setAttribute('aria-busy', 'true');
+    comboboxListEl.innerHTML = '';
+
     // Simulate an API reponse delay
     const results = await new Promise(resolve => setTimeout(() => {
       const data = [];
@@ -545,9 +499,10 @@ document.addEventListener('DOMContentLoaded', () => {
         data.push({id: `result-${i}`, text: `Result ${i}`});
       }
       resolve(data);
-    }, fakeDelay));
+    }, FAKE_DELAY));
 
     // Add results to DOM
+    comboboxStatusEl.setAttribute('aria-busy', 'false');
     comboboxStatusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's' } found`;
     comboboxListEl.innerHTML = '';
     results.forEach((result) => {
@@ -572,7 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show results list when options intialised
   window.addEventListener(EVENTS.OUT.OPTIONS_UPDATED, (e) => {
     const detail = e['detail'];
-    if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
+    if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
       return;
     }
     comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
@@ -581,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Listen for chosen options
   window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
     const detail = e['detail'];
-    if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
+    if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
       return;
     }
     optionChosen = true;
@@ -590,5 +545,122 @@ document.addEventListener('DOMContentLoaded', () => {
     // Hide list
     comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
   });
+
+  // Show list when clicking on input if list has options
+  resetExampleBtn.addEventListener('click', () => {
+    chosenResultEl.textContent = '';
+    comboboxStatusEl.textContent = '';
+    comboboxInputEl.value = '';
+    comboboxListEl.innerHTML = '';
+  });
 });
+```
+
+
+### Styled Combobox
+
+An example of how Combobox can be styled, with the applied CSS shown below.
+
+```html
+<label id="styled-combobox-label" class="styled-combobox-label">Choose an Avenger:</label>
+
+<ace-combobox ace-combobox-autoselect class="styled-combobox">
+  <input aria-autocomplete="list" aria-labelledby="styled-combobox-label"  class="styled-combobox__input"/>
+  <ul aria-label="Avengers" class="styled-combobox__list">
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Iron Man
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Nick Fury
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Hulk
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Thor
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Captain America
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Black Widow
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Scarlet Witch
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Ant-Man
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Black Panther
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Spider-man
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Doctor Strange
+    </li>
+    <li class="styled-combobox__option">
+      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+      Captain Marvel
+    </li>
+  </ul>
+</ace-combobox>
+```
+
+```scss
+.styled-combobox {
+  &-label,
+  &__input,
+  &__option,
+  &__status {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+  }
+
+  &__input,
+  &__list {
+    border: 1px solid #837b8b;
+    border-radius: 4px;
+    width: 300px;
+
+    &:focus {
+      outline-color: #41354d;
+    }
+  }
+
+  &__input,
+  &__option {
+    padding: 10px 16px;
+  }
+
+  &__list {
+    max-height: 225px;
+  }
+
+  &__option {
+    align-items: center;
+    display: flex;
+
+    &[aria-selected="true"] {
+      background: #41354d;
+    }
+  }
+
+  &__img {
+    height: 2em;
+    margin-right: 10px;
+  }
+}
 ```

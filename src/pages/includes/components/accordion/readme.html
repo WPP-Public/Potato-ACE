@@ -20,10 +20,8 @@
 <p>In order to implement animations without hindering accessibility developers must hide non-visible panels from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration <code>display: none</code> or <code>visibility: hidden</code> to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"><code>prefers-reduced-motion</code> media query</a> as demonstrated in the example.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to Accordion.</p>
-<pre><code class="language-scss">[ace-accordion-panel] {
-  &amp;:not([ace-accordion-panel-visible=&quot;true&quot;]) {
-    display: none;
-  }
+<pre><code class="language-scss">[ace-accordion-panel]:not([ace-accordion-panel-visible]) {
+  display: none;
 }
 </code></pre>
 <h2>Custom events</h2>
@@ -39,7 +37,7 @@
 </code></pre>
 <h4>Changed</h4>
 <p><code>ace-accordion-changed</code></p>
-<p>This event is dispatched when a panel's visiblity changes. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows. The <code>panelNumber</code> and <code>panelVisible</code> strings are also exported as <code>EVENTS.DETAIL_PROPS.PANEL_NUMBER</code> and <code>EVENTS.DETAIL_PROPS.PANEL_VISIBLE</code>.</p>
+<p>This event is dispatched when a panel's visiblity changes. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-javascript">'detail': {
   'id': // ID of Accordion [string]
   'panelNumber': // The number of the panel that changed [number]
@@ -208,16 +206,13 @@
 
     [ace-accordion-panel] {
       display: block;
-      overflow: hidden;
-    }
-
-    [ace-accordion-panel-visible=&quot;false&quot;] {
       max-height: 0;
+      overflow: hidden;
       transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
       visibility: hidden;
     }
 
-    [ace-accordion-panel-visible=&quot;true&quot;] {
+    [ace-accordion-panel-visible] {
       max-height: 180px;
       transition: max-height $trans-duration ease-in;
       visibility: visible;
@@ -226,7 +221,7 @@
 }
 </code></pre>
 <h3>Accordion controlled through custom events</h3>
-<p>The JavaScript used by this example is also shown below.</p>
+<p>The JavaScript used by this example is shown below.</p>
 <div class="example-block"><label>
   Panel number:
   <input id="panel-number" type="number" min="1" max="3" />
@@ -319,7 +314,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
         }
         accordionEl.dispatchEvent(new CustomEvent(customEvent, {
           'detail': {
-            [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelNumber,
+            'panelNumber': panelNumber,
           }
         }));
         break;
@@ -501,8 +496,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   }
 
   &amp;__trigger {
-    background: transparent;
+    background: #41354d;
     border: 0;
+    color: #fff;
     display: flex;
     font-weight: 600;
     justify-content: space-between;
@@ -523,20 +519,17 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
   &amp;__panel {
     border-top: 1px solid black;
+    max-height: 0;
     overflow: hidden;
+    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+    visibility: hidden;
 
-    &amp;[ace-accordion-panel] {
+    &amp;:not([ace-accordion-panel-visible]) {
       display: block;
     }
   }
 
-  [ace-accordion-panel-visible=&quot;false&quot;] {
-    max-height: 0;
-    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-    visibility: hidden;
-  }
-
-  [ace-accordion-panel-visible=&quot;true&quot;] {
+  [ace-accordion-panel-visible] {
     max-height: 245px;
     transition: max-height $trans-duration ease-in;
     visibility: visible;

@@ -56,12 +56,12 @@ To conform to W3 WAI-ARIA practices, active and selected options must be visuall
 
 
 /* VARIABLES */
-$ace-listbox-active-option-outline-width: 2px !default;
-$ace-listbox-active-option-outline-style: dotted !default;
 $ace-listbox-active-option-outline-color: slategrey !default;
+$ace-listbox-active-option-outline-style: dotted !default;
+$ace-listbox-active-option-outline-width: 2px !default;
 $ace-listbox-list-height: auto !default;
-$ace-listbox-selected-option-text-color: #fff !default;
 $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
+$ace-listbox-selected-option-text-color: #fff !default;
 
 
 /* STYLES */
@@ -241,11 +241,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Styled Listbox
 
-Example of a styled Listbox with options containing images. Custom styles that mimic Google Material Design have been applied to this example and are shown below.
+An example of how Listbox can be styled, with the applied CSS shown below.
 
 ```html
 <ace-listbox class="styled-listbox">
-  <label id="styled-listbox-label">Choose an Avenger:</label>
+  <label id="styled-listbox-label" class="styled-listbox__label">Choose an Avenger:</label>
   <ul aria-labelledby="styled-listbox-label" class="styled-listbox__list">
     <li class="styled-listbox__option">
       <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
@@ -281,36 +281,32 @@ Example of a styled Listbox with options containing images. Custom styles that m
 
 ```scss
 .styled-listbox {
-  display: block;
-  margin-top: 8px;
-  width: 300px;
-
-  &-label {
+  &__label,
+  &__input,
+  &__option {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
-    margin-bottom: 8px;
   }
 
   &__list {
-    border: 1px solid rgba(0, 0, 0, .42);
+    border: 1px solid #837b8b;
     border-radius: 4px;
     height: 225px;
+    margin-top: 10px;
+    width: 300px;
 
     &:focus {
-      outline-color: #0893a7;
+      outline-color: #41354d;
     }
   }
 
   &__option {
     align-items: center;
-    border-radius: 2px;
     display: flex;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
     padding: 10px 16px;
 
     &[aria-selected="true"] {
-      background: #0893a7;
+      background: #41354d;
     }
   }
 

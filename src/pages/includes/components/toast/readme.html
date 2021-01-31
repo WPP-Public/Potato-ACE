@@ -1,5 +1,5 @@
 <h1>Toast</h1>
-<p>A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use a <a href="/modal">Modal</a> instead.</p>
+<p>A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use the ACE <a href="/modal">Modal component</a> instead.</p>
 <p>Toast conforms to the <a href="http://w3.org/WAI/WCAG21/Techniques/aria/ARIA22.html">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
@@ -43,12 +43,12 @@ ace-toast {
   transform: translateX(-50%);
   z-index: $ace-toast-z-index;
 
-  @media (min-width: $ace-toast-breakpoint) {
-    max-width: $ace-toast-max-width;
+  &amp;:not([ace-toast-visible]) {
+    display: none;
   }
 
-  &amp;:not([ace-toast-visible=&quot;true&quot;]) {
-    display: none;
+  @media (min-width: $ace-toast-breakpoint) {
+    max-width: $ace-toast-max-width;
   }
 }
 </code></pre>
@@ -74,7 +74,7 @@ ace-toast {
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Toast and long show time Toast</h3>
-<p>A Toast with a default 4 second show time and one with a custom 7 second show time. The JavaScript used by this example is also shown below.</p>
+<p>A Toast with a default 4 second show time and one with a custom 7 second show time. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button id="simple-toast-btn">Show Toast</button>
 <button id="long-show-time-toast-btn">Show Toast with 7 second show time</button>
 <ace-toast>
@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   const showToastBtn = document.getElementById('simple-toast-btn');
   const showSecondToastBtn = document.getElementById('long-show-time-toast-btn');
 
-  showToastBtn.addEventListener('click', () =&gt; toastEl.setAttribute(ATTRS.VISIBLE, 'true'));
-  showSecondToastBtn.addEventListener('click', () =&gt; secondToastEl.setAttribute(ATTRS.VISIBLE, 'true'));
+  showToastBtn.addEventListener('click', () =&gt; toastEl.setAttribute(ATTRS.VISIBLE, ''));
+  showSecondToastBtn.addEventListener('click', () =&gt; secondToastEl.setAttribute(ATTRS.VISIBLE, ''));
 });
 </code></pre>
 <h3>Multiple Toasts at the same time</h3>
@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
     }
 
     positionToast(toastEl);
-    toastEl.setAttribute(ATTRS.VISIBLE, 'true');
+    toastEl.setAttribute(ATTRS.VISIBLE, '');
   });
 });
 </code></pre>

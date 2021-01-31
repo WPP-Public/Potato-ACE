@@ -21,40 +21,58 @@ export default class Sidebar extends HTMLElement {
     this.animStartHandler = this.animStartHandler.bind(this);
     this.clickHandler = this.clickHandler.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
+    this.trapFocusIfNotDesktop = this.trapFocusIfNotDesktop.bind(this);
   }
 
 
   connectedCallback() {
-    this.focusTrap = new FocusTrap(this);
+    this.isDesktop = false;
+
     this.sidebarBtn = document.querySelector(`[${ATTRS.SIDEBAR_BTN}]`);
 
     this.addEventListener('animationend', this.animEndHandler);
     this.addEventListener('animationstart', this.animStartHandler);
     this.addEventListener('keydown', this.keydownHandler);
     this.sidebarBtn.addEventListener('click', this.clickHandler);
+    window.addEventListener('resize', this.trapFocusIfNotDesktop);
+
+    this.trapFocusIfNotDesktop();
   }
 
 
   disconnectedCallback() {
-    this.focusTrap.destroy();
+    if (this.focusTrap) {
+      this.focusTrap.destroy();
+    }
 
     this.removeEventListener('animationend', this.animEndHandler);
     this.removeEventListener('animationstart', this.animStartHandler);
     this.removeEventListener('keydown', this.keydownHandler);
     this.sidebarBtn.removeEventListener('click', this.clickHandler);
+    window.removeEventListener('resize', this.trapFocusIfNotDesktop);
+  }
+
+
+  trapFocusIfNotDesktop() {
+    this.isDesktop = window.matchMedia('(min-width: 1024px)').matches;
+    if (this.isDesktop) {
+      if (this.focusTrap) {
+        this.focusTrap.destroy();
+      }
+      return
+    }
+
+    this.focusTrap = new FocusTrap(this);
   }
 
 
   animEndHandler() {
     if (this.hasAttribute(ATTRS.SIDEBAR_VISIBLE)) {
-      this.focusTrap.getInteractableDescendants();
-      this.focusTrap.interactableDescendants[0].focus();
+      this.focusTrap.focusableDescendants[0].focus();
     } else {
       this.style.visibility = '';
       this.sidebarBtn.focus();
     }
-
-    this.sidebarBtn.blur();
   }
 
 

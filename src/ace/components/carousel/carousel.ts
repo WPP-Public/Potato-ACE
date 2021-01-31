@@ -65,27 +65,27 @@ export const DEFAULT_SLIDE_SHOW_TIME = 5000;
 export default class Carousel extends HTMLElement {
   private autoSlideShowBtn: HTMLButtonElement;
   private autoSlideShowCarousel: boolean;
+  private autoSlideShowStopped = false;
   private autoSlideShowTime: number;
   private autoSlideShowTimer: number;
-  private autoSlideShowStopped = false;
   private carouselHasSlidePicker = false;
-  private goToPrevSlideLabel: string;
+  private goToFirstSlideLabel: string;
   private goToLastSlideLabel: string;
   private goToNextSlideLabel: string;
-  private goToFirstSlideLabel: string;
+  private goToPrevSlideLabel: string;
   private infinite: boolean;
   private initialised = false;
   private nextSlideBtn: HTMLButtonElement;
   private prevSlideBtn: HTMLButtonElement;
   private selectedSlideIndex: number;
-  private slidePickerBtnAriaLabelPrefix: string;
   private slideAriaLabelInfix: string;
+  private slideCount: number;
   private slideEls: NodeListOf<HTMLElement>;
+  private slidePickerBtnAriaLabelPrefix: string;
   private slidePickerEl: HTMLElement;
   private slidesWrapper: HTMLElement;
-  private slideCount: number;
-  private stopAutoSlideShowLabel: string;
   private startAutoSlideShowLabel: string;
+  private stopAutoSlideShowLabel: string;
 
 
   constructor() {
@@ -528,28 +528,6 @@ export default class Carousel extends HTMLElement {
 
 
   /*
-    Set panel and tab attributes
-  */
-  private setSlideAttributes(): void {
-    this.slideEls.forEach((slide, index) => {
-      // Set ID only if it was not given or we have previously provided it automatically
-      if (!slide.id || slide.id.includes(`${this.id}-slide-`)) {
-        slide.id = `${this.id}-slide-${index + 1}`;
-      }
-
-      slide.setAttribute(ATTRS.SLIDE, '');
-      if (index === this.selectedSlideIndex) {
-        slide.setAttribute(ATTRS.SLIDE_SELECTED, '');
-      } else {
-        slide.removeAttribute(ATTRS.SLIDE_SELECTED);
-      }
-      slide.setAttribute('aria-label', `${index + 1} ${this.slideAriaLabelInfix || 'of'} ${this.slideCount}`);
-      slide.setAttribute('aria-roledescription', 'slide');
-      slide.setAttribute('role', this.carouselHasSlidePicker ? 'tabpanel' : 'group');
-    });
-  }
-
-  /*
     Disables next and previous buttons if there are no more slides
     to go to, and adds specific aria-labels depending on the action
     it is going to take.
@@ -584,6 +562,29 @@ export default class Carousel extends HTMLElement {
   */
   private setSelectedSlide(slideToSelectIndex: number): void {
     this.setAttribute(ATTRS.SELECTED_SLIDE, (slideToSelectIndex + 1).toString());
+  }
+
+
+  /*
+    Set slide attributes
+  */
+  private setSlideAttributes(): void {
+    this.slideEls.forEach((slide, index) => {
+      // Set ID only if it was not given or we have previously provided it automatically
+      if (!slide.id || slide.id.includes(`${this.id}-slide-`)) {
+        slide.id = `${this.id}-slide-${index + 1}`;
+      }
+
+      slide.setAttribute(ATTRS.SLIDE, '');
+      if (index === this.selectedSlideIndex) {
+        slide.setAttribute(ATTRS.SLIDE_SELECTED, '');
+      } else {
+        slide.removeAttribute(ATTRS.SLIDE_SELECTED);
+      }
+      slide.setAttribute('aria-label', `${index + 1} ${this.slideAriaLabelInfix || 'of'} ${this.slideCount}`);
+      slide.setAttribute('aria-roledescription', 'slide');
+      slide.setAttribute('role', this.carouselHasSlidePicker ? 'tabpanel' : 'group');
+    });
   }
 
 

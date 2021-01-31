@@ -43,14 +43,15 @@ const accordionInitChecks = () => {
             .and('have.attr', 'aria-expanded')
             .wrap($trigger)
             .invoke('attr', 'aria-expanded')
-            .then((panelShouldBeVisible) => {
+            .then((ariaExpanded) => {
+              const panelShouldBeVisible = ariaExpanded === 'true';
               cy.get('@accordionPanels')
                 .eq(index)
                 .should('have.id', panelId)
                 .and('have.attr', ATTRS.PANEL, '')
-                .and('have.attr', ATTRS.PANEL_VISIBLE, panelShouldBeVisible)
                 .and('have.attr', 'aria-labelledby', triggerId)
-                .and('have.attr', 'role', 'region');
+                .and('have.attr', 'role', 'region')
+                .and(`${panelShouldBeVisible ? '' : 'not.'}have.attr`, ATTRS.PANEL_VISIBLE);
             });
         });
     });
@@ -64,7 +65,7 @@ const checkPanelNotVisible = (panelIndex) => {
     .should('have.attr', 'aria-expanded', 'false')
     .get('@accordionPanels')
     .eq(panelIndex)
-    .should('have.attr', ATTRS.PANEL_VISIBLE, 'false');
+    .should('not.have.attr', ATTRS.PANEL_VISIBLE);
 };
 
 
@@ -77,12 +78,12 @@ const checkPanelVisible = (panelIndex) => {
       if (isOneVisiblePanelAccordion) {
         cy.get('@accordionTriggers')
           .each(($trigger, index) => {
-            const panelVisible = index === panelIndex ? 'true' : 'false';
+            const panelVisible = (index === panelIndex);
             cy.wrap($trigger)
-              .should('have.attr', 'aria-expanded', panelVisible)
+              .should('have.attr', 'aria-expanded', panelVisible.toString())
               .get('@accordionPanels')
               .eq(index)
-              .should('have.attr', ATTRS.PANEL_VISIBLE, panelVisible);
+              .should(`${panelVisible ? '' : 'not.'}have.attr`, ATTRS.PANEL_VISIBLE);
           });
       } else {
         cy.get('@accordionTriggers')
@@ -90,7 +91,7 @@ const checkPanelVisible = (panelIndex) => {
           .should('have.attr', 'aria-expanded', 'true')
           .get('@accordionPanels')
           .eq(panelIndex)
-          .should('have.attr', ATTRS.PANEL_VISIBLE, 'true');
+          .should('have.attr', ATTRS.PANEL_VISIBLE, '');
       }
     });
 };
@@ -120,9 +121,9 @@ context(`Accordion`, () => {
     it(`Should toggle panel visibility when trigger clicked`, () => {
       const panelIndex = 0;
       let expectedDetail = {
-        id: ACCORDION_ID,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: true,
+        'id': ACCORDION_ID,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': true,
       };
 
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
@@ -134,9 +135,9 @@ context(`Accordion`, () => {
       checkPanelVisible(panelIndex);
 
       expectedDetail = {
-        id: ACCORDION_ID,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: false,
+        'id': ACCORDION_ID,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': false,
       };
 
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
@@ -168,9 +169,9 @@ context(`Accordion`, () => {
     it(`Should toggle panels visibilities when trigger clicked`, () => {
       const panelIndex = 2;
       let expectedDetail = {
-        id: ACCORDION_ID,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: true,
+        'id': ACCORDION_ID,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': true,
       };
 
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
@@ -182,9 +183,9 @@ context(`Accordion`, () => {
       checkPanelVisible(panelIndex);
 
       expectedDetail = {
-        id: ACCORDION_ID,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: false,
+        'id': ACCORDION_ID,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': false,
       };
 
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
@@ -197,7 +198,7 @@ context(`Accordion`, () => {
   });
 
 
-  context(`Custom events controlled Accordion`, () => {
+  context(`Accordion controlled using custom events`, () => {
     const ACCORDION_ID = IDS.CUSTOM_EVENTS_ACCORDION;
 
 
@@ -231,9 +232,9 @@ context(`Accordion`, () => {
     it(`Should show, hide and toggle panel when ${EVENTS.IN.SHOW_PANEL}, ${EVENTS.IN.HIDE_PANEL} & ${EVENTS.IN.TOGGLE_PANEL}custom events dispatched`, () => {
       const panelIndex = 2;
       let expectedDetail = {
-        id: ACCORDION_ID,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: true,
+        'id': ACCORDION_ID,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': true,
       };
 
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
@@ -246,9 +247,9 @@ context(`Accordion`, () => {
       checkPanelVisible(panelIndex);
 
       expectedDetail = {
-        id: ACCORDION_ID,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: false,
+        'id': ACCORDION_ID,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': false,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@hidePanelBtn')
@@ -258,9 +259,9 @@ context(`Accordion`, () => {
       checkPanelNotVisible(panelIndex);
 
       expectedDetail = {
-        id: ACCORDION_ID,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: true,
+        'id': ACCORDION_ID,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@togglePanelBtn')

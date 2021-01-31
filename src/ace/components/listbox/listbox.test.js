@@ -604,7 +604,7 @@ context(`Listbox`, () => {
   });
 
 
-  context(`Custom events Listbox`, () => {
+  context(`Listbox controlled using custom events`, () => {
     const LISTBOX_ID = IDS.CUSTOM_EVENTS_LB;
 
 
@@ -627,7 +627,7 @@ context(`Listbox`, () => {
 
     it(`Should respond to custom events correctly`, () => {
       const selectedOptionIndex = 2;
-      cy.addCustomEventListener(EVENTS.OUT.READY, {id: LISTBOX_ID})
+      cy.addCustomEventListener(EVENTS.OUT.READY, {'id': LISTBOX_ID})
         .get('@addOptionBtn')
         .click()
         .click()
