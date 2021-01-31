@@ -40,6 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     positionToast(toastEl);
-    toastEl.setAttribute(ATTRS.VISIBLE, 'true');
+    toastEl.setAttribute(ATTRS.VISIBLE, '');
   });
 });

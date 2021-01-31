@@ -25,65 +25,66 @@
 
 
 /* VARIABLES */
-$ace-tabs-tablist-margin: $ace-spacing-2 !default;
-$ace-tabs-tab-bg-colour: transparent !default;
+$ace-tabs-selected-tab-border-color: $ace-color-selected !default;
+$ace-tabs-selected-tab-border-width: 4px !default;
+$ace-tabs-tab-bg-color: transparent !default;
 $ace-tabs-tab-padding-horizontal: $ace-spacing-4 !default;
 $ace-tabs-tab-padding-vertical: $ace-spacing-2 !default;
-$ace-tabs-tab-hover-bg-colour: $ace-color-hover !default;
-$ace-tabs-selected-tab-border-colour: $ace-color-selected !default;
-$ace-tabs-selected-tab-border-width: 3px !default;
+$ace-tabs-tab-padding: $ace-spacing-3 !default;
+$ace-tabs-tab-focus-and-hover-bg-color: $ace-color-hover !default;
+$ace-tabs-tablist-margin: $ace-spacing-2 !default;
+$ace-tabs-panel-padding: 16px !default;
 
 
 /* STYLES */
-[ace-tabs-vertical] {
-  display: flex;
-}
-
 [ace-tabs-tablist] {
   display: flex;
-  margin: 0 0 $ace-tabs-tablist-margin 0;
   overflow: auto hidden;
   white-space: nowrap;
 }
 
 [ace-tabs-tab] {
-  background-color: $ace-tabs-tab-bg-colour;
+  background-color: $ace-tabs-tab-bg-color;
   border-color: transparent;
   border-style: solid;
   border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
   cursor: pointer;
   padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
 
+  &amp;:focus,
   &amp;:hover {
-    background-color: $ace-tabs-tab-hover-bg-colour;
+    background-color: $ace-tabs-tab-focus-and-hover-bg-color;
   }
 
   &amp;:focus {
-    background-color: $ace-tabs-tab-hover-bg-colour;
     outline: none;
   }
 }
 
-[ace-tabs-tab-visible=&quot;false&quot;] {
-  display: none;
-}
-
 [ace-tabs-tab-selected] {
-  border-bottom-color: $ace-tabs-selected-tab-border-colour;
+  border-color: $ace-tabs-selected-tab-border-color;
 }
 
-// Vertical variant
-[ace-tabs-tablist-vertical] {
-  flex-direction: column;
-  margin: 0 $ace-tabs-tablist-margin 0 0;
-  overflow: hidden auto;
+[ace-tabs-panel] {
+  padding: $ace-tabs-panel-padding;
+
+  &amp;:not([ace-tabs-panel-visible]) {
+    display: none;
+  }
 }
 
-[ace-tabs-tab-vertical] {
-  border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
 
-  &amp;[ace-tabs-tab-selected] {
-    border-right-color: $ace-tabs-selected-tab-border-colour;
+// Vertical Tabs
+[ace-tabs-vertical] {
+  display: flex;
+
+  [ace-tabs-tablist] {
+    flex-direction: column;
+    overflow: hidden auto;
+  }
+
+  [ace-tabs-tab] {
+    border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
   }
 }
 </code></pre>
@@ -422,7 +423,7 @@ $ace-tabs-selected-tab-border-width: 3px !default;
 &lt;/ace-tabs&gt;
 </code></pre>
 <h3>Tabs controlled using custom events</h3>
-<p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events on the Tabs. The JavaScript used by this example is also shown below.</p>
+<p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events on the Tabs. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><p>These buttons dispatch custom events</p>
 <button id="prev-tab-btn">Prev tab</button>
 <button id="next-tab-btn">Next tab</button>
@@ -532,4 +533,90 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
     }
   });
 });
+</code></pre>
+<h3>Styled Tabs</h3>
+<p>An example of how Tabs can be styled, with the applied CSS shown below.</p>
+<div class="example-block"><ace-tabs class="styled-tabs">
+  <div aria-label="Basic Tabs" class="styled-tabs__tablist">
+    <button class="styled-tabs__tab">Tab 1</button>
+    <button class="styled-tabs__tab">Tab 2</button>
+    <button class="styled-tabs__tab">Tab 3</button>
+  </div>
+  <div class="styled-tabs__panel">
+    <h3>Panel 1 heading</h3>
+    <p>Panel 1 content.</p>
+    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+  </div>
+  <div class="styled-tabs__panel">
+    <h3>Panel 2 heading</h3>
+    <p>Panel 2 content.</p>
+    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+  </div>
+  <div class="styled-tabs__panel">
+    <h3>Panel 3 heading</h3>
+    <p>Panel 3 content.</p>
+    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+  </div>
+</ace-tabs>
+</div>
+<pre><code class="language-html">&lt;ace-tabs class=&quot;styled-tabs&quot;&gt;
+  &lt;div aria-label=&quot;Basic Tabs&quot; class=&quot;styled-tabs__tablist&quot;&gt;
+    &lt;button class=&quot;styled-tabs__tab&quot;&gt;Tab 1&lt;/button&gt;
+    &lt;button class=&quot;styled-tabs__tab&quot;&gt;Tab 2&lt;/button&gt;
+    &lt;button class=&quot;styled-tabs__tab&quot;&gt;Tab 3&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;styled-tabs__panel&quot;&gt;
+    &lt;h3&gt;Panel 1 heading&lt;/h3&gt;
+    &lt;p&gt;Panel 1 content.&lt;/p&gt;
+    &lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;styled-tabs__panel&quot;&gt;
+    &lt;h3&gt;Panel 2 heading&lt;/h3&gt;
+    &lt;p&gt;Panel 2 content.&lt;/p&gt;
+    &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;styled-tabs__panel&quot;&gt;
+    &lt;h3&gt;Panel 3 heading&lt;/h3&gt;
+    &lt;p&gt;Panel 3 content.&lt;/p&gt;
+    &lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
+  &lt;/div&gt;
+&lt;/ace-tabs&gt;
+</code></pre>
+<pre><code class="language-scss">.styled-tabs {
+  display: block;
+  max-width: 500px;
+
+  &amp;__tab,
+  &amp;__panel {
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+  }
+
+  &amp;__tab {
+    border-color: #41354d;
+    flex-grow: 1;
+
+    &amp;:focus,
+    &amp;:hover {
+      background: #41354d;
+      color: #fff;
+    }
+  }
+
+  &amp;__panel {
+    border: 4px solid #41354d;
+    border-top: none;
+  }
+
+  [ace-tabs-tab-selected] {
+    background: #41354d;
+    border-color: #41354d;
+    color: #fff;
+
+    &amp;:focus {
+      border-color: #00bed0;
+    }
+  }
+}
+
 </code></pre>

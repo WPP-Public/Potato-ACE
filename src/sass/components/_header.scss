@@ -26,8 +26,8 @@
       transition: mask-image $transition;
     }
 
-    &:hover,
-    &:focus {
+    &:focus,
+    &:hover {
       &::before {
         background-color: #fff;
       }

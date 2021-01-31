@@ -51,8 +51,8 @@ The following SASS is applied to Select. The SASS variables use `!default` so ca
 $ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
 $ace-select-option-text-color: #000 !default;
-$ace-select-selected-option-text-color: #fff !default;
 $ace-select-selected-option-bg-color: $ace-color-selected !default;
+$ace-select-selected-option-text-color: #fff !default;
 
 
 /* STYLES */
@@ -72,7 +72,7 @@ ace-select {
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
 
-  &:not([ace-select-list-visible="true"]) {
+  &:not([ace-select-list-visible]) {
     display: none;
   }
 
@@ -238,9 +238,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Styled Select
 
-Example of a styled Select with options containing images.
-
-Custom styles that mimic Google Material Design have been applied to this example and are shown below.
+An example of how Select can be styled, with the applied CSS shown below.
 
 ```html
 <label id="styled-select-label" class="styled-select-label">Choose an Avenger:</label>
@@ -286,60 +284,56 @@ Custom styles that mimic Google Material Design have been applied to this exampl
 ```scss
 .styled-select {
   display: block;
-  margin-top: 8px;
-  width: 300px;
+  margin-top: 10px;
 
-  &-label {
+  &-label,
+  &__trigger,
+  &__option {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
-    margin-bottom: 8px;
   }
 
   &__trigger,
   &__list {
-    border: 1px solid rgba(0, 0, 0, .42);
+    border: 1px solid #837b8b;
     border-radius: 4px;
-    width: 100%;
+    width: 300px;
 
     &:focus {
-      outline-color: #0893a7;
+      outline-color: #41354d;
     }
   }
 
   &__trigger,
   &__option {
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    padding: 10px 16px;
   }
 
   &__trigger {
-    background: #fff;
+    background: transparent;
     display: flex;
     justify-content: space-between;
-    padding: 20px 16px;
 
     &::after {
-      color: rgba(0, 0, 0, .42);
-      content: '\25B2';
-      transform: rotate(180deg);
+      color: #837b8b;
+      content: '\25BC';
     }
 
     &:focus::after {
-      color: #0893a7;
+      color: #41354d;
     }
   }
 
   &__list {
-    height: 350px;
+    height: 225px;
   }
 
   &__option {
     align-items: center;
     display: flex;
-    padding: 10px 16px;
 
     &[aria-selected="true"] {
-      background: #0893a7;
+      background: #41354d;
     }
   }
 

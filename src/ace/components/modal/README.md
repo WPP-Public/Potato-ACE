@@ -35,7 +35,7 @@ Modals are hidden by default but can be initially shown on page load by adding t
 
 The attribute `ace-modal-trigger-for` must be added to elements that trigger the Modal with its value set to the Modal ID. For accessibility reasons it is recommended that only `<button>` elements are used for triggers. Modals can contain triggers for other Modals, which when clicked will hide the Modal they are in and show their target Modal. When a Modal becomes visible the attribute `ace-modal-is-visible` is added to `body` and the backdrop to pervent scrolling in the former and show the latter. Modals can be hidden by either clicking on any descendant with attribute `ace-modal-hide-btn`, clicking on the backdrop element or pressing <kbd>Esc</kbd>. When a Modal is hidden it still remains in the DOM with its content unchanged.
 
-Visible Modals prevent users from interacting with content outside of it by either visually obscuring the content using the backdrop element or taking up the full screen of mobile devices, and by either making the content inert or by trapping keyboard focus within itself. Modal first attempts to use the [HTML `inert` property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/inert, currently part of the [HTML Living Standard specification](https://html.spec.whatwg.org/multipage/interaction.html#inert-subtrees). If the browser supports `inert` and the Modal is a direct child of `body` it will add the `inert` attribute to all of its siblings except the backdrop, thereby preventing users from interacting with them. For browsers that don't support inert or for Modals that are not children of `body`, a fallback focus trap technique is used. This method involves determining Modal's first and last interactable descendants by getting all its focusable descendants and filtering out elements that are disabled or hidden using CSS declarations `display: none` or `visibility: hidden`. Focus can then be moved to the first interactable descendant from the last when <kbd>Tab</kbd> is pressed, and to the last from the first when <kbd>Shift</kbd> + <kbd>Tab</kbd> are pressed. To allow for dynamically changing focusable descendants the focus trap listens for changes to the `style`, `class` and `disabled` attributes of all Modal's focusable descendants using a [mutation observer](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) and updates the first and last interactable descendants. An example use case for this is having a disabled form submission button as the last focusable descendant, which is enabled upon form validation thereby becoming the last interactable descendant due to the mutation observer, without which this button would be unfocusable. The first and last interactable descendants can also be manually updated by developers through a custom event. See the **Custom events** section below for more details.
+Visible Modals prevent users from interacting with content outside of it by either visually obscuring the content using the backdrop element or taking up the full screen of mobile devices, and by either making the content inert or by trapping keyboard focus within itself. Modal first attempts to use the [HTML `inert` property](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/inert), currently part of the [HTML Living Standard specification](https://html.spec.whatwg.org/multipage/interaction.html#inert-subtrees). If the browser supports `inert` and the Modal is a direct child of `body` it will add the `inert` attribute to all of its siblings except the backdrop, thereby preventing users from interacting with them. For browsers that don't support inert or for Modals that are not children of `body`, a fallback focus trap technique is used. This method involves determining Modal's first and last interactable descendants by getting all its focusable descendants and filtering out elements that are disabled or hidden using CSS declarations `display: none` or `visibility: hidden`. Focus can then be moved to the first interactable descendant from the last when <kbd>Tab</kbd> is pressed, and to the last from the first when <kbd>Shift</kbd> + <kbd>Tab</kbd> are pressed. To allow for dynamically changing focusable descendants the focus trap listens for changes to the `style`, `class` and `disabled` attributes of all Modal's focusable descendants using a [mutation observer](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver) and updates the first and last interactable descendants. An example use case for this is having a disabled form submission button as the last focusable descendant, which is enabled upon form validation thereby becoming the last interactable descendant due to the mutation observer, without which this button would be unfocusable. The first and last interactable descendants can also be manually updated by developers through a custom event. See the **Custom events** section below for more details.
 
 
 ## Alert Modals
@@ -51,15 +51,15 @@ The following SASS is applied to Modal. The SASS variables use `!default` so can
 
 
 /* VARIABLES */
-$ace-modal-backdrop-bg-colour: rgba(0, 0, 0, .5) !default;
-$ace-modal-bg-colour: #fff !default;
+$ace-modal-backdrop-bg-color: rgba(0, 0, 0, .5) !default;
+$ace-modal-bg-color: #fff !default;
 $ace-modal-padding: $ace-spacing-3 !default;
 $ace-modal-switch-breakpoint: 768px;
 
 
 /* STYLES */
 ace-modal {
-  background: $ace-modal-bg-colour;
+  background: $ace-modal-bg-color;
   padding: $ace-modal-padding;
   position: fixed;
   z-index: $ace-modal-z-index;
@@ -90,7 +90,7 @@ ace-modal {
 }
 
 [ace-modal-backdrop] {
-  background: $ace-modal-backdrop-bg-colour;
+  background: $ace-modal-backdrop-bg-color;
   bottom: 0;
   left: 0;
   position: fixed;
@@ -158,7 +158,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 ### Simple Modal
 Example of a simple modal with two triggers that is shown on page load. The example also demonstrates how the focus trap and the `ace-disclosure-update-focus-trap` custom event work. After triggering the Modal, use **Toggle disabled button** button to toggle the disabled state of the disabled button, and notice that the mutation observer updates the focus trap. Next use the **Add link to Modal** and **Remove link from Modal** buttons to add and remove links and dispatch the custom event, and notice how the focus trap is again updated.
 
-The JavaScript used by this example is also shown below.
+The JavaScript used by this example is shown below.
 
 ```html
 <button ace-modal-trigger-for="simple-modal">Modal trigger 1</button>
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ### Modal that triggers another Modal
 Example of a Modal that has a trigger for another Modal and makes use of the `ace-modal-changed` custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its `ace-modal-changed` custom event is dispatched, the first Modal is shown again.
 
-The JavaScript used by this example is also shown below.
+The JavaScript used by this example is shown below.
 
 ```html
 <button ace-modal-trigger-for="modal-from-modal">

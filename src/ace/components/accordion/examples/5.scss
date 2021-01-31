@@ -16,8 +16,9 @@
   }
 
   &__trigger {
-    background: transparent;
+    background: #41354d;
     border: 0;
+    color: #fff;
     display: flex;
     font-weight: 600;
     justify-content: space-between;
@@ -38,20 +39,17 @@
 
   &__panel {
     border-top: 1px solid black;
+    max-height: 0;
     overflow: hidden;
+    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+    visibility: hidden;
 
-    &[ace-accordion-panel] {
+    &:not([ace-accordion-panel-visible]) {
       display: block;
     }
   }
 
-  [ace-accordion-panel-visible="false"] {
-    max-height: 0;
-    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-    visibility: hidden;
-  }
-
-  [ace-accordion-panel-visible="true"] {
+  [ace-accordion-panel-visible] {
     max-height: 245px;
     transition: max-height $trans-duration ease-in;
     visibility: visible;

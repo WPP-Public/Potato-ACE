@@ -3,17 +3,17 @@ import {getOptionId} from '../../../../cypress/functions';
 
 
 const IDS = {
-  AC_BOTH_AS_CB: `ac-both-autoselect-combobox`,
-  AC_BOTH_CB: `ac-both-combobox`,
-  AC_LIST_AS_CB: `ac-list-autoselect-combobox`,
-  AC_LIST_CB: `ac-list-combobox`,
+  AC_BOTH_AS_CB: 'ac-both-autoselect-combobox',
+  AC_BOTH_CB: 'ac-both-combobox',
+  AC_LIST_AS_CB: 'ac-list-autoselect-combobox',
+  AC_LIST_CB: 'ac-list-combobox',
   ADD_OPTIONS_BTN: 'add-options-btn',
-  BASIC_AS_CB: `basic-autoselect-combobox`,
-  BASIC_CB: `${COMBOBOX}-1`,
-  CUSTOM_EVENTS_CB: `custom-events-combobox`,
+  CUSTOM_EVENTS_CB: 'custom-events-combobox',
   HIDE_LIST_BTN: 'hide-list-btn',
   SELECT_OPTION_FORM: 'select-option-form',
   SHOW_LIST_BTN: 'show-list-btn',
+  SIMPLE_AS_CB: 'simple-autoselect-combobox',
+  SIMPLE_CB: `${COMBOBOX}-1`,
 };
 
 
@@ -22,8 +22,7 @@ const resetState = () => {
   return cy.get('@comboboxInput')
     .focus()
     .clear()
-    .type('{esc}')
-    .blur();
+    .type('{esc}');
 };
 
 
@@ -60,7 +59,6 @@ const comboboxInitChecks = () => {
         .get('@comboboxList')
         .should('have.id', LIST_ID)
         .and('have.attr', ATTRS.LIST, '')
-        .and('have.attr', ATTRS.LIST_VISIBLE, 'false')
         .and('have.attr', 'role', 'listbox')
         .and('not.have.attr', 'tabindex')
         .get('@comboboxOptions')
@@ -81,7 +79,7 @@ const checkOptionSelected = (optionIndex) => {
       cy.get('@comboboxInput')
         .should('have.attr', 'aria-activedescendant', getOptionId($combobox.attr('id'), optionIndex))
         .get('@comboboxList')
-        .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+        .should('have.attr', ATTRS.LIST_VISIBLE, '')
         .get('@comboboxOptions')
         .eq(optionIndex)
         .should('have.attr', 'aria-selected', 'true');
@@ -91,8 +89,9 @@ const checkOptionSelected = (optionIndex) => {
 
 const checkOptionChosen = (optionIndex) => {
   return cy.get('@comboboxList')
-    .should('have.attr', ATTRS.LIST_VISIBLE, 'false')
-    .and('not.have.attr', 'aria-activedescendant')
+    .should('not.have.attr', ATTRS.LIST_VISIBLE)
+    .get('@comboboxList')
+    .should('not.have.attr', 'aria-activedescendant')
     .get('@comboboxOptions')
     .eq(optionIndex)
     .then(($chosenOption) => {
@@ -110,13 +109,13 @@ context(`Combobox`, () => {
   it(`Combobox without ID should initialise with an ID`, () => {
     cy.get(COMBOBOX)
       .first()
-      .should('have.id', IDS.BASIC_CB);
+      .should('have.id', IDS.SIMPLE_CB);
   });
 
 
   context(`Manual selection Comboboxes`, () => {
-    context(`Basic Combobox`, () => {
-      const COMBOBOX_ID = IDS.BASIC_CB;
+    context(`Simple Combobox`, () => {
+      const COMBOBOX_ID = IDS.SIMPLE_CB;
 
 
       beforeEach(() => comboboxBeforeEach(COMBOBOX_ID));
@@ -132,25 +131,25 @@ context(`Combobox`, () => {
         it(`Focusing on input should show list and losing focus should hide list`, () => {
           // Focus
           const expectedDetail = {
-            id: COMBOBOX_ID,
-            listVisible: true,
+            'id': COMBOBOX_ID,
+            'listVisible': true,
           };
           cy.addCustomEventListener(EVENTS.OUT.LIST_TOGGLED, expectedDetail)
             .get('@comboboxInput')
             .focus()
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'true');
+            .should('have.attr', ATTRS.LIST_VISIBLE, '');
 
           // Blur
           const expectedDetail2 = {
-            id: COMBOBOX_ID,
-            listVisible: false,
+            'id': COMBOBOX_ID,
+            'listVisible': false,
           };
           cy.addCustomEventListener(EVENTS.OUT.LIST_TOGGLED, expectedDetail2)
             .get('@comboboxInput')
             .blur()
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+            .should('not.have.attr', ATTRS.LIST_VISIBLE);
         });
 
 
@@ -162,8 +161,8 @@ context(`Combobox`, () => {
 
           const optionIndex = 1;
           const expectedDetail = {
-            id: COMBOBOX_ID,
-            selectedOptionId: getOptionId(COMBOBOX_ID, optionIndex),
+            'id': COMBOBOX_ID,
+            'selectedOptionId': getOptionId(COMBOBOX_ID, optionIndex),
           };
           cy.addCustomEventListener(EVENTS.OUT.OPTION_SELECTED, expectedDetail)
             .get('@comboboxInput')
@@ -177,8 +176,8 @@ context(`Combobox`, () => {
       it(`Clicking an option should hide list and change input's text to match the option's`, () => {
         const optionIndex = 3;
         const expectedDetail = {
-          chosenOptionId: getOptionId(COMBOBOX_ID, optionIndex),
-          id: COMBOBOX_ID,
+          'chosenOptionId': getOptionId(COMBOBOX_ID, optionIndex),
+          'id': COMBOBOX_ID,
         };
         cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
           .get('@comboboxInput')
@@ -222,7 +221,7 @@ context(`Combobox`, () => {
             .type('{uparrow}{esc}')
             .should('have.value', '')
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+            .should('not.have.attr', ATTRS.LIST_VISIBLE);
         });
 
 
@@ -237,8 +236,8 @@ context(`Combobox`, () => {
         it(`ENTER when option selected should update input value to match option's value and hide the list`, () => {
           const optionIndex = 10;
           const expectedDetail = {
-            chosenOptionId: getOptionId(COMBOBOX_ID, optionIndex),
-            id: COMBOBOX_ID,
+            'chosenOptionId': getOptionId(COMBOBOX_ID, optionIndex),
+            'id': COMBOBOX_ID,
           };
           cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
             .get('@comboboxInput')
@@ -299,8 +298,8 @@ context(`Combobox`, () => {
       it(`Clicking an option should remove all other options from list and hide it, and change input's text to match the option's`, () => {
         const optionIndex = 7;
         const expectedDetail = {
-          chosenOptionId: getOptionId(COMBOBOX_ID, optionIndex),
-          id: COMBOBOX_ID,
+          'chosenOptionId': getOptionId(COMBOBOX_ID, optionIndex),
+          'id': COMBOBOX_ID,
         };
         cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
           .get('@comboboxInput')
@@ -320,15 +319,15 @@ context(`Combobox`, () => {
           cy.get('@comboboxInput')
             .focus()
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false')
+            .should('not.have.attr', ATTRS.LIST_VISIBLE)
             .get('@comboboxInput')
             .type('{downarrow}')
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+            .should('have.attr', ATTRS.LIST_VISIBLE, '')
             .get('@comboboxInput')
             .blur()
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+            .should('not.have.attr', ATTRS.LIST_VISIBLE);
         });
 
 
@@ -360,7 +359,7 @@ context(`Combobox`, () => {
             .focus()
             .type('s')
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+            .should('have.attr', ATTRS.LIST_VISIBLE, '')
             .get('@comboboxOptions')
             .should('have.length', 2)
             .get('@comboboxInput')
@@ -396,8 +395,8 @@ context(`Combobox`, () => {
       it(`Clicking an option should remove all other options from list and hide it, and change input's text to match the option's`, () => {
         const optionIndex = 4;
         const expectedDetail = {
-          chosenOptionId: getOptionId(COMBOBOX_ID, optionIndex),
-          id: COMBOBOX_ID,
+          'chosenOptionId': getOptionId(COMBOBOX_ID, optionIndex),
+          'id': COMBOBOX_ID,
         };
         cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
           .get('@comboboxInput')
@@ -417,15 +416,15 @@ context(`Combobox`, () => {
           cy.get('@comboboxInput')
             .focus()
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false')
+            .should('not.have.attr', ATTRS.LIST_VISIBLE)
             .get('@comboboxInput')
             .type('{downarrow}')
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+            .should('have.attr', ATTRS.LIST_VISIBLE, '')
             .get('@comboboxInput')
             .blur()
             .get('@comboboxList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+            .should('not.have.attr', ATTRS.LIST_VISIBLE);
         });
 
 
@@ -507,8 +506,8 @@ context(`Combobox`, () => {
 
 
   context(`Automatic selection Comboboxes`, () => {
-    context(`Basic Combobox`, () => {
-      const COMBOBOX_ID = IDS.BASIC_AS_CB;
+    context(`Simple Combobox`, () => {
+      const COMBOBOX_ID = IDS.SIMPLE_AS_CB;
 
 
       beforeEach(() => {
@@ -530,14 +529,14 @@ context(`Combobox`, () => {
       it(`Focusing on input should show list with first option selected`, () => {
         // Focus
         const expectedDetail = {
-          id: COMBOBOX_ID,
-          listVisible: true,
+          'id': COMBOBOX_ID,
+          'listVisible': true,
         };
         cy.addCustomEventListener(EVENTS.OUT.LIST_TOGGLED, expectedDetail)
           .get('@comboboxInput')
           .focus()
           .get('@comboboxList')
-          .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+          .should('have.attr', ATTRS.LIST_VISIBLE, '')
           .get('@comboboxOption1')
           .should('have.attr', 'aria-selected', 'true');
       });
@@ -612,7 +611,7 @@ context(`Combobox`, () => {
           .focus()
           .type('s')
           .get('@comboboxList')
-          .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+          .should('have.attr', ATTRS.LIST_VISIBLE, '')
           .get('@comboboxOptions')
           .should('have.length', 2)
           .eq(0)
@@ -645,7 +644,7 @@ context(`Combobox`, () => {
           .focus()
           .type('sp')
           .get('@comboboxList')
-          .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+          .should('have.attr', ATTRS.LIST_VISIBLE, '')
           .get('@comboboxOptions')
           .should('have.length', 1)
           .get('@comboboxOptions')
@@ -661,7 +660,7 @@ context(`Combobox`, () => {
   });
 
 
-  context(`Custom events Combobox`, () => {
+  context(`Combobox controlled using custom events`, () => {
     const COMBOBOX_ID = IDS.CUSTOM_EVENTS_CB;
 
     it(`Should respond to custom events correctly`, () => {
@@ -686,11 +685,11 @@ context(`Combobox`, () => {
         window.addEventListener(EVENTS.OUT.LIST_TOGGLED, (e) => {
           const listVisible = true;
           const expectedDetail = {
-            id: COMBOBOX_ID,
-            listVisible,
+            'id': COMBOBOX_ID,
+            'listVisible': listVisible,
           };
           expect(e.detail).to.deep.equal(expectedDetail);
-          expect(comboboxList.attr(ATTRS.LIST_VISIBLE)).to.equal(listVisible.toString());
+          expect(comboboxList.attr(ATTRS.LIST_VISIBLE)).to.equal('');
         }, {once: true});
       });
       cy.get(`#${IDS.SHOW_LIST_BTN}`).click();
@@ -711,11 +710,11 @@ context(`Combobox`, () => {
         window.addEventListener(EVENTS.OUT.LIST_TOGGLED, (e) => {
           const listVisible = false;
           const expectedDetail2 = {
-            id: COMBOBOX_ID,
+            'id': COMBOBOX_ID,
             listVisible,
           };
           expect(e.detail).to.deep.equal(expectedDetail2);
-          expect(comboboxList.attr(ATTRS.LIST_VISIBLE)).to.equal(listVisible.toString());
+          expect(comboboxList.attr(ATTRS.LIST_VISIBLE)).to.equal(undefined);
         }, {once: true});
       });
       cy.get(`#${IDS.HIDE_LIST_BTN}`).click();

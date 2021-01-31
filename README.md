@@ -103,6 +103,8 @@ When the development server is run using `npm start`, gulp task `build-pages` is
 
 # Testing
 
+Note: There are a few tests that rely on cypress window being in focus. It is due to a bug in cypress that they are aware of. For the time being make sure the cypress window has focus when running tests.
+
 Potato-A11y uses Cypress as it's testing suite and all tests in `/src` should be found and run using the configured glob (`**/*.{test,spec}.js`). The process for creating and running tests for a new component are as follows:
 
 1. Create example files with all the examples you need to test.

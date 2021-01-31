@@ -15,7 +15,7 @@
 <p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>ace-disclosure-show-trigger</code> or <code>ace-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to Disclosure.</p>
-<pre><code class="language-scss">ace-disclosure:not([ace-disclosure-visible=&quot;true&quot;]) {
+<pre><code class="language-scss">ace-disclosure:not([ace-disclosure-visible]) {
   display: none;
 }
 </code></pre>
@@ -70,45 +70,45 @@
 <h3>Initially visible Disclosure</h3>
 <p>In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute <code>ace-disclosure-visible=&quot;true&quot;</code>.</p>
 <div class="example-block"><button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure 2 toggle trigger 1
+  Disclosure toggle trigger 1
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure 2 toggle trigger 2
+  Disclosure toggle trigger 2
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
-  Disclosure 2 show trigger
+  Disclosure show trigger
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-hide>
-  Disclosure 2 hide trigger
+  Disclosure hide trigger
 </button>
 <hr>
-<ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
+<ace-disclosure ace-disclosure-visible id="initially-visible-disclosure">
   <h2>Initially visible disclosure</h2>
   <p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
   <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 </ace-disclosure>
 </div>
 <pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot;&gt;
-  Disclosure 2 toggle trigger 1
+  Disclosure toggle trigger 1
 &lt;/button&gt;
 &lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot;&gt;
-  Disclosure 2 toggle trigger 2
+  Disclosure toggle trigger 2
 &lt;/button&gt;
 &lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot; ace-disclosure-trigger-show&gt;
-  Disclosure 2 show trigger
+  Disclosure show trigger
 &lt;/button&gt;
 &lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot; ace-disclosure-trigger-hide&gt;
-  Disclosure 2 hide trigger
+  Disclosure hide trigger
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-disclosure ace-disclosure-visible=&quot;true&quot; id=&quot;initially-visible-disclosure&quot;&gt;
+&lt;ace-disclosure ace-disclosure-visible id=&quot;initially-visible-disclosure&quot;&gt;
   &lt;h2&gt;Initially visible disclosure&lt;/h2&gt;
   &lt;p&gt;This Disclosure is initially visible because it has the attribute &lt;code&gt;ace-disclosure-visible=&quot;true&quot;&lt;/code&gt;.&lt;/p&gt;
   &lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
 <h3>Disclosure controlled using custom event</h3>
-<p>The button in this example is <strong>not</strong> a trigger button but is a button that instead dispatches the <code>ace-disclosure-toggle</code> custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The JavaScript used by this example is also shown below.</p>
+<p>The button in this example is <strong>not</strong> a trigger button but instead is a button that dispatches the <code>ace-disclosure-toggle</code> custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button id="toggle-custom-event-btn">
   Toggle disclosure using custom event
 </button>

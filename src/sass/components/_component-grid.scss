@@ -14,8 +14,8 @@
     list-style: none;
     @include bordered($color: map-get($pot-blue, 5), $padding: 0);
 
-    &:hover,
-    &:focus {
+    &:focus,
+    &:hover {
       border-color: $active-color;
     }
   }

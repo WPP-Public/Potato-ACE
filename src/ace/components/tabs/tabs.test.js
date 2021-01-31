@@ -18,8 +18,21 @@ const IDS = {
 };
 
 
-const tabsBeforeEach = (id) => {
-  return cy.get(`#${id}`)
+const resetTabs = () => {
+  // Reset Tabs state before tests
+  cy.get('@tabs')
+    .invoke('attr', 'id')
+    .then((id) => {
+      cy.get('@tabsTabs')
+        .eq(id === IDS.INFINITE_TABS ? 1 : 0)
+        .click()
+        .blur();
+    });
+};
+
+
+const getEls = (id) => {
+  cy.get(`#${id}`)
     .as('tabs')
     .find(`div:not(:first-child)`)
     .as('tabsPanels')
@@ -27,51 +40,56 @@ const tabsBeforeEach = (id) => {
     .find(`[${ATTRS.TABLIST}]`)
     .as('tabsTablist')
     .find('button')
-    .as('tabsButtons')
+    .as('tabsTabs')
     .first()
-    .as('tabsButton1')
+    .as('tabsButton1');
 
-    // Reset state before test
-    .get('@tabsButtons')
-    .eq(id === IDS.INFINITE_TABS ? 1 : 0)
-    .click()
-    .blur();
+  resetTabs();
 };
 
 
-const tabsInitChecks = (id, selectedTabNumber=1, vertical=false) => {
-  const selectedTabIndex = selectedTabNumber - 1;
+const tabsInitChecks = () => {
   return cy.get('@tabs')
-    .should('have.attr', ATTRS.SELECTED_TAB, selectedTabNumber)
-    .get('@tabsTablist')
-    .should('have.attr', ATTRS.TABLIST, '')
-    .and(`${vertical ? '' : 'not.'}have.attr`, ATTRS.TABLIST_VERTICAL, '')
-    .and('have.attr', 'aria-orientation', vertical ? 'vertical' : 'horizontal')
-    .and('have.attr', 'role', 'tablist')
-    .get('@tabsButtons')
-    .each(($tab, index) => {
-      const TAB_ID = `${id}-tab-${index + 1}`;
-      const PANEL_ID = `${id}-panel-${index + 1}`;
-      cy.wrap($tab)
-        .should('have.attr', ATTRS.TAB, '')
-        .and(`${vertical ? '' : 'not.'}have.attr`, ATTRS.TAB_VERTICAL, '')
-        .and('have.attr', 'aria-controls', PANEL_ID)
-        .and('have.attr', 'aria-selected', index === selectedTabIndex ? 'true' : 'false')
-        .and('have.attr', 'role', 'tab')
-        .and(`${index === selectedTabIndex ? 'not.' : ''}have.attr`, 'tabindex',  '-1')
-        .and('have.id', TAB_ID)
-        // check corresponding panel
-        .get(`#${PANEL_ID}`)
-        .should('have.attr', ATTRS.PANEL, '')
-        .and('have.attr', 'aria-labelledby', TAB_ID)
-        .and('have.attr', 'role', 'tabpanel');
+    .invoke('attr', ATTRS.SELECTED_TAB)
+    .then((selectedTabAttrVal) => {
+      const selectedTabIndex = parseInt(selectedTabAttrVal) - 1;
+      cy.get('@tabs')
+        .invoke('attr', ATTRS.VERTICAL)
+        .then((verticalAttrVal) => {
+          const isVertical = verticalAttrVal === '';
+          cy.get('@tabs')
+            .invoke('attr', 'id')
+            .then((id) => {
+              cy.get('@tabsTablist')
+                .should('have.attr', ATTRS.TABLIST, '')
+                .and('have.attr', 'aria-orientation', isVertical ? 'vertical' : 'horizontal')
+                .and('have.attr', 'role', 'tablist')
+                .get('@tabsTabs')
+                .each(($tab, index) => {
+                  const TAB_ID = `${id}-tab-${index + 1}`;
+                  const PANEL_ID = `${id}-panel-${index + 1}`;
+                  cy.wrap($tab)
+                    .should('have.attr', ATTRS.TAB, '')
+                    .and('have.attr', 'aria-controls', PANEL_ID)
+                    .and('have.attr', 'aria-selected', index === selectedTabIndex ? 'true' : 'false')
+                    .and('have.attr', 'role', 'tab')
+                    .and(`${index === selectedTabIndex ? 'not.' : ''}have.attr`, 'tabindex',  '-1')
+                    .and('have.id', TAB_ID)
+                    // check corresponding panel
+                    .get(`#${PANEL_ID}`)
+                    .should('have.attr', ATTRS.PANEL, '')
+                    .and('have.attr', 'aria-labelledby', TAB_ID)
+                    .and('have.attr', 'role', 'tabpanel');
+                });
+            });
+        });
     });
 };
 
 
 const checkTabSelected = (tabNumber) => {
   const tabIndex = tabNumber - 1;
-  return cy.get('@tabsButtons')
+  return cy.get('@tabsTabs')
     .each(($button, buttonIndex) => {
       cy.wrap($button)
         .should('have.attr', 'aria-selected', buttonIndex === tabIndex ? 'true' : 'false')
@@ -84,21 +102,21 @@ const checkTabSelected = (tabNumber) => {
     })
     .get('@tabsPanels')
     .each(($panel, panelIndex) => {
-      cy.wrap($panel).should('have.attr', ATTRS.PANEL_VISIBLE, panelIndex === tabIndex ? 'true' : 'false');
+      cy.wrap($panel).should(`${panelIndex === tabIndex ? '': 'not.'}have.attr`, ATTRS.PANEL_VISIBLE);
     });
 };
 
 
 const getExpectedDetailObj = (id, prevTabNumber, newTabNumber) => {
   const expectedDetail = {
-    currentlySelectedTab: {
-      id: `${id}-tab-${newTabNumber}`,
-      number: newTabNumber,
+    'currentlySelectedTab': {
+      'id': `${id}-tab-${newTabNumber}`,
+      'number': newTabNumber,
     },
-    id,
-    previouslySelectedTab: {
-      id: `${id}-tab-${prevTabNumber}`,
-      number: prevTabNumber,
+    'id': id,
+    'previouslySelectedTab': {
+      'id': `${id}-tab-${prevTabNumber}`,
+      'number': prevTabNumber,
     },
   };
   return expectedDetail;
@@ -116,24 +134,24 @@ context(`Tabs`, () => {
   });
 
 
-  context(`Basic Tabs`, () => {
+  context(`Simple Tabs`, () => {
     const TABS_ID = IDS.SIMPLE_TABS;
 
 
-    beforeEach(() => tabsBeforeEach(TABS_ID));
+    beforeEach(() => getEls(TABS_ID));
 
 
-    it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID));
+    it(`Should initialise correctly`, () => tabsInitChecks());
 
 
-    it(`Should only select correct tab panel when tab button is clicked`, () => {
+    it(`Should select correct panel when tab clicked`, () => {
       let newTabNumber = 1;
       const tabSequence = [3, 1, 2];
       tabSequence.forEach((index) => {
         const oldTabNumber = newTabNumber;
         newTabNumber = index;
         cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
-          .get('@tabsButtons')
+          .get('@tabsTabs')
           .eq(newTabNumber - 1)
           .click();
         checkTabSelected(newTabNumber);
@@ -143,7 +161,7 @@ context(`Tabs`, () => {
 
     describe(`Keyboard interactions`, () => {
       beforeEach(() => {
-        cy.get('@tabsButtons')
+        cy.get('@tabsTabs')
           .eq(1)
           .as('tabsButton2')
           .click();
@@ -222,12 +240,7 @@ context(`Tabs`, () => {
         cy.get('@tabs')
           .invoke('attr', ATTRS.VERTICAL, '')
           .get('@tabsTablist')
-          .should('have.attr', ATTRS.TABLIST_VERTICAL, '')
-          .and('have.attr', 'aria-orientation', 'vertical')
-          .get('@tabsButtons')
-          .each(($tab) => {
-            cy.wrap($tab).should('have.attr', ATTRS.TAB_VERTICAL, '');
-          })
+          .should('have.attr', 'aria-orientation', 'vertical')
           .get('@tabsButton1')
           .focus()
           .type('{rightarrow}');
@@ -236,7 +249,7 @@ context(`Tabs`, () => {
         cy.get('@tabsButton1').type('{downarrow}');
         checkTabSelected(2);
 
-        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.VERTICAL));
+        cy.get('@tabs').invoke('removeAttr', ATTRS.VERTICAL);
       });
     });
   });
@@ -246,11 +259,11 @@ context(`Tabs`, () => {
     const TABS_ID = IDS.INFINITE_TABS;
 
 
-    beforeEach(() => tabsBeforeEach(TABS_ID));
+    beforeEach(() => getEls(TABS_ID));
 
 
     it(`Should initialise correctly`, () => {
-      tabsInitChecks(TABS_ID, 2);
+      tabsInitChecks();
       cy.get('@tabs').should('have.attr', ATTRS.INFINITE, '');
     });
 
@@ -315,12 +328,7 @@ context(`Tabs`, () => {
         cy.get('@tabs')
           .invoke('attr', ATTRS.VERTICAL, '')
           .get('@tabsTablist')
-          .should('have.attr', ATTRS.TABLIST_VERTICAL, '')
-          .and('have.attr', 'aria-orientation', 'vertical')
-          .get('@tabsButtons')
-          .each(($tab) => {
-            cy.wrap($tab).should('have.attr', ATTRS.TAB_VERTICAL, '');
-          })
+          .should('have.attr', 'aria-orientation', 'vertical')
           .get('@tabsButton1')
           .focus()
           .type('{rightarrow}');
@@ -329,7 +337,7 @@ context(`Tabs`, () => {
         cy.get('@tabsButton1').type('{downarrow}');
         checkTabSelected(3);
 
-        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.VERTICAL));
+        cy.get('@tabs').invoke('removeAttr', ATTRS.VERTICAL);
       });
     });
   });
@@ -339,10 +347,10 @@ context(`Tabs`, () => {
     const TABS_ID = IDS.VERTICAL_TABS;
 
 
-    beforeEach(() => tabsBeforeEach(TABS_ID));
+    beforeEach(() => getEls(TABS_ID));
 
 
-    it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID, 1, true));
+    it(`Should initialise correctly`, () => tabsInitChecks());
 
 
     it(`Should only select correct tab panel when tab button is clicked`, () => {
@@ -352,7 +360,7 @@ context(`Tabs`, () => {
         const oldTabNumber = newTabNumber;
         newTabNumber = index;
         cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
-          .get('@tabsButtons')
+          .get('@tabsTabs')
           .eq(newTabNumber - 1)
           .click();
         checkTabSelected(newTabNumber);
@@ -362,7 +370,7 @@ context(`Tabs`, () => {
 
     describe(`Keyboard interactions`, () => {
       beforeEach(() => {
-        cy.get('@tabsButtons')
+        cy.get('@tabsTabs')
           .eq(1)
           .as('tabsButton2')
           .click();
@@ -452,14 +460,9 @@ context(`Tabs`, () => {
 
       it(`Should switch orientation to horizontal when observed attribute removed`, () => {
         cy.get('@tabs')
-          .then($tabs => $tabs.removeAttr(ATTRS.VERTICAL))
+          .invoke('removeAttr', ATTRS.VERTICAL)
           .get('@tabsTablist')
-          .should('not.have.attr', ATTRS.TABLIST_VERTICAL, '')
-          .and('have.attr', 'aria-orientation', 'horizontal')
-          .get('@tabsButtons')
-          .each(($tab) => {
-            cy.wrap($tab).should('not.have.attr', ATTRS.TAB_VERTICAL, '');
-          })
+          .should('have.attr', 'aria-orientation', 'horizontal')
           .get('@tabsButton1')
           .focus()
           .type('{downarrow}');
@@ -478,10 +481,10 @@ context(`Tabs`, () => {
     const TABS_ID = IDS.MANUAL_TABS;
 
 
-    beforeEach(() => tabsBeforeEach(TABS_ID));
+    beforeEach(() => getEls(TABS_ID));
 
 
-    it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID));
+    it(`Should initialise correctly`, () => tabsInitChecks());
 
 
     it(`Should only select correct tab panel when tab button is clicked`, () => {
@@ -491,7 +494,7 @@ context(`Tabs`, () => {
         const oldTabNumber = newTabNumber;
         newTabNumber = index;
         cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
-          .get('@tabsButtons')
+          .get('@tabsTabs')
           .eq(newTabNumber - 1)
           .click();
         checkTabSelected(newTabNumber);
@@ -504,7 +507,7 @@ context(`Tabs`, () => {
         .focus()
         .type('{rightarrow}')
         .should('have.attr', 'tabindex', '-1')
-        .get('@tabsButtons')
+        .get('@tabsTabs')
         .eq(1)
         .as('tabsButton2')
         .should('not.have.attr', 'tabindex')
@@ -515,7 +518,7 @@ context(`Tabs`, () => {
         .focus()
         .type('{rightarrow}')
         .should('have.attr', 'tabindex', '-1')
-        .get('@tabsButtons')
+        .get('@tabsTabs')
         .eq(2)
         .should('not.have.attr', 'tabindex');
     });
@@ -523,10 +526,10 @@ context(`Tabs`, () => {
 
     describe(`Keyboard interactions`, () => {
       beforeEach(() => {
-        cy.get('@tabsButtons')
+        cy.get('@tabsTabs')
           .eq(1)
           .as('tabsButton2')
-          .get('@tabsButtons')
+          .get('@tabsTabs')
           .eq(2)
           .as('tabsButton3');
       });
@@ -632,12 +635,7 @@ context(`Tabs`, () => {
         cy.get('@tabs')
           .invoke('attr', ATTRS.VERTICAL, '')
           .get('@tabsTablist')
-          .should('have.attr', ATTRS.TABLIST_VERTICAL, '')
-          .and('have.attr', 'aria-orientation', 'vertical')
-          .get('@tabsButtons')
-          .each(($tab) => {
-            cy.wrap($tab).should('have.attr', ATTRS.TAB_VERTICAL, '');
-          })
+          .should('have.attr', 'aria-orientation', 'vertical')
           .get('@tabsButton1')
           .focus()
           .type('{rightarrow}');
@@ -646,7 +644,7 @@ context(`Tabs`, () => {
         cy.get('@tabsButton1').type('{downarrow} ');
         checkTabSelected(2);
 
-        cy.get('@tabs').then($tabs => $tabs.removeAttr(ATTRS.VERTICAL));
+        cy.get('@tabs').invoke('removeAttr', ATTRS.VERTICAL);
       });
     });
   });
@@ -657,7 +655,7 @@ context(`Tabs`, () => {
     const TABS_2_ID = IDS.DEEP_LINKED_INITIALLY_SET_TABS;
 
     beforeEach(() => {
-      tabsBeforeEach(TABS_1_ID);
+      getEls(TABS_1_ID);
       cy.get(`#${TABS_2_ID}`)
         .as('tabs2')
         .find(`[${ATTRS.TABLIST}]`)
@@ -670,8 +668,8 @@ context(`Tabs`, () => {
 
 
     it(`Should update URL correctly when selected tab changes`, () => {
-      tabsInitChecks(TABS_1_ID);
-      cy.get('@tabsButtons')
+      tabsInitChecks();
+      cy.get('@tabsTabs')
         .eq(1)
         .click()
         .get('@tabs2Buttons')
@@ -721,13 +719,13 @@ context(`Tabs`, () => {
   });
 
 
-  context(`Custom events Tabs`, () => {
+  context(`Tabs controlled using custom events`, () => {
     const TABS_ID = IDS.CUSTOM_EVENTS_TABS;
 
-    beforeEach(() => tabsBeforeEach(TABS_ID));
+    beforeEach(() => getEls(TABS_ID));
 
 
-    it(`Should initialise correctly`, () => tabsInitChecks(TABS_ID));
+    it(`Should initialise correctly`, () => tabsInitChecks());
 
 
     it(`Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched`, () => {
@@ -751,18 +749,19 @@ context(`Tabs`, () => {
       const ADDED_TAB_ID = `${TABS_ID}-tab-${tabNumber}`;
       const ADDED_PANEL_ID = `${TABS_ID}-panel-${tabNumber}`;
 
-      cy.addCustomEventListener(EVENTS.OUT.READY, {id: TABS_ID})
+      cy.addCustomEventListener(EVENTS.OUT.READY, {'id': TABS_ID})
         .get(`#${IDS.ADD_TAB_BTN}`)
         .click()
         // Check Panel attributes
         .get('@tabs')
         .find(`[${ATTRS.PANEL}]`)
         .eq(tabNumber - 1)
-        .should('have.attr', ATTRS.PANEL_VISIBLE, 'false')
+        .should('have.id', ADDED_PANEL_ID)
         .and('have.attr', 'aria-labelledby', ADDED_TAB_ID)
         .and('have.attr', 'role', 'tabpanel')
         .and('have.attr', 'tabIndex', '0')
-        .and('have.id', ADDED_PANEL_ID)
+        .and('not.have.attr', ATTRS.PANEL_VISIBLE)
+
         // Check Tab attributes
         .get('@tabs')
         .find(`[${ATTRS.TAB}]`)

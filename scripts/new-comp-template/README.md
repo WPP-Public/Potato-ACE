@@ -109,10 +109,8 @@ Each example contains a live demo and the HTML code that produced it. The code s
 <!-- DESCRIBE WHAT THE EXAMPLE SHOWS AND WHY IT SHOULD BE USED THAT WAY -->
 <!-- IF EXAMPLE HAS CUSTOM SASS INCLUDE THIS LINE -->
 <!-- Custom styles have been applied to this example and are shown below. -->
-<!-- OR -->
-<!-- Custom styles that mimic Google Material Design have been applied to this example and are shown below. -->
 <!-- IF EXAMPLE HAS CUSTOM JS INCLUDE THIS LINE -->
-<!-- The JavaScript used by this example is also shown below. -->
+<!-- The JavaScript used by this example is shown below. -->
 
 <!-- INCLUDE AN EMPTY HTML CODE BLOCK FOR EACH EXAMPLE -->
 ```html

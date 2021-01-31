@@ -68,8 +68,8 @@ context(`Modal`, () => {
       // Check that Modal hidden when observed attribute removed
       let visible = false;
       let expectedDetail = {
-        id: ID,
-        visible: visible,
+        'id': ID,
+        'visible': visible,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modal')
@@ -79,8 +79,8 @@ context(`Modal`, () => {
       // Check that Modal shown when observed attribute re-added
       visible = true;
       expectedDetail = {
-        id: ID,
-        visible: visible,
+        'id': ID,
+        'visible': visible,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modal')
@@ -93,8 +93,8 @@ context(`Modal`, () => {
       // Check that Modal hidden by hide button
       let visible = false;
       let expectedDetail = {
-        id: ID,
-        visible: visible,
+        'id': ID,
+        'visible': visible,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modalHideBtn')
@@ -105,8 +105,8 @@ context(`Modal`, () => {
       // Check that Modal shown by trigger button
       visible = true;
       expectedDetail = {
-        id: ID,
-        visible: visible,
+        'id': ID,
+        'visible': visible,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
         cy.get('@modalTriggers')
@@ -145,8 +145,8 @@ context(`Modal`, () => {
       // Check that Modal hidden by clicking on backdrop
       const visible = false;
       const expectedDetail = {
-        id: ID,
-        visible: visible,
+        'id': ID,
+        'visible': visible,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modalBackdrop')
@@ -164,8 +164,8 @@ context(`Modal`, () => {
       // Check that Modal hidden by clicking on backdrop
       const visible = false;
       const expectedDetail = {
-        id: ID,
-        visible: visible,
+        'id': ID,
+        'visible': visible,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modalHideBtn')
@@ -199,8 +199,8 @@ context(`Modal`, () => {
       // Check that Modal is shown when trigger clicked
       const visible = true;
       const expectedDetail = {
-        id: ID,
-        visible: visible,
+        'id': ID,
+        'visible': visible,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modalTriggers')

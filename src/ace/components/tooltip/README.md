@@ -32,7 +32,9 @@ Tooltips appear after a short delay, the default value of which is 1 second, how
 
 ## Usage
 
-Tooltips are initially hidden and become visible when the target receives keyboard focus, the mouse hovers over the target, a user touches the target on a touch screen device for a short period of time or due to a dispatched custom event. They are hidden again once the target loses keyboard focus, the mouse pointer leaves the target, <kbd>Escape</kbd> is pressed while the target is focused or due to a dispatched custom event. Note that the keydown event for <kbd>Escape</kbd> is prevented from bubbling using [Event.stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) to prevent undesired side effects such as closing a Modal the Tooltip target is in.
+Tooltips are initially hidden and become visible when the target receives keyboard focus, the mouse hovers over the target, a user touches the target on a touch screen device for a short period of time, or due to a dispatched custom event. They are hidden again once the target loses keyboard focus, the mouse pointer leaves the target, <kbd>Escape</kbd> is pressed while the target is focused or due to a dispatched custom event. Tooltips can be disabled entrely by adding the `disabled` attribute to them, preventing them from becoming visible. 
+
+Note that the keydown event for <kbd>Escape</kbd> is prevented from bubbling using [Event.stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) to prevent undesired side effects such as closing a Modal the Tooltip target is in.
 
 
 ## Styles
@@ -47,9 +49,9 @@ The following SASS is applied to Tooltip. The SASS variables use `!default` so c
 /* VARIABLES */
 $ace-tooltip-base-transform: translateX(-50%) !default;
 $ace-tooltip-bg-color: #000 !default;
+$ace-tooltip-gap: 10px !default;
 $ace-tooltip-padding: 4px 8px !default;
 $ace-tooltip-text-color: #fff !default;
-$ace-tooltip-gap: 10px !default;
 
 
 /* STYLES */
@@ -68,17 +70,16 @@ ace-tooltip {
   position: absolute;
   top: 100%;
   transform: $ace-tooltip-base-transform;
-  visibility: hidden;
   z-index: $ace-tooltip-list-z-index;
+
+  &:not([ace-tooltip-visible]) {
+    visibility: hidden;
+  }
 
   &[ace-u-float-right],
   &[ace-u-float-left] {
     transform: translateX(0);
   }
-}
-
-[ace-tooltip-visible] {
-  visibility: unset;
 }
 
 [ace-tooltip-nowrap] {
@@ -113,15 +114,16 @@ This event is dispatched when Tooltip finishes initialising. The event name is a
 }
 ```
 
-#### Shown and Hidden
+#### Changed
 
-`ace-tooltip-shown` & `ace-tooltip-hidden`
+`ace-tooltip-changed`
 
-These events are dispatched when Tooltip is shown or hidden. The event names are available as `EVENTS.OUT.SHOWN` and `EVENTS.OUT.HIDDEN` and their `detail` properties are composed as follows:
+This event is dispatched when Tooltip visibility changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
   'id': // ID of Tooltip [string]
+  'visible': // Whether the Tooltip is visible or not [boolean]
 }
 ```
 
@@ -245,7 +247,7 @@ Tooltips are not compatible with disabled targets as they are not focusable nor 
 
 ### Tooltip controlled using custom events
 
-The first two buttons in this example dispatch the `ace-tooltip-show` and `ace-tooltip-hide` events that show and hide the Tooltip. The JavaScript used by this example is also shown below.
+The first two buttons in this example dispatch the `ace-tooltip-show` and `ace-tooltip-hide` events that show and hide the Tooltip. The JavaScript used by this example is shown below.
 
 ```html
 <button id="show-tooltip-btn">Show Tooltip</button>

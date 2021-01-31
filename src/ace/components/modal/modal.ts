@@ -47,9 +47,9 @@ export default class Modal extends HTMLElement {
     /* CLASS METHOD BINDINGS */
     this.clickHandler = this.clickHandler.bind(this);
     this.customEventsHandler = this.customEventsHandler.bind(this);
-    this.hideModal = this.hideModal.bind(this);
+    this.hide = this.hide.bind(this);
     this.keydownHandler = this.keydownHandler.bind(this);
-    this.showModal = this.showModal.bind(this);
+    this.show = this.show.bind(this);
   }
 
 
@@ -63,17 +63,17 @@ export default class Modal extends HTMLElement {
       return;
     }
 
-    const showModal = newValue === '';
-    if (showModal) {
-      this.showModal();
+    const show = newValue === '';
+    if (show) {
+      this.show();
     } else {
-      this.hideModal();
+      this.hide();
     }
 
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
         'id': this.id,
-        'visible': showModal,
+        'visible': show,
       }
     }));
   }
@@ -136,7 +136,7 @@ export default class Modal extends HTMLElement {
     }
 
     if (this.hasAttribute(ATTRS.VISIBLE)) {
-      this.showModal();
+      this.show();
     }
 
     this.initialised = true;
@@ -184,7 +184,7 @@ export default class Modal extends HTMLElement {
   /*
     Hide the Modal
   */
-  private hideModal(): void {
+  private hide(): void {
     document.body.removeAttribute(ATTRS.IS_VISIBLE);
     this.backdropEl.removeAttribute(ATTRS.IS_VISIBLE);
 
@@ -214,7 +214,7 @@ export default class Modal extends HTMLElement {
   /*
     Show the Modal
   */
-  private showModal(): void {
+  private show(): void {
     document.body.setAttribute(ATTRS.IS_VISIBLE, '');
     this.backdropEl.setAttribute(ATTRS.IS_VISIBLE, '');
 

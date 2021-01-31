@@ -1,6 +1,6 @@
 # Toast
 
-A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use a [Modal](/modal) instead.  
+A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use the ACE [Modal component](/modal) instead.  
 
 Toast conforms to the [W3C WAI-ARIA authoring practices](http://w3.org/WAI/WCAG21/Techniques/aria/ARIA22.html).
 
@@ -63,12 +63,12 @@ ace-toast {
   transform: translateX(-50%);
   z-index: $ace-toast-z-index;
 
-  @media (min-width: $ace-toast-breakpoint) {
-    max-width: $ace-toast-max-width;
+  &:not([ace-toast-visible]) {
+    display: none;
   }
 
-  &:not([ace-toast-visible="true"]) {
-    display: none;
+  @media (min-width: $ace-toast-breakpoint) {
+    max-width: $ace-toast-max-width;
   }
 }
 ```
@@ -114,7 +114,7 @@ This event is dispatched when Toast visibility changes. The event name is availa
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 ### Simple Toast and long show time Toast
-A Toast with a default 4 second show time and one with a custom 7 second show time. The JavaScript used by this example is also shown below.
+A Toast with a default 4 second show time and one with a custom 7 second show time. The JavaScript used by this example is shown below.
 
 ```html
 <button id="simple-toast-btn">Show Toast</button>
@@ -138,8 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const showToastBtn = document.getElementById('simple-toast-btn');
   const showSecondToastBtn = document.getElementById('long-show-time-toast-btn');
 
-  showToastBtn.addEventListener('click', () => toastEl.setAttribute(ATTRS.VISIBLE, 'true'));
-  showSecondToastBtn.addEventListener('click', () => secondToastEl.setAttribute(ATTRS.VISIBLE, 'true'));
+  showToastBtn.addEventListener('click', () => toastEl.setAttribute(ATTRS.VISIBLE, ''));
+  showSecondToastBtn.addEventListener('click', () => secondToastEl.setAttribute(ATTRS.VISIBLE, ''));
 });
 ```
 
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     positionToast(toastEl);
-    toastEl.setAttribute(ATTRS.VISIBLE, 'true');
+    toastEl.setAttribute(ATTRS.VISIBLE, '');
   });
 });
 ```

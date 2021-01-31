@@ -12,18 +12,18 @@
     background: map-get($pot-blue, 5);
     color: #fff;
 
-    &:hover,
-    &:focus {
+    &:focus,
+    &:hover {
       background: $interactive-color;
-    }
-
-    &:focus {
-      outline: none;
     }
 
     &:disabled {
       opacity: .5;
       pointer-events: none;
+    }
+
+    &:focus {
+      outline: none;
     }
   }
 }

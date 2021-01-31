@@ -35,7 +35,7 @@ Triggers will by default toggle the visibiility of the Disclosure, but the `ace-
 The following SASS is applied to Disclosure.
 
 ```scss
-ace-disclosure:not([ace-disclosure-visible="true"]) {
+ace-disclosure:not([ace-disclosure-visible]) {
   display: none;
 }
 ```
@@ -115,19 +115,19 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 
 ```html
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure 2 toggle trigger 1
+  Disclosure toggle trigger 1
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure 2 toggle trigger 2
+  Disclosure toggle trigger 2
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
-  Disclosure 2 show trigger
+  Disclosure show trigger
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-hide>
-  Disclosure 2 hide trigger
+  Disclosure hide trigger
 </button>
 <hr>
-<ace-disclosure ace-disclosure-visible="true" id="initially-visible-disclosure">
+<ace-disclosure ace-disclosure-visible id="initially-visible-disclosure">
   <h2>Initially visible disclosure</h2>
   <p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
   <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
@@ -137,7 +137,7 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 
 ### Disclosure controlled using custom event
 
-The button in this example is **not** a trigger button but is a button that instead dispatches the `ace-disclosure-toggle` custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The JavaScript used by this example is also shown below.
+The button in this example is **not** a trigger button but instead is a button that dispatches the `ace-disclosure-toggle` custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The JavaScript used by this example is shown below.
 
 ```html
 <button id="toggle-custom-event-btn">

@@ -27,7 +27,7 @@
 Cypress.Commands.add('addCustomEventListener', (eventName, expectedDetail) => {
   cy.window().then((window) => {
     window.addEventListener(eventName, (e) => {
-      if (e.detail && e.detail.id === expectedDetail.id) {
+      if (e['detail'] && e['detail']['id'] === expectedDetail['id']) {
         expect(e.detail).to.deep.equal(expectedDetail);
       }
     }, {once: true});

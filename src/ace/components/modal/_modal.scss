@@ -2,15 +2,15 @@
 
 
 /* VARIABLES */
-$ace-modal-backdrop-bg-colour: rgba(0, 0, 0, .5) !default;
-$ace-modal-bg-colour: #fff !default;
+$ace-modal-backdrop-bg-color: rgba(0, 0, 0, .5) !default;
+$ace-modal-bg-color: #fff !default;
 $ace-modal-padding: $ace-spacing-3 !default;
 $ace-modal-switch-breakpoint: 768px;
 
 
 /* STYLES */
 ace-modal {
-  background: $ace-modal-bg-colour;
+  background: $ace-modal-bg-color;
   padding: $ace-modal-padding;
   position: fixed;
   z-index: $ace-modal-z-index;
@@ -41,7 +41,7 @@ ace-modal {
 }
 
 [ace-modal-backdrop] {
-  background: $ace-modal-backdrop-bg-colour;
+  background: $ace-modal-backdrop-bg-color;
   bottom: 0;
   left: 0;
   position: fixed;

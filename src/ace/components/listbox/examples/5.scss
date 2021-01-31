@@ -1,34 +1,30 @@
 .styled-listbox {
-  display: block;
-  margin-top: 8px;
-  width: 300px;
-
-  &-label {
+  &__label,
+  &__input,
+  &__option {
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
-    margin-bottom: 8px;
   }
 
   &__list {
-    border: 1px solid rgba(0, 0, 0, .42);
+    border: 1px solid #837b8b;
     border-radius: 4px;
     height: 225px;
+    margin-top: 10px;
+    width: 300px;
 
     &:focus {
-      outline-color: #0893a7;
+      outline-color: #41354d;
     }
   }
 
   &__option {
     align-items: center;
-    border-radius: 2px;
     display: flex;
-    font-family: 'Roboto', sans-serif;
-    font-size: 16px;
     padding: 10px 16px;
 
     &[aria-selected="true"] {
-      background: #0893a7;
+      background: #41354d;
     }
   }
 
