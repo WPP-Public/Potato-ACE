@@ -46,10 +46,8 @@ The following SASS is applied to Accordion.
 
 
 ```scss
-[ace-accordion-panel] {
-  &:not([ace-accordion-panel-visible="true"]) {
-    display: none;
-  }
+[ace-accordion-panel]:not([ace-accordion-panel-visible]) {
+  display: none;
 }
 ```
 
@@ -80,7 +78,7 @@ This event is dispatched when Accordion finishes initialising just after page lo
 
 `ace-accordion-changed`
 
-This event is dispatched when a panel's visiblity changes. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows. The `panelNumber` and `panelVisible` strings are also exported as `EVENTS.DETAIL_PROPS.PANEL_NUMBER` and `EVENTS.DETAIL_PROPS.PANEL_VISIBLE`.
+This event is dispatched when a panel's visiblity changes. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```javascript
 'detail': {
@@ -215,16 +213,13 @@ Note that this method should only be used if the panels are of the same or simil
 
     [ace-accordion-panel] {
       display: block;
-      overflow: hidden;
-    }
-
-    [ace-accordion-panel-visible="false"] {
       max-height: 0;
+      overflow: hidden;
       transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
       visibility: hidden;
     }
 
-    [ace-accordion-panel-visible="true"] {
+    [ace-accordion-panel-visible] {
       max-height: 180px;
       transition: max-height $trans-duration ease-in;
       visibility: visible;
@@ -237,7 +232,7 @@ Note that this method should only be used if the panels are of the same or simil
 
 
 
-The JavaScript used by this example is also shown below.
+The JavaScript used by this example is shown below.
 
 ```html
 <label>
@@ -299,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         accordionEl.dispatchEvent(new CustomEvent(customEvent, {
           'detail': {
-            [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelNumber,
+            'panelNumber': panelNumber,
           }
         }));
         break;
@@ -429,8 +424,9 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
   }
 
   &__trigger {
-    background: transparent;
+    background: #41354d;
     border: 0;
+    color: #fff;
     display: flex;
     font-weight: 600;
     justify-content: space-between;
@@ -451,20 +447,17 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 
   &__panel {
     border-top: 1px solid black;
+    max-height: 0;
     overflow: hidden;
+    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+    visibility: hidden;
 
-    &[ace-accordion-panel] {
+    &:not([ace-accordion-panel-visible]) {
       display: block;
     }
   }
 
-  [ace-accordion-panel-visible="false"] {
-    max-height: 0;
-    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-    visibility: hidden;
-  }
-
-  [ace-accordion-panel-visible="true"] {
+  [ace-accordion-panel-visible] {
     max-height: 245px;
     transition: max-height $trans-duration ease-in;
     visibility: visible;

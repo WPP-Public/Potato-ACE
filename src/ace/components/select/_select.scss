@@ -5,8 +5,8 @@
 $ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
 $ace-select-option-text-color: #000 !default;
-$ace-select-selected-option-text-color: #fff !default;
 $ace-select-selected-option-bg-color: $ace-color-selected !default;
+$ace-select-selected-option-text-color: #fff !default;
 
 
 /* STYLES */
@@ -26,7 +26,7 @@ ace-select {
   white-space: nowrap;
   z-index: $ace-select-list-z-index;
 
-  &:not([ace-select-list-visible="true"]) {
+  &:not([ace-select-list-visible]) {
     display: none;
   }
 

@@ -15,9 +15,6 @@ export const ATTRS = {
 
 
 export const EVENTS = {
-  DETAIL_PROPS: {
-    VISIBLE: 'visible',
-  },
   OUT: {
     CHANGED: `${TOAST}-changed`,
     READY: `${TOAST}-ready`,
@@ -45,7 +42,7 @@ export default class Toast extends HTMLElement {
 
 
   static get observedAttributes(): Array<string> {
-    return [ATTRS.VISIBLE];
+    return [ATTRS.VISIBLE, ATTRS.SHOW_TIME];
   }
 
 
@@ -54,18 +51,21 @@ export default class Toast extends HTMLElement {
       return;
     }
 
-    const visible = (newValue === 'true');
+    if (name === ATTRS.SHOW_TIME) {
+      this.showTime = parseInt(newValue);
+    }
 
+    const visible = (newValue === '');
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
         'id': this.id,
-        [EVENTS.DETAIL_PROPS.VISIBLE]: visible,
+        'visible': visible,
       }
     }));
 
     clearTimeout(this.showTimeout);
-    if (newValue === 'true') {
-      this.showTimeout = window.setTimeout(() => this.setAttribute(ATTRS.VISIBLE, 'false'), this.showTime);
+    if (visible) {
+      this.showTimeout = window.setTimeout(() => this.removeAttribute(ATTRS.VISIBLE), this.showTime);
     }
   }
 
@@ -79,7 +79,6 @@ export default class Toast extends HTMLElement {
 
 
     /* SET DOM DATA */
-    this.setAttribute(ATTRS.VISIBLE, 'false');
     this.setAttribute('role', 'status');
     this.setAttribute('aria-live', 'polite');
 

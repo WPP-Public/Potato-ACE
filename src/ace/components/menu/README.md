@@ -47,8 +47,8 @@ The following SASS is applied to Menu. The SASS variables use `!default` so can 
 /* VARIABLES */
 $ace-menu-list-bg-color: #fff !default;
 $ace-menu-option-text-color: #000 !default;
-$ace-menu-selected-option-text-color: #fff !default;
 $ace-menu-selected-option-bg-color: $ace-color-selected !default;
+$ace-menu-selected-option-text-color: #fff !default;
 
 
 /* STYLES */
@@ -70,15 +70,17 @@ ace-menu {
     outline: none;
   }
 
-  &:not([ace-menu-list-visible="true"]) {
+  &:not([ace-menu-list-visible]) {
     display: none;
   }
 }
 
-[ace-menu-option]:hover,
-[ace-menu-option][aria-selected="true"] {
-  background: $ace-menu-selected-option-bg-color;
-  color: $ace-menu-selected-option-text-color;
+[ace-menu-option] {
+  &:hover,
+  &[aria-selected="true"] {
+    background: $ace-menu-selected-option-bg-color;
+    color: $ace-menu-selected-option-text-color;
+  }
 }
 
 
@@ -205,13 +207,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ### Styled Menu
 
-Example of a styled Menu with custom styles that mimic Google Material Design applied and included below.
- 
+An example of how Menu can be styled, with the applied CSS shown below.
+
 ```html
 <div class="styled-menu-container">
   <ace-menu class="styled-menu" id="styled-menu">
-    <button aria-label="Options" class="styled-menu__trigger" title="Options" >
-      <img alt="options icon" src="/img/more_vert.svg">
+    <button aria-label="View more options" title="View more options" class="styled-menu__trigger" >
     </button>
     <ul class="styled-menu__list">
       <li class="styled-menu__option">
@@ -239,44 +240,52 @@ Example of a styled Menu with custom styles that mimic Google Material Design ap
   }
 
   &__trigger {
-    background: none;
+    background: transparent;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 0;
+    font-size: 35px;
     height: 40px;
+    position: relative;
     transition: background-color .2s;
     width: 40px;
+
+    &:focus,
+    &:hover {
+      background-color: #00bed0;
+      color: white;
+    }
 
     &:focus {
       outline: none;
     }
 
-    &:focus,
-    &:hover {
-      background-color: #ccc;
-      color: white;
+    &::after {
+      content: '\2807';
+      display: inline-block;
+      left: 30%;
+      position: absolute;
+      top: 0;
     }
   }
 
   &__list {
     border-radius: 4px;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .42);
+    box-shadow: 0 2px 10px 0 #837b8b;
     padding: 8px 0;
   }
 
   &__option {
     align-items: center;
-    border-radius: 2px;
     cursor: pointer;
     display: flex;
     font-family: 'Roboto', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     padding: 10px 16px;
 
     &:hover,
     &[aria-selected="true"] {
-      background: #0893a7;
+      background: #41354d;
     }
 
     img {

@@ -1,19 +1,18 @@
-import {DEFAULT_SHOW_TIME, ATTRS, EVENTS, TOAST} from './toast';
+import {ATTRS, DEFAULT_SHOW_TIME, EVENTS, TOAST} from './toast';
 
 
 const IDS = {
   LONG_SHOW_TIME_TOAST: 'ace-toast-2',
+  LONG_SHOW_TIME_TOAST_BTN: 'long-show-time-toast-btn',
   SIMPLE_TOAST: 'ace-toast-1',
   SIMPLE_TOAST_BTN: 'simple-toast-btn',
-  LONG_SHOW_TIME_TOAST_BTN: 'long-show-time-toast-btn',
 };
 
 
 const toastInitChecks = () => {
   return cy.get('@toast')
-    .should('have.attr', ATTRS.VISIBLE, 'false')
     .should('have.attr', 'aria-live', 'polite')
-    .should('have.attr', 'role', 'status');
+    .and('have.attr', 'role', 'status');
 };
 
 
@@ -40,21 +39,38 @@ context(`Toast`, () => {
 
     it(`Should show when attribute ace-toast-visible is set to 'true' and hide after default show time`, () => {
       let expectedDetail = {
-        [EVENTS.DETAIL_PROPS.VISIBLE]: true,
-        id: TOAST_ID,
+        'id': TOAST_ID,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@toast')
-        .invoke('attr', ATTRS.VISIBLE, 'true')
+        .invoke('attr', ATTRS.VISIBLE, '')
         .then(() => {
           expectedDetail = {
-            [EVENTS.DETAIL_PROPS.VISIBLE]: false,
-            id: TOAST_ID,
+            'id': TOAST_ID,
+            'visible': false,
           };
           cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
             .wait(DEFAULT_SHOW_TIME)
             .get('@toast')
-            .should('have.attr', ATTRS.VISIBLE, 'false')
+            .should('not.have.attr', ATTRS.VISIBLE);
+        });
+    });
+
+
+    it(`Should change the show time when ace-toast-show-time attribute is changed`, () => {
+      const NEW_SHOW_TIME = 200;
+
+      cy.get('@toast')
+        .invoke('attr', ATTRS.SHOW_TIME, NEW_SHOW_TIME)
+        .then(() => {
+          cy.get('@toast')
+            .invoke('attr', ATTRS.VISIBLE, '')
+            .then(() => {
+              cy.wait(NEW_SHOW_TIME)
+                .get('@toast')
+                .should('not.have.attr', ATTRS.VISIBLE);
+            });
         });
     });
   });
@@ -72,27 +88,26 @@ context(`Toast`, () => {
 
     it(`Should show when attribute ace-toast-visible is set to 'true' and hide after specified show time`, () => {
       let expectedDetail = {
-        [EVENTS.DETAIL_PROPS.VISIBLE]: true,
-        id: TOAST_ID,
+        'id': TOAST_ID,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@toast')
         .invoke('attr', ATTRS.SHOW_TIME)
         .then((showTime) => {
           cy.get('@toast')
-            .invoke('attr', ATTRS.VISIBLE, 'true')
+            .invoke('attr', ATTRS.VISIBLE, '')
             .then(() => {
               expectedDetail = {
-                [EVENTS.DETAIL_PROPS.VISIBLE]: false,
-                id: TOAST_ID,
+                'id': TOAST_ID,
+                'visible': false,
               };
               cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
                 .wait(+showTime)
                 .get('@toast')
-                .should('have.attr', ATTRS.VISIBLE, 'false')
+                .should('not.have.attr', ATTRS.VISIBLE);
             });
-        })
-
+        });
     });
   });
 });

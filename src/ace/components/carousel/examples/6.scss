@@ -6,12 +6,15 @@
     }
 
     &__slide {
-      display: block;
       flex-shrink: 0;
       width: 100%;
 
       &--hidden {
         visibility: hidden;
+      }
+
+      &:not([ace-carousel-slide-selected]) {
+        display: block;
       }
     }
   }

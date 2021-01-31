@@ -1,12 +1,15 @@
-<label id="styled-combobox-label" class="styled-combobox-label">Search:</label>
-<ace-combobox id="search-combobox" ace-combobox-no-input-update class="styled-combobox">
-  <div class="styled-combobox__wrapper">
-    <input aria-labelledby="styled-combobox-label" class="styled-combobox__input"/>
-    <ul aria-label="Search results" class="styled-combobox__list"></ul>
-  </div>
-  <div>
-    <p aria-live="polite" class="styled-combobox__status"></p>
-  </div>
-</ace-combobox>
+<p aria-live="polite" role="status" id="combobox-status"></p>
 
-<p id="chosen-search-result" aria-live="polite"></p>
+<div>
+  <label id="search-combobox-label">Search:</label>
+  <ace-combobox id="search-combobox" ace-combobox-no-input-update>
+    <input aria-labelledby="search-combobox-label"/>
+    <ul aria-label="Search results"></ul>
+  </ace-combobox>
+</div>
+
+<p aria-live="polite" role="status" id="chosen-search-result"></p>
+
+<hr>
+
+<button id="reset-example-btn">Reset example</button>

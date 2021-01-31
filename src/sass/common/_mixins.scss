@@ -145,8 +145,8 @@
   transition: background-color $transition;
   width: $size;
 
-  &:hover,
-  &:focus {
+  &:focus,
+  &:hover {
     background-color: map-get($pot-blue, 4);
 
     &::after {

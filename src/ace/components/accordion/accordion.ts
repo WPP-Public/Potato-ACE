@@ -23,10 +23,6 @@ export const ATTRS = {
 
 // Add names of any custom events used, prefixed with ACCORDION
 export const EVENTS = {
-  DETAIL_PROPS: {
-    PANEL_NUMBER: 'panelNumber',
-    PANEL_VISIBLE: 'panelVisible',
-  },
   IN: {
     HIDE_PANEL: `${ACCORDION}-hide-panel`,
     HIDE_PANELS: `${ACCORDION}-hide-panels`,
@@ -47,8 +43,8 @@ export default class Accordion extends HTMLElement {
   private headerEls: NodeListOf<HTMLElement>;
   private initialised = false;
   private panelEls: NodeListOf<HTMLElement>;
-  private triggerEls: Array<HTMLButtonElement>;
   private singleVisiblePanel: boolean;
+  private triggerEls: Array<HTMLButtonElement>;
 
 
   constructor() {
@@ -89,13 +85,13 @@ export default class Accordion extends HTMLElement {
 
     /* INITIALISATION */
     if (this.singleVisiblePanel) {
-      const visiblePanelEls = this.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}="true"]`);
+      const visiblePanelEls = this.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`);
       if (visiblePanelEls.length > 1) {
         visiblePanelEls.forEach((visiblePanelEl, index) => {
           if (index === 0) {
             return;
           }
-          visiblePanelEl.setAttribute(ATTRS.PANEL_VISIBLE, 'false');
+          visiblePanelEl.removeAttribute(ATTRS.PANEL_VISIBLE);
         });
       }
     }
@@ -146,10 +142,10 @@ export default class Accordion extends HTMLElement {
       case EVENTS.IN.SHOW_PANEL:
       case EVENTS.IN.TOGGLE_PANEL: {
         const detail = e['detail'];
-        if (!detail || !detail[EVENTS.DETAIL_PROPS.PANEL_NUMBER]) {
+        if (!detail || !detail['panelNumber']) {
           return;
         }
-        const panelIndex = detail[EVENTS.DETAIL_PROPS.PANEL_NUMBER] - 1;
+        const panelIndex = detail['panelNumber'] - 1;
         if (e.type === EVENTS.IN.HIDE_PANEL) {
           this.hidePanel(panelIndex);
         } else if (e.type === EVENTS.IN.SHOW_PANEL) {
@@ -181,18 +177,18 @@ export default class Accordion extends HTMLElement {
   */
   private hidePanel(panelIndex: number): void {
     const panelEl = this.panelEls[panelIndex];
-    if (panelEl.getAttribute(ATTRS.PANEL_VISIBLE) === 'false') {
+    if (!panelEl.hasAttribute(ATTRS.PANEL_VISIBLE)) {
       return;
     }
 
-    panelEl.setAttribute(ATTRS.PANEL_VISIBLE, 'false');
+    panelEl.removeAttribute(ATTRS.PANEL_VISIBLE);
     this.triggerEls[panelIndex].setAttribute('aria-expanded', 'false');
 
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
         'id': this.id,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: false,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': false,
       }
     }));
   }
@@ -278,7 +274,7 @@ export default class Accordion extends HTMLElement {
       }
 
       // Set trigger attributes
-      const panelVisible = correspondingPanel.getAttribute(ATTRS.PANEL_VISIBLE) === 'true';
+      const panelVisible = correspondingPanel.hasAttribute(ATTRS.PANEL_VISIBLE);
       triggerEl.setAttribute(ATTRS.TRIGGER, '');
       triggerEl.setAttribute('aria-controls', `${this.id}-panel-${index + 1}`);
       triggerEl.setAttribute('aria-expanded', panelVisible ? 'true' : 'false');
@@ -287,7 +283,7 @@ export default class Accordion extends HTMLElement {
       correspondingPanel.setAttribute('aria-labelledby', triggerEl.id);
       correspondingPanel.setAttribute('role', 'region');
       if (!panelVisible) {
-        correspondingPanel.setAttribute(ATTRS.PANEL_VISIBLE, 'false');
+        correspondingPanel.removeAttribute(ATTRS.PANEL_VISIBLE);
       }
     });
   }
@@ -298,11 +294,11 @@ export default class Accordion extends HTMLElement {
   */
   private showPanel(panelIndex: number): void {
     const panelEl = this.panelEls[panelIndex];
-    if (panelEl.getAttribute(ATTRS.PANEL_VISIBLE) === 'true') {
+    if (panelEl.hasAttribute(ATTRS.PANEL_VISIBLE)) {
       return;
     }
 
-    panelEl.setAttribute(ATTRS.PANEL_VISIBLE, 'true');
+    panelEl.setAttribute(ATTRS.PANEL_VISIBLE, '');
     this.triggerEls[panelIndex].setAttribute('aria-expanded', 'true');
 
     // Hide all other panels if single visible panel Accordion
@@ -311,7 +307,7 @@ export default class Accordion extends HTMLElement {
         if (index === panelIndex) {
           return;
         }
-        panelEl.setAttribute(ATTRS.PANEL_VISIBLE, 'false');
+        panelEl.removeAttribute(ATTRS.PANEL_VISIBLE);
         this.triggerEls[index].setAttribute('aria-expanded', 'false');
       });
     }
@@ -319,8 +315,8 @@ export default class Accordion extends HTMLElement {
     window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
         'id': this.id,
-        [EVENTS.DETAIL_PROPS.PANEL_NUMBER]: panelIndex + 1,
-        [EVENTS.DETAIL_PROPS.PANEL_VISIBLE]: true,
+        'panelNumber': panelIndex + 1,
+        'panelVisible': true,
       }
     }));
   }
@@ -330,7 +326,7 @@ export default class Accordion extends HTMLElement {
     Toggle panel visibility
   */
   private togglePanel(panelIndex: number): void {
-    const panelVisible = this.panelEls[panelIndex].getAttribute(ATTRS.PANEL_VISIBLE) === 'true';
+    const panelVisible = this.panelEls[panelIndex].hasAttribute(ATTRS.PANEL_VISIBLE);
     if (panelVisible) {
       this.hidePanel(panelIndex);
     } else {

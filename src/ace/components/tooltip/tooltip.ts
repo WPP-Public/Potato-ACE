@@ -21,9 +21,8 @@ export const EVENTS = {
     SHOW: `${TOOLTIP}-show`,
   },
   OUT: {
-    HIDDEN: `${TOOLTIP}-hidden`,
+    CHANGED: `${TOOLTIP}-changed`,
     READY: `${TOOLTIP}-ready`,
-    SHOWN: `${TOOLTIP}-shown`,
   },
 };
 
@@ -33,8 +32,9 @@ export const DEFAULT_DELAY = 1000;
 /* CLASS */
 export default class Tooltip extends HTMLElement {
   private delay: number;
-  private targetEl: Element;
+  private isDisabled: boolean;
   private showTimeout: number|null = null;
+  private targetEl: Element;
 
 
   constructor() {
@@ -46,6 +46,18 @@ export default class Tooltip extends HTMLElement {
     this.keydownHandler = this.keydownHandler.bind(this);
     this.show = this.show.bind(this);
     this.tooltipIsPrimaryLabel = this.tooltipIsPrimaryLabel.bind(this);
+  }
+
+
+  static get observedAttributes(): Array<string> {
+    return ['disabled'];
+  }
+
+
+  private attributeChangedCallback(name: string, oldValue: string, newValue: string): void {
+    if (oldValue !== newValue) {
+      this.isDisabled = !(newValue === null);
+    }
   }
 
 
@@ -111,6 +123,22 @@ export default class Tooltip extends HTMLElement {
 
 
   /*
+    Hide tooltip
+  */
+  private hide(): void {
+    clearTimeout(this.showTimeout);
+    this.removeAttribute(ATTRS.VISIBLE);
+
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+      'detail': {
+        'id': this.id,
+        'visible': false,
+      }
+    }));
+  }
+
+
+  /*
     Handle keydown event
   */
   private keydownHandler(e: KeyboardEvent): void {
@@ -128,31 +156,21 @@ export default class Tooltip extends HTMLElement {
 
 
   /*
-    Hide tooltip
-  */
-  private hide(): void {
-    clearTimeout(this.showTimeout);
-    this.removeAttribute(ATTRS.VISIBLE);
-
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.HIDDEN, {
-      'detail': {
-        'id': this.id,
-      }
-    }));
-  }
-
-
-  /*
     Show tooltip
   */
   private show(): void {
+    if (this.isDisabled) {
+      return;
+    }
+
     clearTimeout(this.showTimeout);
     handleOverflow(this);
     this.showTimeout = window.setTimeout(() => this.setAttribute(ATTRS.VISIBLE, ''), this.delay);
 
-    window.dispatchEvent(new CustomEvent(EVENTS.OUT.SHOWN, {
+    window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
       'detail': {
         'id': this.id,
+        'visible': true,
       }
     }));
   }

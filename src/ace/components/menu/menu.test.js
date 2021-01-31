@@ -34,9 +34,9 @@ const initChecks = () => {
         .get('@menuList')
         .should('have.id', `${$menu.attr('id')}-list`)
         .and('have.attr', ATTRS.LIST, '')
-        .and('have.attr', ATTRS.LIST_VISIBLE, 'false')
         .and('have.attr', 'role', 'menu')
-        .and('have.attr', 'tabindex', '-1');
+        .and('have.attr', 'tabindex', '-1')
+        .and('not.have.attr', ATTRS.LIST_VISIBLE);
     });
 };
 
@@ -60,7 +60,7 @@ const checkOptionSelected = (optionIndex) => {
     .then(($menu) => {
       cy.get('@menuList')
         .should('have.focus')
-        .and('have.attr', ATTRS.LIST_VISIBLE, 'true')
+        .and('have.attr', ATTRS.LIST_VISIBLE, '')
         .and('have.attr', 'aria-activedescendant', getOptionId($menu.attr('id'), optionIndex))
         .get('@menuOptions')
         .each(($option, index) => {
@@ -105,7 +105,7 @@ context(`Menu`, () => {
           .click()
           .should('have.attr', 'aria-expanded', 'true')
           .get('@menuList')
-          .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+          .should('have.attr', ATTRS.LIST_VISIBLE, '')
           .get('@menuOptions')
           .each((option) => cy.wrap(option).should('have.attr', 'aria-selected', 'false'));
       });
@@ -119,18 +119,18 @@ context(`Menu`, () => {
           .click()
           .should('not.have.attr', 'aria-expanded')
           .get('@menuList')
-          .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+          .should('not.have.attr', ATTRS.LIST_VISIBLE);
       });
 
 
       it(`Clicking option should choose it and hide list`, () => {
         const optionIndex = 2;
         const expectedDetail = {
-          chosenOption: {
-            id: getOptionId(MENU_ID, optionIndex),
-            index: optionIndex
+          'chosenOption': {
+            'id': getOptionId(MENU_ID, optionIndex),
+            'index': optionIndex
           },
-          id: MENU_ID,
+          'id': MENU_ID,
         };
         cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
           .get('@menuTrigger')
@@ -139,7 +139,7 @@ context(`Menu`, () => {
           .eq(optionIndex)
           .click()
           .get('@menuList')
-          .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+          .should('not.have.attr', ATTRS.LIST_VISIBLE);
       });
     });
 
@@ -152,7 +152,7 @@ context(`Menu`, () => {
             .type('{esc}')
             .should('not.have.attr', 'aria-expanded')
             .get('@menuList')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+            .should('not.have.attr', ATTRS.LIST_VISIBLE);
         });
 
         // The rest of the tests in this group only pass if Cypress window is active window due to issues with how it fires the blur event
@@ -211,7 +211,7 @@ context(`Menu`, () => {
             .type('{enter}')
             .get('@menuList')
             .type('{esc}')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false')
+            .should('not.have.attr', ATTRS.LIST_VISIBLE)
             .get('@menuTrigger')
             .should('not.have.attr', 'aria-expanded');
         });
@@ -233,11 +233,11 @@ context(`Menu`, () => {
 
         it(`Pressing ENTER on list should choose selected option and hide list`, () => {
           const expectedDetail = {
-            chosenOption: {
-              id: getOptionId(MENU_ID, 0),
-              index: 0
+            'chosenOption': {
+              'id': getOptionId(MENU_ID, 0),
+              'index': 0
             },
-            id: MENU_ID,
+            'id': MENU_ID,
           };
           cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
             .get('@menuTrigger')
@@ -245,7 +245,7 @@ context(`Menu`, () => {
             .type('{enter}')
             .get('@menuList')
             .type('{enter}')
-            .should('have.attr', ATTRS.LIST_VISIBLE, 'false');
+            .should('not.have.attr', ATTRS.LIST_VISIBLE);
         });
 
 
@@ -293,7 +293,7 @@ context(`Menu`, () => {
 
 
     it(`Should respond to custom 'ace-menu-update-options' event correctly`, () => {
-      cy.addCustomEventListener(EVENTS.OUT.READY, {id: MENU_ID})
+      cy.addCustomEventListener(EVENTS.OUT.READY, {'id': MENU_ID})
         .get(`#${IDS.ADD_OPTION_BTN}`)
         .click()
         .click()

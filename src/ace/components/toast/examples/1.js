@@ -6,6 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const showToastBtn = document.getElementById('simple-toast-btn');
   const showSecondToastBtn = document.getElementById('long-show-time-toast-btn');
 
-  showToastBtn.addEventListener('click', () => toastEl.setAttribute(ATTRS.VISIBLE, 'true'));
-  showSecondToastBtn.addEventListener('click', () => secondToastEl.setAttribute(ATTRS.VISIBLE, 'true'));
+  showToastBtn.addEventListener('click', () => toastEl.setAttribute(ATTRS.VISIBLE, ''));
+  showSecondToastBtn.addEventListener('click', () => secondToastEl.setAttribute(ATTRS.VISIBLE, ''));
 });

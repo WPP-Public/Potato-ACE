@@ -77,7 +77,6 @@ export default class Menu extends HTMLElement {
 
     this.listEl.id = listId;
     this.listEl.setAttribute(ATTRS.LIST, '');
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
     this.listEl.setAttribute('aria-labelledby', triggerId);
     this.listEl.setAttribute('role', 'menu');
     this.listEl.setAttribute('tabindex', '-1');
@@ -176,7 +175,7 @@ export default class Menu extends HTMLElement {
     Deselect option and hide list
   */
   private hideList(): void {
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'false');
+    this.listEl.removeAttribute(ATTRS.LIST_VISIBLE);
     this.triggerEl.removeAttribute('aria-expanded');
     this.listVisible = false;
 
@@ -234,7 +233,7 @@ export default class Menu extends HTMLElement {
   */
   private showList(): void {
     this.triggerEl.setAttribute('aria-expanded', 'true');
-    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, 'true');
+    this.listEl.setAttribute(ATTRS.LIST_VISIBLE, '');
     handleOverflow(this.listEl);
     this.listVisible = true;
   }

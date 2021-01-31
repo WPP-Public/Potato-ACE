@@ -32,7 +32,6 @@ const initChecks = () => {
         .and('have.attr', 'aria-haspopup', 'listbox')
         .get('@selectList')
         .should('have.attr', ATTRS.LIST, '')
-        .and('have.attr', ATTRS.LIST_VISIBLE, 'false')
         .and('have.attr', 'role', 'listbox')
         .and('have.attr', 'tabindex', '-1');
     });
@@ -63,7 +62,7 @@ const checkOptionSelected = (optionIndex) => {
         .eq(0)
         .then(($firstOption) => cy.get('@selectTrigger').should('have.text', $firstOption.text()))
         .get('@selectList')
-        .should('have.attr', ATTRS.LIST_VISIBLE, 'true')
+        .should('have.attr', ATTRS.LIST_VISIBLE, '')
         .and('have.attr', 'aria-activedescendant', getOptionId($select.attr('id'), optionIndex))
         .get('@selectOptions')
         .each(($option, index) => {
@@ -150,11 +149,11 @@ context(`Select`, () => {
       it(`Clicking option should choose it, hide list and update trigger text`, () => {
         const optionIndex = 6;
         const expectedDetail = {
-          chosenOption: {
-            id: getOptionId(SELECT_ID, optionIndex),
-            index: optionIndex
+          'chosenOption': {
+            'id': getOptionId(SELECT_ID, optionIndex),
+            'index': optionIndex
           },
-          id: SELECT_ID,
+          'id': SELECT_ID,
         };
         cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
           .get('@selectTrigger')
@@ -263,11 +262,11 @@ context(`Select`, () => {
         it(`Pressing SPACE key on list should choose selected option`, () => {
           const optionIndex = 1;
           const expectedDetail = {
-            chosenOption: {
-              id: getOptionId(SELECT_ID, optionIndex),
-              index: optionIndex
+            'chosenOption': {
+              'id': getOptionId(SELECT_ID, optionIndex),
+              'index': optionIndex
             },
-            id: SELECT_ID,
+            'id': SELECT_ID,
           };
 
           cy.addCustomEventListener(EVENTS.OUT.OPTION_CHOSEN, expectedDetail)
@@ -395,7 +394,7 @@ context(`Select`, () => {
 
 
     it(`Should respond to custom 'ace-select-update-options' event correctly`, () => {
-      cy.addCustomEventListener(EVENTS.OUT.READY, {id: SELECT_ID})
+      cy.addCustomEventListener(EVENTS.OUT.READY, {'id': SELECT_ID})
         .get(`#${IDS.ADD_OPTION_BTN}`)
         .click()
         .click()

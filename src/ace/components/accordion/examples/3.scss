@@ -4,16 +4,13 @@
 
     [ace-accordion-panel] {
       display: block;
-      overflow: hidden;
-    }
-
-    [ace-accordion-panel-visible="false"] {
       max-height: 0;
+      overflow: hidden;
       transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
       visibility: hidden;
     }
 
-    [ace-accordion-panel-visible="true"] {
+    [ace-accordion-panel-visible] {
       max-height: 180px;
       transition: max-height $trans-duration ease-in;
       visibility: visible;

@@ -4,9 +4,9 @@
 /* VARIABLES */
 $ace-tooltip-base-transform: translateX(-50%) !default;
 $ace-tooltip-bg-color: #000 !default;
+$ace-tooltip-gap: 10px !default;
 $ace-tooltip-padding: 4px 8px !default;
 $ace-tooltip-text-color: #fff !default;
-$ace-tooltip-gap: 10px !default;
 
 
 /* STYLES */
@@ -25,17 +25,16 @@ ace-tooltip {
   position: absolute;
   top: 100%;
   transform: $ace-tooltip-base-transform;
-  visibility: hidden;
   z-index: $ace-tooltip-list-z-index;
+
+  &:not([ace-tooltip-visible]) {
+    visibility: hidden;
+  }
 
   &[ace-u-float-right],
   &[ace-u-float-left] {
     transform: translateX(0);
   }
-}
-
-[ace-tooltip-visible] {
-  visibility: unset;
 }
 
 [ace-tooltip-nowrap] {

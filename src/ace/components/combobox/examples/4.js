@@ -1,23 +1,21 @@
-import {EVENTS} from '/ace/components/combobox/combobox.js';
-import {KEYS} from '../../../common/constants.js';
-import {keyPressedMatches} from '../../../common/functions.js';
+import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
 
-export const fakeDelay = 3000;
-
-const comboboxId = 'search-combobox';
+export const FAKE_DELAY = 3000;
+const COMBOBOX_ID = 'search-combobox';
 
 document.addEventListener('DOMContentLoaded', () => {
   let optionChosen, searching = false;
-  const comboboxEl = document.getElementById(comboboxId);
-  const comboboxInputEl = comboboxEl.querySelector('.styled-combobox__input');
-  const comboboxStatusEl = comboboxEl.querySelector('.styled-combobox__status');
-  const comboboxListEl = comboboxEl.querySelector('.styled-combobox__list');
   const chosenResultEl = document.getElementById('chosen-search-result');
+  const comboboxStatusEl = document.getElementById('combobox-status');
+  const comboboxEl = document.getElementById(COMBOBOX_ID);
+  const resetExampleBtn = document.getElementById('reset-example-btn');
+  const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
+  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
 
   // Search when ENTER key pressed
   comboboxInputEl.addEventListener('keydown', async (e) => {
     const keyPressed = e.key || e.which || e.keyCode;
-    if (!keyPressedMatches(keyPressed, KEYS.ENTER)) {
+    if (!(keyPressed === 13 || keyPressed === 'Enter')) {
       return;
     }
 
@@ -27,13 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Fake search
-    if (searching) {
+    if (searching || comboboxInputEl.value === '') {
       return;
     }
     searching = true;
     // Update status element to inform user there will be a delay
     comboboxStatusEl.textContent = 'Searching...';
+    comboboxStatusEl.setAttribute('aria-busy', 'true');
+    comboboxListEl.innerHTML = '';
+
     // Simulate an API reponse delay
     const results = await new Promise(resolve => setTimeout(() => {
       const data = [];
@@ -41,9 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
         data.push({id: `result-${i}`, text: `Result ${i}`});
       }
       resolve(data);
-    }, fakeDelay));
+    }, FAKE_DELAY));
 
     // Add results to DOM
+    comboboxStatusEl.setAttribute('aria-busy', 'false');
     comboboxStatusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's' } found`;
     comboboxListEl.innerHTML = '';
     results.forEach((result) => {
@@ -68,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show results list when options intialised
   window.addEventListener(EVENTS.OUT.OPTIONS_UPDATED, (e) => {
     const detail = e['detail'];
-    if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
+    if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
       return;
     }
     comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Listen for chosen options
   window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) => {
     const detail = e['detail'];
-    if (!detail || !detail['id'] || detail['id'] !== comboboxId) {
+    if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
       return;
     }
     optionChosen = true;
@@ -85,5 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hide list
     comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
+  });
+
+  // Show list when clicking on input if list has options
+  resetExampleBtn.addEventListener('click', () => {
+    chosenResultEl.textContent = '';
+    comboboxStatusEl.textContent = '';
+    comboboxInputEl.value = '';
+    comboboxListEl.innerHTML = '';
   });
 });

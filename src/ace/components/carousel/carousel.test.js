@@ -155,9 +155,9 @@ const initChecks = (id) => {
 
 const getExpectedDetailObj = (id, prevSlideNumber, newSlideNumber) => {
   const expectedDetail = {
-    currentlySelectedSlide: newSlideNumber,
-    id,
-    previouslySelectedSlide: prevSlideNumber,
+    'currentlySelectedSlide': newSlideNumber,
+    'id': id,
+    'previouslySelectedSlide': prevSlideNumber,
   };
   return expectedDetail;
 };
@@ -457,7 +457,7 @@ context(`Carousel`, () => {
 
 
       it(`Should pause automatic slide show when mouse hovers over Carousel`, () => {
-        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {id: CAROUSEL_ID})
+        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {'id': CAROUSEL_ID})
           .get('@carousel')
           .trigger('mouseenter', 'bottomRight', {eventConstructor: 'MouseEvent'})
           .get('@carousel')
@@ -472,7 +472,7 @@ context(`Carousel`, () => {
 
 
       it(`Should pause automatic slide show when a descendant of Carousel, other than toggle button, receives keyboard focus`, () => {
-        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {id: CAROUSEL_ID})
+        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {'id': CAROUSEL_ID})
           .get('@carousel')
           .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
           .get('@carouselPrevSlideBtn')
@@ -482,14 +482,14 @@ context(`Carousel`, () => {
           .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
           .get('@carouselSlidesWrapper')
           .should('have.attr', 'aria-live', 'polite')
-          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {id: CAROUSEL_ID})
+          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {'id': CAROUSEL_ID})
           .get('@carouselAutoSlideShowBtn')
           .focus()
           .get('@carousel')
           .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
           .get('@carouselSlidesWrapper')
           .should('have.attr', 'aria-live', 'off')
-          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {id: CAROUSEL_ID})
+          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, {'id': CAROUSEL_ID})
           .get('@carouselNextSlideBtn')
           .focus()
           .get('@carousel')
@@ -506,7 +506,7 @@ context(`Carousel`, () => {
 
 
       it(`Should toggle automatic slide show when toggle button clicked`, () => {
-        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {id: CAROUSEL_ID})
+        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {'id': CAROUSEL_ID})
           .get('@carousel')
           .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
           .get('@carouselAutoSlideShowBtn')
@@ -516,7 +516,7 @@ context(`Carousel`, () => {
           .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
           .get('@carouselSlidesWrapper')
           .should('have.attr', 'aria-live', 'polite')
-          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {id: CAROUSEL_ID})
+          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {'id': CAROUSEL_ID})
           .get('@carouselAutoSlideShowBtn')
           .click()
           .get('@carousel')
@@ -528,13 +528,13 @@ context(`Carousel`, () => {
 
 
       it(`Should toggle automatic slide show when custom events dispatched`, () => {
-        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {id: CAROUSEL_ID})
+        cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {'id': CAROUSEL_ID})
           .get(`#${IDS.STOP_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN}`)
           .click()
           .get('@carousel')
           .should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
           .and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
-          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {id: CAROUSEL_ID})
+          .addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {'id': CAROUSEL_ID})
           .get(`#${IDS.START_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN}`)
           .click()
           .get('@carousel')
@@ -545,7 +545,7 @@ context(`Carousel`, () => {
   });
 
 
-  context(`Custom events Carousel`, () => {
+  context(`Carousel controlled using custom events`, () => {
     const CAROUSEL_ID = IDS.CUSTOM_EVENTS_CAROUSEL;
 
 
@@ -569,7 +569,7 @@ context(`Carousel`, () => {
 
 
     it(`Should update Carousel when a slide is added or removed and the UPDATE custom event is dispatched`, () => {
-      cy.addCustomEventListener(EVENTS.OUT.READY, {id: CAROUSEL_ID})
+      cy.addCustomEventListener(EVENTS.OUT.READY, {'id': CAROUSEL_ID})
         .get('@carousel')
         .invoke('attr', ATTRS.SELECTED_SLIDE, 3)
         .get('@carouselNextSlideBtn')
