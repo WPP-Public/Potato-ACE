@@ -1,4 +1,4 @@
-image: node:13.1.0-alpine3.10
+image: node:14.15.4-alpine3.12
 
 
 variables:
@@ -6,12 +6,12 @@ variables:
   CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
 
 
-cache:
-  key: $CI_COMMIT_REF_NAME
+cache: &global_cache
+  key: ${CI_COMMIT_REF_NAME}
   paths:
-    - .npm
-    - node_modules
-    - cache/cypress
+    - .npm/
+    - node_modules/
+    - cache/cypress/
   policy: pull
 
 
@@ -28,13 +28,9 @@ stages:
   stage: prepare
   script:
     - npm set progress=false
-    - npm ci --prefer-offline
+    - npm ci --cache .npm --prefer-offline
   cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - .npm
-      - node_modules
-      - cache/cypress
+    <<: *global_cache
     policy: push
 
 # Install deps if package.json or package-lock.json changed
@@ -84,11 +80,7 @@ Lint without cache:
   before_script:
     - npm i --prefer-cache
   cache:
-    key: $CI_COMMIT_REF_NAME
-    paths:
-      - .npm
-      - node_modules
-      - cache/cypress
+    <<: *global_cache
     policy: push
 
 Build without cache:
@@ -103,7 +95,7 @@ Build without cache:
 # TEST STAGE
 .test:
   stage: test
-  image: cypress/browsers:node13.1.0-chrome78-ff70
+  image: cypress/browsers:node14.15.0-chrome86-ff82
   script:
     - npm run test:ci:prep
     - npm run test:ci:$BROWSER
@@ -122,6 +114,13 @@ Firefox:
   extends: .test
   variables:
     BROWSER: 'firefox'
+
+# Edge not working atm need to investigate why
+# Edge:
+#   image: cypress/browsers:node14.10.1-edge88
+#   extends: .test
+#   variables:
+#     BROWSER: 'edge'
 
 
 # DEPLOY STAGE

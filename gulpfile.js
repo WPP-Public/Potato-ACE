@@ -41,11 +41,12 @@ const prodArgGiven = () => {return process.argv[process.argv.length - 1] === '--
 // Run given bash command
 const runCmd = (cmd, cb) => {
   return new Promise((res, rej) => {
-    exec(cmd, (err) => {
+    exec(cmd, (err, stdout, stderr) => {
       if (err) {
         rej(err);
         return;
       }
+      console.error(stderr);
       res();
     }).stdout.pipe(process.stdout);
   });
@@ -94,8 +95,10 @@ gulp.task('img', () => {
 // Convert given gulp src SASS file(s) to CSS with sourcemaps, autoprefix and put in dist
 const convertSass = (src, isProd=false) => {
   return gulp.src(src, {sourcemaps: isProd})
-    .pipe(sass({outputStyle: 'expanded'})
-    .on('error', sass.logError))
+    .pipe(
+      sass({outputStyle: 'expanded'})
+      .on('error', sass.logError)
+    )
     .pipe(postcss([autoprefixer]))
     .pipe(gulpif(isProd, minify()))
     .pipe(gulp.dest(`${DIST}/css`, {sourcemaps: isProd}))
