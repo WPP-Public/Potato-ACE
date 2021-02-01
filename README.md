@@ -58,9 +58,14 @@ To create a new component:
     - For smoother video looping have the component start and end the video in it's initial state.
     - Save the file as *\<component-name>.mov*
     - Make sure video is as short as possible with a maximum length of 15 seconds
-    - Convert to mp4 using the following command, replacing `<component-name>` with the component name
+    - Install ffmpeg. This can be done using brew
+      ```sh
+      brew install ffmpeg
       ```
-      ffmpeg -i <component-name>.mov -vcodec h264 -acodec mp2 <component-name>.mp4
+    - Convert the mov file to mp4 using ffmpeg and the following command, replacing `<component-name>` with the component name
+      ```sh
+      COMPONENT=<component-name>
+      ffmpeg -i $COMPONENT.mov -vcodec h264 -acodec mp2 $COMPONENT.mp4
       ```
     - Add the mp4 file to a directory named *media* in the component directory
 
