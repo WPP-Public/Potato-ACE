@@ -10,7 +10,7 @@ Tooltip conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '<path-to-node_modules>/@potato/ace/components/tooltip/tooltip'
+@import '<path-to-node_modules>/@potato/ace/components/tooltip/tooltip';
 ```
 
 Then import the class into your JavaScript entry point:

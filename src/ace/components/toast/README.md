@@ -10,7 +10,7 @@ Toast conforms to the [W3C WAI-ARIA authoring practices](http://w3.org/WAI/WCAG2
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '<path-to-node_modules>/@potato/ace/components/toast/toast'
+@import '<path-to-node_modules>/@potato/ace/components/toast/toast';
 ```
 
 Then import the class into your JavaScript entry point:

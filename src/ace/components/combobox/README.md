@@ -10,7 +10,7 @@ Combobox conforms to the ARIA 1.0 pattern of [W3C's WAI-ARIA authoring practices
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '<path-to-node_modules>/@potato/ace/components/combobox/combobox'
+@import '<path-to-node_modules>/@potato/ace/components/combobox/combobox';
 ```
 
 Then import the class into your JavaScript entry point:

@@ -12,7 +12,7 @@
 First import the styles into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file:
 
 ```scss
-@import '<path-to-node_modules>/@potato/ace/components/template/template'
+@import '<path-to-node_modules>/@potato/ace/components/template/template';
 ```
 
 Then import the class into your JavaScript entry point:
