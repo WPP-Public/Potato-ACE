@@ -1,8 +1,8 @@
 # Project set-up
 
-1. Use node.js v13.1.0 using
+1. Use node.js v14.15.4 using
     ```
-    nvm install 13.1.0
+    nvm install 14.15.4
     ```
 2. Install gulp cli globally using
     ```
