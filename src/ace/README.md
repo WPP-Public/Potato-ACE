@@ -28,7 +28,7 @@ and import the class into your main JavaScript file:
 import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>';
 ```
 
-Specific instructions for how to use a particular component can be found in the component's README.md file located at *@potato/ace/\<component-name>/READE.md*, for example, the Accordion component instructions can be found in *@potato/ace/accordion/README.md*. The same instructions can be also found on the component's webpage along with live examples.
+Specific instructions for how to use a particular component can be found in the component's *README* file located at *\<path-to-node_modules>/@potato/ace/\<component-name>/READE.md*, for example, the Accordion component instructions can be found in *\<path-to-node_modules>/@potato/ace/accordion/README.md*. The same instructions can be also found on the component's webpage along with live examples.
 
 ## Component SASS variables
 
