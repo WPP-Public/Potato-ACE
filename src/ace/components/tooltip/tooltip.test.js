@@ -16,9 +16,8 @@ const getEls = (id) => {
 };
 
 
-const tooltipInitChecks = (id) => {
+const tooltipInitChecks = () => {
   return cy.get('@tooltip')
-    .should('have.id', id)
     .and('have.attr', 'role', 'tooltip')
     .get('@tooltipTarget')
     .should('have.attr', ATTRS.TARGET);
@@ -43,7 +42,7 @@ context(`Tooltip`, () => {
     beforeEach(() => getEls(TOOLTIP_ID));
 
 
-    it(`Tooltip should initialise correctly`, () => tooltipInitChecks(TOOLTIP_ID));
+    it(`Tooltip should initialise correctly`, () => tooltipInitChecks());
 
 
     it(`Content of Tooltip for target with text content should be treated as supplimentary information`, () => {

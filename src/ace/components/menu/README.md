@@ -28,7 +28,7 @@ Menu must have both a descendant button, to show the hidden list of options, and
 
 ## Usage
 
-The list of options is displayed when users click on the trigger or press <kbd>&#8593;</kbd>, <kbd>&#8595;</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focussed, with <kbd>&#8593;</kbd> also selecting the last option in the list and the other three keys also selecting the first option. The list is aware of it's position in the window and ensures that it is fully visible in the viewport. It will hence appear below the trigger and aligned to it's left edge if there is enough space, otherwise it will appear above and/or aligned to the right edge, as necessary. Clicking outside a shown list or pressing <kdb>Esc</kbd> hides the list.
+The list of options is displayed when users click on the trigger or press <kbd>&#8593;</kbd>, <kbd>&#8595;</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focused, with <kbd>&#8593;</kbd> also selecting the last option in the list and the other three keys also selecting the first option. The list is aware of it's position in the window and ensures that it is fully visible in the viewport. It will hence appear below the trigger and aligned to it's left edge if there is enough space, otherwise it will appear above and/or aligned to the right edge, as necessary. Clicking outside a shown list or pressing <kdb>Esc</kbd> hides the list.
 
 Clicking on an option or navigating to it using <kbd>&#8593;</kbd> or <kbd>&#8595;</kbd> and pressing <kbd>Enter</kbd> will select the option, hide the list and dispatch the `ace-menu-option-chosen` custom event.
 

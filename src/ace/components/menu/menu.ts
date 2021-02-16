@@ -163,9 +163,8 @@ export default class Menu extends HTMLElement {
     Handle focusout event
   */
   private focusOutHandler(e: MouseEvent): void {
-    const blurredEl = e.target;
-    const focussedEl = e.relatedTarget as HTMLElement;
-    if (!focussedEl || !focussedEl.closest(MENU) || (blurredEl === this.listEl && focussedEl === this.triggerEl)) {
+    const focusedEl = e.relatedTarget as HTMLElement;
+    if (!focusedEl || !focusedEl.closest(MENU)) {
       this.hideList();
     }
   }
@@ -175,6 +174,10 @@ export default class Menu extends HTMLElement {
     Deselect option and hide list
   */
   private hideList(): void {
+    if (!this.listVisible) {
+      return;
+    }
+
     this.listEl.removeAttribute(ATTRS.LIST_VISIBLE);
     this.triggerEl.removeAttribute('aria-expanded');
     this.listVisible = false;
@@ -208,6 +211,11 @@ export default class Menu extends HTMLElement {
       return;
     }
 
+    // Prevent page scroll when space pressed on list
+    if (keydownOnList && keyPressedMatches(keyPressed, KEYS.SPACE)) {
+      e.preventDefault();
+    }
+
     // ENTER on list
     if (keydownOnList && keyPressedMatches(keyPressed, KEYS.ENTER)) {
       e.preventDefault();
@@ -222,8 +230,9 @@ export default class Menu extends HTMLElement {
     }
 
     // ESC pressed on list or trigger
-    if (keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+    if (this.listVisible && keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
       this.hideList();
+      this.triggerEl.focus();
     }
   }
 
@@ -232,6 +241,9 @@ export default class Menu extends HTMLElement {
     Show list and handle it's overflow
   */
   private showList(): void {
+    if (this.listVisible) {
+      return;
+    }
     this.triggerEl.setAttribute('aria-expanded', 'true');
     this.listEl.setAttribute(ATTRS.LIST_VISIBLE, '');
     handleOverflow(this.listEl);
