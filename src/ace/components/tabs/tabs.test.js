@@ -502,7 +502,7 @@ context(`Tabs`, () => {
     });
 
 
-    it(`Should remember focussable tab after tablist loses focus`, () => {
+    it(`Should remember focusable tab after tablist loses focus`, () => {
       cy.get('@tabsButton1')
         .focus()
         .type('{rightarrow}')

@@ -48,7 +48,11 @@ const checkModalState = (visible) => {
 
 
 context(`Modal`, () => {
-  before(() => cy.visit(`/modal`));
+  before(() => {
+    cy.visit(`/modal`);
+    // The ACE header in some cases prevents cypress from focusing on buttons
+    cy.get('header.header').invoke('attr', 'style', 'display: none');
+  });
 
 
   context(`Simple Modal`, () => {
@@ -66,26 +70,28 @@ context(`Modal`, () => {
 
     it(`Should be hidden or shown in response to observed attribute changes`, () => {
       // Check that Modal hidden when observed attribute removed
-      let visible = false;
       let expectedDetail = {
         'id': ID,
-        'visible': visible,
+        'visible': false,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modal')
-        .invoke('removeAttr', ATTRS.VISIBLE);
-      checkModalState(visible);
+        .invoke('removeAttr', ATTRS.VISIBLE)
+        .then(() => {
+          checkModalState(false);
+        });
 
       // Check that Modal shown when observed attribute re-added
-      visible = true;
       expectedDetail = {
         'id': ID,
-        'visible': visible,
+        'visible': true,
       };
       cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
         .get('@modal')
-        .invoke('attr', ATTRS.VISIBLE, '');
-      checkModalState(visible);
+        .invoke('attr', ATTRS.VISIBLE, '')
+        .then(() => {
+          checkModalState(true);
+        });
     });
 
 

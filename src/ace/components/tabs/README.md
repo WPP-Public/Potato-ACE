@@ -281,7 +281,7 @@ Tabs with vertically stacked tabs.
 
 ### Manually displayed Tabs
 
-Tabs with panels that are displayed by pressing <kbd>Space</kbd> or <kbd>Enter</kbd> when their corresponding tab is focussed.
+Tabs with panels that are displayed by pressing <kbd>Space</kbd> or <kbd>Enter</kbd> when their corresponding tab is focused.
 
 ```html
 <ace-tabs id="manual-tabs" ace-tabs-manual>

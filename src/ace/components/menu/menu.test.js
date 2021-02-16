@@ -71,7 +71,11 @@ const checkOptionSelected = (optionIndex) => {
 
 
 context(`Menu`, () => {
-  before(() => cy.visit(`/menu`));
+  before(() => {
+    cy.visit(`/menu`);
+    // The ACE header in some cases prevents cypress from focusing on buttons
+    cy.get('header.header').invoke('attr', 'style', 'display: none');
+  });
 
 
   it(`Should initialise with an ID even if one not provided`, () => {
@@ -89,7 +93,7 @@ context(`Menu`, () => {
       getEls(MENU_ID);
 
       // Reset state
-      cy.get('body').click();
+      cy.get('@menuTrigger').focus().type('{esc}');
     });
 
 
@@ -137,7 +141,7 @@ context(`Menu`, () => {
           .click()
           .get('@menuOptions')
           .eq(optionIndex)
-          .click()
+          .click({force: true})
           .get('@menuList')
           .should('not.have.attr', ATTRS.LIST_VISIBLE);
       });
@@ -155,56 +159,26 @@ context(`Menu`, () => {
             .should('not.have.attr', ATTRS.LIST_VISIBLE);
         });
 
-        // The rest of the tests in this group only pass if Cypress window is active window due to issues with how it fires the blur event
+        // The rest of the tests in this group only pass if Cypress window is focused due to issues with how it fires the blur event
 
-        it(`Pressing ENTER, SPACE or DOWN on trigger before or after clicking it should show list and select first option`, () => {
-          cy.wrap(['{enter}', ' ', '{downarrow}'])
+        it(`Pressing ENTER, SPACE, DOWN or UP on trigger should show list and select correct option`, () => {
+          cy.wrap(['{enter}', ' ', '{downarrow}', '{uparrow}'])
             .each((key) => {
               cy.get('@menuTrigger')
                 .focus()
                 .type(key)
                 .should('have.attr', 'aria-expanded', 'true');
-              checkOptionSelected(0);
+              const optionSelected = key === '{uparrow}' ? 3 : 0;
+              checkOptionSelected(optionSelected);
 
               cy.get('@menuTrigger').type('{esc}');
-
-              // After trigger clicked
-              cy.get('@menuTrigger')
-                .click()
-                .type(key)
-                .should('have.attr', 'aria-expanded', 'true');
-              checkOptionSelected(0);
-            });
-        });
-
-
-        it(`Pressing UP on trigger before or after clicking it should show list and select first option`, () => {
-          // UP on trigger
-          cy.get('@menuOptions')
-            .then(($menuOptions) => {
-              const lastOptionIndex = $menuOptions.length - 1;
-              cy.get('@menuTrigger')
-                .focus()
-                .type('{uparrow}')
-                .should('have.attr', 'aria-expanded', 'true');
-              checkOptionSelected(lastOptionIndex);
-
-              // Reset
-              cy.get('@menuTrigger').type('{esc}');
-
-              // UP on trigger after clicking it
-              cy.get('@menuTrigger')
-                .click()
-                .type('{uparrow}')
-                .should('have.attr', 'aria-expanded', 'true');
-              checkOptionSelected(lastOptionIndex);
             });
         });
       });
 
 
       describe(`On list`, () => {
-        // The tests in this group only pass if Cypress window is active window due to issues with how it fires the blur event
+        // The tests in this group only pass if Cypress window is focused due to issues with how it fires the blur event
         it(`Pressing ESC on list should hide visible list`, () => {
           cy.get('@menuTrigger')
             .focus()

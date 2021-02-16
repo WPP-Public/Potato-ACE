@@ -160,7 +160,7 @@ export default class List {
       return;
     }
 
-    // If list focussed
+    // If list focused
     if (e.type === 'focus') {
       this.makeOptionActive(this.activeOptionIndex);
       return;

@@ -5,5 +5,6 @@
   "ignoreTestFiles": "**/template.test.js",
   "env": {
     "lib_name": "ace"
-  }
+  },
+  "retries": 2
 }
