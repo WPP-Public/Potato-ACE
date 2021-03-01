@@ -48,6 +48,7 @@ Install deps for deploy:
     - master
 
 Test:
+  stage: prepare
   script:
     - yarn install
 
