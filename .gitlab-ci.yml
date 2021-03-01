@@ -136,22 +136,36 @@ image: node:14.15.4-alpine3.12
 
 
 
+
+
+
+
+
+variables:
+  npm_config_cache: $CI_PROJECT_DIR/.npm
+  YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn
+
+cache:
+  paths:
+    - .npm/
+    - .yarn/
+
 stages:
   - prepare
 
 yarn:
   stage: prepare
   script:
-    - yarn
+    - yarn --prefer-offline
 npm i:
   stage: prepare
   script:
-    - npm i
+    - npm i --prefer-offline
 npm ci:
   stage: prepare
   script:
-    - npm ci
+    - npm ci --prefer-offline
 npm ci no-audit:
   stage: prepare
   script:
-    - npm ci --no-audit
+    - npm ci --no-audit --prefer-offline
