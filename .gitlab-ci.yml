@@ -25,9 +25,7 @@ stages:
 
 # PREPARE STAGE
 .deps:
-  stage: prepare
   script:
-    - npm set progress=false
     - npm ci --cache .npm --prefer-offline
   cache:
     <<: *global_cache
@@ -35,6 +33,7 @@ stages:
 
 # Install deps if package.json or package-lock.json changed
 Install deps:
+  stage: prepare
   extends: .deps
   only:
     changes:
@@ -43,11 +42,14 @@ Install deps:
 
 # Install deps when merging into master
 Install deps for deploy:
+  stage: prepare
   extends: .deps
   only:
     - master
 
-
+Test:
+  script:
+    - yarn install
 
 # BUILD STAGE
 .lint:
