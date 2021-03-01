@@ -146,9 +146,12 @@ variables:
   YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn
 
 cache:
+  key: ${CI_COMMIT_REF_NAME}
   paths:
     - .npm/
     - .yarn/
+  policy: pull
+
 
 stages:
   - prepare
