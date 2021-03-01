@@ -142,7 +142,7 @@ stages:
 yarn:
   stage: prepare
   script:
-    - yarn install
+    - yarn
 npm i:
   stage: prepare
   script:
