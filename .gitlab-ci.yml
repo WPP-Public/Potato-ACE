@@ -148,18 +148,11 @@ variables:
   npm_config_cache: $CI_PROJECT_DIR/.npm
   YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn
 
-# cache:
-#   key:
-#     files:
-#       - package.json
-#       - package-lock.json
-#   paths:
-#     - .npm/
-#     - .yarn/
-#     - node_modules/
-
 cache:
-  key: ${CI_COMMIT_REF_NAME}
+  key:
+    files:
+      - package.json
+      - package-lock.json
   paths:
     - .npm/
     - .yarn/
