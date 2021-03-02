@@ -171,7 +171,7 @@ npm i:
   stage: prepare
   script:
     - npm i --prefer-offline
-npm i:
+npm i no-audit:
   stage: prepare
   script:
     - npm i --prefer-offline --no-audit
