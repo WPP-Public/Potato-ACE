@@ -6,12 +6,15 @@ image: node:14.15.4-alpine3.12
 #   CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
 
 
-# cache: &global_cache
-#   key: ${CI_COMMIT_REF_NAME}
+# cache: &fe_deps
+#   key:
+#     files:
+#       - package.json
+#       - package-lock.json
 #   paths:
 #     - .npm/
-#     - node_modules/
 #     - cache/cypress/
+#     - node_modules/
 #   policy: pull
 
 
@@ -28,8 +31,8 @@ image: node:14.15.4-alpine3.12
 #   script:
 #     - npm ci --cache .npm --prefer-offline
 #   cache:
-#     <<: *global_cache
-#     policy: push
+#     <<: *fe_deps
+#     policy: pull-push
 
 # # Install deps if package.json or package-lock.json changed
 # Install deps:
@@ -146,11 +149,14 @@ variables:
   YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn
 
 cache:
-  key: ${CI_COMMIT_REF_NAME}
+  key:
+    files:
+      - package.json
+      - package-lock.json
   paths:
     - .npm/
     - .yarn/
-  policy: pull
+    - node_modules/
   untracked: true
 
 
