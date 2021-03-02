@@ -13,8 +13,9 @@
 #       - package-lock.json
 #   paths:
 #     - .npm/
-#     - cache/cypress/
 #     - node_modules/
+#     - .cache/*
+#     - cache/cypress/
 #   policy: pull
 
 
@@ -159,27 +160,18 @@ cache:
   policy: pull
 
 
-stages:
-  - prepare
-
-
-yarn:
-  stage: prepare
-  script:
-    - yarn --prefer-offline
-npm i:
-  stage: prepare
-  script:
-    - npm i --prefer-offline
-npm i no-audit:
-  stage: prepare
-  script:
-    - npm i --prefer-offline --no-audit
 npm ci:
-  stage: prepare
   script:
-    - npm ci --prefer-offline
+    - npm ci
 npm ci no-audit:
-  stage: prepare
   script:
-    - npm ci --no-audit --prefer-offline
+    - npm ci --no-audit
+npm i:
+  script:
+    - npm i
+npm i no-audit:
+  script:
+    - npm i --no-audit
+yarn:
+  script:
+    - yarn
