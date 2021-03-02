@@ -164,7 +164,6 @@ cache:
     - .npm/
     - .yarn/
   policy: pull
-  untracked: true
 
 
 stages:
