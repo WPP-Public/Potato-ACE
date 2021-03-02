@@ -1,4 +1,4 @@
-image: node:14.15.4-alpine3.12
+# image: node:14.15.4-alpine3.12
 
 
 # variables:
@@ -82,7 +82,7 @@ image: node:14.15.4-alpine3.12
 #   before_script:
 #     - npm i --prefer-cache
 #   cache:
-#     <<: *global_cache
+#     <<: *fe_deps
 #     policy: push
 
 # Build without cache:
@@ -142,7 +142,7 @@ image: node:14.15.4-alpine3.12
 
 
 
-
+image: node:14.15.4-alpine3.12
 
 variables:
   npm_config_cache: $CI_PROJECT_DIR/.npm
@@ -157,11 +157,11 @@ cache:
     - .npm/
     - .yarn/
     - node_modules/
-  untracked: true
 
 
 stages:
   - prepare
+
 
 yarn:
   stage: prepare
@@ -171,6 +171,10 @@ npm i:
   stage: prepare
   script:
     - npm i --prefer-offline
+npm i:
+  stage: prepare
+  script:
+    - npm i --prefer-offline --no-audit
 npm ci:
   stage: prepare
   script:
