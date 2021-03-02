@@ -149,6 +149,7 @@ variables:
   npm_config_cache: $CI_PROJECT_DIR/.npm
   YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn
 
+
 cache:
   key:
     files:
@@ -157,6 +158,7 @@ cache:
   paths:
     - node_modules/
     - .npm/
+  # policy: push
 
 
 npm ci:
