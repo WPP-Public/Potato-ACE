@@ -155,23 +155,13 @@ cache:
       - package.json
       - package-lock.json
   paths:
+    - node_modules/
     - .npm/
-    - .yarn/
-  policy: pull
 
 
 npm ci:
   script:
     - npm ci
-npm ci no-audit:
-  script:
-    - npm ci --no-audit
 npm i:
   script:
     - npm i
-npm i no-audit:
-  script:
-    - npm i --no-audit
-yarn:
-  script:
-    - yarn
