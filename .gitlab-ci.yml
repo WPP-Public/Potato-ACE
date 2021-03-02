@@ -158,7 +158,7 @@ cache:
   paths:
     - node_modules/
     - .npm/
-  # policy: push
+  policy: push
 
 
 npm ci:
