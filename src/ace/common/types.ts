@@ -1,8 +1,8 @@
 export type KeyType = {
-  CODE: number;
-  KEY: string;
+	CODE: number;
+	KEY: string;
 }
 
 export type KeysType = {
-  [name: string]: KeyType;
+	[name: string]: KeyType;
 }

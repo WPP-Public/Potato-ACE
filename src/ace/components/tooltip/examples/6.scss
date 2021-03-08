@@ -1,45 +1,45 @@
 .styled-tooltip {
-  $arrow-size: 12px;
+	$arrow-size: 12px;
 
-  border-radius: 4px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  margin: 16px 0;
-  opacity: 0;
-  padding: 8px 10px;
-  transition: opacity .25s;
+	border-radius: 4px;
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	margin: 16px 0;
+	opacity: 0;
+	padding: 8px 10px;
+	transition: opacity .25s;
 
-  &,
-  &::before {
-    background-color: #232f34;
-  }
+	&,
+	&::before {
+		background-color: #232f34;
+	}
 
-  &[ace-tooltip-visible] {
-    opacity: 1;
-  }
+	&[ace-tooltip-visible] {
+		opacity: 1;
+	}
 
-  &::before {
-    bottom: calc(100% - (#{$arrow-size} / 2));
-    content: '';
-    height: $arrow-size;
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%) rotate(45deg);
-    width: $arrow-size;
-    z-index: 9;
-  }
+	&::before {
+		bottom: calc(100% - (#{$arrow-size} / 2));
+		content: '';
+		height: $arrow-size;
+		left: 50%;
+		position: absolute;
+		transform: translateX(-50%) rotate(45deg);
+		width: $arrow-size;
+		z-index: 9;
+	}
 
-  &[ace-u-float-above]::before {
-    bottom: calc(-#{$arrow-size} / 2);
-  }
+	&[ace-u-float-above]::before {
+		bottom: calc(-#{$arrow-size} / 2);
+	}
 
-  &[ace-u-float-right]::before {
-    left: calc(#{$arrow-size} + 8px);
-  }
+	&[ace-u-float-right]::before {
+		left: calc(#{$arrow-size} + 8px);
+	}
 
-  &[ace-u-float-left]::before {
-    left: unset;
-    right: $arrow-size;
-  }
+	&[ace-u-float-left]::before {
+		left: unset;
+		right: $arrow-size;
+	}
 }

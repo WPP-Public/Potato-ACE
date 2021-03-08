@@ -1,121 +1,121 @@
 .styled-carousel {
-  color: #fff;
-  max-width: 600px;
-  position: relative;
+	color: #fff;
+	max-width: 600px;
+	position: relative;
 
-  &__auto-slide-show-btn,
-  &__slide-btn {
-    background: transparent;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    color: inherit;
-    cursor: pointer;
-    height: 45px;
-    margin: 8px;
-    position: absolute;
-    width: 45px;
+	&__auto-slide-show-btn,
+	&__slide-btn {
+		background: transparent;
+		border: 2px solid #fff;
+		border-radius: 50%;
+		color: inherit;
+		cursor: pointer;
+		height: 45px;
+		margin: 8px;
+		position: absolute;
+		width: 45px;
 
-    &:focus,
-    &:hover {
-      background: #00bed0;
-    }
+		&:focus,
+		&:hover {
+			background: #00bed0;
+		}
 
-    &:focus {
-      outline: none;
-    }
-  }
+		&:focus {
+			outline: none;
+		}
+	}
 
-  &[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
-  &[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
-    display: none;
-  }
+	&[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
+	&[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
+		display: none;
+	}
 
-  &__slide-btn {
-    border-radius: 50%;
-    font-size: 24px;
-    top: 50%;
-    transform: translateY(-50%);
+	&__slide-btn {
+		border-radius: 50%;
+		font-size: 24px;
+		top: 50%;
+		transform: translateY(-50%);
 
-    &--next {
-      right: 0;
-    }
-  }
+		&--next {
+			right: 0;
+		}
+	}
 
-  &__slide-picker {
-    bottom: 0;
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%);
-  }
+	&__slide-picker {
+		bottom: 0;
+		left: 50%;
+		position: absolute;
+		transform: translateX(-50%);
+	}
 
-  [ace-carousel-slide-picker-btn] {
-    $slide-picker-btn-diameter: 10px;
+	[ace-carousel-slide-picker-btn] {
+		$slide-picker-btn-diameter: 10px;
 
-    background-color: transparent;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    cursor: pointer;
-    height: $slide-picker-btn-diameter * 2.5;
-    margin: 0;
-    position: relative;
-    width: $slide-picker-btn-diameter * 2.5;
+		background-color: transparent;
+		border: 2px solid transparent;
+		border-radius: 50%;
+		cursor: pointer;
+		height: $slide-picker-btn-diameter * 2.5;
+		margin: 0;
+		position: relative;
+		width: $slide-picker-btn-diameter * 2.5;
 
-    &:active,
-    &:focus {
-      border-color: #fff;
-      outline: none;
-    }
+		&:active,
+		&:focus {
+			border-color: #fff;
+			outline: none;
+		}
 
-    &::after {
-      border: 1px solid #fff;
-      border-radius: 50%;
-      content: '';
-      height: $slide-picker-btn-diameter;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: $slide-picker-btn-diameter;
-    }
+		&::after {
+			border: 1px solid #fff;
+			border-radius: 50%;
+			content: '';
+			height: $slide-picker-btn-diameter;
+			left: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: $slide-picker-btn-diameter;
+		}
 
-    &:hover::after {
-      background: #00bed0;
-    }
+		&:hover::after {
+			background: #00bed0;
+		}
 
-    &[aria-selected="true"]::after {
-      background-color: #fff;
-    }
-  }
+		&[aria-selected="true"]::after {
+			background-color: #fff;
+		}
+	}
 
-  &__slide {
-    padding: 50px 80px 30px;
+	&__slide {
+		padding: 50px 80px 30px;
 
-    $bg-colors: #173d57, #66204a, #20122e;
-    @for $i from 1 through length($bg-colors) {
-      &:nth-of-type(#{$i}) {
-        background: nth($bg-colors, $i);
-      }
-    }
-  }
+		$bg-colors: #173d57, #66204a, #20122e;
+		@for $i from 1 through length($bg-colors) {
+			&:nth-of-type(#{$i}) {
+				background: nth($bg-colors, $i);
+			}
+		}
+	}
 
-  // Animation styles
-  @media (prefers-reduced-motion: no-preference) {
-    &__slides {
-      display: flex;
-      overflow-x: hidden;
-    }
+	// Animation styles
+	@media (prefers-reduced-motion: no-preference) {
+		&__slides {
+			display: flex;
+			overflow-x: hidden;
+		}
 
-    &__slide {
-      flex-shrink: 0;
-      width: 100%;
+		&__slide {
+			flex-shrink: 0;
+			width: 100%;
 
-      &--hidden {
-        visibility: hidden;
-      }
+			&--hidden {
+				visibility: hidden;
+			}
 
-      &:not([ace-carousel-slide-selected]) {
-        display: block;
-      }
-    }
-  }
+			&:not([ace-carousel-slide-selected]) {
+				display: block;
+			}
+		}
+	}
 }

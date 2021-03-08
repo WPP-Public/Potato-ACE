@@ -35,49 +35,49 @@ $ace-tooltip-text-color: #fff !default;
 
 // STYLES
 [ace-tooltip-target] {
-  position: relative;
+	position: relative;
 }
 
 ace-tooltip {
-  background-color: $ace-tooltip-bg-color;
-  color: $ace-tooltip-text-color;
-  left: 50%;
-  margin-bottom: $ace-tooltip-gap;
-  margin-top: $ace-tooltip-gap;
-  padding: $ace-tooltip-padding;
-  pointer-events: none;
-  position: absolute;
-  top: 100%;
-  transform: $ace-tooltip-base-transform;
-  z-index: $ace-tooltip-list-z-index;
+	background-color: $ace-tooltip-bg-color;
+	color: $ace-tooltip-text-color;
+	left: 50%;
+	margin-bottom: $ace-tooltip-gap;
+	margin-top: $ace-tooltip-gap;
+	padding: $ace-tooltip-padding;
+	pointer-events: none;
+	position: absolute;
+	top: 100%;
+	transform: $ace-tooltip-base-transform;
+	z-index: $ace-tooltip-list-z-index;
 
-  &amp;:not([ace-tooltip-visible]) {
-    visibility: hidden;
-  }
+	&amp;:not([ace-tooltip-visible]) {
+		visibility: hidden;
+	}
 
-  &amp;[ace-u-float-right],
-  &amp;[ace-u-float-left] {
-    transform: translateX(0);
-  }
+	&amp;[ace-u-float-right],
+	&amp;[ace-u-float-left] {
+		transform: translateX(0);
+	}
 
-  &amp;[ace-u-float-above] {
-    bottom: 100%;
-    top: initial;
-  }
+	&amp;[ace-u-float-above] {
+		bottom: 100%;
+		top: initial;
+	}
 
-  &amp;[ace-u-float-left] {
-    left: initial;
-    right: 0;
-  }
+	&amp;[ace-u-float-left] {
+		left: initial;
+		right: 0;
+	}
 
-  &amp;[ace-u-float-right] {
-    left: 0;
-    right: initial;
-  }
+	&amp;[ace-u-float-right] {
+		left: 0;
+		right: initial;
+	}
 }
 
 [ace-tooltip-nowrap] {
-  white-space: nowrap;
+	white-space: nowrap;
 }
 </code></pre>
 <h2>Custom events</h2>
@@ -115,13 +115,13 @@ ace-tooltip {
 <li>A target button without attributes <code>aria-label</code> nor <code>aria-labelledby</code>, and without text content, with the Tooltip acting as a label.</li>
 </ol>
 <div class="example-block"><a href="#">
-  Tooltip target
-  <ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+	Tooltip target
+	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
 </a>
 <hr>
 <button aria-label="Tooltip target label">
-  <img src="/img/clipboard.svg" aria-hidden="true">
-  <ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+	<img src="/img/clipboard.svg" aria-hidden="true">
+	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
 </button>
 <hr>
 <p><label id="tooltip-target-label">Tooltip target label</label><br>
@@ -131,110 +131,118 @@ ace-tooltip {
 </button></p>
 <hr>
 <button>
-  <img src="/img/clipboard.svg" aria-hidden="true">
-  <ace-tooltip>Tooltip acting as target label</ace-tooltip>
+	<img src="/img/clipboard.svg" aria-hidden="true">
+	<ace-tooltip>Tooltip acting as target label</ace-tooltip>
 </button>
 </div>
 <pre><code class="language-html">&lt;a href=&quot;#&quot;&gt;
-  Tooltip target
-  &lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
+	Tooltip target
+	&lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
 &lt;/a&gt;
 
 &lt;hr&gt;
 
 &lt;button aria-label=&quot;Tooltip target label&quot;&gt;
-  &lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
-  &lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
+	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
+	&lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 
 &lt;hr&gt;
 
 &lt;label id=&quot;tooltip-target-label&quot;&gt;Tooltip target label&lt;/label&gt;&lt;br&gt;
 &lt;button aria-labelledby=&quot;tooltip-target-label&quot;&gt;
-  &lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
-  &lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
+	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
+	&lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 
 &lt;hr&gt;
 
 &lt;button&gt;
-  &lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
-  &lt;ace-tooltip&gt;Tooltip acting as target label&lt;/ace-tooltip&gt;
+	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
+	&lt;ace-tooltip&gt;Tooltip acting as target label&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 </code></pre>
 <h3>Non-wrapping Tooltips</h3>
 <p>These Tooltips have attribute <code>ace-tooltip-nowrap</code> that keeps their text on a single line. They are also wide enough to overflow outside the viewport if centered, to demonstrate how Tooltips automatically avoid this by aligning themselves to the left or right edge of their target as appropriate. To view this example properly use a viewport width between 720px and 1023px.</p>
 <div class="example-block"><div style="display: flex; justify-content: space-between;">
-  <button>
-    Tooltip target
-    <ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works</ace-tooltip>
-  </button>
-  <button>
-    Tooltip target
-    <ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works</ace-tooltip>
-  </button>
-  <button>
-    Tooltip target
-    <ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works</ace-tooltip>
-  </button>
+	<button>
+		Tooltip target
+		<ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
+			handling works</ace-tooltip>
+	</button>
+<pre><code>&lt;button&gt;
+	Tooltip target
+	&lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
+		handling works&lt;/ace-tooltip&gt;
+&lt;/button&gt;
+
+&lt;button&gt;
+	Tooltip target
+	&lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
+		handling works&lt;/ace-tooltip&gt;
+&lt;/button&gt;
+</code></pre>
 </div>
 </div>
 <pre><code class="language-html">&lt;div style=&quot;display: flex; justify-content: space-between;&quot;&gt;
-  &lt;button&gt;
-    Tooltip target
-    &lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works&lt;/ace-tooltip&gt;
-  &lt;/button&gt;
+	&lt;button&gt;
+		Tooltip target
+		&lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
+			handling works&lt;/ace-tooltip&gt;
+	&lt;/button&gt;
 
-  &lt;button&gt;
-    Tooltip target
-    &lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works&lt;/ace-tooltip&gt;
-  &lt;/button&gt;
+	&lt;button&gt;
+		Tooltip target
+		&lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
+			handling works&lt;/ace-tooltip&gt;
+	&lt;/button&gt;
 
-  &lt;button&gt;
-    Tooltip target
-    &lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works&lt;/ace-tooltip&gt;
-  &lt;/button&gt;
+	&lt;button&gt;
+		Tooltip target
+		&lt;ace-tooltip ace-tooltip-nowrap&gt;A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
+			handling works&lt;/ace-tooltip&gt;
+	&lt;/button&gt;
 &lt;/div&gt;
 </code></pre>
 <h3>Tooltips with custom delay times</h3>
 <p>In this example the first Tooltip has a custom delay of 2 seconds while the second has no delay.</p>
 <div class="example-block"><button>
-  Tooltip target
-  <ace-tooltip ace-tooltip-delay="2000">Tooltip text</ace-tooltip>
+	Tooltip target
+	<ace-tooltip ace-tooltip-delay="2000">Tooltip text</ace-tooltip>
 </button>
 <button>
-  Tooltip target
-  <ace-tooltip ace-tooltip-delay="0">Tooltip text</ace-tooltip>
+	Tooltip target
+	<ace-tooltip ace-tooltip-delay="0">Tooltip text</ace-tooltip>
 </button>
 </div>
 <pre><code class="language-html">&lt;button&gt;
-  Tooltip target
-  &lt;ace-tooltip ace-tooltip-delay=&quot;2000&quot;&gt;Tooltip text&lt;/ace-tooltip&gt;
+	Tooltip target
+	&lt;ace-tooltip ace-tooltip-delay=&quot;2000&quot;&gt;Tooltip text&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 
 &lt;button&gt;
-  Tooltip target
-  &lt;ace-tooltip ace-tooltip-delay=&quot;0&quot;&gt;Tooltip text&lt;/ace-tooltip&gt;
+	Tooltip target
+	&lt;ace-tooltip ace-tooltip-delay=&quot;0&quot;&gt;Tooltip text&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 </code></pre>
 <h3>Disabled Tooltip target</h3>
 <p>Tooltips are not compatible with disabled targets as they are not focusable nor do they dispatch the mouse events required by Tooltip. This example shows a possible way of showing a Tooltip with a button that does not have the <code>disabled</code> attribute but is instead styled to look disabled as a workaround. Developers are advised against using this anti-pattern and to instead convey this information in another way. The example is provided only for situations where such functionality is unavoidable. Custom styles have been applied to this example and are shown below.</p>
 <div class="example-block"><button class="disabled">
-  Tooltip target
-  <ace-tooltip ace-tooltip-nowrap>This button is disabled until all required form fields are completed</ace-tooltip>
+	Tooltip target
+	<ace-tooltip ace-tooltip-nowrap>This button is disabled until all required form fields are completed</ace-tooltip>
 </button>
 </div>
 <pre><code class="language-html">&lt;button class=&quot;disabled&quot;&gt;
-  Tooltip target
-  &lt;ace-tooltip ace-tooltip-nowrap&gt;This button is disabled until all required form fields are completed&lt;/ace-tooltip&gt;
+	Tooltip target
+	&lt;ace-tooltip ace-tooltip-nowrap&gt;This button is disabled until all required form fields are completed&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 </code></pre>
 <pre><code class="language-scss">.disabled {
-  background: rgba(#eee, .4);
-  border: none;
-  color: rgba(0, 0, 0, .4);
-  cursor: not-allowed;
-  padding: 4px 8px;
+	background: rgba(#eee, .4);
+	border: none;
+	color: rgba(0, 0, 0, .4);
+	cursor: not-allowed;
+	padding: 4px 8px;
 }
 </code></pre>
 <h3>Tooltip controlled using custom events</h3>
@@ -243,8 +251,8 @@ ace-tooltip {
 <button id="hide-tooltip-btn">Hide Tooltip</button>
 <hr>
 <button>
-  Tooltip target
-  <ace-tooltip id="custom-events-tooltip">Tooltip text</ace-tooltip>
+	Tooltip target
+	<ace-tooltip id="custom-events-tooltip">Tooltip text</ace-tooltip>
 </button>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;show-tooltip-btn&quot;&gt;Show Tooltip&lt;/button&gt;
@@ -253,112 +261,114 @@ ace-tooltip {
 &lt;hr&gt;
 
 &lt;button&gt;
-  Tooltip target
-  &lt;ace-tooltip id=&quot;custom-events-tooltip&quot;&gt;Tooltip text&lt;/ace-tooltip&gt;
+	Tooltip target
+	&lt;ace-tooltip id=&quot;custom-events-tooltip&quot;&gt;Tooltip text&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 </code></pre>
-<pre><code class="language-js">import {EVENTS} from '/ace/components/tooltip/tooltip.js';
+<pre><code class="language-js">import { EVENTS } from '/ace/components/tooltip/tooltip.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const tooltipEl = document.getElementById('custom-events-tooltip');
+	const tooltipEl = document.getElementById('custom-events-tooltip');
 
-  window.addEventListener('click', (e) =&gt; {
-    const targetId = e.target.id;
-    if (targetId === 'show-tooltip-btn' || targetId === 'hide-tooltip-btn') {
-      tooltipEl.dispatchEvent(new CustomEvent(EVENTS.IN[`${targetId === 'show-tooltip-btn'? 'SHOW' : 'HIDE'}`]));
-    }
-  });
+	window.addEventListener('click', (e) =&gt; {
+		const targetId = e.target.id;
+		if (targetId === 'show-tooltip-btn' || targetId === 'hide-tooltip-btn') {
+			tooltipEl.dispatchEvent(new CustomEvent(EVENTS.IN[`${targetId === 'show-tooltip-btn' ? 'SHOW' : 'HIDE'}`]));
+		}
+	});
 });
 </code></pre>
 <h3>Styled Tooltip</h3>
 <p>An example of how Tooltip can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. To view this example properly use a viewport width between 720px and 1023px.</p>
 <div class="example-block"><div style="display: flex; justify-content: space-between;">
-  <button>
-    Tooltip target
-    <ace-tooltip ace-tooltip-nowrap class="styled-tooltip">
-      Tooltip with dummy text to demonstrate how they can be styled
-    </ace-tooltip>
-  </button>
-  <button>
-    Tooltip target
-    <ace-tooltip ace-tooltip-nowrap class="styled-tooltip">
-      Tooltip with dummy text to demonstrate how they can be styled
-    </ace-tooltip>
-  </button>
-  <button>
-    Tooltip target
-    <ace-tooltip ace-tooltip-nowrap class="styled-tooltip">
-      Tooltip with dummy text to demonstrate how they can be styled
-    </ace-tooltip>
-  </button>
+	<button>
+		Tooltip target
+		<ace-tooltip ace-tooltip-nowrap class="styled-tooltip">
+			Tooltip with dummy text to demonstrate how they can be styled
+		</ace-tooltip>
+	</button>
+<pre><code>&lt;button&gt;
+	Tooltip target
+	&lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
+		Tooltip with dummy text to demonstrate how they can be styled
+	&lt;/ace-tooltip&gt;
+&lt;/button&gt;
+
+&lt;button&gt;
+	Tooltip target
+	&lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
+		Tooltip with dummy text to demonstrate how they can be styled
+	&lt;/ace-tooltip&gt;
+&lt;/button&gt;
+</code></pre>
 </div>
 </div>
 <pre><code class="language-html">&lt;div style=&quot;display: flex; justify-content: space-between;&quot;&gt;
-  &lt;button&gt;
-    Tooltip target
-    &lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
-      Tooltip with dummy text to demonstrate how they can be styled
-    &lt;/ace-tooltip&gt;
-  &lt;/button&gt;
+	&lt;button&gt;
+		Tooltip target
+		&lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
+			Tooltip with dummy text to demonstrate how they can be styled
+		&lt;/ace-tooltip&gt;
+	&lt;/button&gt;
 
-  &lt;button&gt;
-    Tooltip target
-    &lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
-      Tooltip with dummy text to demonstrate how they can be styled
-    &lt;/ace-tooltip&gt;
-  &lt;/button&gt;
+	&lt;button&gt;
+		Tooltip target
+		&lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
+			Tooltip with dummy text to demonstrate how they can be styled
+		&lt;/ace-tooltip&gt;
+	&lt;/button&gt;
 
-  &lt;button&gt;
-    Tooltip target
-    &lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
-      Tooltip with dummy text to demonstrate how they can be styled
-    &lt;/ace-tooltip&gt;
-  &lt;/button&gt;
+	&lt;button&gt;
+		Tooltip target
+		&lt;ace-tooltip ace-tooltip-nowrap class=&quot;styled-tooltip&quot;&gt;
+			Tooltip with dummy text to demonstrate how they can be styled
+		&lt;/ace-tooltip&gt;
+	&lt;/button&gt;
 &lt;/div&gt;
 </code></pre>
 <pre><code class="language-scss">.styled-tooltip {
-  $arrow-size: 12px;
+	$arrow-size: 12px;
 
-  border-radius: 4px;
-  font-family: 'Roboto', sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  margin: 16px 0;
-  opacity: 0;
-  padding: 8px 10px;
-  transition: opacity .25s;
+	border-radius: 4px;
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	margin: 16px 0;
+	opacity: 0;
+	padding: 8px 10px;
+	transition: opacity .25s;
 
-  &amp;,
-  &amp;::before {
-    background-color: #232f34;
-  }
+	&amp;,
+	&amp;::before {
+		background-color: #232f34;
+	}
 
-  &amp;[ace-tooltip-visible] {
-    opacity: 1;
-  }
+	&amp;[ace-tooltip-visible] {
+		opacity: 1;
+	}
 
-  &amp;::before {
-    bottom: calc(100% - (#{$arrow-size} / 2));
-    content: '';
-    height: $arrow-size;
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%) rotate(45deg);
-    width: $arrow-size;
-    z-index: 9;
-  }
+	&amp;::before {
+		bottom: calc(100% - (#{$arrow-size} / 2));
+		content: '';
+		height: $arrow-size;
+		left: 50%;
+		position: absolute;
+		transform: translateX(-50%) rotate(45deg);
+		width: $arrow-size;
+		z-index: 9;
+	}
 
-  &amp;[ace-u-float-above]::before {
-    bottom: calc(-#{$arrow-size} / 2);
-  }
+	&amp;[ace-u-float-above]::before {
+		bottom: calc(-#{$arrow-size} / 2);
+	}
 
-  &amp;[ace-u-float-right]::before {
-    left: calc(#{$arrow-size} + 8px);
-  }
+	&amp;[ace-u-float-right]::before {
+		left: calc(#{$arrow-size} + 8px);
+	}
 
-  &amp;[ace-u-float-left]::before {
-    left: unset;
-    right: $arrow-size;
-  }
+	&amp;[ace-u-float-left]::before {
+		left: unset;
+		right: $arrow-size;
+	}
 }
 </code></pre>

@@ -1,17 +1,17 @@
 doctype html
 html(lang='en')
-  include head
+	include head
 
-  body
-    include header
-    main
-      include sidebar
-      article
-        block article
+	body
+		include header
+		main
+			include sidebar
+			article
+				block article
 
-    block scripts
-    script(src='/js/prism.min.js')
-    script(
-      src='/js/script.js'
-      type='module'
-    )
+		block scripts
+		script(src='/js/prism.min.js')
+		script(
+			src='/js/script.js'
+			type='module'
+		)

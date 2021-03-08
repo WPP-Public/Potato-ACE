@@ -1,19 +1,19 @@
 .animated-accordion {
-  @media (prefers-reduced-motion: no-preference) {
-    $trans-duration: .2s;
+	@media (prefers-reduced-motion: no-preference) {
+		$trans-duration: .2s;
 
-    [ace-accordion-panel] {
-      display: block;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-      visibility: hidden;
-    }
+		[ace-accordion-panel] {
+			display: block;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+			visibility: hidden;
+		}
 
-    [ace-accordion-panel-visible] {
-      max-height: 180px;
-      transition: max-height $trans-duration ease-in;
-      visibility: visible;
-    }
-  }
+		[ace-accordion-panel-visible] {
+			max-height: 180px;
+			transition: max-height $trans-duration ease-in;
+			visibility: visible;
+		}
+	}
 }

@@ -46,51 +46,51 @@ $ace-combobox-selected-option-text-color: #fff !default;
 
 // STYLES
 ace-combobox {
-  display: inline-block;
-  position: relative;
+	display: inline-block;
+	position: relative;
 }
 
 [ace-combobox-input] {
-  width: 100%;
+	width: 100%;
 }
 
 [ace-combobox-list] {
-  background: $ace-combobox-list-bg-color;
-  height: $ace-combobox-list-height;
-  left: 0;
-  list-style: none;
-  overflow-y: auto;
-  position: absolute;
-  text-align: left;
-  top: 100%;
-  user-select: none;
-  white-space: nowrap;
-  width: 100%;
-  z-index: $ace-combobox-list-z-index;
+	background: $ace-combobox-list-bg-color;
+	height: $ace-combobox-list-height;
+	left: 0;
+	list-style: none;
+	overflow-y: auto;
+	position: absolute;
+	text-align: left;
+	top: 100%;
+	user-select: none;
+	white-space: nowrap;
+	width: 100%;
+	z-index: $ace-combobox-list-z-index;
 
-  &amp;:not([ace-combobox-list-visible]) {
-    display: none;
-  }
+	&amp;:not([ace-combobox-list-visible]) {
+		display: none;
+	}
 
-  [aria-selected=&quot;true&quot;] {
-    background: $ace-combobox-selected-option-bg-color;
-    color: $ace-combobox-selected-option-text-color;
-  }
+	[aria-selected=&quot;true&quot;] {
+		background: $ace-combobox-selected-option-bg-color;
+		color: $ace-combobox-selected-option-text-color;
+	}
 
-  &amp;[ace-u-float-above] {
-    bottom: 100%;
-    top: initial;
-  }
+	&amp;[ace-u-float-above] {
+		bottom: 100%;
+		top: initial;
+	}
 
-  &amp;[ace-u-float-left] {
-    left: initial;
-    right: 0;
-  }
+	&amp;[ace-u-float-left] {
+		left: initial;
+		right: 0;
+	}
 
-  &amp;[ace-u-float-right] {
-    left: 0;
-    right: initial;
-  }
+	&amp;[ace-u-float-right] {
+		left: 0;
+		right: initial;
+	}
 }
 </code></pre>
 <h2>Custom events</h2>
@@ -157,82 +157,82 @@ ace-combobox {
 <div class="example-block"><h4>No auto-complete</h4>
 <span id="combobox-label-1">Choose an Avenger:</span>
 <ace-combobox>
-  <input aria-labelledby="combobox-label-1"/>
-  <ul aria-label="Avengers">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<input aria-labelledby="combobox-label-1" />
+	<ul aria-label="Avengers">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-combobox>
 <hr>
 <h4>List auto-complete</h4>
 <span id="combobox-label-2">Choose an Avenger:</span>
 <ace-combobox id="ac-list-combobox">
-  <input aria-autocomplete="list" aria-labelledby="combobox-label-2"/>
-  <ul aria-label="Avengers">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<input aria-autocomplete="list" aria-labelledby="combobox-label-2" />
+	<ul aria-label="Avengers">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-combobox>
 <hr>
 <h4>Inline and list auto-complete</h4>
 <span id="combobox-label-3">Choose an Avenger:</span>
 <ace-combobox id="ac-both-combobox">
-  <input aria-autocomplete="both" aria-labelledby="combobox-label-3"/>
-  <ul aria-label="Avengers">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<input aria-autocomplete="both" aria-labelledby="combobox-label-3" />
+	<ul aria-label="Avengers">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-combobox>
 </div>
 <pre><code class="language-html">&lt;h4&gt;No auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-1&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox&gt;
-  &lt;input aria-labelledby=&quot;combobox-label-1&quot;/&gt;
-  &lt;ul aria-label=&quot;Avengers&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;input aria-labelledby=&quot;combobox-label-1&quot; /&gt;
+	&lt;ul aria-label=&quot;Avengers&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
@@ -241,21 +241,21 @@ ace-combobox {
 &lt;span id=&quot;combobox-label-2&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox id=&quot;ac-list-combobox&quot;&gt;
-  &lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;combobox-label-2&quot;/&gt;
-  &lt;ul aria-label=&quot;Avengers&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;combobox-label-2&quot; /&gt;
+	&lt;ul aria-label=&quot;Avengers&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
@@ -264,21 +264,21 @@ ace-combobox {
 &lt;span id=&quot;combobox-label-3&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox id=&quot;ac-both-combobox&quot;&gt;
-  &lt;input aria-autocomplete=&quot;both&quot; aria-labelledby=&quot;combobox-label-3&quot;/&gt;
-  &lt;ul aria-label=&quot;Avengers&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;input aria-autocomplete=&quot;both&quot; aria-labelledby=&quot;combobox-label-3&quot; /&gt;
+	&lt;ul aria-label=&quot;Avengers&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
 <h3>Comboboxes with automatic selection</h3>
@@ -286,82 +286,82 @@ ace-combobox {
 <div class="example-block"><h4>No auto-complete</h4>
 <span id="combobox-label-4">Choose an Avenger:</span>
 <ace-combobox ace-combobox-autoselect id="simple-autoselect-combobox">
-  <input aria-labelledby="combobox-label-4"/>
-  <ul aria-label="Avengers">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<input aria-labelledby="combobox-label-4" />
+	<ul aria-label="Avengers">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-combobox>
 <hr>
 <h4>List auto-complete</h4>
 <span id="combobox-label-5">Choose an Avenger:</span>
 <ace-combobox ace-combobox-autoselect id="ac-list-autoselect-combobox">
-  <input aria-autocomplete="list" aria-labelledby="combobox-label-5"/>
-  <ul aria-label="Avengers">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<input aria-autocomplete="list" aria-labelledby="combobox-label-5" />
+	<ul aria-label="Avengers">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-combobox>
 <hr>
 <h4>Inline and list auto-complete</h4>
 <span id="combobox-label-6">Choose an Avenger:</span>
 <ace-combobox ace-combobox-autoselect id="ac-both-autoselect-combobox">
-  <input aria-autocomplete="both" aria-labelledby="combobox-label-6"/>
-  <ul aria-label="Avengers">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<input aria-autocomplete="both" aria-labelledby="combobox-label-6" />
+	<ul aria-label="Avengers">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-combobox>
 </div>
 <pre><code class="language-html">&lt;h4&gt;No auto-complete&lt;/h4&gt;
 &lt;span id=&quot;combobox-label-4&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox ace-combobox-autoselect id=&quot;simple-autoselect-combobox&quot;&gt;
-  &lt;input aria-labelledby=&quot;combobox-label-4&quot;/&gt;
-  &lt;ul aria-label=&quot;Avengers&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;input aria-labelledby=&quot;combobox-label-4&quot; /&gt;
+	&lt;ul aria-label=&quot;Avengers&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
@@ -370,21 +370,21 @@ ace-combobox {
 &lt;span id=&quot;combobox-label-5&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox ace-combobox-autoselect id=&quot;ac-list-autoselect-combobox&quot;&gt;
-  &lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;combobox-label-5&quot;/&gt;
-  &lt;ul aria-label=&quot;Avengers&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;combobox-label-5&quot; /&gt;
+	&lt;ul aria-label=&quot;Avengers&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 
 &lt;hr&gt;
@@ -393,21 +393,21 @@ ace-combobox {
 &lt;span id=&quot;combobox-label-6&quot;&gt;Choose an Avenger:&lt;/span&gt;
 
 &lt;ace-combobox ace-combobox-autoselect id=&quot;ac-both-autoselect-combobox&quot;&gt;
-  &lt;input aria-autocomplete=&quot;both&quot; aria-labelledby=&quot;combobox-label-6&quot;/&gt;
-  &lt;ul aria-label=&quot;Avengers&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;input aria-autocomplete=&quot;both&quot; aria-labelledby=&quot;combobox-label-6&quot; /&gt;
+	&lt;ul aria-label=&quot;Avengers&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
 <h3>Combobox controlled using custom events</h3>
@@ -417,86 +417,86 @@ ace-combobox {
 <button id="show-list-btn">Show list</button>
 <button id="hide-list-btn">Hide list</button>
 <form id="select-option-form">
-  <label>
-    Select option:
-    <input id="select-option-input" max="3" min="1" name="option-number" type="number"/>
-  </label>
-  <button type="submit">Go</button>
+	<label>
+		Select option:
+		<input id="select-option-input" max="3" min="1" name="option-number" type="number" />
+	</label>
+	<button type="submit">Go</button>
 </form>
 <hr>
 <span id="combobox-label-7">Custom events controlled Combobox:</span>
 <ace-combobox id="custom-events-combobox">
-  <input aria-labelledby="combobox-label-7"/>
-  <ul aria-label="Custom events combobox options"></ul>
+	<input aria-labelledby="combobox-label-7" />
+	<ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-options-btn&quot;&gt;Add options&lt;/button&gt;
 &lt;button id=&quot;show-list-btn&quot;&gt;Show list&lt;/button&gt;
 &lt;button id=&quot;hide-list-btn&quot;&gt;Hide list&lt;/button&gt;
 &lt;form id=&quot;select-option-form&quot;&gt;
-  &lt;label&gt;
-    Select option:
-    &lt;input id=&quot;select-option-input&quot; max=&quot;3&quot; min=&quot;1&quot; name=&quot;option-number&quot; type=&quot;number&quot;/&gt;
-  &lt;/label&gt;
-  &lt;button type=&quot;submit&quot;&gt;Go&lt;/button&gt;
+	&lt;label&gt;
+		Select option:
+		&lt;input id=&quot;select-option-input&quot; max=&quot;3&quot; min=&quot;1&quot; name=&quot;option-number&quot; type=&quot;number&quot; /&gt;
+	&lt;/label&gt;
+	&lt;button type=&quot;submit&quot;&gt;Go&lt;/button&gt;
 &lt;/form&gt;
 &lt;hr&gt;
 &lt;span id=&quot;combobox-label-7&quot;&gt;Custom events controlled Combobox:&lt;/span&gt;
 &lt;ace-combobox id=&quot;custom-events-combobox&quot;&gt;
-  &lt;input aria-labelledby=&quot;combobox-label-7&quot;/&gt;
-  &lt;ul aria-label=&quot;Custom events combobox options&quot;&gt;&lt;/ul&gt;
+	&lt;input aria-labelledby=&quot;combobox-label-7&quot; /&gt;
+	&lt;ul aria-label=&quot;Custom events combobox options&quot;&gt;&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
-<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
+<pre><code class="language-js">import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const comboboxEl = document.getElementById('custom-events-combobox');
-  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
-  const selectOptionForm = document.getElementById('select-option-form');
+	const comboboxEl = document.getElementById('custom-events-combobox');
+	const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
+	const selectOptionForm = document.getElementById('select-option-form');
 
-  window.addEventListener('click', (e) =&gt; {
-    switch (e.target.id) {
-      case 'add-options-btn':
-        for (let i = 0; i &lt; 3; i++) {
-          const newOption = document.createElement('li');
-          newOption.textContent = 'New Option';
-          comboboxListEl.appendChild(newOption);
-        }
-        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
-        break;
-      case 'show-list-btn':
-        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
-        break;
-      case 'hide-list-btn':
-        comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
-        break;
-    }
-  });
+	window.addEventListener('click', (e) =&gt; {
+		switch (e.target.id) {
+			case 'add-options-btn':
+				for (let i = 0; i &lt; 3; i++) {
+					const newOption = document.createElement('li');
+					newOption.textContent = 'New Option';
+					comboboxListEl.appendChild(newOption);
+				}
+				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+				break;
+			case 'show-list-btn':
+				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
+				break;
+			case 'hide-list-btn':
+				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
+				break;
+		}
+	});
 
-  selectOptionForm.addEventListener('submit', (e) =&gt; {
-    e.preventDefault();
-    const optionNumber = +new FormData(e.target).get('option-number');
-    const option = comboboxEl.querySelectorAll('li')[optionNumber - 1];
-    if (!option) {
-      return;
-    }
-    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
-      detail: {
-        optionId: option.id,
-      }
-    }));
-  });
+	selectOptionForm.addEventListener('submit', (e) =&gt; {
+		e.preventDefault();
+		const optionNumber = +new FormData(e.target).get('option-number');
+		const option = comboboxEl.querySelectorAll('li')[optionNumber - 1];
+		if (!option) {
+			return;
+		}
+		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
+			detail: {
+				optionId: option.id,
+			}
+		}));
+	});
 });
 </code></pre>
 <h3>Search Combobox with dynamically updated options</h3>
 <p>This example demonstrates how Combobox can be used as a search box with results optained through an API call, where the user types a search string into the combobox then presses <kbd>Enter</kbd> to start the search. In the example the delay associated with a slow API call is simulated using a 3 second timeout. An element with attributes <code>role=&quot;status&quot;</code> and <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via assistive technologies that the search is underway. After the timeout, results are added to the combobox's list, and are initialised by dispatching the <code>ace-combobox-update-options</code> custom event. The <code>role=&quot;status&quot;</code> element is finally updated to announce how many results were found. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><p aria-live="polite" role="status" id="combobox-status"></p>
 <div>
-  <label id="search-combobox-label">Search:</label>
-  <ace-combobox id="search-combobox" ace-combobox-no-input-update>
-    <input aria-labelledby="search-combobox-label"/>
-    <ul aria-label="Search results"></ul>
-  </ace-combobox>
+	<label id="search-combobox-label">Search:</label>
+	<ace-combobox id="search-combobox" ace-combobox-no-input-update>
+		<input aria-labelledby="search-combobox-label" />
+		<ul aria-label="Search results"></ul>
+	</ace-combobox>
 </div>
 <p aria-live="polite" role="status" id="chosen-search-result"></p>
 <hr>
@@ -505,11 +505,11 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-html">&lt;p aria-live=&quot;polite&quot; role=&quot;status&quot; id=&quot;combobox-status&quot;&gt;&lt;/p&gt;
 
 &lt;div&gt;
-  &lt;label id=&quot;search-combobox-label&quot;&gt;Search:&lt;/label&gt;
-  &lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update&gt;
-    &lt;input aria-labelledby=&quot;search-combobox-label&quot;/&gt;
-    &lt;ul aria-label=&quot;Search results&quot;&gt;&lt;/ul&gt;
-  &lt;/ace-combobox&gt;
+	&lt;label id=&quot;search-combobox-label&quot;&gt;Search:&lt;/label&gt;
+	&lt;ace-combobox id=&quot;search-combobox&quot; ace-combobox-no-input-update&gt;
+		&lt;input aria-labelledby=&quot;search-combobox-label&quot; /&gt;
+		&lt;ul aria-label=&quot;Search results&quot;&gt;&lt;/ul&gt;
+	&lt;/ace-combobox&gt;
 &lt;/div&gt;
 
 &lt;p aria-live=&quot;polite&quot; role=&quot;status&quot; id=&quot;chosen-search-result&quot;&gt;&lt;/p&gt;
@@ -518,259 +518,259 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
 &lt;button id=&quot;reset-example-btn&quot;&gt;Reset example&lt;/button&gt;
 </code></pre>
-<pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/combobox/combobox.js';
+<pre><code class="language-js">import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 export const FAKE_DELAY = 3000;
 const COMBOBOX_ID = 'search-combobox';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  let optionChosen, searching = false;
-  const chosenResultEl = document.getElementById('chosen-search-result');
-  const comboboxStatusEl = document.getElementById('combobox-status');
-  const comboboxEl = document.getElementById(COMBOBOX_ID);
-  const resetExampleBtn = document.getElementById('reset-example-btn');
-  const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
-  const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
+	let optionChosen, searching = false;
+	const chosenResultEl = document.getElementById('chosen-search-result');
+	const comboboxStatusEl = document.getElementById('combobox-status');
+	const comboboxEl = document.getElementById(COMBOBOX_ID);
+	const resetExampleBtn = document.getElementById('reset-example-btn');
+	const comboboxInputEl = comboboxEl.querySelector(`[${ATTRS.INPUT}]`);
+	const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
 
-  // Search when ENTER key pressed
-  comboboxInputEl.addEventListener('keydown', async (e) =&gt; {
-    const keyPressed = e.key || e.which || e.keyCode;
-    if (!(keyPressed === 13 || keyPressed === 'Enter')) {
-      return;
-    }
+	// Search when ENTER key pressed
+	comboboxInputEl.addEventListener('keydown', async (e) =&gt; {
+		const keyPressed = e.key || e.which || e.keyCode;
+		if (!(keyPressed === 13 || keyPressed === 'Enter')) {
+			return;
+		}
 
-    // If option selected when ENTER pressed prevent search
-    if (optionChosen) {
-      optionChosen = false;
-      return;
-    }
+		// If option selected when ENTER pressed prevent search
+		if (optionChosen) {
+			optionChosen = false;
+			return;
+		}
 
-    if (searching || comboboxInputEl.value === '') {
-      return;
-    }
-    searching = true;
-    // Update status element to inform user there will be a delay
-    comboboxStatusEl.textContent = 'Searching...';
-    comboboxStatusEl.setAttribute('aria-busy', 'true');
-    comboboxListEl.innerHTML = '';
+		if (searching || comboboxInputEl.value === '') {
+			return;
+		}
+		searching = true;
+		// Update status element to inform user there will be a delay
+		comboboxStatusEl.textContent = 'Searching...';
+		comboboxStatusEl.setAttribute('aria-busy', 'true');
+		comboboxListEl.innerHTML = '';
 
-    // Simulate an API reponse delay
-    const results = await new Promise(resolve =&gt; setTimeout(() =&gt; {
-      const data = [];
-      for (let i=1; i &lt; 6; i++) {
-        data.push({id: `result-${i}`, text: `Result ${i}`});
-      }
-      resolve(data);
-    }, FAKE_DELAY));
+		// Simulate an API reponse delay
+		const results = await new Promise(resolve =&gt; setTimeout(() =&gt; {
+			const data = [];
+			for (let i = 1; i &lt; 6; i++) {
+				data.push({ id: `result-${i}`, text: `Result ${i}` });
+			}
+			resolve(data);
+		}, FAKE_DELAY));
 
-    // Add results to DOM
-    comboboxStatusEl.setAttribute('aria-busy', 'false');
-    comboboxStatusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's' } found`;
-    comboboxListEl.innerHTML = '';
-    results.forEach((result) =&gt; {
-      const resultOption = document.createElement('li');
-      resultOption.textContent = result.text;
-      resultOption.id = result.id;
-      comboboxListEl.appendChild(resultOption);
-    });
-    // Update combobox options
-    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
-    searching = false;
-  });
+		// Add results to DOM
+		comboboxStatusEl.setAttribute('aria-busy', 'false');
+		comboboxStatusEl.textContent = `${results.length} result${results.length === 1 ? '' : 's'} found`;
+		comboboxListEl.innerHTML = '';
+		results.forEach((result) =&gt; {
+			const resultOption = document.createElement('li');
+			resultOption.textContent = result.text;
+			resultOption.id = result.id;
+			comboboxListEl.appendChild(resultOption);
+		});
+		// Update combobox options
+		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+		searching = false;
+	});
 
-  // Show list when clicking on input if list has options
-  comboboxInputEl.addEventListener('click', () =&gt; {
-    if (comboboxListEl.childNodes.length === 0) {
-      return;
-    }
-    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
-  });
+	// Show list when clicking on input if list has options
+	comboboxInputEl.addEventListener('click', () =&gt; {
+		if (comboboxListEl.childNodes.length === 0) {
+			return;
+		}
+		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
+	});
 
-  // Show results list when options intialised
-  window.addEventListener(EVENTS.OUT.OPTIONS_UPDATED, (e) =&gt; {
-    const detail = e['detail'];
-    if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
-      return;
-    }
-    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
-  });
+	// Show results list when options intialised
+	window.addEventListener(EVENTS.OUT.OPTIONS_UPDATED, (e) =&gt; {
+		const detail = e['detail'];
+		if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
+			return;
+		}
+		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
+	});
 
-  // Listen for chosen options
-  window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) =&gt; {
-    const detail = e['detail'];
-    if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
-      return;
-    }
-    optionChosen = true;
-    chosenResultEl.textContent = `Option with ID '${detail['chosenOptionId']}' chosen.`;
+	// Listen for chosen options
+	window.addEventListener(EVENTS.OUT.OPTION_CHOSEN, (e) =&gt; {
+		const detail = e['detail'];
+		if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
+			return;
+		}
+		optionChosen = true;
+		chosenResultEl.textContent = `Option with ID '${detail['chosenOptionId']}' chosen.`;
 
-    // Hide list
-    comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
-  });
+		// Hide list
+		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
+	});
 
-  // Show list when clicking on input if list has options
-  resetExampleBtn.addEventListener('click', () =&gt; {
-    chosenResultEl.textContent = '';
-    comboboxStatusEl.textContent = '';
-    comboboxInputEl.value = '';
-    comboboxListEl.innerHTML = '';
-  });
+	// Show list when clicking on input if list has options
+	resetExampleBtn.addEventListener('click', () =&gt; {
+		chosenResultEl.textContent = '';
+		comboboxStatusEl.textContent = '';
+		comboboxInputEl.value = '';
+		comboboxListEl.innerHTML = '';
+	});
 });
 </code></pre>
 <h3>Styled Combobox</h3>
 <p>An example of how Combobox can be styled, with the applied CSS shown below.</p>
 <div class="example-block"><label id="styled-combobox-label" class="styled-combobox-label">Choose an Avenger:</label>
 <ace-combobox ace-combobox-autoselect class="styled-combobox">
-  <input aria-autocomplete="list" aria-labelledby="styled-combobox-label"  class="styled-combobox__input"/>
-  <ul aria-label="Avengers" class="styled-combobox__list">
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Iron Man
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Nick Fury
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Hulk
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Thor
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Captain America
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Black Widow
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Scarlet Witch
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Ant-Man
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Black Panther
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Spider-man
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Doctor Strange
-    </li>
-    <li class="styled-combobox__option">
-      <img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
-      Captain Marvel
-    </li>
-  </ul>
+	<input aria-autocomplete="list" aria-labelledby="styled-combobox-label" class="styled-combobox__input" />
+	<ul aria-label="Avengers" class="styled-combobox__list">
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Iron Man
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Nick Fury
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Hulk
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Thor
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Captain America
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Black Widow
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Scarlet Witch
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Ant-Man
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Black Panther
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Spider-man
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Doctor Strange
+		</li>
+		<li class="styled-combobox__option">
+			<img alt="Potato logo" class="styled-combobox__img" src="/img/logo.svg">
+			Captain Marvel
+		</li>
+	</ul>
 </ace-combobox>
 </div>
 <pre><code class="language-html">&lt;label id=&quot;styled-combobox-label&quot; class=&quot;styled-combobox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
 
 &lt;ace-combobox ace-combobox-autoselect class=&quot;styled-combobox&quot;&gt;
-  &lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;styled-combobox-label&quot;  class=&quot;styled-combobox__input&quot;/&gt;
-  &lt;ul aria-label=&quot;Avengers&quot; class=&quot;styled-combobox__list&quot;&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Iron Man
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Nick Fury
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Hulk
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Thor
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Captain America
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Black Widow
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Scarlet Witch
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Ant-Man
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Black Panther
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Spider-man
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Doctor Strange
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-combobox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Captain Marvel
-    &lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;input aria-autocomplete=&quot;list&quot; aria-labelledby=&quot;styled-combobox-label&quot; class=&quot;styled-combobox__input&quot; /&gt;
+	&lt;ul aria-label=&quot;Avengers&quot; class=&quot;styled-combobox__list&quot;&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Iron Man
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Nick Fury
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Hulk
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Thor
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Captain America
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Black Widow
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Scarlet Witch
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Ant-Man
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Black Panther
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Spider-man
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Doctor Strange
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-combobox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-combobox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Captain Marvel
+		&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-combobox&gt;
 </code></pre>
 <pre><code class="language-scss">.styled-combobox {
-  &amp;-label,
-  &amp;__input,
-  &amp;__option,
-  &amp;__status {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+	&amp;-label,
+	&amp;__input,
+	&amp;__option,
+	&amp;__status {
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+	}
 
-  &amp;__input,
-  &amp;__list {
-    border: 1px solid #837b8b;
-    border-radius: 4px;
-    width: 300px;
+	&amp;__input,
+	&amp;__list {
+		border: 1px solid #837b8b;
+		border-radius: 4px;
+		width: 300px;
 
-    &amp;:focus {
-      outline-color: #41354d;
-    }
-  }
+		&amp;:focus {
+			outline-color: #41354d;
+		}
+	}
 
-  &amp;__input,
-  &amp;__option {
-    padding: 10px 16px;
-  }
+	&amp;__input,
+	&amp;__option {
+		padding: 10px 16px;
+	}
 
-  &amp;__list {
-    max-height: 225px;
-  }
+	&amp;__list {
+		max-height: 225px;
+	}
 
-  &amp;__option {
-    align-items: center;
-    display: flex;
+	&amp;__option {
+		align-items: center;
+		display: flex;
 
-    &amp;[aria-selected=&quot;true&quot;] {
-      background: #41354d;
-    }
-  }
+		&amp;[aria-selected=&quot;true&quot;] {
+			background: #41354d;
+		}
+	}
 
-  &amp;__img {
-    height: 2em;
-    margin-right: 10px;
-  }
+	&amp;__img {
+		height: 2em;
+		margin-right: 10px;
+	}
 }
 </code></pre>

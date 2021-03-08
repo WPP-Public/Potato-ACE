@@ -4,41 +4,41 @@
 *,
 *::after,
 *::before {
-  box-sizing: inherit;
+	box-sizing: inherit;
 }
 
 * {
-  box-sizing: border-box;
-  -webkit-font-smoothing: antialiased;
+	box-sizing: border-box;
+	-webkit-font-smoothing: antialiased;
 }
 
 a {
-  font-weight: 700;
-  text-decoration: none;
-  transition: color $transition;
+	font-weight: 700;
+	text-decoration: none;
+	transition: color $transition;
 
-  &,
-  &:visited {
-    color: $interactive-color;
-  }
+	&,
+	&:visited {
+		color: $interactive-color;
+	}
 
-  &:active,
-  &:focus,
-  &:hover {
-    color: $active-color;
-  }
+	&:active,
+	&:focus,
+	&:hover {
+		color: $active-color;
+	}
 }
 
 // Inline Code
 code {
-  :not(pre) > & {
-    background: map-get($pot-mauve, 7);
-    border-radius: $border-radius;
-    color: map-get($pot-grey, 1);
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-    font-size: 1.4rem;
-    padding: 2px 4px;
-  }
+	:not(pre) > & {
+		background: map-get($pot-mauve, 7);
+		border-radius: $border-radius;
+		color: map-get($pot-grey, 1);
+		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+		font-size: 1.4rem;
+		padding: 2px 4px;
+	}
 }
 
 h1,
@@ -46,124 +46,124 @@ h2,
 h3,
 h4,
 h5 {
-  font-weight: 700;
-  margin: 0 0 $buffer-s;
+	font-weight: 700;
+	margin: 0 0 $buffer-s;
 }
 
 h1,
 h2 {
-  *:not(h1):not(h2) + & {
-    margin-top: $buffer-xl;
-  }
+	*:not(h1):not(h2) + & {
+		margin-top: $buffer-xl;
+	}
 }
 
 h3,
 h4,
 h5 {
-  *:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + & {
-    margin-top: $buffer-m;
-  }
+	*:not(h1):not(h2):not(h3):not(h4):not(h5):not(h6) + & {
+		margin-top: $buffer-m;
+	}
 }
 
 h1 {
-  font-size: 4.8rem;
-  font-weight: 900;
-  line-height: 1;
-  margin-bottom: $buffer-m;
+	font-size: 4.8rem;
+	font-weight: 900;
+	line-height: 1;
+	margin-bottom: $buffer-m;
 }
 
 h2 {
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1.2;
+	font-size: 3rem;
+	font-weight: 700;
+	line-height: 1.2;
 }
 
 h3 {
-  font-size: 2.1rem;
-  line-height: 1.4;
+	font-size: 2.1rem;
+	line-height: 1.4;
 }
 
 h4 {
-  font-size: 1.8rem;
-  line-height: 1.4;
+	font-size: 1.8rem;
+	line-height: 1.4;
 }
 
 hr {
-  margin: $buffer-s 0;
+	margin: $buffer-s 0;
 }
 
 kbd {
-  background-color: map-get($pot-grey, 1);
-  border: 1px solid map-get($pot-grey, 3);
-  border-radius: 3px;
-  font-family: inherit;
-  font-size: 1.3rem;
-  margin: 0 2px;
-  padding: 2px 4px;
-  white-space: nowrap;
+	background-color: map-get($pot-grey, 1);
+	border: 1px solid map-get($pot-grey, 3);
+	border-radius: 3px;
+	font-family: inherit;
+	font-size: 1.3rem;
+	margin: 0 2px;
+	padding: 2px 4px;
+	white-space: nowrap;
 }
 
 p {
-  margin: 0 0 $buffer-s;
+	margin: 0 0 $buffer-s;
 }
 
 table {
-  border-collapse: collapse;
+	border-collapse: collapse;
 }
 
 ol {
-  list-style-position: inside;
-  padding: 0;
+	list-style-position: inside;
+	padding: 0;
 }
 
 ul {
-  list-style-position: inside;
-  margin: 0;
-  padding: 0;
+	list-style-position: inside;
+	margin: 0;
+	padding: 0;
 }
 
 td,
 th {
-  min-width: 100px;
-  padding: 10px;
+	min-width: 100px;
+	padding: 10px;
 }
 
 tr,
 td,
 th {
-  border: 1px solid map-get($pot-mauve, 7);
+	border: 1px solid map-get($pot-mauve, 7);
 }
 
 // ONE-OFF ELEMENTS
 html {
-  box-sizing: border-box;
-  font-size: 10px;
-  height: 100%;
+	box-sizing: border-box;
+	font-size: 10px;
+	height: 100%;
 }
 
 body {
-  font-family: 'Work Sans', sans-serif;
-  font-size: 1.6rem;
-  height: 100%;
-  line-height: 1.5em;
-  margin: 0;
+	font-family: 'Work Sans', sans-serif;
+	font-size: 1.6rem;
+	height: 100%;
+	line-height: 1.5em;
+	margin: 0;
 }
 
 main {
-  height: 100%;
-  margin-top: $header-height;
+	height: 100%;
+	margin-top: $header-height;
 
-  @include mq(desktop) {
-    display: grid;
-    grid-template-columns: $sidebar-width minmax(0, 1fr);
-  }
+	@include mq(desktop) {
+		display: grid;
+		grid-template-columns: $sidebar-width minmax(0, 1fr);
+	}
 }
 
 article {
-  color: $text-color;
-  grid-column: 2;
-  margin: 0 auto;
-  max-width: 900px;
-  padding: 30px;
-  width: 100%;
+	color: $text-color;
+	grid-column: 2;
+	margin: 0 auto;
+	max-width: 900px;
+	padding: 30px;
+	width: 100%;
 }

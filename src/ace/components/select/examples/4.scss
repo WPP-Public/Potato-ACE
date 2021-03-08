@@ -1,60 +1,60 @@
 .styled-select {
-  display: block;
-  margin-top: 10px;
+	display: block;
+	margin-top: 10px;
 
-  &-label,
-  &__trigger,
-  &__option {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+	&-label,
+	&__trigger,
+	&__option {
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+	}
 
-  &__trigger,
-  &__list {
-    border: 1px solid #837b8b;
-    border-radius: 4px;
-    width: 300px;
+	&__trigger,
+	&__list {
+		border: 1px solid #837b8b;
+		border-radius: 4px;
+		width: 300px;
 
-    &:focus {
-      outline-color: #41354d;
-    }
-  }
+		&:focus {
+			outline-color: #41354d;
+		}
+	}
 
-  &__trigger,
-  &__option {
-    padding: 10px 16px;
-  }
+	&__trigger,
+	&__option {
+		padding: 10px 16px;
+	}
 
-  &__trigger {
-    background: transparent;
-    display: flex;
-    justify-content: space-between;
+	&__trigger {
+		background: transparent;
+		display: flex;
+		justify-content: space-between;
 
-    &::after {
-      color: #837b8b;
-      content: '\25BC';
-    }
+		&::after {
+			color: #837b8b;
+			content: '\25BC';
+		}
 
-    &:focus::after {
-      color: #41354d;
-    }
-  }
+		&:focus::after {
+			color: #41354d;
+		}
+	}
 
-  &__list {
-    height: 225px;
-  }
+	&__list {
+		height: 225px;
+	}
 
-  &__option {
-    align-items: center;
-    display: flex;
+	&__option {
+		align-items: center;
+		display: flex;
 
-    &[aria-selected="true"] {
-      background: #41354d;
-    }
-  }
+		&[aria-selected="true"] {
+			background: #41354d;
+		}
+	}
 
-  &__img {
-    height: 2em;
-    margin-right: 10px;
-  }
+	&__img {
+		height: 2em;
+		margin-right: 10px;
+	}
 }

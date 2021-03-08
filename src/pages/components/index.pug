@@ -2,9 +2,9 @@ extends ../includes/base
 include ../mixins/component
 
 block article
-  h1 Components
-  p Hover on a component link below to see a preview of it in action.
+	h1 Components
+	p Hover on a component link below to see a preview of it in action.
 
-  ul(class='component-grid')
-    each component, key in components
-      +component(key, component)
+	ul(class='component-grid')
+		each component, key in components
+			+component(key, component)

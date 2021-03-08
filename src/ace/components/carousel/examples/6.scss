@@ -1,21 +1,21 @@
 @media (prefers-reduced-motion: no-preference) {
-  .animated-carousel {
-    &__slides {
-      display: flex;
-      overflow-x: hidden;
-    }
+	.animated-carousel {
+		&__slides {
+			display: flex;
+			overflow-x: hidden;
+		}
 
-    &__slide {
-      flex-shrink: 0;
-      width: 100%;
+		&__slide {
+			flex-shrink: 0;
+			width: 100%;
 
-      &--hidden {
-        visibility: hidden;
-      }
+			&--hidden {
+				visibility: hidden;
+			}
 
-      &:not([ace-carousel-slide-selected]) {
-        display: block;
-      }
-    }
-  }
+			&:not([ace-carousel-slide-selected]) {
+				display: block;
+			}
+		}
+	}
 }

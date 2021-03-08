@@ -10,47 +10,47 @@ $ace-menu-selected-option-text-color: #fff !default;
 
 // STYLES
 ace-menu {
-  position: relative;
+	position: relative;
 }
 
 [ace-menu-list] {
-  background: $ace-menu-list-bg-color;
-  color: $ace-menu-option-text-color;
-  left: 0;
-  list-style: none;
-  position: absolute;
-  user-select: none;
-  white-space: nowrap;
-  z-index: $ace-menu-list-z-index;
+	background: $ace-menu-list-bg-color;
+	color: $ace-menu-option-text-color;
+	left: 0;
+	list-style: none;
+	position: absolute;
+	user-select: none;
+	white-space: nowrap;
+	z-index: $ace-menu-list-z-index;
 
-  &:focus {
-    outline: none;
-  }
+	&:focus {
+		outline: none;
+	}
 
-  &:not([ace-menu-list-visible]) {
-    display: none;
-  }
+	&:not([ace-menu-list-visible]) {
+		display: none;
+	}
 
-  &[ace-u-float-above] {
-    bottom: 100%;
-    top: initial;
-  }
+	&[ace-u-float-above] {
+		bottom: 100%;
+		top: initial;
+	}
 
-  &[ace-u-float-left] {
-    left: initial;
-    right: 0;
-  }
+	&[ace-u-float-left] {
+		left: initial;
+		right: 0;
+	}
 
-  &[ace-u-float-right] {
-    left: 0;
-    right: initial;
-  }
+	&[ace-u-float-right] {
+		left: 0;
+		right: initial;
+	}
 }
 
 [ace-menu-option] {
-  &:hover,
-  &[aria-selected="true"] {
-    background: $ace-menu-selected-option-bg-color;
-    color: $ace-menu-selected-option-text-color;
-  }
+	&:hover,
+	&[aria-selected="true"] {
+		background: $ace-menu-selected-option-bg-color;
+		color: $ace-menu-selected-option-text-color;
+	}
 }

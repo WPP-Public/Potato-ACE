@@ -1,5 +1,5 @@
 {
-  "projects": {
-    "default": "potato-a11y"
-  }
+	"projects": {
+		"default": "potato-a11y"
+	}
 }
