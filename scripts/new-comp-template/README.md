@@ -15,6 +15,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/template/template';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/template/ace-template.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js

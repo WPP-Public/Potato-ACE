@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/toast/toast';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/toast/ace-toast.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -37,7 +45,7 @@ The following SASS is applied to Toast. The SASS variables use `!default` so can
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-toast-bg-color: #000 !default;
 $ace-toast-border-radius: 8px !default;
 $ace-toast-breakpoint: 600px !default;
@@ -49,7 +57,7 @@ $ace-toast-padding: 16px !default;
 $ace-toast-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 ace-toast {
   background: $ace-toast-bg-color;
   border-radius: $ace-toast-border-radius;

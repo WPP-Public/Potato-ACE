@@ -15,7 +15,7 @@
     "lint:scss": "stylelint \"src/**/*.scss\"",
     "nxm": "node --experimental-modules --experimental-json-modules",
     "new-comp": "npm run nxm -- ./scripts/new-comp.mjs",
-    "pack": "gulp ts && npm pack ./src/ace && open .",
+    "pack": "gulp ts && npm run nxm -- ./scripts/convert-sass.mjs && npm pack ./src/ace && open .",
     "publish": "gulp ts && cd src/ace && npm publish --access public && cd ..",
     "start": "gulp",
     "serve:build": "gulp --prod",

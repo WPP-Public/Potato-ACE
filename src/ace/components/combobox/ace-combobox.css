@@ -1,0 +1,47 @@
+ace-combobox {
+  display: inline-block;
+  position: relative;
+}
+
+[ace-combobox-input] {
+  width: 100%;
+}
+
+[ace-combobox-list] {
+  background: #fff;
+  height: auto;
+  left: 0;
+  list-style: none;
+  overflow-y: auto;
+  position: absolute;
+  text-align: left;
+  top: 100%;
+  user-select: none;
+  white-space: nowrap;
+  width: 100%;
+  z-index: 1;
+}
+
+[ace-combobox-list]:not([ace-combobox-list-visible]) {
+  display: none;
+}
+
+[ace-combobox-list] [aria-selected="true"] {
+  background: steelblue;
+  color: #fff;
+}
+
+[ace-combobox-list][ace-u-float-above] {
+  bottom: 100%;
+  top: initial;
+}
+
+[ace-combobox-list][ace-u-float-left] {
+  left: initial;
+  right: 0;
+}
+
+[ace-combobox-list][ace-u-float-right] {
+  left: 0;
+  right: initial;
+}

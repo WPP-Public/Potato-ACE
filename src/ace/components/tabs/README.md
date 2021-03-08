@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/tabs/tabs';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/tabs/ace-tabs.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -51,7 +59,7 @@ The following SASS is applied to Tabs. The SASS variables use `!default` so can 
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-tabs-selected-tab-border-color: $ace-color-selected !default;
 $ace-tabs-selected-tab-border-width: 4px !default;
 $ace-tabs-tab-bg-color: transparent !default;
@@ -63,7 +71,7 @@ $ace-tabs-tablist-margin: $ace-spacing-2 !default;
 $ace-tabs-panel-padding: 16px !default;
 
 
-/* STYLES */
+// STYLES
 [ace-tabs-tablist] {
   display: flex;
   overflow: auto hidden;

@@ -1,0 +1,3 @@
+ace-disclosure:not([ace-disclosure-visible]) {
+  display: none;
+}

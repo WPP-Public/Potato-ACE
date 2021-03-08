@@ -106,6 +106,10 @@ const convertSass = (src, isProd=false) => {
 }
 
 // Convert Docs SASS to CSS and move to dist
+gulp.task('main-sass', () => {
+  return runCmd(`npm run nxm -- ./scripts/convert-sass.mjs`);
+});
+
 gulp.task('docs-sass', () => {
   isProd = prodArgGiven();
   return convertSass(`${SRC}/sass/styles.scss`, isProd);
@@ -120,7 +124,6 @@ gulp.task('examples-sass', () => {
 // Convert all SASS to CSS and move to dist
 gulp.task('sass', gulp.parallel('docs-sass', 'examples-sass'));
 // ///////////
-
 
 // ///////////
 // TS
@@ -244,6 +247,11 @@ gulp.task('serve', () => {
   // Compile SASS files to CSS if any SASS files (except component ones) change
   gulp.watch([`**/*.scss`, `!${COMPS_DIR}/**/*.scss`], gulp.series('sass'));
 
+  // Covert component main SASS file to CSS if it changes
+  gulp.watch(`${COMPS_DIR}/*/*.scss`).on('change', async (path) => {
+    const component = path.split('components/')[1].split('/')[0];
+    await runCmd(`npm run nxm -- ./scripts/convert-sass.mjs ${component}`);
+  });
 
   // TS
   // Build ts files if they change and copy them to dist
@@ -265,6 +273,7 @@ gulp.task('build', gulp.series(
     async () => {await runCmd(BUILD_DOCS_CMD)},
   ),
   gulp.parallel(
+    'main-sass',
     'ts',
     'css',
     'vid',

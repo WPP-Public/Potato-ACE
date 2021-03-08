@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/tooltip/tooltip';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/tooltip/ace-tooltip.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -46,7 +54,7 @@ The following SASS is applied to Tooltip. The SASS variables use `!default` so c
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-tooltip-base-transform: translateX(-50%) !default;
 $ace-tooltip-bg-color: #000 !default;
 $ace-tooltip-gap: 10px !default;
@@ -54,7 +62,7 @@ $ace-tooltip-padding: 4px 8px !default;
 $ace-tooltip-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 [ace-tooltip-target] {
   position: relative;
 }
@@ -80,15 +88,26 @@ ace-tooltip {
   &[ace-u-float-left] {
     transform: translateX(0);
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
 
 [ace-tooltip-nowrap] {
   white-space: nowrap;
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';
 ```
 
 
