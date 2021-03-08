@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 // REPEATING ELEMENTS
+*,
+*::after,
+*::before {
+  box-sizing: inherit;
+}
+
 * {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -82,11 +88,9 @@ h4 {
   line-height: 1.4;
 }
 
-
 hr {
   margin: $buffer-s 0;
 }
-
 
 kbd {
   background-color: map-get($pot-grey, 1);
@@ -132,6 +136,7 @@ th {
 
 // ONE-OFF ELEMENTS
 html {
+  box-sizing: border-box;
   font-size: 10px;
   height: 100%;
 }
