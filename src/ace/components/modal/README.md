@@ -67,48 +67,48 @@ $ace-modal-switch-breakpoint: 768px;
 
 // STYLES
 ace-modal {
-  background: $ace-modal-bg-color;
-  padding: $ace-modal-padding;
-  position: fixed;
-  z-index: $ace-modal-z-index;
+	background: $ace-modal-bg-color;
+	padding: $ace-modal-padding;
+	position: fixed;
+	z-index: $ace-modal-z-index;
 
-  @media (max-width: #{$ace-modal-switch-breakpoint - 1px}) {
-    height: 100vh;
-    left: 0;
-    top: 0;
-    width: 100vw;
-  }
+	@media (max-width: #{$ace-modal-switch-breakpoint - 1px}) {
+		height: 100vh;
+		left: 0;
+		top: 0;
+		width: 100vw;
+	}
 
-  @media (min-width: #{$ace-modal-switch-breakpoint}) {
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
+	@media (min-width: #{$ace-modal-switch-breakpoint}) {
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
 
-  &:not([ace-modal-visible]) {
-    display: none;
-  }
+	&:not([ace-modal-visible]) {
+		display: none;
+	}
 }
 
 // Placed on body and backdrop when a Modal is visible
 [ace-modal-is-visible] {
-  overflow: hidden;
-  // prevent reflow due to scroll bar disappearing;
-  padding-right: $ace-scrollbar-width;
+	overflow: hidden;
+	// prevent reflow due to scroll bar disappearing;
+	padding-right: $ace-scrollbar-width;
 }
 
 [ace-modal-backdrop] {
-  background: $ace-modal-backdrop-bg-color;
-  bottom: 0;
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: $ace-modal-backdrop-z-index;
+	background: $ace-modal-backdrop-bg-color;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: $ace-modal-backdrop-z-index;
 
-  &:not([ace-modal-is-visible]) {
-    display: none;
-  }
+	&:not([ace-modal-is-visible]) {
+		display: none;
+	}
 }
 ```
 

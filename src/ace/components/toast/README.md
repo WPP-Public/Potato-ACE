@@ -59,25 +59,25 @@ $ace-toast-text-color: #fff !default;
 
 // STYLES
 ace-toast {
-  background: $ace-toast-bg-color;
-  border-radius: $ace-toast-border-radius;
-  bottom: $ace-toast-distance-from-bottom;
-  color: $ace-toast-text-color;
-  font-size: $ace-toast-font-size;
-  left: 50%;
-  max-width: $ace-toast-mobile-max-width;
-  padding: $ace-toast-padding;
-  position: fixed;
-  transform: translateX(-50%);
-  z-index: $ace-toast-z-index;
+	background: $ace-toast-bg-color;
+	border-radius: $ace-toast-border-radius;
+	bottom: $ace-toast-distance-from-bottom;
+	color: $ace-toast-text-color;
+	font-size: $ace-toast-font-size;
+	left: 50%;
+	max-width: $ace-toast-mobile-max-width;
+	padding: $ace-toast-padding;
+	position: fixed;
+	transform: translateX(-50%);
+	z-index: $ace-toast-z-index;
 
-  &:not([ace-toast-visible]) {
-    display: none;
-  }
+	&:not([ace-toast-visible]) {
+		display: none;
+	}
 
-  @media (min-width: $ace-toast-breakpoint) {
-    max-width: $ace-toast-max-width;
-  }
+	@media (min-width: $ace-toast-breakpoint) {
+		max-width: $ace-toast-max-width;
+	}
 }
 ```
 
@@ -129,25 +129,25 @@ A Toast with a default 4 second show time and one with a custom 7 second show ti
 <button id="long-show-time-toast-btn">Show Toast with 7 second show time</button>
 
 <ace-toast>
-  Toast with standard 4 second show time
+	Toast with standard 4 second show time
 </ace-toast>
 
 <ace-toast ace-toast-show-time="7000">
-  Toast with developer-defined 7 second show time
+	Toast with developer-defined 7 second show time
 </ace-toast>
 ```
 
 ```js
-import {ATTRS} from '/ace/components/toast/toast.js';
+import { ATTRS } from '/ace/components/toast/toast.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const toastEl = document.getElementById('ace-toast-1');
-  const secondToastEl = document.getElementById('ace-toast-2');
-  const showToastBtn = document.getElementById('simple-toast-btn');
-  const showSecondToastBtn = document.getElementById('long-show-time-toast-btn');
+	const toastEl = document.getElementById('ace-toast-1');
+	const secondToastEl = document.getElementById('ace-toast-2');
+	const showToastBtn = document.getElementById('simple-toast-btn');
+	const showSecondToastBtn = document.getElementById('long-show-time-toast-btn');
 
-  showToastBtn.addEventListener('click', () => toastEl.setAttribute(ATTRS.VISIBLE, ''));
-  showSecondToastBtn.addEventListener('click', () => secondToastEl.setAttribute(ATTRS.VISIBLE, ''));
+	showToastBtn.addEventListener('click', () => toastEl.setAttribute(ATTRS.VISIBLE, ''));
+	showSecondToastBtn.addEventListener('click', () => secondToastEl.setAttribute(ATTRS.VISIBLE, ''));
 });
 ```
 
@@ -161,62 +161,62 @@ All Toasts occupy the same fixed position at the bottom of the viewport window. 
 <button id="show-3rd-toast-btn">Show third Toast</button>
 
 <ace-toast>
-  First Toast
+	First Toast
 </ace-toast>
 
 <ace-toast>
-  Second Toast
+	Second Toast
 </ace-toast>
 
 <ace-toast>
-  Third Toast
+	Third Toast
 </ace-toast>
 ```
 
 ```js
-import {ATTRS} from '/ace/components/toast/toast.js';
+import { ATTRS } from '/ace/components/toast/toast.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const firstToastId = 'ace-toast-3';
-  const secondToastId = 'ace-toast-4';
-  const thirdToastId = 'ace-toast-5';
-  const firstToastEl = document.getElementById(firstToastId);
-  const secondToastEl = document.getElementById(secondToastId);
-  const thirdToastEl = document.getElementById(thirdToastId);
+	const firstToastId = 'ace-toast-3';
+	const secondToastId = 'ace-toast-4';
+	const thirdToastId = 'ace-toast-5';
+	const firstToastEl = document.getElementById(firstToastId);
+	const secondToastEl = document.getElementById(secondToastId);
+	const thirdToastEl = document.getElementById(thirdToastId);
 
-  const positionToast = (toastEl) => {
-    const TOAST_GAP = 10;
-    let offsetTopOfHighestToast;
-    const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}="true"]`);
+	const positionToast = (toastEl) => {
+		const TOAST_GAP = 10;
+		let offsetTopOfHighestToast;
+		const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}="true"]`);
 
-    visibleToasts.forEach((visibleToast, index) => {
-      const visibleToastOffsetTop = visibleToast.offsetTop;
+		visibleToasts.forEach((visibleToast, index) => {
+			const visibleToastOffsetTop = visibleToast.offsetTop;
 
-      if (index === 0) {
-        offsetTopOfHighestToast = visibleToastOffsetTop;
-        return;
-      }
+			if (index === 0) {
+				offsetTopOfHighestToast = visibleToastOffsetTop;
+				return;
+			}
 
-      if (visibleToastOffsetTop < offsetTopOfHighestToast) {
-        offsetTopOfHighestToast = visibleToastOffsetTop;
-      }
-    });
-    toastEl.style.bottom = visibleToasts.length ? `${window.innerHeight - offsetTopOfHighestToast + TOAST_GAP}px` : '';
-  };
+			if (visibleToastOffsetTop < offsetTopOfHighestToast) {
+				offsetTopOfHighestToast = visibleToastOffsetTop;
+			}
+		});
+		toastEl.style.bottom = visibleToasts.length ? `${window.innerHeight - offsetTopOfHighestToast + TOAST_GAP}px` : '';
+	};
 
-  window.addEventListener('click', (e) => {
-    const targetId = e.target.id;
-    let toastEl;
-    toastEl = targetId === 'show-1st-toast-btn' ? firstToastEl : toastEl;
-    toastEl = targetId === 'show-2nd-toast-btn' ? secondToastEl : toastEl;
-    toastEl = targetId === 'show-3rd-toast-btn' ? thirdToastEl : toastEl;
+	window.addEventListener('click', (e) => {
+		const targetId = e.target.id;
+		let toastEl;
+		toastEl = targetId === 'show-1st-toast-btn' ? firstToastEl : toastEl;
+		toastEl = targetId === 'show-2nd-toast-btn' ? secondToastEl : toastEl;
+		toastEl = targetId === 'show-3rd-toast-btn' ? thirdToastEl : toastEl;
 
-    if (!toastEl) {
-      return;
-    }
+		if (!toastEl) {
+			return;
+		}
 
-    positionToast(toastEl);
-    toastEl.setAttribute(ATTRS.VISIBLE, '');
-  });
+		positionToast(toastEl);
+		toastEl.setAttribute(ATTRS.VISIBLE, '');
+	});
 });
 ```

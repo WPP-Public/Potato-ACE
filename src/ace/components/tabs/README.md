@@ -73,54 +73,54 @@ $ace-tabs-panel-padding: 16px !default;
 
 // STYLES
 [ace-tabs-tablist] {
-  display: flex;
-  overflow: auto hidden;
-  white-space: nowrap;
+	display: flex;
+	overflow: auto hidden;
+	white-space: nowrap;
 }
 
 [ace-tabs-tab] {
-  background-color: $ace-tabs-tab-bg-color;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
-  cursor: pointer;
-  padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
+	background-color: $ace-tabs-tab-bg-color;
+	border-color: transparent;
+	border-style: solid;
+	border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
+	cursor: pointer;
+	padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
 
-  &:focus,
-  &:hover {
-    background-color: $ace-tabs-tab-focus-and-hover-bg-color;
-  }
+	&:focus,
+	&:hover {
+		background-color: $ace-tabs-tab-focus-and-hover-bg-color;
+	}
 
-  &:focus {
-    outline: none;
-  }
+	&:focus {
+		outline: none;
+	}
 }
 
 [ace-tabs-tab-selected] {
-  border-color: $ace-tabs-selected-tab-border-color;
+	border-color: $ace-tabs-selected-tab-border-color;
 }
 
 [ace-tabs-panel] {
-  padding: $ace-tabs-panel-padding;
+	padding: $ace-tabs-panel-padding;
 
-  &:not([ace-tabs-panel-visible]) {
-    display: none;
-  }
+	&:not([ace-tabs-panel-visible]) {
+		display: none;
+	}
 }
 
 
 // Vertical Tabs
 [ace-tabs-vertical] {
-  display: flex;
+	display: flex;
 
-  [ace-tabs-tablist] {
-    flex-direction: column;
-    overflow: hidden auto;
-  }
+	[ace-tabs-tablist] {
+		flex-direction: column;
+		overflow: hidden auto;
+	}
 
-  [ace-tabs-tab] {
-    border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
-  }
+	[ace-tabs-tab] {
+		border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
+	}
 }
 ```
 
@@ -206,26 +206,26 @@ The default Tabs with three tabs.
 
 ```html
 <ace-tabs>
-  <div aria-label="Basic Tabs">
-    <button>Tab 1</button>
-    <button>Tab 2</button>
-    <button>Tab 3</button>
-  </div>
-  <div>
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div>
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div>
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Basic Tabs">
+		<button>Tab 1</button>
+		<button>Tab 2</button>
+		<button>Tab 3</button>
+	</div>
+	<div>
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div>
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div>
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 ```
 
@@ -235,26 +235,26 @@ Tabs with infinite rotation.
 
 ```html
 <ace-tabs id="infinite-tabs" ace-tabs-infinite ace-tabs-selected-tab="2">
-  <div aria-label="Tabs with infinite scroll">
-    <button>Tab 1</button>
-    <button>Tab 2</button>
-    <button>Tab 3</button>
-  </div>
-  <div>
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div>
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div>
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Tabs with infinite scroll">
+		<button>Tab 1</button>
+		<button>Tab 2</button>
+		<button>Tab 3</button>
+	</div>
+	<div>
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div>
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div>
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 ```
 
@@ -264,26 +264,26 @@ Tabs with vertically stacked tabs.
 
 ```html
 <ace-tabs id="vertical-tabs" ace-tabs-vertical>
-  <div aria-label="Tabs with vertically-oriented tablist">
-    <button>Tab 1</button>
-    <button>Tab 2</button>
-    <button>Tab 3</button>
-  </div>
-  <div>
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div>
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div>
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Tabs with vertically-oriented tablist">
+		<button>Tab 1</button>
+		<button>Tab 2</button>
+		<button>Tab 3</button>
+	</div>
+	<div>
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div>
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div>
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 ```
 
@@ -293,26 +293,26 @@ Tabs with panels that are displayed by pressing <kbd>Space</kbd> or <kbd>Enter</
 
 ```html
 <ace-tabs id="manual-tabs" ace-tabs-manual>
-  <div aria-label="Tabs with manual activation">
-    <button>Tab 1</button>
-    <button>Tab 2</button>
-    <button>Tab 3</button>
-  </div>
-  <div>
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div>
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div>
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Tabs with manual activation">
+		<button>Tab 1</button>
+		<button>Tab 2</button>
+		<button>Tab 3</button>
+	</div>
+	<div>
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div>
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div>
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 ```
 
@@ -324,26 +324,26 @@ Two Tabs components with deep linking enabled.
 <h3>Deep-linked</h3>
 
 <ace-tabs id="deep-linked-tabs-1" ace-tabs-deep-linked>
-  <div aria-label="Deep-linked Tabs">
-    <button>Tab 1</button>
-    <button>Tab 2</button>
-    <button>Tab 3</button>
-  </div>
-  <div>
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div>
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div>
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Deep-linked Tabs">
+		<button>Tab 1</button>
+		<button>Tab 2</button>
+		<button>Tab 3</button>
+	</div>
+	<div>
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div>
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div>
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 
 <hr>
@@ -351,26 +351,26 @@ Two Tabs components with deep linking enabled.
 <h3>Deep-linked vertical Tabs with initially set tab 2</h3>
 
 <ace-tabs id="deep-linked-tabs-2" ace-tabs-deep-linked ace-tabs-vertical ace-tabs-selected-tab="2">
-  <div aria-label="Deep-linked, vertical Tabs with initially set tab">
-    <button>Tab 1</button>
-    <button>Tab 2</button>
-    <button>Tab 3</button>
-  </div>
-  <div>
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div>
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div>
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Deep-linked, vertical Tabs with initially set tab">
+		<button>Tab 1</button>
+		<button>Tab 2</button>
+		<button>Tab 3</button>
+	</div>
+	<div>
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div>
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div>
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 ```
 
@@ -388,78 +388,78 @@ The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-
 <hr>
 
 <ace-tabs id="custom-events-tabs">
-  <div aria-label="Tabs that repond to custom events">
-    <button>Tab 1</button>
-    <button>Tab 2</button>
-    <button>Tab 3</button>
-  </div>
-  <div>
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div>
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div>
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Tabs that repond to custom events">
+		<button>Tab 1</button>
+		<button>Tab 2</button>
+		<button>Tab 3</button>
+	</div>
+	<div>
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div>
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div>
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 ```
 
 ```js
-import {ATTRS, EVENTS} from '/ace/components/tabs/tabs.js';
+import { ATTRS, EVENTS } from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tabsEl = document.getElementById('custom-events-tabs');
-  const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
+	const tabsEl = document.getElementById('custom-events-tabs');
+	const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
-  const addTab = () => {
-    const tabNumber = tablistEl.children.length + 1;
-    const newTab = document.createElement('button');
-    newTab.textContent = `Tab ${tabNumber}`;
-    tablistEl.appendChild(newTab);
+	const addTab = () => {
+		const tabNumber = tablistEl.children.length + 1;
+		const newTab = document.createElement('button');
+		newTab.textContent = `Tab ${tabNumber}`;
+		tablistEl.appendChild(newTab);
 
-    const heading = document.createElement('h3');
-    heading.textContent = `Panel ${tabNumber}`;
-    const p = document.createElement('p');
-    p.textContent = `This tab was added dynamically, after this Tabs component was initialised`;
-    const newPanel = document.createElement('div');
-    newPanel.setAttribute(ATTRS.PANEL, '');
-    newPanel.appendChild(heading);
-    newPanel.appendChild(p);
-    tabsEl.appendChild(newPanel);
-  };
+		const heading = document.createElement('h3');
+		heading.textContent = `Panel ${tabNumber}`;
+		const p = document.createElement('p');
+		p.textContent = `This tab was added dynamically, after this Tabs component was initialised`;
+		const newPanel = document.createElement('div');
+		newPanel.setAttribute(ATTRS.PANEL, '');
+		newPanel.appendChild(heading);
+		newPanel.appendChild(p);
+		tabsEl.appendChild(newPanel);
+	};
 
-  const removeTab = () => {
-    tablistEl.removeChild(tablistEl.lastElementChild);
-    tabsEl.removeChild(tabsEl.lastElementChild);
-  };
+	const removeTab = () => {
+		tablistEl.removeChild(tablistEl.lastElementChild);
+		tabsEl.removeChild(tabsEl.lastElementChild);
+	};
 
-  window.addEventListener('click', (e) => {
-    const targetId = e.target.id;
-    switch(targetId) {
-      case 'prev-tab-btn':
-      case 'next-tab-btn': {
-        const event = EVENTS.IN[`SET_${targetId === 'prev-tab-btn' ? 'PREV' : 'NEXT'}_TAB`];
-        tabsEl.dispatchEvent(new CustomEvent(event));
-        break;
-      }
-      case 'add-tab-btn':
-      case 'remove-tab-btn':
-        if (targetId === 'add-tab-btn') {
-          addTab();
-        } else {
-          removeTab();
-        }
-        tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
-        break;
-    }
-  });
+	window.addEventListener('click', (e) => {
+		const targetId = e.target.id;
+		switch (targetId) {
+			case 'prev-tab-btn':
+			case 'next-tab-btn': {
+				const event = EVENTS.IN[`SET_${targetId === 'prev-tab-btn' ? 'PREV' : 'NEXT'}_TAB`];
+				tabsEl.dispatchEvent(new CustomEvent(event));
+				break;
+			}
+			case 'add-tab-btn':
+			case 'remove-tab-btn':
+				if (targetId === 'add-tab-btn') {
+					addTab();
+				} else {
+					removeTab();
+				}
+				tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				break;
+		}
+	});
 });
 ```
 
@@ -470,65 +470,65 @@ An example of how Tabs can be styled, with the applied CSS shown below.
 
 ```html
 <ace-tabs class="styled-tabs">
-  <div aria-label="Basic Tabs" class="styled-tabs__tablist">
-    <button class="styled-tabs__tab">Tab 1</button>
-    <button class="styled-tabs__tab">Tab 2</button>
-    <button class="styled-tabs__tab">Tab 3</button>
-  </div>
-  <div class="styled-tabs__panel">
-    <h3>Panel 1 heading</h3>
-    <p>Panel 1 content.</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <div class="styled-tabs__panel">
-    <h3>Panel 2 heading</h3>
-    <p>Panel 2 content.</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <div class="styled-tabs__panel">
-    <h3>Panel 3 heading</h3>
-    <p>Panel 3 content.</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<div aria-label="Basic Tabs" class="styled-tabs__tablist">
+		<button class="styled-tabs__tab">Tab 1</button>
+		<button class="styled-tabs__tab">Tab 2</button>
+		<button class="styled-tabs__tab">Tab 3</button>
+	</div>
+	<div class="styled-tabs__panel">
+		<h3>Panel 1 heading</h3>
+		<p>Panel 1 content.</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+	</div>
+	<div class="styled-tabs__panel">
+		<h3>Panel 2 heading</h3>
+		<p>Panel 2 content.</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+	</div>
+	<div class="styled-tabs__panel">
+		<h3>Panel 3 heading</h3>
+		<p>Panel 3 content.</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+	</div>
 </ace-tabs>
 ```
 
 ```scss
 .styled-tabs {
-  display: block;
-  max-width: 500px;
+	display: block;
+	max-width: 500px;
 
-  &__tab,
-  &__panel {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+	&__tab,
+	&__panel {
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+	}
 
-  &__tab {
-    border-color: #41354d;
-    flex-grow: 1;
+	&__tab {
+		border-color: #41354d;
+		flex-grow: 1;
 
-    &:focus,
-    &:hover {
-      background: #41354d;
-      color: #fff;
-    }
-  }
+		&:focus,
+		&:hover {
+			background: #41354d;
+			color: #fff;
+		}
+	}
 
-  &__panel {
-    border: 4px solid #41354d;
-    border-top: none;
-  }
+	&__panel {
+		border: 4px solid #41354d;
+		border-top: none;
+	}
 
-  [ace-tabs-tab-selected] {
-    background: #41354d;
-    border-color: #41354d;
-    color: #fff;
+	[ace-tabs-tab-selected] {
+		background: #41354d;
+		border-color: #41354d;
+		color: #fff;
 
-    &:focus {
-      border-color: #00bed0;
-    }
-  }
+		&:focus {
+			border-color: #00bed0;
+		}
+	}
 }
 
 ```

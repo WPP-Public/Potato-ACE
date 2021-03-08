@@ -1,16 +1,16 @@
 // BREAKPOINTS
 $breakpoints: (
-  tablet: 600px,
-  desktop: 1024px,
-  wide: 1440px
+	tablet: 600px,
+	desktop: 1024px,
+	wide: 1440px
 );
 
 
 // VERTICAL SPACINGS
 $vertical-spacings: (
-  s: (mobile: 10px, tablet: 20px, desktop: 30px),
-  m: (mobile: 40px, tablet: 50px, desktop: 60px),
-  l: (mobile: 60px, tablet: 80px, desktop: 120px)
+	s: (mobile: 10px, tablet: 20px, desktop: 30px),
+	m: (mobile: 40px, tablet: 50px, desktop: 60px),
+	l: (mobile: 60px, tablet: 80px, desktop: 120px)
 );
 
 
@@ -34,43 +34,43 @@ $icon-btn-size: 40px;
 
 // COLORS
 $pot-grey: (
-  1: #e6e4e7,
-  2: #c5c1c8,
-  3: #a39ea9,
-  4: #837b8b,
-  5: #61576b,
-  6: #41354d,
-  7: #20122e,
+	1: #e6e4e7,
+	2: #c5c1c8,
+	3: #a39ea9,
+	4: #837b8b,
+	5: #61576b,
+	6: #41354d,
+	7: #20122e,
 );
 
 $pot-mauve: (
-  1: #e8c8d6,
-  2: #d089a8,
-  3: #bf628b,
-  4: #ac2f66,
-  5: #892858,
-  6: #66204a,
-  7: #43193c,
+	1: #e8c8d6,
+	2: #d089a8,
+	3: #bf628b,
+	4: #ac2f66,
+	5: #892858,
+	6: #66204a,
+	7: #43193c,
 );
 
 $pot-blue: (
-  1: #bcecf1,
-  2: #7ddde6,
-  3: #3ecdda,
-  4: #00bed0,
-  5: #0893a7,
-  6: #0f687f,
-  7: #173d57,
+	1: #bcecf1,
+	2: #7ddde6,
+	3: #3ecdda,
+	4: #00bed0,
+	5: #0893a7,
+	6: #0f687f,
+	7: #173d57,
 );
 
 $pot-yellow: (
-  1: #f1f3a6,
-  2: #eef08f,
-  3: #ebed77,
-  4: #e8eb60,
-  5: #b6b654,
-  6: #857f48,
-  7: #53483b,
+	1: #f1f3a6,
+	2: #eef08f,
+	3: #ebed77,
+	4: #e8eb60,
+	5: #b6b654,
+	6: #857f48,
+	7: #53483b,
 );
 
 $active-color: map-get($pot-blue, 7);

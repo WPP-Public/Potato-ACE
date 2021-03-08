@@ -1,48 +1,48 @@
 .header {
-  align-items: center;
-  background: map-get($pot-grey, 7);
-  color: #fff;
-  display: flex;
-  height: $header-height;
-  justify-content: space-between;
-  left: 0;
-  padding: $buffer-xs $buffer-s;
-  position: fixed;
-  right: 0;
-  top: 0;
-  z-index: $header-z-index;
+	align-items: center;
+	background: map-get($pot-grey, 7);
+	color: #fff;
+	display: flex;
+	height: $header-height;
+	justify-content: space-between;
+	left: 0;
+	padding: $buffer-xs $buffer-s;
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: $header-z-index;
 
-  &__sidebar-btn {
-    @include icon-btn(50px, '../img/menu.svg');
-    @include overlayed-pseudo($type: 'before');
-    @extend .u-only-handheld;
+	&__sidebar-btn {
+		@include icon-btn(50px, '../img/menu.svg');
+		@include overlayed-pseudo($type: 'before');
+		@extend .u-only-handheld;
 
-    &::before {
-      background-color: map-get($pot-blue, 5);
-      mask-image: url('../img/close.svg');
-      mask-position: center center;
-      mask-repeat: no-repeat;
-      mask-size: 60%;
-      transition: mask-image $transition;
-    }
+		&::before {
+			background-color: map-get($pot-blue, 5);
+			mask-image: url('../img/close.svg');
+			mask-position: center center;
+			mask-repeat: no-repeat;
+			mask-size: 60%;
+			transition: mask-image $transition;
+		}
 
-    &:focus,
-    &:hover {
-      &::before {
-        background-color: #fff;
-      }
-    }
+		&:focus,
+		&:hover {
+			&::before {
+				background-color: #fff;
+			}
+		}
 
-    &:not([sidebar-visible]) {
-      &::before {
-        display: none;
-      }
-    }
+		&:not([sidebar-visible]) {
+			&::before {
+				display: none;
+			}
+		}
 
-    &[sidebar-visible] {
-      &::after {
-        display: none;
-      }
-    }
-  }
+		&[sidebar-visible] {
+			&::after {
+				display: none;
+			}
+		}
+	}
 }

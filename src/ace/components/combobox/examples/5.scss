@@ -1,43 +1,43 @@
 .styled-combobox {
-  &-label,
-  &__input,
-  &__option,
-  &__status {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+	&-label,
+	&__input,
+	&__option,
+	&__status {
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+	}
 
-  &__input,
-  &__list {
-    border: 1px solid #837b8b;
-    border-radius: 4px;
-    width: 300px;
+	&__input,
+	&__list {
+		border: 1px solid #837b8b;
+		border-radius: 4px;
+		width: 300px;
 
-    &:focus {
-      outline-color: #41354d;
-    }
-  }
+		&:focus {
+			outline-color: #41354d;
+		}
+	}
 
-  &__input,
-  &__option {
-    padding: 10px 16px;
-  }
+	&__input,
+	&__option {
+		padding: 10px 16px;
+	}
 
-  &__list {
-    max-height: 225px;
-  }
+	&__list {
+		max-height: 225px;
+	}
 
-  &__option {
-    align-items: center;
-    display: flex;
+	&__option {
+		align-items: center;
+		display: flex;
 
-    &[aria-selected="true"] {
-      background: #41354d;
-    }
-  }
+		&[aria-selected="true"] {
+			background: #41354d;
+		}
+	}
 
-  &__img {
-    height: 2em;
-    margin-right: 10px;
-  }
+	&__img {
+		height: 2em;
+		margin-right: 10px;
+	}
 }

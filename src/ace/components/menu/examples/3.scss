@@ -1,61 +1,61 @@
 .styled-menu {
-  &-container {
-    display: flex;
-    flex-direction: row-reverse;
-  }
+	&-container {
+		display: flex;
+		flex-direction: row-reverse;
+	}
 
-  &__trigger {
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 35px;
-    height: 40px;
-    position: relative;
-    transition: background-color .2s;
-    width: 40px;
+	&__trigger {
+		background: transparent;
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		font-size: 35px;
+		height: 40px;
+		position: relative;
+		transition: background-color .2s;
+		width: 40px;
 
-    &:focus,
-    &:hover {
-      background-color: #00bed0;
-      color: white;
-    }
+		&:focus,
+		&:hover {
+			background-color: #00bed0;
+			color: white;
+		}
 
-    &:focus {
-      outline: none;
-    }
+		&:focus {
+			outline: none;
+		}
 
-    &::after {
-      content: '\2807';
-      display: inline-block;
-      left: 30%;
-      position: absolute;
-      top: 0;
-    }
-  }
+		&::after {
+			content: '\2807';
+			display: inline-block;
+			left: 30%;
+			position: absolute;
+			top: 0;
+		}
+	}
 
-  &__list {
-    border-radius: 4px;
-    box-shadow: 0 2px 10px 0 #837b8b;
-    padding: 8px 0;
-  }
+	&__list {
+		border-radius: 4px;
+		box-shadow: 0 2px 10px 0 #837b8b;
+		padding: 8px 0;
+	}
 
-  &__option {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    padding: 10px 16px;
+	&__option {
+		align-items: center;
+		cursor: pointer;
+		display: flex;
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+		padding: 10px 16px;
 
-    &:hover,
-    &[aria-selected="true"] {
-      background: #41354d;
-    }
+		&:hover,
+		&[aria-selected="true"] {
+			background: #41354d;
+		}
 
-    img {
-      height: 2em;
-      margin-right: 10px;
-    }
-  }
+		img {
+			height: 2em;
+			margin-right: 10px;
+		}
+	}
 }

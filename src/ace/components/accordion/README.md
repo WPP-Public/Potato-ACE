@@ -55,7 +55,7 @@ The following SASS is applied to Accordion.
 
 ```scss
 [ace-accordion-panel]:not([ace-accordion-panel-visible]) {
-  display: none;
+	display: none;
 }
 ```
 
@@ -135,24 +135,24 @@ Example of a simple Accordion with 3 panels.
 
 ```html
 <ace-accordion>
-  <h3>
-    <button>Trigger 1</button>
-  </h3>
-  <div>
-    <p>Panel 1 content</p>
-  </div>
-  <h3>
-    <button>Trigger 2</button>
-  </h3>
-  <div>
-    <p>Panel 2 content</p>
-  </div>
-  <h3>
-    <button>Trigger 3</button>
-  </h3>
-  <div>
-    <p>Panel 3 content</p>
-  </div>
+	<h3>
+		<button>Trigger 1</button>
+	</h3>
+	<div>
+		<p>Panel 1 content</p>
+	</div>
+	<h3>
+		<button>Trigger 2</button>
+	</h3>
+	<div>
+		<p>Panel 2 content</p>
+	</div>
+	<h3>
+		<button>Trigger 3</button>
+	</h3>
+	<div>
+		<p>Panel 3 content</p>
+	</div>
 </ace-accordion>
 ```
 
@@ -162,24 +162,24 @@ This Accordion will show the second panel upon page load as it has the attribute
 
 ```html
 <ace-accordion ace-accordion-one-visible-panel id="one-visible-panel-accordion">
-  <h3>
-    <button>Trigger 1</button>
-  </h3>
-  <div>
-    <p>Panel 1 content</p>
-  </div>
-  <h3>
-    <button>Trigger 2</button>
-  </h3>
-  <div ace-accordion-panel-visible="true">
-    <p>Panel 2 content</p>
-  </div>
-  <h3>
-    <button>Trigger 3</button>
-  </h3>
-  <div>
-    <p>Panel 3 content</p>
-  </div>
+	<h3>
+		<button>Trigger 1</button>
+	</h3>
+	<div>
+		<p>Panel 1 content</p>
+	</div>
+	<h3>
+		<button>Trigger 2</button>
+	</h3>
+	<div ace-accordion-panel-visible="true">
+		<p>Panel 2 content</p>
+	</div>
+	<h3>
+		<button>Trigger 3</button>
+	</h3>
+	<div>
+		<p>Panel 3 content</p>
+	</div>
 </ace-accordion>
 ```
 
@@ -190,49 +190,49 @@ Note that this method should only be used if the panels are of the same or simil
 
 ```html
 <ace-accordion ace-accordion-one-visible-panel class="animated-accordion" id="animated-accordion" >
-  <h3>
-    <button>Trigger 1</button>
-  </h3>
-  <div>
-    <p>Panel 1 content</p>
-    <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-  </div>
-  <h3>
-    <button>Trigger 2</button>
-  </h3>
-  <div>
-    <p>Panel 2 content</p>
-    <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-  </div>
-  <h3>
-    <button>Trigger 3</button>
-  </h3>
-  <div>
-    <p>Panel 3 content</p>
-    <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-  </div>
+	<h3>
+		<button>Trigger 1</button>
+	</h3>
+	<div>
+		<p>Panel 1 content</p>
+		<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+	</div>
+	<h3>
+		<button>Trigger 2</button>
+	</h3>
+	<div>
+		<p>Panel 2 content</p>
+		<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+	</div>
+	<h3>
+		<button>Trigger 3</button>
+	</h3>
+	<div>
+		<p>Panel 3 content</p>
+		<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+	</div>
 </ace-accordion>
 ```
 
 ```scss
 .animated-accordion {
-  @media (prefers-reduced-motion: no-preference) {
-    $trans-duration: .2s;
+	@media (prefers-reduced-motion: no-preference) {
+		$trans-duration: .2s;
 
-    [ace-accordion-panel] {
-      display: block;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-      visibility: hidden;
-    }
+		[ace-accordion-panel] {
+			display: block;
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+			visibility: hidden;
+		}
 
-    [ace-accordion-panel-visible] {
-      max-height: 180px;
-      transition: max-height $trans-duration ease-in;
-      visibility: visible;
-    }
-  }
+		[ace-accordion-panel-visible] {
+			max-height: 180px;
+			transition: max-height $trans-duration ease-in;
+			visibility: visible;
+		}
+	}
 }
 ```
 
@@ -244,8 +244,8 @@ The JavaScript used by this example is shown below.
 
 ```html
 <label>
-  Panel number:
-  <input id="panel-number" type="number" min="1" max="3" />
+	Panel number:
+	<input id="panel-number" type="number" min="1" max="3" />
 </label>
 <button id="toggle-panel-btn">Toggle panel</button>
 <button id="show-panel-btn">Show panel</button>
@@ -259,24 +259,24 @@ The JavaScript used by this example is shown below.
 <hr>
 
 <ace-accordion id="custom-events-accordion">
-  <h3>
-    <button>Trigger 1</button>
-  </h3>
-  <div>
-    <p>Panel 1 content</p>
-  </div>
-  <h3>
-    <button>Trigger 2</button>
-  </h3>
-  <div>
-    <p>Panel 2 content</p>
-  </div>
-  <h3>
-    <button>Trigger 3</button>
-  </h3>
-  <div>
-    <p>Panel 3 content</p>
-  </div>
+	<h3>
+		<button>Trigger 1</button>
+	</h3>
+	<div>
+		<p>Panel 1 content</p>
+	</div>
+	<h3>
+		<button>Trigger 2</button>
+	</h3>
+	<div>
+		<p>Panel 2 content</p>
+	</div>
+	<h3>
+		<button>Trigger 3</button>
+	</h3>
+	<div>
+		<p>Panel 3 content</p>
+	</div>
 </ace-accordion>
 
 ```
@@ -285,62 +285,62 @@ The JavaScript used by this example is shown below.
 import {ATTRS, EVENTS} from '/ace/components/accordion/accordion.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const accordionEl = document.getElementById('custom-events-accordion');
+	const accordionEl = document.getElementById('custom-events-accordion');
 
-  window.addEventListener('click', (e) => {
-    let customEvent;
-    const targetId = e.target.id;
-    switch(targetId) {
-      case 'hide-panel-btn':
-      case 'show-panel-btn':
-      case 'toggle-panel-btn': {
-        const panelNumber = document.getElementById('panel-number').value;
-        if (targetId === 'toggle-panel-btn') {
-          customEvent = EVENTS.IN.TOGGLE_PANEL;
-        } else {
-          customEvent = EVENTS.IN[`${targetId === 'hide-panel-btn' ? 'HIDE' : 'SHOW'}_PANEL`];
-        }
-        accordionEl.dispatchEvent(new CustomEvent(customEvent, {
-          'detail': {
-            'panelNumber': panelNumber,
-          }
-        }));
-        break;
-      }
-      case 'show-panels-btn':
-      case 'hide-panels-btn': {
-        customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_PANELS`];
-        accordionEl.dispatchEvent(new CustomEvent(customEvent));
-        break;
-      }
-      case 'append-panel-btn': {
-        const newTriggerEl = document.createElement('button');
-        newTriggerEl.textContent = 'Dynamically added trigger';
-        const newHeaderEl = document.createElement('h3');
-        newHeaderEl.setAttribute(ATTRS.HEADER, '');
-        newHeaderEl.append(newTriggerEl);
+	window.addEventListener('click', (e) => {
+		let customEvent;
+		const targetId = e.target.id;
+		switch(targetId) {
+			case 'hide-panel-btn':
+			case 'show-panel-btn':
+			case 'toggle-panel-btn': {
+				const panelNumber = document.getElementById('panel-number').value;
+				if (targetId === 'toggle-panel-btn') {
+					customEvent = EVENTS.IN.TOGGLE_PANEL;
+				} else {
+					customEvent = EVENTS.IN[`${targetId === 'hide-panel-btn' ? 'HIDE' : 'SHOW'}_PANEL`];
+				}
+				accordionEl.dispatchEvent(new CustomEvent(customEvent, {
+					'detail': {
+						'panelNumber': panelNumber,
+					}
+				}));
+				break;
+			}
+			case 'show-panels-btn':
+			case 'hide-panels-btn': {
+				customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_PANELS`];
+				accordionEl.dispatchEvent(new CustomEvent(customEvent));
+				break;
+			}
+			case 'append-panel-btn': {
+				const newTriggerEl = document.createElement('button');
+				newTriggerEl.textContent = 'Dynamically added trigger';
+				const newHeaderEl = document.createElement('h3');
+				newHeaderEl.setAttribute(ATTRS.HEADER, '');
+				newHeaderEl.append(newTriggerEl);
 
-        const newPanelP = document.createElement('p');
-        newPanelP.textContent = `Dynamically added panel`;
-        const newPanelEl = document.createElement('div');
-        newPanelEl.setAttribute(ATTRS.PANEL, '');
-        newPanelEl.append(newPanelP);
+				const newPanelP = document.createElement('p');
+				newPanelP.textContent = `Dynamically added panel`;
+				const newPanelEl = document.createElement('div');
+				newPanelEl.setAttribute(ATTRS.PANEL, '');
+				newPanelEl.append(newPanelP);
 
-        accordionEl.append(newHeaderEl);
-        accordionEl.append(newPanelEl);
-        accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
-        break;
-      }
-      case 'remove-panel-btn': {
-        const headerEl = accordionEl.querySelector(`[${ATTRS.HEADER}]`);
-        const panelEl = accordionEl.querySelector(`[${ATTRS.PANEL}]`);
-        accordionEl.removeChild(headerEl);
-        accordionEl.removeChild(panelEl);
-        accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
-        break;
-      }
-    }
-  });
+				accordionEl.append(newHeaderEl);
+				accordionEl.append(newPanelEl);
+				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				break;
+			}
+			case 'remove-panel-btn': {
+				const headerEl = accordionEl.querySelector(`[${ATTRS.HEADER}]`);
+				const panelEl = accordionEl.querySelector(`[${ATTRS.PANEL}]`);
+				accordionEl.removeChild(headerEl);
+				accordionEl.removeChild(panelEl);
+				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				break;
+			}
+		}
+	});
 });
 ```
 
@@ -354,125 +354,125 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 <p>Things we do at Potato:</p>
 
 <ace-accordion class="styled-accordion" id="animated-accordion" >
-  <h3 class="styled-accordion__header">
-    <button class="styled-accordion__trigger">
-      Making new tech count
-    </button>
-  </h3>
-  <div class="styled-accordion__panel">
-    <div class="styled-accordion__panel-inner">
-      <p>
-        It’s the positive and transformative effects of technology that matter, not the technology itself.
-      </p>
-      <p>
-        <a href="https://p.ota.to/work/making-new-tech-count" target="_blank">
-          Find out more
-        </a>
-      </p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-  </div>
+	<h3 class="styled-accordion__header">
+		<button class="styled-accordion__trigger">
+			Making new tech count
+		</button>
+	</h3>
+	<div class="styled-accordion__panel">
+		<div class="styled-accordion__panel-inner">
+			<p>
+				It’s the positive and transformative effects of technology that matter, not the technology itself.
+			</p>
+			<p>
+				<a href="https://p.ota.to/work/making-new-tech-count" target="_blank">
+					Find out more
+				</a>
+			</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+		</div>
+	</div>
 
-  <h3 class="styled-accordion__header">
-    <button class="styled-accordion__trigger">
-      Making digital for real life
-    </button>
-  </h3>
-  <div class="styled-accordion__panel">
-    <div class="styled-accordion__panel-inner">
-      <p>
-        People value digital products that enhance their lives and positively complement their interactions with the world.
-      </p>
-      <p>
-        <a href="https://p.ota.to/work/making-digital-for-real-life" target="_blank">
-          Find out more
-        </a>
-      </p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-  </div>
+	<h3 class="styled-accordion__header">
+		<button class="styled-accordion__trigger">
+			Making digital for real life
+		</button>
+	</h3>
+	<div class="styled-accordion__panel">
+		<div class="styled-accordion__panel-inner">
+			<p>
+				People value digital products that enhance their lives and positively complement their interactions with the world.
+			</p>
+			<p>
+				<a href="https://p.ota.to/work/making-digital-for-real-life" target="_blank">
+					Find out more
+				</a>
+			</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+		</div>
+	</div>
 
-  <h3 class="styled-accordion__header">
-    <button class="styled-accordion__trigger">
-      Building for people first
-    </button>
-  </h3>
-  <div class="styled-accordion__panel">
-    <div class="styled-accordion__panel-inner">
-      <p>
-        Gaining direct insight through testing products with people is the fundamental requirement to make things better.
-      </p>
-      <p>
-        <a href="https://p.ota.to/work/building-for-people-first" target="_blank">
-          Find out more
-        </a>
-      </p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+	<h3 class="styled-accordion__header">
+		<button class="styled-accordion__trigger">
+			Building for people first
+		</button>
+	</h3>
+	<div class="styled-accordion__panel">
+		<div class="styled-accordion__panel-inner">
+			<p>
+				Gaining direct insight through testing products with people is the fundamental requirement to make things better.
+			</p>
+			<p>
+				<a href="https://p.ota.to/work/building-for-people-first" target="_blank">
+					Find out more
+				</a>
+			</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+		</div>
+	</div>
 </ace-accordion>
 ```
 
 ```scss
 .styled-accordion {
-  $trans-duration: .2s;
+	$trans-duration: .2s;
 
-  border: 1px solid black;
-  border-radius: 10px;
-  display: block;
-  max-width: 500px;
-  overflow: hidden;
+	border: 1px solid black;
+	border-radius: 10px;
+	display: block;
+	max-width: 500px;
+	overflow: hidden;
 
-  &__header {
-    margin: 0;
+	&__header {
+		margin: 0;
 
-    &:not(:first-child) {
-      border-top: 1px solid black;
-    }
-  }
+		&:not(:first-child) {
+			border-top: 1px solid black;
+		}
+	}
 
-  &__trigger {
-    background: #41354d;
-    border: 0;
-    color: #fff;
-    display: flex;
-    font-weight: 600;
-    justify-content: space-between;
-    padding: 20px;
-    width: 100%;
+	&__trigger {
+		background: #41354d;
+		border: 0;
+		color: #fff;
+		display: flex;
+		font-weight: 600;
+		justify-content: space-between;
+		padding: 20px;
+		width: 100%;
 
-    &::after {
-      content: '\25BC';
-      transition: transform $trans-duration linear;
-    }
+		&::after {
+			content: '\25BC';
+			transition: transform $trans-duration linear;
+		}
 
-    &[aria-expanded="true"] {
-      &::after {
-        transform: rotate(180deg);
-      }
-    }
-  }
+		&[aria-expanded="true"] {
+			&::after {
+				transform: rotate(180deg);
+			}
+		}
+	}
 
-  &__panel {
-    border-top: 1px solid black;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-    visibility: hidden;
+	&__panel {
+		border-top: 1px solid black;
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+		visibility: hidden;
 
-    &:not([ace-accordion-panel-visible]) {
-      display: block;
-    }
-  }
+		&:not([ace-accordion-panel-visible]) {
+			display: block;
+		}
+	}
 
-  [ace-accordion-panel-visible] {
-    max-height: 245px;
-    transition: max-height $trans-duration ease-in;
-    visibility: visible;
-  }
+	[ace-accordion-panel-visible] {
+		max-height: 245px;
+		transition: max-height $trans-duration ease-in;
+		visibility: visible;
+	}
 
-  &__panel-inner {
-    padding: 10px 20px;
-  }
+	&__panel-inner {
+		padding: 10px 20px;
+	}
 }
 ```

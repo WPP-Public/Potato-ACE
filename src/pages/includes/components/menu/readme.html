@@ -33,49 +33,49 @@ $ace-menu-selected-option-text-color: #fff !default;
 
 // STYLES
 ace-menu {
-  position: relative;
+	position: relative;
 }
 
 [ace-menu-list] {
-  background: $ace-menu-list-bg-color;
-  color: $ace-menu-option-text-color;
-  left: 0;
-  list-style: none;
-  position: absolute;
-  user-select: none;
-  white-space: nowrap;
-  z-index: $ace-menu-list-z-index;
+	background: $ace-menu-list-bg-color;
+	color: $ace-menu-option-text-color;
+	left: 0;
+	list-style: none;
+	position: absolute;
+	user-select: none;
+	white-space: nowrap;
+	z-index: $ace-menu-list-z-index;
 
-  &amp;:focus {
-    outline: none;
-  }
+	&amp;:focus {
+		outline: none;
+	}
 
-  &amp;:not([ace-menu-list-visible]) {
-    display: none;
-  }
+	&amp;:not([ace-menu-list-visible]) {
+		display: none;
+	}
 
-  &amp;[ace-u-float-above] {
-    bottom: 100%;
-    top: initial;
-  }
+	&amp;[ace-u-float-above] {
+		bottom: 100%;
+		top: initial;
+	}
 
-  &amp;[ace-u-float-left] {
-    left: initial;
-    right: 0;
-  }
+	&amp;[ace-u-float-left] {
+		left: initial;
+		right: 0;
+	}
 
-  &amp;[ace-u-float-right] {
-    left: 0;
-    right: initial;
-  }
+	&amp;[ace-u-float-right] {
+		left: 0;
+		right: initial;
+	}
 }
 
 [ace-menu-option] {
-  &amp;:hover,
-  &amp;[aria-selected=&quot;true&quot;] {
-    background: $ace-menu-selected-option-bg-color;
-    color: $ace-menu-selected-option-text-color;
-  }
+	&amp;:hover,
+	&amp;[aria-selected=&quot;true&quot;] {
+		background: $ace-menu-selected-option-bg-color;
+		color: $ace-menu-selected-option-text-color;
+	}
 }
 </code></pre>
 <h2>Custom events</h2>
@@ -110,178 +110,178 @@ ace-menu {
 <h3>Simple Menu</h3>
 <p>Example of a simple Menu with options that contain text and an opiton containing a link.</p>
  <div class="example-block"><ace-menu>
-  <button>Menu trigger</button>
-  <ul>
-    <li>First Option</li>
-    <li>Second Option</li>
-    <li>Third Option</li>
-    <li><a href="/">Link to homepage</a></li>
-  </ul>
+	<button>Menu trigger</button>
+	<ul>
+		<li>First Option</li>
+		<li>Second Option</li>
+		<li>Third Option</li>
+		<li><a href="/">Link to homepage</a></li>
+	</ul>
 </ace-menu>
 </div>
 <pre><code class="language-html">&lt;ace-menu&gt;
-  &lt;button&gt;Menu trigger&lt;/button&gt;
-  &lt;ul&gt;
-    &lt;li&gt;First Option&lt;/li&gt;
-    &lt;li&gt;Second Option&lt;/li&gt;
-    &lt;li&gt;Third Option&lt;/li&gt;
-    &lt;li&gt;&lt;a href=&quot;/&quot;&gt;Link to homepage&lt;/a&gt;&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;button&gt;Menu trigger&lt;/button&gt;
+	&lt;ul&gt;
+		&lt;li&gt;First Option&lt;/li&gt;
+		&lt;li&gt;Second Option&lt;/li&gt;
+		&lt;li&gt;Third Option&lt;/li&gt;
+		&lt;li&gt;&lt;a href=&quot;/&quot;&gt;Link to homepage&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-menu&gt;
 </code></pre>
 <h3>Menu with dynamic options</h3>
 <p>In this example the Menu instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The last option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-menu-update-options</code> event that updates the list options. The extra JavaScript code required by this example is also included below.</p>
  <div class="example-block"><button id="add-option">
-  Add option
+	Add option
 </button>
 <button id="remove-option">
-  Remove option
+	Remove option
 </button>
 <hr>
 <ace-menu id="custom-events-menu">
-  <button>Menu Trigger</button>
-  <ul></ul>
+	<button>Menu Trigger</button>
+	<ul></ul>
 </ace-menu>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
-  Add option
+	Add option
 &lt;/button&gt;
 &lt;button id=&quot;remove-option&quot;&gt;
-  Remove option
+	Remove option
 &lt;/button&gt;
 &lt;hr&gt;
 &lt;ace-menu id=&quot;custom-events-menu&quot;&gt;
-  &lt;button&gt;Menu Trigger&lt;/button&gt;
-  &lt;ul&gt;&lt;/ul&gt;
+	&lt;button&gt;Menu Trigger&lt;/button&gt;
+	&lt;ul&gt;&lt;/ul&gt;
 &lt;/ace-menu&gt;
 </code></pre>
-<pre><code class="language-js">import {EVENTS} from '/ace/components/menu/menu.js';
+<pre><code class="language-js">import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const menuEl = document.getElementById('custom-events-menu');
-  const menuListEl = menuEl.querySelector('ul');
+	const menuEl = document.getElementById('custom-events-menu');
+	const menuListEl = menuEl.querySelector('ul');
 
-  const updateOptions = () =&gt; menuEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () =&gt; menuEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
-  document.getElementById('add-option').addEventListener('click', () =&gt; {
-    const optionEl = document.createElement('li');
-    optionEl.textContent = 'Option';
-    menuListEl.appendChild(optionEl);
-    updateOptions();
-  });
+	document.getElementById('add-option').addEventListener('click', () =&gt; {
+		const optionEl = document.createElement('li');
+		optionEl.textContent = 'Option';
+		menuListEl.appendChild(optionEl);
+		updateOptions();
+	});
 
-  document.getElementById('remove-option').addEventListener('click', () =&gt; {
-    const lastOptionEl = menuListEl.querySelector('li:last-child');
-    if (lastOptionEl) {
-      menuListEl.removeChild(lastOptionEl);
-      updateOptions();
-    }
-  });
+	document.getElementById('remove-option').addEventListener('click', () =&gt; {
+		const lastOptionEl = menuListEl.querySelector('li:last-child');
+		if (lastOptionEl) {
+			menuListEl.removeChild(lastOptionEl);
+			updateOptions();
+		}
+	});
 });
 </code></pre>
 <h3>Styled Menu</h3>
 <p>An example of how Menu can be styled, with the applied CSS shown below.</p>
 <div class="example-block"><div class="styled-menu-container">
-  <ace-menu class="styled-menu" id="styled-menu">
-    <button aria-label="View more options" title="View more options" class="styled-menu__trigger" >
-    </button>
-    <ul class="styled-menu__list">
-      <li class="styled-menu__option">
-        <img alt="Potato logo" src="/img/logo.svg"/>
-        First option
-      </li>
-      <li class="styled-menu__option">
-        <img alt="Potato Spuddy with headphones and phone" src="/img/phone-spuddy.png"/>
-        Second option
-      </li>
-      <li class="styled-menu__option">
-        <img alt="Potato Spuddy with virtual reality goggles" src="/img/goggles-spuddy.png"/>
-        Third option
-      </li>
-    </ul>
-  </ace-menu>
+	<ace-menu class="styled-menu" id="styled-menu">
+		<button aria-label="View more options" title="View more options" class="styled-menu__trigger">
+		</button>
+		<ul class="styled-menu__list">
+			<li class="styled-menu__option">
+				<img alt="Potato logo" src="/img/logo.svg" />
+				First option
+			</li>
+			<li class="styled-menu__option">
+				<img alt="Potato Spuddy with headphones and phone" src="/img/phone-spuddy.png" />
+				Second option
+			</li>
+			<li class="styled-menu__option">
+				<img alt="Potato Spuddy with virtual reality goggles" src="/img/goggles-spuddy.png" />
+				Third option
+			</li>
+		</ul>
+	</ace-menu>
 </div>
 </div>
 <pre><code class="language-html">&lt;div class=&quot;styled-menu-container&quot;&gt;
-  &lt;ace-menu class=&quot;styled-menu&quot; id=&quot;styled-menu&quot;&gt;
-    &lt;button aria-label=&quot;View more options&quot; title=&quot;View more options&quot; class=&quot;styled-menu__trigger&quot; &gt;
-    &lt;/button&gt;
-    &lt;ul class=&quot;styled-menu__list&quot;&gt;
-      &lt;li class=&quot;styled-menu__option&quot;&gt;
-        &lt;img alt=&quot;Potato logo&quot; src=&quot;/img/logo.svg&quot;/&gt;
-        First option
-      &lt;/li&gt;
-      &lt;li class=&quot;styled-menu__option&quot;&gt;
-        &lt;img alt=&quot;Potato Spuddy with headphones and phone&quot; src=&quot;/img/phone-spuddy.png&quot;/&gt;
-        Second option
-      &lt;/li&gt;
-      &lt;li class=&quot;styled-menu__option&quot;&gt;
-        &lt;img alt=&quot;Potato Spuddy with virtual reality goggles&quot; src=&quot;/img/goggles-spuddy.png&quot;/&gt;
-        Third option
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/ace-menu&gt;
+	&lt;ace-menu class=&quot;styled-menu&quot; id=&quot;styled-menu&quot;&gt;
+		&lt;button aria-label=&quot;View more options&quot; title=&quot;View more options&quot; class=&quot;styled-menu__trigger&quot;&gt;
+		&lt;/button&gt;
+		&lt;ul class=&quot;styled-menu__list&quot;&gt;
+			&lt;li class=&quot;styled-menu__option&quot;&gt;
+				&lt;img alt=&quot;Potato logo&quot; src=&quot;/img/logo.svg&quot; /&gt;
+				First option
+			&lt;/li&gt;
+			&lt;li class=&quot;styled-menu__option&quot;&gt;
+				&lt;img alt=&quot;Potato Spuddy with headphones and phone&quot; src=&quot;/img/phone-spuddy.png&quot; /&gt;
+				Second option
+			&lt;/li&gt;
+			&lt;li class=&quot;styled-menu__option&quot;&gt;
+				&lt;img alt=&quot;Potato Spuddy with virtual reality goggles&quot; src=&quot;/img/goggles-spuddy.png&quot; /&gt;
+				Third option
+			&lt;/li&gt;
+		&lt;/ul&gt;
+	&lt;/ace-menu&gt;
 &lt;/div&gt;
 </code></pre>
 <pre><code class="language-scss">.styled-menu {
-  &amp;-container {
-    display: flex;
-    flex-direction: row-reverse;
-  }
+	&amp;-container {
+		display: flex;
+		flex-direction: row-reverse;
+	}
 
-  &amp;__trigger {
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 35px;
-    height: 40px;
-    position: relative;
-    transition: background-color .2s;
-    width: 40px;
+	&amp;__trigger {
+		background: transparent;
+		border: none;
+		border-radius: 50%;
+		cursor: pointer;
+		font-size: 35px;
+		height: 40px;
+		position: relative;
+		transition: background-color .2s;
+		width: 40px;
 
-    &amp;:focus,
-    &amp;:hover {
-      background-color: #00bed0;
-      color: white;
-    }
+		&amp;:focus,
+		&amp;:hover {
+			background-color: #00bed0;
+			color: white;
+		}
 
-    &amp;:focus {
-      outline: none;
-    }
+		&amp;:focus {
+			outline: none;
+		}
 
-    &amp;::after {
-      content: '\2807';
-      display: inline-block;
-      left: 30%;
-      position: absolute;
-      top: 0;
-    }
-  }
+		&amp;::after {
+			content: '\2807';
+			display: inline-block;
+			left: 30%;
+			position: absolute;
+			top: 0;
+		}
+	}
 
-  &amp;__list {
-    border-radius: 4px;
-    box-shadow: 0 2px 10px 0 #837b8b;
-    padding: 8px 0;
-  }
+	&amp;__list {
+		border-radius: 4px;
+		box-shadow: 0 2px 10px 0 #837b8b;
+		padding: 8px 0;
+	}
 
-  &amp;__option {
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    padding: 10px 16px;
+	&amp;__option {
+		align-items: center;
+		cursor: pointer;
+		display: flex;
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+		padding: 10px 16px;
 
-    &amp;:hover,
-    &amp;[aria-selected=&quot;true&quot;] {
-      background: #41354d;
-    }
+		&amp;:hover,
+		&amp;[aria-selected=&quot;true&quot;] {
+			background: #41354d;
+		}
 
-    img {
-      height: 2em;
-      margin-right: 10px;
-    }
-  }
+		img {
+			height: 2em;
+			margin-right: 10px;
+		}
+	}
 }
 </code></pre>

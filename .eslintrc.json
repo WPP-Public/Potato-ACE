@@ -1,66 +1,74 @@
 {
-  "env": {
-    "browser": true,
-    "es6": true,
-    "node": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:cypress/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/eslint-recommended"
-  ],
-  "plugins": [
-    "@typescript-eslint",
-    "cypress",
-    "no-autofix"
-  ],
-  "globals": {
-    "Atomics": "readonly",
-    "SharedArrayBuffer": "readonly"
-  },
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module"
-  },
-  "rules": {
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "cypress/no-unnecessary-waiting": 0,
-    "no-autofix/prefer-const": "error",
-    "no-multiple-empty-lines": [
-      "error",
-      {
-        "max": 3
-      }
-    ],
-    "no-unused-vars": [
-      "warn"
-    ],
-    "prefer-const": "off",
-    "semi": [
-      "error",
-      "always"
-    ],
-    "sort-imports": "error",
-    "sort-keys": [
-        "error",
-        "asc"
-    ]
-  },
-  "overrides": [
-    {
-      "files": ["*.ts", "*.tsx"],
-      "rules": {
-        "@typescript-eslint/explicit-function-return-type": ["error"]
-      }
-    },
-    {
-      "files": ["*.d.ts"],
-      "rules": {
-        "no-unused-vars": 0
-      }
-    }
-  ]
+	"env": {
+		"browser": true,
+		"es6": true,
+		"node": true
+	},
+	"extends": [
+		"eslint:recommended",
+		"plugin:cypress/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/eslint-recommended"
+	],
+	"plugins": [
+		"@typescript-eslint",
+		"cypress",
+		"no-autofix"
+	],
+	"globals": {
+		"Atomics": "readonly",
+		"SharedArrayBuffer": "readonly"
+	},
+	"parser": "@typescript-eslint/parser",
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"rules": {
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"cypress/no-unnecessary-waiting": 0,
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"no-autofix/prefer-const": "error",
+		"no-multiple-empty-lines": [
+			"error",
+			{
+				"max": 3
+			}
+		],
+		"no-unused-vars": [
+			"warn"
+		],
+		"prefer-const": "off",
+		"semi": [
+			"error",
+			"always"
+		],
+		"sort-imports": "error",
+		"sort-keys": [
+			"error",
+			"asc"
+		]
+	},
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx"],
+			"rules": {
+				"@typescript-eslint/explicit-function-return-type": ["error"]
+			}
+		},
+		{
+			"files": ["*.d.ts"],
+			"rules": {
+				"no-unused-vars": 0
+			}
+		},
+		{
+			"files": ["*[!.test].js"],
+			"rules": {
+				"indent": 0,
+				"@typescript-eslint/explicit-module-boundary-types": 0
+			}
+		}
+	]
 }
