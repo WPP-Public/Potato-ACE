@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/menu/menu';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/menu/ace-menu.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -44,14 +52,14 @@ The following SASS is applied to Menu. The SASS variables use `!default` so can 
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-menu-list-bg-color: #fff !default;
 $ace-menu-option-text-color: #000 !default;
 $ace-menu-selected-option-bg-color: $ace-color-selected !default;
 $ace-menu-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 ace-menu {
   position: relative;
 }
@@ -73,6 +81,21 @@ ace-menu {
   &:not([ace-menu-list-visible]) {
     display: none;
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
 
 [ace-menu-option] {
@@ -82,10 +105,6 @@ ace-menu {
     color: $ace-menu-selected-option-text-color;
   }
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';
 ```
 
 

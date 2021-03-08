@@ -1,0 +1,46 @@
+ace-modal {
+  background: #fff;
+  padding: 24px;
+  position: fixed;
+  z-index: calc(2 + 1);
+}
+
+@media (max-width: 767px) {
+  ace-modal {
+    height: 100vh;
+    left: 0;
+    top: 0;
+    width: 100vw;
+  }
+}
+
+@media (min-width: 768px) {
+  ace-modal {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+ace-modal:not([ace-modal-visible]) {
+  display: none;
+}
+
+[ace-modal-is-visible] {
+  overflow: hidden;
+  padding-right: 15px;
+}
+
+[ace-modal-backdrop] {
+  background: rgba(0, 0, 0, 0.5);
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+
+[ace-modal-backdrop]:not([ace-modal-is-visible]) {
+  display: none;
+}

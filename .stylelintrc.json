@@ -1,6 +1,6 @@
 {
   "extends": "stylelint-config-standard",
-  "ignoreFiles": ["**/*.md"],
+  "ignoreFiles": ["**/*.md", "**/*.css"],
   "plugins": [
     "stylelint-order",
     "stylelint-scss"

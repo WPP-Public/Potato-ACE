@@ -1,0 +1,42 @@
+ace-menu {
+  position: relative;
+}
+
+[ace-menu-list] {
+  background: #fff;
+  color: #000;
+  left: 0;
+  list-style: none;
+  position: absolute;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+[ace-menu-list]:focus {
+  outline: none;
+}
+
+[ace-menu-list]:not([ace-menu-list-visible]) {
+  display: none;
+}
+
+[ace-menu-list][ace-u-float-above] {
+  bottom: 100%;
+  top: initial;
+}
+
+[ace-menu-list][ace-u-float-left] {
+  left: initial;
+  right: 0;
+}
+
+[ace-menu-list][ace-u-float-right] {
+  left: 0;
+  right: initial;
+}
+
+[ace-menu-option]:hover, [ace-menu-option][aria-selected="true"] {
+  background: steelblue;
+  color: #fff;
+}

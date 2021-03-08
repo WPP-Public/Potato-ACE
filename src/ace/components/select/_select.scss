@@ -1,7 +1,7 @@
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
 $ace-select-option-text-color: #000 !default;
@@ -9,7 +9,7 @@ $ace-select-selected-option-bg-color: $ace-color-selected !default;
 $ace-select-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 ace-select {
   position: relative;
 }
@@ -34,8 +34,19 @@ ace-select {
     background: $ace-select-selected-option-bg-color;
     color: $ace-select-selected-option-text-color;
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';

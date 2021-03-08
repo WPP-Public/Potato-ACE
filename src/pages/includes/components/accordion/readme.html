@@ -5,6 +5,10 @@
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/accordion/accordion';
 </code></pre>
+<p>Alternatively <em>ace.scss</em> includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:</p>
+<pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/ace';
+</code></pre>
+<p>A CSS file is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/accordion/ace-accordion.css</code>.</p>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/accordion/accordion';
 </code></pre>

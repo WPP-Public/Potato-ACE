@@ -1,7 +1,7 @@
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-tooltip-base-transform: translateX(-50%) !default;
 $ace-tooltip-bg-color: #000 !default;
 $ace-tooltip-gap: 10px !default;
@@ -9,7 +9,7 @@ $ace-tooltip-padding: 4px 8px !default;
 $ace-tooltip-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 [ace-tooltip-target] {
   position: relative;
 }
@@ -35,12 +35,23 @@ ace-tooltip {
   &[ace-u-float-left] {
     transform: translateX(0);
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
 
 [ace-tooltip-nowrap] {
   white-space: nowrap;
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';

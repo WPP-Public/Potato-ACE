@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/listbox/listbox';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/listbox/ace-listbox.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -55,7 +63,7 @@ To conform to W3 WAI-ARIA practices, active and selected options must be visuall
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-listbox-active-option-outline-color: slategrey !default;
 $ace-listbox-active-option-outline-style: dotted !default;
 $ace-listbox-active-option-outline-width: 2px !default;
@@ -64,7 +72,7 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 $ace-listbox-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 [ace-listbox-list] {
   height: $ace-listbox-list-height;
   list-style-position: inside;
