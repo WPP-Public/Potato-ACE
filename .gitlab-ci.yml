@@ -1,3 +1,14 @@
+workflow:
+  rules:
+    # Only run pipelines if commit is on master or on a branch associated with a merge request
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_MERGE_REQUEST_IID
+
+stages:
+  - Deploy
+  - Report
+  - Assert
+
 Deploy:
   stage: Deploy
   variables:
