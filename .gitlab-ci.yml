@@ -161,15 +161,6 @@ image: node:14.15.4-alpine3.12
 #   policy: push
 
 
-npm ci:
-  script:
-    - npm ci
-npm i:
-  script:
-    - npm i
-
-
-
 Deploy:
   variables:
     DEPLOY_VERSION: $CI_COMMIT_SHORT_SHA
@@ -181,8 +172,7 @@ Deploy:
   artifacts:
     reports:
       dotenv: deploy-version.env
-  before_script:
+  script:
     - echo DEPLOY_VERSION=$DEPLOY_VERSION >> deploy-version.env
     - echo $DEPLOY_VERSION
-  script:
     - cat deploy-version.env
