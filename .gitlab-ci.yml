@@ -145,40 +145,25 @@
 
 image: node:14.15.4-alpine3.12
 
-# variables:
-#   npm_config_cache: $CI_PROJECT_DIR/.npm
-#   YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn
+variables:
+  npm_config_cache: $CI_PROJECT_DIR/.npm
+  YARN_CACHE_FOLDER: $CI_PROJECT_DIR/.yarn
 
 
-# cache:
-#   key:
-#     files:
-#       - package.json
-#       - package-lock.json
-#   paths:
-#     - node_modules/
-#     - .npm/
-#   policy: push
+cache:
+  key:
+    files:
+      - package.json
+      - package-lock.json
+  paths:
+    - node_modules/
+    - .npm/
+  policy: push
 
 
-workflow:
-  rules:
-    # Only run pipelines if commit is on master or on a branch associated with a merge request
-    - if: $CI_COMMIT_BRANCH == "master"
-    - if: $CI_MERGE_REQUEST_IID
-
-Deploy:
-  variables:
-    DEPLOY_VERSION: $CI_COMMIT_SHORT_SHA
-  rules:
-    # Override $DEPLOY_VERSION for commits on branches with merge requets
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-      variables:
-        DEPLOY_VERSION: "mr-$CI_MERGE_REQUEST_IID"
-  artifacts:
-    reports:
-      dotenv: deploy-version.env
+npm ci:
   script:
-    - echo DEPLOY_VERSION=$DEPLOY_VERSION >> deploy-version.env
-    - echo $DEPLOY_VERSION
-    - cat deploy-version.env
+    - npm ci
+npm i:
+  script:
+    - npm i
