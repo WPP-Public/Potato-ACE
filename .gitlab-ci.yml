@@ -161,17 +161,23 @@ image: node:14.15.4-alpine3.12
 #   policy: push
 
 
+workflow:
+  rules:
+    # Only run pipelines if commit is on master or on a branch associated with a merge request
+    - if: $CI_COMMIT_BRANCH == "master"
+    - if: $CI_MERGE_REQUEST_IID
+
 Deploy:
-  # variables:
-  #   DEPLOY_VERSION: $CI_COMMIT_SHORT_SHA
-  # rules:
-  #   # Override $DEPLOY_VERSION for commits on branches with merge requets
-  #   - if: $CI_PIPELINE_SOURCE == "merge_request_event"
-  #     variables:
-  #       DEPLOY_VERSION: "mr-$CI_MERGE_REQUEST_IID"
-  # artifacts:
-  #   reports:
-  #     dotenv: deploy-version.env
+  variables:
+    DEPLOY_VERSION: $CI_COMMIT_SHORT_SHA
+  rules:
+    # Override $DEPLOY_VERSION for commits on branches with merge requets
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      variables:
+        DEPLOY_VERSION: "mr-$CI_MERGE_REQUEST_IID"
+  artifacts:
+    reports:
+      dotenv: deploy-version.env
   script:
     - echo DEPLOY_VERSION=$DEPLOY_VERSION >> deploy-version.env
     - echo $DEPLOY_VERSION
