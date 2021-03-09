@@ -1,3 +1,9 @@
+workflow:
+  rules:
+    # Only run pipelines if commit is on master or on a branch associated with a merge request
+    - if: $CI_COMMIT_BRANCH == "test"
+    - if: $CI_MERGE_REQUEST_IID
+
 Deploy:
   variables:
     DEPLOY_VERSION: $CI_COMMIT_SHORT_SHA
