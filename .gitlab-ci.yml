@@ -9,6 +9,7 @@ stages:
   - Report
   - Assert
 
+
 Deploy:
   stage: Deploy
   variables:
@@ -24,4 +25,5 @@ Deploy:
   before_script:
     - echo DEPLOY_VERSION=$DEPLOY_VERSION >> deploy-version.env
     - echo $DEPLOY_VERSION
+  script:
     - cat deploy-version.env
