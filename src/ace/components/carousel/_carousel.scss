@@ -16,8 +16,8 @@ ace-carousel {
 }
 
 [ace-carousel-slide-picker-btn] {
-  margin: 0 calc(#{$ace-carousel-slide-picker-btn-spacing} / 2);
   height: $ace-carousel-slide-picker-btn-size;
+  margin: 0 calc(#{$ace-carousel-slide-picker-btn-spacing} / 2);
 
   &[aria-selected="true"] {
     background-color: $ace-color-selected;

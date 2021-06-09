@@ -14,6 +14,7 @@ cache: &fe_deps
     - node_modules/
     - .cache/*
     - cache/cypress/
+  untracked: true
   policy: pull
 
 
