@@ -31,7 +31,7 @@ stages:
     - npm i
   cache:
     <<: *fe_deps
-    policy: pull
+    policy: push
 
 
 # Install deps if package.json or package-lock.json changed
