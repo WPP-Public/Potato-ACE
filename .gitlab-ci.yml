@@ -28,7 +28,7 @@ stages:
 # PREPARE STAGE
 .deps:
   script:
-    - npm i
+    - npm ci
   cache:
     <<: *fe_deps
     policy: push
