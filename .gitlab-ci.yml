@@ -51,6 +51,7 @@ Install deps:
 # BUILD STAGE
 Lint:
   stage: Build
+  cache: {}
   script:
     - npx stylelint "src/**/*.scss"
 
