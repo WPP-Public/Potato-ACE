@@ -37,6 +37,7 @@
 .vscode
 ehthumbs.db
 Thumbs.db
+.env
 
 # Directories
 node_modules/
