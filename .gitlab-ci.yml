@@ -22,7 +22,6 @@ stages:
 
 
 image: node:14.15.4-alpine3.12
-interruptible: true
 
 
 cache: &fe_deps
@@ -48,15 +47,16 @@ stages:
 # PREP STAGE
 # Install deps if package.json or package-lock.json changed
 Install deps:
-  stage: Prep
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
     - changes:
       - package.json
       - package-lock.json
+  stage: Prep
   cache:
     <<: *fe_deps
     policy: push
+  interruptible: true
   script:
     - npm ci
 
@@ -64,12 +64,13 @@ Install deps:
 # BUILD STAGE
 Build:
   stage: Build
-  script:
-    - npm run build
   artifacts:
     paths:
       - dist
     expire_in: 1 week
+  interruptible: true
+  script:
+    - npm run build
 
 Lint:
   stage: Build
@@ -100,14 +101,15 @@ Lint:
 .test:
   stage: Test
   image: cypress/browsers:node14.15.0-chrome86-ff82
-  script:
-    - npm run test:ci:prep
-    - npm run test:ci:$BROWSER
+  interruptible: true
   artifacts:
     when: on_failure
     paths:
       - cypress/screenshots
     expire_in: 1 week
+  script:
+    - npm run test:ci:prep
+    - npm run test:ci:$BROWSER
 
 Chrome:
   extends: .test
