@@ -55,3 +55,4 @@ src/**/*.d.ts
 src/ace/**/*.js
 !src/ace/**/examples/*.js
 !src/ace/components/**/*.test.js
+_update-notifier-last-checked
