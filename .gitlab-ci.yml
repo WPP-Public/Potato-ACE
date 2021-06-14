@@ -1,35 +1,3 @@
-workflow:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-    - if: '$CI_COMMIT_TAG'
-
-
-.use_prod_vars:
-  script:
-    - echo 'use Prod vars'
-.deploy:
-  script:
-    - echo 'Deploy!'
-
-
-include:
-  - project: 'potato/own-things/quality/gitlab-ci-includes'
-    file: 'deploy/gcp/gcp.deploy.gitlab-ci.yml'
-    ref: 'test'
-
-
-stages:
-  - Deploy
-
-
-Test:
-  stage: Deploy
-  script:
-    - echo 'Test'
-
-
-
 # variables:
 #   CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
 
@@ -226,5 +194,28 @@ Test:
 
 
 
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+
 
 include:
+  - project: 'potato/own-things/quality/gitlab-ci-includes'
+    file: 'deploy/firebase.deploy.gitlab-ci.yml'
+    ref: '10-firebase-deploy-inc'
+
+
+variables:
+  POT_CI_ENABLE_DEPLOY_PROD_JOB: 'true'
+  POT_CI_ENABLE_FLIP_PROD_JOB: 'true'
+
+
+stages:
+  - Deploy
+
+Test:
+  stage: Deploy
+  script:
+    - echo $CI_COMMIT_REF_NAME
