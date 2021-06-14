@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/select/select';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/select/ace-select.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -47,7 +55,7 @@ The following SASS is applied to Select. The SASS variables use `!default` so ca
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-select-list-bg-color: #fff !default;
 $ace-select-list-height: auto !default;
 $ace-select-option-text-color: #000 !default;
@@ -55,7 +63,7 @@ $ace-select-selected-option-bg-color: $ace-color-selected !default;
 $ace-select-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 ace-select {
   position: relative;
 }
@@ -80,11 +88,22 @@ ace-select {
     background: $ace-select-selected-option-bg-color;
     color: $ace-select-selected-option-text-color;
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';
 ```
 
 

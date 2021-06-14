@@ -1,14 +1,14 @@
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-menu-list-bg-color: #fff !default;
 $ace-menu-option-text-color: #000 !default;
 $ace-menu-selected-option-bg-color: $ace-color-selected !default;
 $ace-menu-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 ace-menu {
   position: relative;
 }
@@ -30,6 +30,21 @@ ace-menu {
   &:not([ace-menu-list-visible]) {
     display: none;
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
 
 [ace-menu-option] {
@@ -39,7 +54,3 @@ ace-menu {
     color: $ace-menu-selected-option-text-color;
   }
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';

@@ -1,0 +1,23 @@
+ace-toast {
+  background: #000;
+  border-radius: 8px;
+  bottom: 32px;
+  color: #fff;
+  font-size: 16px;
+  left: 50%;
+  max-width: 300px;
+  padding: 16px;
+  position: fixed;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+ace-toast:not([ace-toast-visible]) {
+  display: none;
+}
+
+@media (min-width: 600px) {
+  ace-toast {
+    max-width: 500px;
+  }
+}

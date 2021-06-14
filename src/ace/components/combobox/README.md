@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/combobox/combobox';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/combobox/ace-combobox.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -61,14 +69,14 @@ The following SASS is applied to Combobox. The SASS variables use `!default` so 
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-combobox-list-bg-color: #fff !default;
 $ace-combobox-list-height: auto !default;
 $ace-combobox-selected-option-bg-color: $ace-color-selected !default;
 $ace-combobox-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 ace-combobox {
   display: inline-block;
   position: relative;
@@ -100,11 +108,22 @@ ace-combobox {
     background: $ace-combobox-selected-option-bg-color;
     color: $ace-combobox-selected-option-text-color;
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';
 ```
 
 

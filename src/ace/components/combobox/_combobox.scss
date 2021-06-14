@@ -1,14 +1,14 @@
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-combobox-list-bg-color: #fff !default;
 $ace-combobox-list-height: auto !default;
 $ace-combobox-selected-option-bg-color: $ace-color-selected !default;
 $ace-combobox-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 ace-combobox {
   display: inline-block;
   position: relative;
@@ -40,8 +40,19 @@ ace-combobox {
     background: $ace-combobox-selected-option-bg-color;
     color: $ace-combobox-selected-option-text-color;
   }
+
+  &[ace-u-float-above] {
+    bottom: 100%;
+    top: initial;
+  }
+
+  &[ace-u-float-left] {
+    left: initial;
+    right: 0;
+  }
+
+  &[ace-u-float-right] {
+    left: 0;
+    right: initial;
+  }
 }
-
-
-// Import styles that ensure that the list doesn't overflow outside the viewport.
-@import '../../common/utils';

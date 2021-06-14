@@ -1,14 +1,14 @@
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-modal-backdrop-bg-color: rgba(0, 0, 0, .5) !default;
 $ace-modal-bg-color: #fff !default;
 $ace-modal-padding: $ace-spacing-3 !default;
 $ace-modal-switch-breakpoint: 768px;
 
 
-/* STYLES */
+// STYLES
 ace-modal {
   background: $ace-modal-bg-color;
   padding: $ace-modal-padding;

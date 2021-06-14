@@ -1,0 +1,15 @@
+[ace-listbox-list] {
+  height: auto;
+  list-style-position: inside;
+  overflow-y: auto;
+  user-select: none;
+}
+
+[ace-listbox-list] [aria-selected="true"] {
+  background: steelblue;
+  color: #fff;
+}
+
+[ace-listbox-multiselect] [ace-listbox-option-active] {
+  outline: 2px dotted slategrey;
+}

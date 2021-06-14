@@ -1,7 +1,7 @@
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-listbox-active-option-outline-color: slategrey !default;
 $ace-listbox-active-option-outline-style: dotted !default;
 $ace-listbox-active-option-outline-width: 2px !default;
@@ -10,7 +10,7 @@ $ace-listbox-selected-option-bg-color: $ace-color-selected !default;
 $ace-listbox-selected-option-text-color: #fff !default;
 
 
-/* STYLES */
+// STYLES
 [ace-listbox-list] {
   height: $ace-listbox-list-height;
   list-style-position: inside;

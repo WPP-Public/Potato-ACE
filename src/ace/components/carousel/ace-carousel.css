@@ -1,0 +1,17 @@
+ace-carousel {
+  display: block;
+}
+
+[ace-carousel-slide]:not([ace-carousel-slide-selected]) {
+  display: none;
+}
+
+[ace-carousel-slide-picker-btn] {
+  height: 12px;
+  margin: 0 calc(8px / 2);
+}
+
+[ace-carousel-slide-picker-btn][aria-selected="true"] {
+  background-color: steelblue;
+  border-style: inset;
+}

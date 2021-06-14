@@ -2,20 +2,8 @@
 @import 'ace-variable-overrides';
 
 
-// ///////////////
-// ACE COMPONENTS
-@import '../ace/components/accordion/accordion';
-@import '../ace/components/carousel/carousel';
-@import '../ace/components/combobox/combobox';
-@import '../ace/components/disclosure/disclosure';
-@import '../ace/components/listbox/listbox';
-@import '../ace/components/menu/menu';
-@import '../ace/components/modal/modal';
-@import '../ace/components/select/select';
-@import '../ace/components/tabs/tabs';
-@import '../ace/components/toast/toast';
-@import '../ace/components/tooltip/tooltip';
-// ///////////////
+// ACE
+@import '../ace/ace';
 
 
 // USER STYLES

@@ -13,6 +13,14 @@ First import the styles into your main SASS file, replacing `<path-to-node_modul
 @import '<path-to-node_modules>/@potato/ace/components/modal/modal';
 ```
 
+Alternatively *ace.scss* includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/ace';
+```
+
+A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/modal/ace-modal.css`.
+
 Then import the class into your JavaScript entry point:
 
 ```js
@@ -50,14 +58,14 @@ The following SASS is applied to Modal. The SASS variables use `!default` so can
 @import '../../common/constants';
 
 
-/* VARIABLES */
+// VARIABLES
 $ace-modal-backdrop-bg-color: rgba(0, 0, 0, .5) !default;
 $ace-modal-bg-color: #fff !default;
 $ace-modal-padding: $ace-spacing-3 !default;
 $ace-modal-switch-breakpoint: 768px;
 
 
-/* STYLES */
+// STYLES
 ace-modal {
   background: $ace-modal-bg-color;
   padding: $ace-modal-padding;

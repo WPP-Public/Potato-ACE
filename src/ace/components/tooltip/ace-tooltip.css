@@ -1,0 +1,44 @@
+[ace-tooltip-target] {
+  position: relative;
+}
+
+ace-tooltip {
+  background-color: #000;
+  color: #fff;
+  left: 50%;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 4px 8px;
+  pointer-events: none;
+  position: absolute;
+  top: 100%;
+  transform: translateX(-50%);
+  z-index: 4;
+}
+
+ace-tooltip:not([ace-tooltip-visible]) {
+  visibility: hidden;
+}
+
+ace-tooltip[ace-u-float-right], ace-tooltip[ace-u-float-left] {
+  transform: translateX(0);
+}
+
+ace-tooltip[ace-u-float-above] {
+  bottom: 100%;
+  top: initial;
+}
+
+ace-tooltip[ace-u-float-left] {
+  left: initial;
+  right: 0;
+}
+
+ace-tooltip[ace-u-float-right] {
+  left: 0;
+  right: initial;
+}
+
+[ace-tooltip-nowrap] {
+  white-space: nowrap;
+}
