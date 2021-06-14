@@ -128,3 +128,4 @@ Edge:
   allow_failure: true
   variables:
     BROWSER: 'edge'
+
