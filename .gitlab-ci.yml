@@ -52,14 +52,19 @@ Install deps:
   interruptible: true
   script:
     - npm ci
-  only:
-    refs:
-      - merge_requests
-      # - ${CI_DEFAULT_BRANCH}
-      # - tags
-    changes:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      changes:
       - package.json
       - package-lock.json
+  # only:
+  #   refs:
+  #     - merge_requests
+  #     # - ${CI_DEFAULT_BRANCH}
+  #     # - tags
+  #   changes:
+  #     - package.json
+  #     - package-lock.json
 
 
 # BUILD STAGE
