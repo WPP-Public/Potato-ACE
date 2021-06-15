@@ -46,9 +46,10 @@ stages:
 # Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
   # Not working for some stupid reason
-  # rules:
-  #   - changes:
-  #       - package.json
+  rules:
+    - changes:
+        - package.json
+      when: always
   stage: Prep
   cache:
     <<: *fe_deps
