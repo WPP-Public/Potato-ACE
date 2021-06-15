@@ -42,7 +42,7 @@ stages:
 Install deps:
   rules:
     - changes:
-      - package.json
+        - package.json
   # only:
   #   changes:
   #     - package-lock.json
