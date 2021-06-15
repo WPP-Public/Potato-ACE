@@ -25,6 +25,7 @@ cache: &fe_deps
   key:
     files:
       - package.json
+    prefix: ${CI_COMMIT_REF_BRANCH}
   paths:
     - node_modules/
     - cache/cypress/
