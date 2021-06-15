@@ -42,7 +42,7 @@ stages:
 
 
 # PREP STAGE
-# Install deps if package.json or package-lock.json changed
+# Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
   rules:
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
@@ -122,3 +122,4 @@ Deploy Named Version Staging:
   needs: [Build]
   rules:
     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
+
