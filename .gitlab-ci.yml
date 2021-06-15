@@ -136,4 +136,3 @@ Deploy Named Version Staging:
   needs: [Build]
   rules:
     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
-
