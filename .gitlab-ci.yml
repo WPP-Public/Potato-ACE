@@ -30,8 +30,8 @@ image: node:14.15.4-alpine3.12
 #   policy: pull
 
 
-# stages:
-#   - Prep
+stages:
+  - Prep
 #   - Build
 #   - Test
 #   - Deploy
@@ -40,11 +40,11 @@ image: node:14.15.4-alpine3.12
 # PREP STAGE
 # Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
-  only:
-    changes:
-      - package.json
-      - package-lock.json
-  # stage: Prep
+  # only:
+  #   changes:
+  #     - package.json
+  #     - package-lock.json
+  stage: Prep
   # cache:
   #   <<: *fe_deps
   #   policy: push
