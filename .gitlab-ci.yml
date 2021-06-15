@@ -43,11 +43,8 @@ stages:
 
 
 # PREP STAGE
-# Install deps if package.json or package-lock.json changed or commit pushed to default branch
+# Install deps if package.json or package-lock.json
 Install deps:
-  # rules:
-  #   - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-  #   - changes:
   only:
     changes:
       - package.json
