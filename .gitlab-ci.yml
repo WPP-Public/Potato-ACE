@@ -127,6 +127,9 @@ Firefox:
 #     BROWSER: 'edge'
 
 
+Deploy MR:
+  needs: [Build]
+
 Deploy Staging:
   needs: [Build]
   rules:
