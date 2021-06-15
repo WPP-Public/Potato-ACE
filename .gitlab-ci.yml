@@ -50,7 +50,7 @@ Install deps:
   # cache:
   #   <<: *fe_deps
   #   policy: push
-  interruptible: true
+  # interruptible: true
   script:
     - npm ci
 

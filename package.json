@@ -1,6 +1,6 @@
 {
 	"name": "potato-a11y",
-	"version": "0.0.2",
+	"version": "0.0.1",
 	"description": "Accessible component library website",
 	"main": "index.js",
 	"scripts": {
