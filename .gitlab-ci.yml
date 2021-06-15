@@ -130,3 +130,8 @@ Deploy Named Version Staging:
   needs: [Build]
   rules:
     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
+
+
+Deploy MR:
+  rules:
+    - if: $CI_MERGE_REQUEST_IID
