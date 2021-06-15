@@ -40,9 +40,11 @@ stages:
 # PREP STAGE
 # Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
+  rules:
+    - changes:
+      - package.json
   # only:
   #   changes:
-  #     - package.json
   #     - package-lock.json
   stage: Prep
   # cache:
