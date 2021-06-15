@@ -1,109 +1,88 @@
-image: node:14.15.4-alpine3.12
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+
 
 
 variables:
-  npm_config_cache: $CI_PROJECT_DIR/.npm
   CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
+  POT_CI_ENABLE_DEPLOY_PROD_JOB: 'true'
+  POT_CI_ENABLE_FLIP_PROD_JOB: 'true'
 
 
-cache: &global_cache
-  key: ${CI_COMMIT_REF_NAME}
+include:
+  - project: 'potato/own-things/quality/gitlab-ci-includes'
+    file: 'deploy/firebase.deploy.gitlab-ci.yml'
+    ref: '10-firebase-deploy-inc'
+
+
+image: node:14.15.4-alpine3.12
+
+
+cache: &fe_deps
+  key:
+    files:
+      - package.json
+      - package-lock.json
+    prefix: ${CI_COMMIT_REF_NAME}
   paths:
-    - .npm/
     - node_modules/
     - cache/cypress/
+  untracked: true
   policy: pull
 
 
 stages:
-  - prepare
-  - build
-  - build fail
-  - test
-  - deploy
+  - Prep
+  - Build
+  - Test
+  - Deploy
 
 
-# PREPARE STAGE
-.deps:
-  stage: prepare
-  script:
-    - npm set progress=false
-    - npm ci --cache .npm --prefer-offline
-  cache:
-    <<: *global_cache
-    policy: push
-
-# Install deps if package.json or package-lock.json changed
+# PREP STAGE
+# Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
-  extends: .deps
-  only:
-    changes:
-      - package.json
-      - package-lock.json
-
-# Install deps when merging into master
-Install deps for deploy:
-  extends: .deps
-  only:
-    - master
-
+  stage: Prep
+  cache:
+    <<: *fe_deps
+    policy: push
+  interruptible: true
+  script:
+    - npm ci
 
 
 # BUILD STAGE
-.lint:
-  script:
-    - npm run lint
-
-.build:
-  script:
-    - npm run build
+Build:
+  stage: Build
   artifacts:
     paths:
       - dist
     expire_in: 1 week
+  interruptible: true
+  script:
+    - npm run build
 
 Lint:
-  extends: .lint
-  stage: build
-
-Build:
-  extends: .build
-  stage: build
-
-
-# BUILD FAIL STAGE
-# If any task from build stage fails retry without using cache
-Lint without cache:
-  extends: .lint
-  stage: build fail
-  when: on_failure
-  before_script:
-    - npm i --prefer-cache
-  cache:
-    <<: *global_cache
-    policy: push
-
-Build without cache:
-  extends: .build
-  stage: build fail
-  when: on_failure
-  before_script:
-    - npm i --prefer-cache
-
+  stage: Build
+  script:
+    - npm run lint
 
 
 # TEST STAGE
 .test:
-  stage: test
+  stage: Test
   image: cypress/browsers:node14.15.0-chrome86-ff82
-  script:
-    - npm run test:ci:prep
-    - npm run test:ci:$BROWSER
+  interruptible: true
   artifacts:
     when: on_failure
     paths:
       - cypress/screenshots
     expire_in: 1 week
+  script:
+    - npm run test:ci:prep
+    - npm run test:ci:$BROWSER
 
 Chrome:
   extends: .test
@@ -117,19 +96,14 @@ Firefox:
 
 # Edge not working atm need to investigate why
 # Edge:
-#   image: cypress/browsers:node14.10.1-edge88
 #   extends: .test
+#   image: cypress/browsers:node14.10.1-edge88
+#   allow_failure: true
 #   variables:
 #     BROWSER: 'edge'
 
 
 # DEPLOY STAGE
-Deploy:
-  image: andreysenov/firebase-tools
+.deploy_job:
   cache: {}
-  stage: deploy
-  rules:
-    - if: $CI_COMMIT_BRANCH == 'master'
-  script:
-    - firebase deploy -m "Pipeline $CI_PIPELINE_ID, build $CI_BUILD_ID" --non-interactive --token $FIREBASE_DEPLOY_KEY
-
+  needs: [Build]
