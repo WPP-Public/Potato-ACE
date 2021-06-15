@@ -69,6 +69,7 @@ Build:
 
 Lint:
   stage: Build
+  needs: []
   cache: {}
   script:
     - DEPS='stylelint stylelint-config-standard stylelint-order stylelint-scss @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint'
