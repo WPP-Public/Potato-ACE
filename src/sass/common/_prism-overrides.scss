@@ -5,42 +5,42 @@ $btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$btn-offset}));
 
 // CODE BLOCK
 .code-toolbar {
-  background: map-get($pot-grey, 7);
-  border-radius: $border-radius;
-  font-size: $code-block-font-size;
-  margin-bottom: $buffer-m;
-  padding-right: calc(#{$btn-size} + 4px);
-  position: relative;
+	background: map-get($pot-grey, 7);
+	border-radius: $border-radius;
+	font-size: $code-block-font-size;
+	margin-bottom: $buffer-m;
+	padding-right: calc(#{$btn-size} + 4px);
+	position: relative;
 
-  pre {
-    background: transparent;
-  }
+	pre {
+		background: transparent;
+	}
 
-  .variable {
-    color: map-get($pot-yellow, 4);
-  }
+	.variable {
+		color: map-get($pot-yellow, 4);
+	}
 
-  .comment {
-    color: map-get($pot-grey, 2);
-  }
+	.comment {
+		color: map-get($pot-grey, 2);
+	}
 }
 
 
 // TOOLBAR & COPY BUTTON
 .toolbar-item {
-  position: absolute;
-  right: $btn-offset;
-  top: $btn-offset;
+	position: absolute;
+	right: $btn-offset;
+	top: $btn-offset;
 
-  button {
-    @include icon-btn($btn-size, '../img/clipboard.svg');
+	button {
+		@include icon-btn($btn-size, '../img/clipboard.svg');
 
-    &:active {
-      background-color: #fff;
+		&:active {
+			background-color: #fff;
 
-      &::after {
-        background-color: map-get($pot-blue, 4);
-      }
-    }
-  }
+			&::after {
+				background-color: map-get($pot-blue, 4);
+			}
+		}
+	}
 }

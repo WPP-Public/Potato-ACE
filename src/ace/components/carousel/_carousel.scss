@@ -8,19 +8,19 @@ $ace-carousel-slide-picker-btn-spacing: $ace-spacing-1 !default;
 
 // STYLES
 ace-carousel {
-  display: block;
+	display: block;
 }
 
 [ace-carousel-slide]:not([ace-carousel-slide-selected]) {
-  display: none;
+	display: none;
 }
 
 [ace-carousel-slide-picker-btn] {
-  height: $ace-carousel-slide-picker-btn-size;
-  margin: 0 calc(#{$ace-carousel-slide-picker-btn-spacing} / 2);
+	height: $ace-carousel-slide-picker-btn-size;
+	margin: 0 calc(#{$ace-carousel-slide-picker-btn-spacing} / 2);
 
-  &[aria-selected="true"] {
-    background-color: $ace-color-selected;
-    border-style: inset;
-  }
+	&[aria-selected="true"] {
+		background-color: $ace-color-selected;
+		border-style: inset;
+	}
 }

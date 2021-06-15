@@ -1,70 +1,70 @@
 {
-  "accordion": {
-    "name": "Accordion",
-    "aliases": [
-      "Expansion Panels"
-    ]
-  },
-  "carousel": {
-    "name": "Carousel",
-    "aliases": [
-      "Image rotator",
-      "Slide show",
-      "Slider"
-    ]
-  },
-  "combobox": {
-    "name": "Combobox",
-    "aliases": [
-      "Search box",
-      "Search input",
-      "List lookup"
-    ]
-  },
-  "disclosure": {
-    "name": "Disclosure",
-    "aliases": [
-      "Pop-up"
-    ]
-  },
-  "listbox": {
-    "name": "Listbox"
-  },
-  "menu": {
-    "name": "Menu",
-    "aliases": [
-      "Pop-Up Menu",
-      "Dropdown Menu"
-    ]
-  },
-  "modal": {
-    "name": "Modal",
-    "aliases": [
-      "Dialog"
-    ]
-  },
-  "select": {
-    "name": "Select",
-    "aliases": [
-      "Drop-down list"
-    ]
-  },
-  "tabs": {
-    "name": "Tabs",
-    "aliases": [
-      "Tabset",
-      "Tablist",
-      "Tabbed Interface"
-    ]
-  },
-  "toast": {
-    "name": "Toast",
-    "aliases": [
-      "Snackbar",
-      "Notification"
-    ]
-  },
-  "tooltip": {
-    "name": "Tooltip"
-  }
+	"accordion": {
+		"name": "Accordion",
+		"aliases": [
+			"Expansion Panels"
+		]
+	},
+	"carousel": {
+		"name": "Carousel",
+		"aliases": [
+			"Image rotator",
+			"Slide show",
+			"Slider"
+		]
+	},
+	"combobox": {
+		"name": "Combobox",
+		"aliases": [
+			"Search box",
+			"Search input",
+			"List lookup"
+		]
+	},
+	"disclosure": {
+		"name": "Disclosure",
+		"aliases": [
+			"Pop-up"
+		]
+	},
+	"listbox": {
+		"name": "Listbox"
+	},
+	"menu": {
+		"name": "Menu",
+		"aliases": [
+			"Pop-Up Menu",
+			"Dropdown Menu"
+		]
+	},
+	"modal": {
+		"name": "Modal",
+		"aliases": [
+			"Dialog"
+		]
+	},
+	"select": {
+		"name": "Select",
+		"aliases": [
+			"Drop-down list"
+		]
+	},
+	"tabs": {
+		"name": "Tabs",
+		"aliases": [
+			"Tabset",
+			"Tablist",
+			"Tabbed Interface"
+		]
+	},
+	"toast": {
+		"name": "Toast",
+		"aliases": [
+			"Snackbar",
+			"Notification"
+		]
+	},
+	"tooltip": {
+		"name": "Tooltip"
+	}
 }

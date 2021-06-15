@@ -1,35 +1,35 @@
 .styled-listbox {
-  &__label,
-  &__input,
-  &__option {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+	&__label,
+	&__input,
+	&__option {
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+	}
 
-  &__list {
-    border: 1px solid #837b8b;
-    border-radius: 4px;
-    height: 225px;
-    margin-top: 10px;
-    width: 300px;
+	&__list {
+		border: 1px solid #837b8b;
+		border-radius: 4px;
+		height: 225px;
+		margin-top: 10px;
+		width: 300px;
 
-    &:focus {
-      outline-color: #41354d;
-    }
-  }
+		&:focus {
+			outline-color: #41354d;
+		}
+	}
 
-  &__option {
-    align-items: center;
-    display: flex;
-    padding: 10px 16px;
+	&__option {
+		align-items: center;
+		display: flex;
+		padding: 10px 16px;
 
-    &[aria-selected="true"] {
-      background: #41354d;
-    }
-  }
+		&[aria-selected="true"] {
+			background: #41354d;
+		}
+	}
 
-  &__img {
-    height: 2em;
-    margin-right: 10px;
-  }
+	&__img {
+		height: 2em;
+		margin-right: 10px;
+	}
 }

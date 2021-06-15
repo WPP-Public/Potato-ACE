@@ -1,9 +1,9 @@
 .example-block {
-  @include bordered;
-  font-size: 1.4rem;
-  margin: 0 0 $buffer-m;
+	@include bordered;
+	font-size: 1.4rem;
+	margin: 0 0 $buffer-m;
 
-  ol {
-    margin: 0;
-  }
+	ol {
+		margin: 0;
+	}
 }

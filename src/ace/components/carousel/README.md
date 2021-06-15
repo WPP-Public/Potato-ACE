@@ -74,21 +74,21 @@ $ace-carousel-slide-picker-btn-spacing: $ace-spacing-1 !default;
 
 // STYLES
 ace-carousel {
-  display: block;
+	display: block;
 }
 
 [ace-carousel-slide]:not([ace-carousel-slide-selected]) {
-  display: none;
+	display: none;
 }
 
 [ace-carousel-slide-picker-btn] {
-  height: $ace-carousel-slide-picker-btn-size;
-  margin: 0 calc(#{$ace-carousel-slide-picker-btn-spacing} / 2);
+	height: $ace-carousel-slide-picker-btn-size;
+	margin: 0 calc(#{$ace-carousel-slide-picker-btn-spacing} / 2);
 
-  &[aria-selected="true"] {
-    background-color: $ace-color-selected;
-    border-style: inset;
-  }
+	&[aria-selected="true"] {
+		background-color: $ace-color-selected;
+		border-style: inset;
+	}
 }
 ```
 
@@ -183,25 +183,25 @@ Simple Carousel with 3 slides.
 
 ```html
 <ace-carousel aria-label="Simple">
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div>
-    <div>
-      <h3>Slide 1 heading</h3>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div>
-      <h3>Slide 2 heading</h3>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div>
-      <h3>Slide 3 heading</h3>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+	<button>Previous slide</button>
+	<button>Next slide</button>
+	<div>
+		<div>
+			<h3>Slide 1 heading</h3>
+			<p>Slide 1 content.</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+		</div>
+		<div>
+			<h3>Slide 2 heading</h3>
+			<p>Slide 2 content.</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+		</div>
+		<div>
+			<h3>Slide 3 heading</h3>
+			<p>Slide 3 content.</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+		</div>
+	</div>
 </ace-carousel>
 ```
 
@@ -218,25 +218,25 @@ The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-car
 <button id="remove-slide-btn">Remove last slide</button>
 <hr>
 <ace-carousel aria-label="Custom events" id="custom-events-carousel">
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div>
-    <div>
-      <h3>Slide 1 heading</h3>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div>
-      <h3>Slide 2 heading</h3>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div>
-      <h3>Slide 3 heading</h3>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+	<button>Previous slide</button>
+	<button>Next slide</button>
+	<div>
+		<div>
+			<h3>Slide 1 heading</h3>
+			<p>Slide 1 content.</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+		</div>
+		<div>
+			<h3>Slide 2 heading</h3>
+			<p>Slide 2 content.</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+		</div>
+		<div>
+			<h3>Slide 3 heading</h3>
+			<p>Slide 3 content.</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+		</div>
+	</div>
 </ace-carousel>
 ```
 
@@ -244,41 +244,41 @@ The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-car
 import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const carouselEl = document.getElementById('custom-events-carousel');
-  const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
+	const carouselEl = document.getElementById('custom-events-carousel');
+	const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 
-  const addSlide = () => {
-    const headingEl = document.createElement('h2');
-    headingEl.textContent = `Dynamically added Slide`;
-    const p = document.createElement('p');
-    p.textContent = `This slide was added dynamically, after this Carousel was initialised.`;
-    const newSlideEl = document.createElement('div');
-    newSlideEl.appendChild(headingEl);
-    newSlideEl.appendChild(p);
-    slidesWrapper.appendChild(newSlideEl);
-    carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
-  };
+	const addSlide = () => {
+		const headingEl = document.createElement('h2');
+		headingEl.textContent = `Dynamically added Slide`;
+		const p = document.createElement('p');
+		p.textContent = `This slide was added dynamically, after this Carousel was initialised.`;
+		const newSlideEl = document.createElement('div');
+		newSlideEl.appendChild(headingEl);
+		newSlideEl.appendChild(p);
+		slidesWrapper.appendChild(newSlideEl);
+		carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
+	};
 
-  window.addEventListener('click', (e) => {
-    const targetId = e.target.id;
-    switch(targetId) {
-      case 'prev-slide-btn':
-      case 'next-slide-btn': {
-        const event = EVENTS.IN[`SET_${targetId === 'prev-slide-btn' ? 'PREV' : 'NEXT'}_SLIDE`];
-        carouselEl.dispatchEvent(new CustomEvent(event));
-        break;
-      }
-      case 'add-slide-btn':
-      case 'remove-slide-btn':
-        if (targetId === 'add-slide-btn') {
-          addSlide();
-        } else {
-          slidesWrapper.removeChild(slidesWrapper.lastElementChild);
-        }
-        carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
-        break;
-    }
-  });
+	window.addEventListener('click', (e) => {
+		const targetId = e.target.id;
+		switch(targetId) {
+			case 'prev-slide-btn':
+			case 'next-slide-btn': {
+				const event = EVENTS.IN[`SET_${targetId === 'prev-slide-btn' ? 'PREV' : 'NEXT'}_SLIDE`];
+				carouselEl.dispatchEvent(new CustomEvent(event));
+				break;
+			}
+			case 'add-slide-btn':
+			case 'remove-slide-btn':
+				if (targetId === 'add-slide-btn') {
+					addSlide();
+				} else {
+					slidesWrapper.removeChild(slidesWrapper.lastElementChild);
+				}
+				carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
+				break;
+		}
+	});
 });
 ```
 
@@ -288,25 +288,25 @@ Carousel with infinite rotation that displays the second slide upon page load.
 
 ```html
 <ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="infinite-carousel">
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div>
-    <div>
-      <h3>Slide 1 heading</h3>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div>
-      <h3>Slide 2 heading</h3>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div>
-      <h3>Slide 3 heading</h3>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+	<button>Previous slide</button>
+	<button>Next slide</button>
+	<div>
+		<div>
+			<h3>Slide 1 heading</h3>
+			<p>Slide 1 content.</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+		</div>
+		<div>
+			<h3>Slide 2 heading</h3>
+			<p>Slide 2 content.</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+		</div>
+		<div>
+			<h3>Slide 3 heading</h3>
+			<p>Slide 3 content.</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+		</div>
+	</div>
 </ace-carousel>
 ```
 
@@ -316,26 +316,26 @@ Carousel with slide picker buttons and automatic slide show.
 
 ```html
 <ace-carousel aria-label="Slide picker" id="slide-picker-carousel">
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div ace-carousel-slide-picker></div>
-  <div>
-    <div>
-      <h3>Slide 1 heading</h3>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div>
-      <h3>Slide 2 heading</h3>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div>
-      <h3>Slide 3 heading</h3>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+	<button>Previous slide</button>
+	<button>Next slide</button>
+	<div ace-carousel-slide-picker></div>
+	<div>
+		<div>
+			<h3>Slide 1 heading</h3>
+			<p>Slide 1 content.</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+		</div>
+		<div>
+			<h3>Slide 2 heading</h3>
+			<p>Slide 2 content.</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+		</div>
+		<div>
+			<h3>Slide 3 heading</h3>
+			<p>Slide 3 content.</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+		</div>
+	</div>
 </ace-carousel>
 ```
 
@@ -349,26 +349,26 @@ Carousel with automatic slide show. Two buttons have also been included, which d
 <button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
 <hr>
 <ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
-  <button>Toggle automatic slide show</button>
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div>
-    <div>
-      <h3>Slide 1 heading</h3>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div>
-      <h3>Slide 2 heading</h3>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div>
-      <h3>Slide 3 heading</h3>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+	<button>Toggle automatic slide show</button>
+	<button>Previous slide</button>
+	<button>Next slide</button>
+	<div>
+		<div>
+			<h3>Slide 1 heading</h3>
+			<p>Slide 1 content.</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+		</div>
+		<div>
+			<h3>Slide 2 heading</h3>
+			<p>Slide 2 content.</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+		</div>
+		<div>
+			<h3>Slide 3 heading</h3>
+			<p>Slide 3 content.</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+		</div>
+	</div>
 </ace-carousel>
 ```
 
@@ -376,19 +376,19 @@ Carousel with automatic slide show. Two buttons have also been included, which d
 import {EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const carouselEl = document.getElementById('auto-carousel');
+	const carouselEl = document.getElementById('auto-carousel');
 
-  window.addEventListener('click', (e) => {
-    const targetId = e.target.id;
-    switch(targetId) {
-      case 'start-auto-slide-show-custom-event-btn':
-      case 'stop-auto-slide-show-custom-event-btn': {
-        const event = EVENTS.IN[`${targetId === 'start-auto-slide-show-custom-event-btn' ? 'START' : 'STOP'}_AUTO_SLIDE_SHOW`];
-        carouselEl.dispatchEvent(new CustomEvent(event));
-        break;
-      }
-    }
-  });
+	window.addEventListener('click', (e) => {
+		const targetId = e.target.id;
+		switch(targetId) {
+			case 'start-auto-slide-show-custom-event-btn':
+			case 'stop-auto-slide-show-custom-event-btn': {
+				const event = EVENTS.IN[`${targetId === 'start-auto-slide-show-custom-event-btn' ? 'START' : 'STOP'}_AUTO_SLIDE_SHOW`];
+				carouselEl.dispatchEvent(new CustomEvent(event));
+				break;
+			}
+		}
+	});
 });
 ```
 
@@ -399,119 +399,119 @@ Example of Carousel with animated slide changes. Custom styles have been applied
 
 ```html
 <ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
-  <button>Previous slide</button>
-  <button>Next slide</button>
-  <div class="animated-carousel__slides">
-    <div class="animated-carousel__slide">
-      <h3>Slide 1 heading</h3>
-      <button>Button</button>
-      <a href="#">Link</a>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div class="animated-carousel__slide">
-      <h3>Slide 2 heading</h3>
-      <button>Button</button>
-      <a href="#">Link</a>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div class="animated-carousel__slide">
-      <h3>Slide 3 heading</h3>
-      <button>Button</button>
-      <a href="#">Link</a>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+	<button>Previous slide</button>
+	<button>Next slide</button>
+	<div class="animated-carousel__slides">
+		<div class="animated-carousel__slide">
+			<h3>Slide 1 heading</h3>
+			<button>Button</button>
+			<a href="#">Link</a>
+			<p>Slide 1 content.</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+		</div>
+		<div class="animated-carousel__slide">
+			<h3>Slide 2 heading</h3>
+			<button>Button</button>
+			<a href="#">Link</a>
+			<p>Slide 2 content.</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+		</div>
+		<div class="animated-carousel__slide">
+			<h3>Slide 3 heading</h3>
+			<button>Button</button>
+			<a href="#">Link</a>
+			<p>Slide 3 content.</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+		</div>
+	</div>
 </ace-carousel>
 ```
 
 ```scss
 @media (prefers-reduced-motion: no-preference) {
-  .animated-carousel {
-    &__slides {
-      display: flex;
-      overflow-x: hidden;
-    }
+	.animated-carousel {
+		&__slides {
+			display: flex;
+			overflow-x: hidden;
+		}
 
-    &__slide {
-      flex-shrink: 0;
-      width: 100%;
+		&__slide {
+			flex-shrink: 0;
+			width: 100%;
 
-      &--hidden {
-        visibility: hidden;
-      }
+			&--hidden {
+				visibility: hidden;
+			}
 
-      &:not([ace-carousel-slide-selected]) {
-        display: block;
-      }
-    }
-  }
+			&:not([ace-carousel-slide-selected]) {
+				display: block;
+			}
+		}
+	}
 }
 ```
 
 ```js
-import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
+import { ATTRS, EVENTS } from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // If user prefers reduced motion then do not animate
-  if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-    return;
-  }
+	// If user prefers reduced motion then do not animate
+	if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+		return;
+	}
 
-  const CAROUSEL_ID = 'animated-carousel';
-  const carouselEl = document.getElementById(CAROUSEL_ID);
-  const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
-  const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
-  const slidesEdges = [];
-  let selectedSlideIndex = +carouselEl.getAttribute(ATTRS.SELECTED_SLIDE) - 1;
-  let scrollTimeout;
+	const CAROUSEL_ID = 'animated-carousel';
+	const carouselEl = document.getElementById(CAROUSEL_ID);
+	const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
+	const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
+	const slidesEdges = [];
+	let selectedSlideIndex = +carouselEl.getAttribute(ATTRS.SELECTED_SLIDE) - 1;
+	let scrollTimeout;
 
-  // Hide non-selected slides on page load
-  carouselSlideEls.forEach((slide, i) => {
-    if (i === selectedSlideIndex) {
-      return;
-    }
-    slide.setAttribute('aria-hidden', 'true');
-    slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
-  });
+	// Hide non-selected slides on page load
+	carouselSlideEls.forEach((slide, i) => {
+		if (i === selectedSlideIndex) {
+			return;
+		}
+		slide.setAttribute('aria-hidden', 'true');
+		slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+	});
 
-  // Store left edge x-coordinates of slides on page load and resize
-  const getSlidesEdges = () => {
-    carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselSlidesEl.offsetLeft);
-  };
-  window.addEventListener('load', getSlidesEdges);
-  window.addEventListener('resize', getSlidesEdges, {passive: true});
+	// Store left edge x-coordinates of slides on page load and resize
+	const getSlidesEdges = () => {
+		carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselSlidesEl.offsetLeft);
+	};
+	window.addEventListener('load', getSlidesEdges);
+	window.addEventListener('resize', getSlidesEdges, { passive: true });
 
-  // Start animation when slide changes
-  window.addEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, (e) => {
-    if (!e.detail || e.detail.id !== CAROUSEL_ID) {
-      return;
-    }
-    clearTimeout(scrollTimeout);
-    selectedSlideIndex = e.detail.currentlySelectedSlide - 1;
-    carouselSlideEls.forEach((slide) => {
-      // Prevent non-selected slides from being announced by screen reader due to aria-live="polite" on carouselSlidesEl
-      slide.setAttribute('aria-hidden', 'true');
-      slide.classList.remove(`${CAROUSEL_ID}__slide--hidden`);
-    });
-    carouselSlidesEl.scrollTo({behavior: 'smooth', left: slidesEdges[selectedSlideIndex]});
-  });
+	// Start animation when slide changes
+	window.addEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, (e) => {
+		if (!e.detail || e.detail.id !== CAROUSEL_ID) {
+			return;
+		}
+		clearTimeout(scrollTimeout);
+		selectedSlideIndex = e.detail.currentlySelectedSlide - 1;
+		carouselSlideEls.forEach((slide) => {
+			// Prevent non-selected slides from being announced by screen reader due to aria-live="polite" on carouselSlidesEl
+			slide.setAttribute('aria-hidden', 'true');
+			slide.classList.remove(`${CAROUSEL_ID}__slide--hidden`);
+		});
+		carouselSlidesEl.scrollTo({ behavior: 'smooth', left: slidesEdges[selectedSlideIndex] });
+	});
 
-  // Hide non-selected slides when scrolling finishes
-  carouselSlidesEl.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      carouselSlideEls.forEach((slide, i) => {
-        if (i === selectedSlideIndex) {
-          slide.removeAttribute('aria-hidden');
-          return;
-        }
-        slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
-      });
-    }, 100);
-  }, {passive: true});
+	// Hide non-selected slides when scrolling finishes
+	carouselSlidesEl.addEventListener('scroll', () => {
+		clearTimeout(scrollTimeout);
+		scrollTimeout = setTimeout(() => {
+			carouselSlideEls.forEach((slide, i) => {
+				if (i === selectedSlideIndex) {
+					slide.removeAttribute('aria-hidden');
+					return;
+				}
+				slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+			});
+		}, 100);
+	}, { passive: true });
 });
 ```
 
@@ -521,218 +521,220 @@ document.addEventListener('DOMContentLoaded', () => {
 An example of how Carousel can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
  
 ```html
-<ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="styled-carousel" class="styled-carousel">
-  <button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span class="pause-icon">&#10074; &#10074;</span></button>
-  <button class="styled-carousel__slide-btn styled-carousel__slide-btn--prev">&#10094;</button>
-  <button class="styled-carousel__slide-btn styled-carousel__slide-btn--next">&#10095;</button>
-  <div ace-carousel-slide-picker class="styled-carousel__slide-picker"></div>
-  <div class="styled-carousel__slides">
-    <div class="styled-carousel__slide">
-      <h3>Slide 1 heading</h3>
-      <button>Button</button>
-      <p>Slide 1 content.</p>
-      <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-    </div>
-    <div class="styled-carousel__slide">
-      <h3>Slide 2 heading</h3>
-      <button>Button</button>
-      <p>Slide 2 content.</p>
-      <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-    </div>
-    <div class="styled-carousel__slide">
-      <h3>Slide 3 heading</h3>
-      <button>Button</button>
-      <p>Slide 3 content.</p>
-      <img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
-    </div>
-  </div>
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="styled-carousel"
+	class="styled-carousel">
+	<button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span
+			class="pause-icon">&#10074; &#10074;</span></button>
+	<button class="styled-carousel__slide-btn styled-carousel__slide-btn--prev">&#10094;</button>
+	<button class="styled-carousel__slide-btn styled-carousel__slide-btn--next">&#10095;</button>
+	<div ace-carousel-slide-picker class="styled-carousel__slide-picker"></div>
+	<div class="styled-carousel__slides">
+		<div class="styled-carousel__slide">
+			<h3>Slide 1 heading</h3>
+			<button>Button</button>
+			<p>Slide 1 content.</p>
+			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
+		</div>
+		<div class="styled-carousel__slide">
+			<h3>Slide 2 heading</h3>
+			<button>Button</button>
+			<p>Slide 2 content.</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
+		</div>
+		<div class="styled-carousel__slide">
+			<h3>Slide 3 heading</h3>
+			<button>Button</button>
+			<p>Slide 3 content.</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
+		</div>
+	</div>
 </ace-carousel>
 ```
 
 ```scss
 .styled-carousel {
-  color: #fff;
-  max-width: 600px;
-  position: relative;
+	color: #fff;
+	max-width: 600px;
+	position: relative;
 
-  &__auto-slide-show-btn,
-  &__slide-btn {
-    background: transparent;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    color: inherit;
-    cursor: pointer;
-    height: 45px;
-    margin: 8px;
-    position: absolute;
-    width: 45px;
+	&__auto-slide-show-btn,
+	&__slide-btn {
+		background: transparent;
+		border: 2px solid #fff;
+		border-radius: 50%;
+		color: inherit;
+		cursor: pointer;
+		height: 45px;
+		margin: 8px;
+		position: absolute;
+		width: 45px;
 
-    &:focus,
-    &:hover {
-      background: #00bed0;
-    }
+		&:focus,
+		&:hover {
+			background: #00bed0;
+		}
 
-    &:focus {
-      outline: none;
-    }
-  }
+		&:focus {
+			outline: none;
+		}
+	}
 
-  &[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
-  &[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
-    display: none;
-  }
+	&[ace-carousel-auto-slide-show-stopped="true"] .pause-icon,
+	&[ace-carousel-auto-slide-show-stopped="false"] .play-icon {
+		display: none;
+	}
 
-  &__slide-btn {
-    border-radius: 50%;
-    font-size: 24px;
-    top: 50%;
-    transform: translateY(-50%);
+	&__slide-btn {
+		border-radius: 50%;
+		font-size: 24px;
+		top: 50%;
+		transform: translateY(-50%);
 
-    &--next {
-      right: 0;
-    }
-  }
+		&--next {
+			right: 0;
+		}
+	}
 
-  &__slide-picker {
-    bottom: 0;
-    left: 50%;
-    position: absolute;
-    transform: translateX(-50%);
-  }
+	&__slide-picker {
+		bottom: 0;
+		left: 50%;
+		position: absolute;
+		transform: translateX(-50%);
+	}
 
-  [ace-carousel-slide-picker-btn] {
-    $slide-picker-btn-diameter: 10px;
+	[ace-carousel-slide-picker-btn] {
+		$slide-picker-btn-diameter: 10px;
 
-    background-color: transparent;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    cursor: pointer;
-    height: $slide-picker-btn-diameter * 2.5;
-    margin: 0;
-    position: relative;
-    width: $slide-picker-btn-diameter * 2.5;
+		background-color: transparent;
+		border: 2px solid transparent;
+		border-radius: 50%;
+		cursor: pointer;
+		height: $slide-picker-btn-diameter * 2.5;
+		margin: 0;
+		position: relative;
+		width: $slide-picker-btn-diameter * 2.5;
 
-    &:active,
-    &:focus {
-      border-color: #fff;
-      outline: none;
-    }
+		&:active,
+		&:focus {
+			border-color: #fff;
+			outline: none;
+		}
 
-    &::after {
-      border: 1px solid #fff;
-      border-radius: 50%;
-      content: '';
-      height: $slide-picker-btn-diameter;
-      left: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      width: $slide-picker-btn-diameter;
-    }
+		&::after {
+			border: 1px solid #fff;
+			border-radius: 50%;
+			content: '';
+			height: $slide-picker-btn-diameter;
+			left: 50%;
+			position: absolute;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			width: $slide-picker-btn-diameter;
+		}
 
-    &:hover::after {
-      background: #00bed0;
-    }
+		&:hover::after {
+			background: #00bed0;
+		}
 
-    &[aria-selected="true"]::after {
-      background-color: #fff;
-    }
-  }
+		&[aria-selected="true"]::after {
+			background-color: #fff;
+		}
+	}
 
-  &__slide {
-    padding: 50px 80px 30px;
+	&__slide {
+		padding: 50px 80px 30px;
 
-    $bg-colors: #173d57, #66204a, #20122e;
-    @for $i from 1 through length($bg-colors) {
-      &:nth-of-type(#{$i}) {
-        background: nth($bg-colors, $i);
-      }
-    }
-  }
+		$bg-colors: #173d57, #66204a, #20122e;
+		@for $i from 1 through length($bg-colors) {
+			&:nth-of-type(#{$i}) {
+				background: nth($bg-colors, $i);
+			}
+		}
+	}
 
-  // Animation styles
-  @media (prefers-reduced-motion: no-preference) {
-    &__slides {
-      display: flex;
-      overflow-x: hidden;
-    }
+	// Animation styles
+	@media (prefers-reduced-motion: no-preference) {
+		&__slides {
+			display: flex;
+			overflow-x: hidden;
+		}
 
-    &__slide {
-      flex-shrink: 0;
-      width: 100%;
+		&__slide {
+			flex-shrink: 0;
+			width: 100%;
 
-      &--hidden {
-        visibility: hidden;
-      }
+			&--hidden {
+				visibility: hidden;
+			}
 
-      &:not([ace-carousel-slide-selected]) {
-        display: block;
-      }
-    }
-  }
+			&:not([ace-carousel-slide-selected]) {
+				display: block;
+			}
+		}
+	}
 }
 ```
 
 ```js
-import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
+import { ATTRS, EVENTS } from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  // If user prefers reduced motion then do not animate
-  if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-    return;
-  }
+	// If user prefers reduced motion then do not animate
+	if (!window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+		return;
+	}
 
-  const CAROUSEL_ID = 'styled-carousel';
-  const carouselEl = document.getElementById(CAROUSEL_ID);
-  const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
-  const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
-  const slidesEdges = [];
-  let selectedSlideIndex = +carouselEl.getAttribute(ATTRS.SELECTED_SLIDE) - 1;
-  let scrollTimeout;
+	const CAROUSEL_ID = 'styled-carousel';
+	const carouselEl = document.getElementById(CAROUSEL_ID);
+	const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
+	const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
+	const slidesEdges = [];
+	let selectedSlideIndex = +carouselEl.getAttribute(ATTRS.SELECTED_SLIDE) - 1;
+	let scrollTimeout;
 
-  // Hide non-selected slides on page load
-  carouselSlideEls.forEach((slide, i) => {
-    if (i === selectedSlideIndex) {
-      return;
-    }
-    slide.setAttribute('aria-hidden', 'true');
-    slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
-  });
+	// Hide non-selected slides on page load
+	carouselSlideEls.forEach((slide, i) => {
+		if (i === selectedSlideIndex) {
+			return;
+		}
+		slide.setAttribute('aria-hidden', 'true');
+		slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+	});
 
-  // Store left edge x-coordinates of slides on page load and resize
-  const getSlidesEdges = () => {
-    carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselSlidesEl.offsetLeft);
-  };
-  window.addEventListener('load', getSlidesEdges);
-  window.addEventListener('resize', getSlidesEdges, {passive: true});
+	// Store left edge x-coordinates of slides on page load and resize
+	const getSlidesEdges = () => {
+		carouselSlideEls.forEach((slide, i) => slidesEdges[i] = slide.offsetLeft - carouselSlidesEl.offsetLeft);
+	};
+	window.addEventListener('load', getSlidesEdges);
+	window.addEventListener('resize', getSlidesEdges, { passive: true });
 
-  // Start animation when slide changes
-  window.addEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, (e) => {
-    if (!e.detail || e.detail.id !== CAROUSEL_ID) {
-      return;
-    }
-    clearTimeout(scrollTimeout);
-    selectedSlideIndex = e.detail.currentlySelectedSlide - 1;
-    carouselSlideEls.forEach((slide) => {
-      // Prevent non-selected slides from being announced by screen reader due to aria-live="polite" on carouselSlidesEl
-      slide.setAttribute('aria-hidden', 'true');
-      slide.classList.remove(`${CAROUSEL_ID}__slide--hidden`);
-    });
-    carouselSlidesEl.scrollTo({behavior: 'smooth', left: slidesEdges[selectedSlideIndex]});
-  });
+	// Start animation when slide changes
+	window.addEventListener(EVENTS.OUT.SELECTED_SLIDE_CHANGED, (e) => {
+		if (!e.detail || e.detail.id !== CAROUSEL_ID) {
+			return;
+		}
+		clearTimeout(scrollTimeout);
+		selectedSlideIndex = e.detail.currentlySelectedSlide - 1;
+		carouselSlideEls.forEach((slide) => {
+			// Prevent non-selected slides from being announced by screen reader due to aria-live="polite" on carouselSlidesEl
+			slide.setAttribute('aria-hidden', 'true');
+			slide.classList.remove(`${CAROUSEL_ID}__slide--hidden`);
+		});
+		carouselSlidesEl.scrollTo({ behavior: 'smooth', left: slidesEdges[selectedSlideIndex] });
+	});
 
-  // Hide non-selected slides when scrolling finishes
-  carouselSlidesEl.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      carouselSlideEls.forEach((slide, i) => {
-        if (i === selectedSlideIndex) {
-          slide.removeAttribute('aria-hidden');
-          return;
-        }
-        slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
-      });
-    }, 100);
-  }, {passive: true});
+	// Hide non-selected slides when scrolling finishes
+	carouselSlidesEl.addEventListener('scroll', () => {
+		clearTimeout(scrollTimeout);
+		scrollTimeout = setTimeout(() => {
+			carouselSlideEls.forEach((slide, i) => {
+				if (i === selectedSlideIndex) {
+					slide.removeAttribute('aria-hidden');
+					return;
+				}
+				slide.classList.add(`${CAROUSEL_ID}__slide--hidden`);
+			});
+		}, 100);
+	}, { passive: true });
 });
 ```

@@ -15,52 +15,52 @@ $ace-tabs-panel-padding: 16px !default;
 
 // STYLES
 [ace-tabs-tablist] {
-  display: flex;
-  overflow: auto hidden;
-  white-space: nowrap;
+	display: flex;
+	overflow: auto hidden;
+	white-space: nowrap;
 }
 
 [ace-tabs-tab] {
-  background-color: $ace-tabs-tab-bg-color;
-  border-color: transparent;
-  border-style: solid;
-  border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
-  cursor: pointer;
-  padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
+	background-color: $ace-tabs-tab-bg-color;
+	border-color: transparent;
+	border-style: solid;
+	border-width: 0 0 $ace-tabs-selected-tab-border-width 0;
+	cursor: pointer;
+	padding: $ace-tabs-tab-padding-vertical $ace-tabs-tab-padding-horizontal;
 
-  &:focus,
-  &:hover {
-    background-color: $ace-tabs-tab-focus-and-hover-bg-color;
-  }
+	&:focus,
+	&:hover {
+		background-color: $ace-tabs-tab-focus-and-hover-bg-color;
+	}
 
-  &:focus {
-    outline: none;
-  }
+	&:focus {
+		outline: none;
+	}
 }
 
 [ace-tabs-tab-selected] {
-  border-color: $ace-tabs-selected-tab-border-color;
+	border-color: $ace-tabs-selected-tab-border-color;
 }
 
 [ace-tabs-panel] {
-  padding: $ace-tabs-panel-padding;
+	padding: $ace-tabs-panel-padding;
 
-  &:not([ace-tabs-panel-visible]) {
-    display: none;
-  }
+	&:not([ace-tabs-panel-visible]) {
+		display: none;
+	}
 }
 
 
 // Vertical Tabs
 [ace-tabs-vertical] {
-  display: flex;
+	display: flex;
 
-  [ace-tabs-tablist] {
-    flex-direction: column;
-    overflow: hidden auto;
-  }
+	[ace-tabs-tablist] {
+		flex-direction: column;
+		overflow: hidden auto;
+	}
 
-  [ace-tabs-tab] {
-    border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
-  }
+	[ace-tabs-tab] {
+		border-width: 0 $ace-tabs-selected-tab-border-width 0 0;
+	}
 }

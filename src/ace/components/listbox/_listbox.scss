@@ -12,17 +12,17 @@ $ace-listbox-selected-option-text-color: #fff !default;
 
 // STYLES
 [ace-listbox-list] {
-  height: $ace-listbox-list-height;
-  list-style-position: inside;
-  overflow-y: auto;
-  user-select: none;
+	height: $ace-listbox-list-height;
+	list-style-position: inside;
+	overflow-y: auto;
+	user-select: none;
 
-  [aria-selected="true"] {
-    background: $ace-listbox-selected-option-bg-color;
-    color: $ace-listbox-selected-option-text-color;
-  }
+	[aria-selected="true"] {
+		background: $ace-listbox-selected-option-bg-color;
+		color: $ace-listbox-selected-option-text-color;
+	}
 }
 
 [ace-listbox-multiselect] [ace-listbox-option-active] {
-  outline: $ace-listbox-active-option-outline-width $ace-listbox-active-option-outline-style $ace-listbox-active-option-outline-color;
+	outline: $ace-listbox-active-option-outline-width $ace-listbox-active-option-outline-style $ace-listbox-active-option-outline-color;
 }

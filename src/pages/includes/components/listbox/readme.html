@@ -45,19 +45,19 @@ $ace-listbox-selected-option-text-color: #fff !default;
 
 // STYLES
 [ace-listbox-list] {
-  height: $ace-listbox-list-height;
-  list-style-position: inside;
-  overflow-y: auto;
-  user-select: none;
+	height: $ace-listbox-list-height;
+	list-style-position: inside;
+	overflow-y: auto;
+	user-select: none;
 
-  [aria-selected=&quot;true&quot;] {
-    background: $ace-listbox-selected-option-bg-color;
-    color: $ace-listbox-selected-option-text-color;
-  }
+	[aria-selected=&quot;true&quot;] {
+		background: $ace-listbox-selected-option-bg-color;
+		color: $ace-listbox-selected-option-text-color;
+	}
 }
 
 [ace-listbox-multiselect] [ace-listbox-option-active] {
-  outline: $ace-listbox-active-option-outline-width $ace-listbox-active-option-outline-style $ace-listbox-active-option-outline-color;
+	outline: $ace-listbox-active-option-outline-width $ace-listbox-active-option-outline-style $ace-listbox-active-option-outline-color;
 }
 </code></pre>
 <h2>Custom events</h2>
@@ -81,271 +81,271 @@ $ace-listbox-selected-option-text-color: #fff !default;
 <h3>Single-select Listbox</h3>
 <p>A single-select Listbox with a descendant <code>&lt;ul&gt;</code> list and <code>&lt;label&gt;</code>.</p>
 <div class="example-block"><ace-listbox>
-  <label id="single-select-listbox-label">Choose an Avenger:</label>
-  <ul aria-labelledby="single-select-listbox-label">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<label id="single-select-listbox-label">Choose an Avenger:</label>
+	<ul aria-labelledby="single-select-listbox-label">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-listbox>
 </div>
 <pre><code class="language-html">&lt;ace-listbox&gt;
-  &lt;label id=&quot;single-select-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;ul aria-labelledby=&quot;single-select-listbox-label&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;label id=&quot;single-select-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+	&lt;ul aria-labelledby=&quot;single-select-listbox-label&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
 <h3>Multi-select Listbox</h3>
 <p>A multi-select Listbox.</p>
 <div class="example-block"><ace-listbox ace-listbox-multiselect id="multiselect-listbox">
-  <label id="multiselect-listbox-label">Choose an Avenger:</label>
-  <ul aria-labelledby="multiselect-listbox-label">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<label id="multiselect-listbox-label">Choose an Avenger:</label>
+	<ul aria-labelledby="multiselect-listbox-label">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-listbox>
 </div>
 <pre><code class="language-html">&lt;ace-listbox ace-listbox-multiselect id=&quot;multiselect-listbox&quot;&gt;
-  &lt;label id=&quot;multiselect-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;ul aria-labelledby=&quot;multiselect-listbox-label&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;label id=&quot;multiselect-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+	&lt;ul aria-labelledby=&quot;multiselect-listbox-label&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
 <h3>Listbox for forms</h3>
 <p>A multi-select Listbox to be used with HTML forms with a descendant <code>&lt;ol&gt;</code> list, an external <code>&lt;label&gt;</code> and a hidden <code>&lt;input&gt;</code> with the selected option data.</p>
 <div class="example-block"><label id="ol-listbox-label">Choose an Avenger:</label>
 <ace-listbox ace-listbox-multiselect ace-listbox-for-form id="listbox-for-form">
-  <ol aria-labelledby="ol-listbox-label">
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Black Widow</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Black Panther</li>
-    <li>Spider-man</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ol>
+	<ol aria-labelledby="ol-listbox-label">
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Black Widow</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Black Panther</li>
+		<li>Spider-man</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ol>
 </ace-listbox>
 </div>
 <pre><code class="language-html">&lt;label id=&quot;ol-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
 &lt;ace-listbox ace-listbox-multiselect ace-listbox-for-form id=&quot;listbox-for-form&quot;&gt;
-  &lt;ol aria-labelledby=&quot;ol-listbox-label&quot;&gt;
-    &lt;li&gt;Iron Man&lt;/li&gt;
-    &lt;li&gt;Nick Fury&lt;/li&gt;
-    &lt;li&gt;Hulk&lt;/li&gt;
-    &lt;li&gt;Thor&lt;/li&gt;
-    &lt;li&gt;Captain America&lt;/li&gt;
-    &lt;li&gt;Black Widow&lt;/li&gt;
-    &lt;li&gt;Scarlet Witch&lt;/li&gt;
-    &lt;li&gt;Ant-Man&lt;/li&gt;
-    &lt;li&gt;Black Panther&lt;/li&gt;
-    &lt;li&gt;Spider-man&lt;/li&gt;
-    &lt;li&gt;Doctor Strange&lt;/li&gt;
-    &lt;li&gt;Captain Marvel&lt;/li&gt;
-  &lt;/ol&gt;
+	&lt;ol aria-labelledby=&quot;ol-listbox-label&quot;&gt;
+		&lt;li&gt;Iron Man&lt;/li&gt;
+		&lt;li&gt;Nick Fury&lt;/li&gt;
+		&lt;li&gt;Hulk&lt;/li&gt;
+		&lt;li&gt;Thor&lt;/li&gt;
+		&lt;li&gt;Captain America&lt;/li&gt;
+		&lt;li&gt;Black Widow&lt;/li&gt;
+		&lt;li&gt;Scarlet Witch&lt;/li&gt;
+		&lt;li&gt;Ant-Man&lt;/li&gt;
+		&lt;li&gt;Black Panther&lt;/li&gt;
+		&lt;li&gt;Spider-man&lt;/li&gt;
+		&lt;li&gt;Doctor Strange&lt;/li&gt;
+		&lt;li&gt;Captain Marvel&lt;/li&gt;
+	&lt;/ol&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
 <h3>Listbox with dynamic options</h3>
 <p>In this example the Listbox instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The first option can also be removed using <btn>Remove option</btn>. Both these buttons dispatch the <code>ace-listbox-update-options</code> event that updates the Listbox. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="add-option">
-  Add option
+	Add option
 </button>
 <button id="remove-option">
-  Remove option
+	Remove option
 </button>
 <hr>
 <ace-listbox id="custom-events-listbox">
-  <label id="custom-events-listbox-label">Choose an Avenger:</label>
-  <ul aria-labelledby="custom-events-listbox-label"></ul>
+	<label id="custom-events-listbox-label">Choose an Avenger:</label>
+	<ul aria-labelledby="custom-events-listbox-label"></ul>
 </ace-listbox>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;add-option&quot;&gt;
-  Add option
+	Add option
 &lt;/button&gt;
 &lt;button id=&quot;remove-option&quot;&gt;
-  Remove option
+	Remove option
 &lt;/button&gt;
 &lt;hr&gt;
 &lt;ace-listbox id=&quot;custom-events-listbox&quot;&gt;
-  &lt;label id=&quot;custom-events-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;ul aria-labelledby=&quot;custom-events-listbox-label&quot;&gt;&lt;/ul&gt;
+	&lt;label id=&quot;custom-events-listbox-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+	&lt;ul aria-labelledby=&quot;custom-events-listbox-label&quot;&gt;&lt;/ul&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
-<pre><code class="language-js">import {EVENTS} from '/ace/components/listbox/listbox.js';
+<pre><code class="language-js">import { EVENTS } from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-  const listboxEl = document.getElementById('custom-events-listbox');
+	const listboxEl = document.getElementById('custom-events-listbox');
 
-  const updateOptions = () =&gt; listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () =&gt; listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
-  document.getElementById('add-option')
-    .addEventListener('click', () =&gt; {
-      listboxEl.querySelector('ul').innerHTML += '&lt;li&gt;New Option&lt;/li&gt;';
-      updateOptions();
-    });
+	document.getElementById('add-option')
+		.addEventListener('click', () =&gt; {
+			listboxEl.querySelector('ul').innerHTML += '&lt;li&gt;New Option&lt;/li&gt;';
+			updateOptions();
+		});
 
-  document.getElementById('remove-option')
-    .addEventListener('click', () =&gt; {
-      const listboxListEl = listboxEl.querySelector('ul');
-      const fistOptionEl = listboxListEl.querySelector('li');
-      if (!fistOptionEl) {
-        return;
-      }
-      listboxListEl.removeChild(fistOptionEl);
-      updateOptions();
-    });
+	document.getElementById('remove-option')
+		.addEventListener('click', () =&gt; {
+			const listboxListEl = listboxEl.querySelector('ul');
+			const fistOptionEl = listboxListEl.querySelector('li');
+			if (!fistOptionEl) {
+				return;
+			}
+			listboxListEl.removeChild(fistOptionEl);
+			updateOptions();
+		});
 });
 </code></pre>
 <h3>Styled Listbox</h3>
 <p>An example of how Listbox can be styled, with the applied CSS shown below.</p>
 <div class="example-block"><ace-listbox class="styled-listbox">
-  <label id="styled-listbox-label" class="styled-listbox__label">Choose an Avenger:</label>
-  <ul aria-labelledby="styled-listbox-label" class="styled-listbox__list">
-    <li class="styled-listbox__option">
-      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
-      Iron Man
-    </li>
-    <li class="styled-listbox__option">
-      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
-      Nick Fury
-    </li>
-    <li class="styled-listbox__option">
-      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
-      Hulk
-    </li>
-    <li class="styled-listbox__option">
-      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
-      Thor
-    </li>
-    <li class="styled-listbox__option">
-      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
-      Captain America
-    </li>
-    <li class="styled-listbox__option">
-      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
-      Black Widow
-    </li>
-    <li class="styled-listbox__option">
-      <img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
-      Scarlet Witch
-    </li>
-  </ul>
+	<label id="styled-listbox-label" class="styled-listbox__label">Choose an Avenger:</label>
+	<ul aria-labelledby="styled-listbox-label" class="styled-listbox__list">
+		<li class="styled-listbox__option">
+			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			Iron Man
+		</li>
+		<li class="styled-listbox__option">
+			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			Nick Fury
+		</li>
+		<li class="styled-listbox__option">
+			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			Hulk
+		</li>
+		<li class="styled-listbox__option">
+			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			Thor
+		</li>
+		<li class="styled-listbox__option">
+			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			Captain America
+		</li>
+		<li class="styled-listbox__option">
+			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			Black Widow
+		</li>
+		<li class="styled-listbox__option">
+			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			Scarlet Witch
+		</li>
+	</ul>
 </ace-listbox>
 </div>
 <pre><code class="language-html">&lt;ace-listbox class=&quot;styled-listbox&quot;&gt;
-  &lt;label id=&quot;styled-listbox-label&quot; class=&quot;styled-listbox__label&quot;&gt;Choose an Avenger:&lt;/label&gt;
-  &lt;ul aria-labelledby=&quot;styled-listbox-label&quot; class=&quot;styled-listbox__list&quot;&gt;
-    &lt;li class=&quot;styled-listbox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Iron Man
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-listbox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Nick Fury
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-listbox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Hulk
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-listbox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Thor
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-listbox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Captain America
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-listbox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Black Widow
-    &lt;/li&gt;
-    &lt;li class=&quot;styled-listbox__option&quot;&gt;
-      &lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
-      Scarlet Witch
-    &lt;/li&gt;
-  &lt;/ul&gt;
+	&lt;label id=&quot;styled-listbox-label&quot; class=&quot;styled-listbox__label&quot;&gt;Choose an Avenger:&lt;/label&gt;
+	&lt;ul aria-labelledby=&quot;styled-listbox-label&quot; class=&quot;styled-listbox__list&quot;&gt;
+		&lt;li class=&quot;styled-listbox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Iron Man
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-listbox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Nick Fury
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-listbox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Hulk
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-listbox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Thor
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-listbox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Captain America
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-listbox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Black Widow
+		&lt;/li&gt;
+		&lt;li class=&quot;styled-listbox__option&quot;&gt;
+			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			Scarlet Witch
+		&lt;/li&gt;
+	&lt;/ul&gt;
 &lt;/ace-listbox&gt;
 </code></pre>
 <pre><code class="language-scss">.styled-listbox {
-  &amp;__label,
-  &amp;__input,
-  &amp;__option {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+	&amp;__label,
+	&amp;__input,
+	&amp;__option {
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+	}
 
-  &amp;__list {
-    border: 1px solid #837b8b;
-    border-radius: 4px;
-    height: 225px;
-    margin-top: 10px;
-    width: 300px;
+	&amp;__list {
+		border: 1px solid #837b8b;
+		border-radius: 4px;
+		height: 225px;
+		margin-top: 10px;
+		width: 300px;
 
-    &amp;:focus {
-      outline-color: #41354d;
-    }
-  }
+		&amp;:focus {
+			outline-color: #41354d;
+		}
+	}
 
-  &amp;__option {
-    align-items: center;
-    display: flex;
-    padding: 10px 16px;
+	&amp;__option {
+		align-items: center;
+		display: flex;
+		padding: 10px 16px;
 
-    &amp;[aria-selected=&quot;true&quot;] {
-      background: #41354d;
-    }
-  }
+		&amp;[aria-selected=&quot;true&quot;] {
+			background: #41354d;
+		}
+	}
 
-  &amp;__img {
-    height: 2em;
-    margin-right: 10px;
-  }
+	&amp;__img {
+		height: 2em;
+		margin-right: 10px;
+	}
 }
 </code></pre>

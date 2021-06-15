@@ -1,61 +1,61 @@
 .styled-accordion {
-  $trans-duration: .2s;
+	$trans-duration: .2s;
 
-  border: 1px solid black;
-  border-radius: 10px;
-  display: block;
-  max-width: 500px;
-  overflow: hidden;
+	border: 1px solid black;
+	border-radius: 10px;
+	display: block;
+	max-width: 500px;
+	overflow: hidden;
 
-  &__header {
-    margin: 0;
+	&__header {
+		margin: 0;
 
-    &:not(:first-child) {
-      border-top: 1px solid black;
-    }
-  }
+		&:not(:first-child) {
+			border-top: 1px solid black;
+		}
+	}
 
-  &__trigger {
-    background: #41354d;
-    border: 0;
-    color: #fff;
-    display: flex;
-    font-weight: 600;
-    justify-content: space-between;
-    padding: 20px;
-    width: 100%;
+	&__trigger {
+		background: #41354d;
+		border: 0;
+		color: #fff;
+		display: flex;
+		font-weight: 600;
+		justify-content: space-between;
+		padding: 20px;
+		width: 100%;
 
-    &::after {
-      content: '\25BC';
-      transition: transform $trans-duration linear;
-    }
+		&::after {
+			content: '\25BC';
+			transition: transform $trans-duration linear;
+		}
 
-    &[aria-expanded="true"] {
-      &::after {
-        transform: rotate(180deg);
-      }
-    }
-  }
+		&[aria-expanded="true"] {
+			&::after {
+				transform: rotate(180deg);
+			}
+		}
+	}
 
-  &__panel {
-    border-top: 1px solid black;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-    visibility: hidden;
+	&__panel {
+		border-top: 1px solid black;
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+		visibility: hidden;
 
-    &:not([ace-accordion-panel-visible]) {
-      display: block;
-    }
-  }
+		&:not([ace-accordion-panel-visible]) {
+			display: block;
+		}
+	}
 
-  [ace-accordion-panel-visible] {
-    max-height: 245px;
-    transition: max-height $trans-duration ease-in;
-    visibility: visible;
-  }
+	[ace-accordion-panel-visible] {
+		max-height: 245px;
+		transition: max-height $trans-duration ease-in;
+		visibility: visible;
+	}
 
-  &__panel-inner {
-    padding: 10px 20px;
-  }
+	&__panel-inner {
+		padding: 10px 20px;
+	}
 }

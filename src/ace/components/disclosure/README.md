@@ -44,7 +44,7 @@ The following SASS is applied to Disclosure.
 
 ```scss
 ace-disclosure:not([ace-disclosure-visible]) {
-  display: none;
+	display: none;
 }
 ```
 
@@ -106,13 +106,13 @@ This is a simple, button-triggered Disclosure.
 
 ```html
 <button ace-disclosure-trigger-for="ace-disclosure-1">
-  Disclosure toggle
+	Disclosure toggle
 </button>
 <hr>
 <ace-disclosure id="ace-disclosure-1">
-  <h2>Disclosure heading</h2>
-  <p>Disclosure content.</p>
-  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+	<h2>Disclosure heading</h2>
+	<p>Disclosure content.</p>
+	<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 </ace-disclosure>
 ```
 
@@ -123,22 +123,22 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 
 ```html
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure toggle trigger 1
+	Disclosure toggle trigger 1
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure">
-  Disclosure toggle trigger 2
+	Disclosure toggle trigger 2
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
-  Disclosure show trigger
+	Disclosure show trigger
 </button>
 <button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-hide>
-  Disclosure hide trigger
+	Disclosure hide trigger
 </button>
 <hr>
 <ace-disclosure ace-disclosure-visible id="initially-visible-disclosure">
-  <h2>Initially visible disclosure</h2>
-  <p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
-  <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+	<h2>Initially visible disclosure</h2>
+	<p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
+	<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 </ace-disclosure>
 ```
 
@@ -149,25 +149,25 @@ The button in this example is **not** a trigger button but instead is a button t
 
 ```html
 <button id="toggle-custom-event-btn">
-  Toggle disclosure using custom event
+	Toggle disclosure using custom event
 </button>
 <hr>
 <ace-disclosure id="custom-events-disclosure">
-  <h2>Custom event Disclosure</h2>
-  <p>This Disclosure's visibility is controlled using custom events.</p>
-  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+	<h2>Custom event Disclosure</h2>
+	<p>This Disclosure's visibility is controlled using custom events.</p>
+	<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 </ace-disclosure>
 ```
 
 ```js
-import {EVENTS} from '/ace/components/disclosure/disclosure.js';
+import { EVENTS } from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const disclosureEl = document.getElementById('custom-events-disclosure');
-  const customEventBtn = document.getElementById('toggle-custom-event-btn');
+	const disclosureEl = document.getElementById('custom-events-disclosure');
+	const customEventBtn = document.getElementById('toggle-custom-event-btn');
 
-  customEventBtn.addEventListener('click', () => {
-    disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE));
-  });
+	customEventBtn.addEventListener('click', () => {
+		disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE));
+	});
 });
 ```

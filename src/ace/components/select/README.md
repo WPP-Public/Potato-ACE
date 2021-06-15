@@ -65,44 +65,44 @@ $ace-select-selected-option-text-color: #fff !default;
 
 // STYLES
 ace-select {
-  position: relative;
+	position: relative;
 }
 
 [ace-select-list] {
-  background: $ace-select-list-bg-color;
-  color: $ace-select-option-text-color;
-  height: $ace-select-list-height;
-  left: 0;
-  list-style: none;
-  overflow-y: auto;
-  position: absolute;
-  user-select: none;
-  white-space: nowrap;
-  z-index: $ace-select-list-z-index;
+	background: $ace-select-list-bg-color;
+	color: $ace-select-option-text-color;
+	height: $ace-select-list-height;
+	left: 0;
+	list-style: none;
+	overflow-y: auto;
+	position: absolute;
+	user-select: none;
+	white-space: nowrap;
+	z-index: $ace-select-list-z-index;
 
-  &:not([ace-select-list-visible]) {
-    display: none;
-  }
+	&:not([ace-select-list-visible]) {
+		display: none;
+	}
 
-  [aria-selected="true"] {
-    background: $ace-select-selected-option-bg-color;
-    color: $ace-select-selected-option-text-color;
-  }
+	[aria-selected="true"] {
+		background: $ace-select-selected-option-bg-color;
+		color: $ace-select-selected-option-text-color;
+	}
 
-  &[ace-u-float-above] {
-    bottom: 100%;
-    top: initial;
-  }
+	&[ace-u-float-above] {
+		bottom: 100%;
+		top: initial;
+	}
 
-  &[ace-u-float-left] {
-    left: initial;
-    right: 0;
-  }
+	&[ace-u-float-left] {
+		left: initial;
+		right: 0;
+	}
 
-  &[ace-u-float-right] {
-    left: 0;
-    right: initial;
-  }
+	&[ace-u-float-right] {
+		left: 0;
+		right: initial;
+	}
 }
 ```
 
@@ -167,21 +167,21 @@ The default Select.
 ```html
 <label id="ace-select-1-label">Choose an Avenger:</label>
 <ace-select>
-  <ul aria-labelledby="ace-select-1-label">
-    <li>Select an option</li>
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Black Widow</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Spider-man</li>
-    <li>Black Panther</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<ul aria-labelledby="ace-select-1-label">
+		<li>Select an option</li>
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Black Widow</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Spider-man</li>
+		<li>Black Panther</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-select>
 ```
 
@@ -192,21 +192,21 @@ A Select to be used with HTML forms, with a hidden `<input>` with the selected o
 ```html
 <label id="ace-select-1-label">Choose an Avenger:</label>
 <ace-select ace-select-for-form id="for-form-select">
-  <ul aria-labelledby="ace-select-1-label">
-    <li>Select an option</li>
-    <li>Iron Man</li>
-    <li>Nick Fury</li>
-    <li>Hulk</li>
-    <li>Black Widow</li>
-    <li>Thor</li>
-    <li>Captain America</li>
-    <li>Scarlet Witch</li>
-    <li>Ant-Man</li>
-    <li>Spider-man</li>
-    <li>Black Panther</li>
-    <li>Doctor Strange</li>
-    <li>Captain Marvel</li>
-  </ul>
+	<ul aria-labelledby="ace-select-1-label">
+		<li>Select an option</li>
+		<li>Iron Man</li>
+		<li>Nick Fury</li>
+		<li>Hulk</li>
+		<li>Black Widow</li>
+		<li>Thor</li>
+		<li>Captain America</li>
+		<li>Scarlet Witch</li>
+		<li>Ant-Man</li>
+		<li>Spider-man</li>
+		<li>Black Panther</li>
+		<li>Doctor Strange</li>
+		<li>Captain Marvel</li>
+	</ul>
 </ace-select>
 ```
 
@@ -216,42 +216,42 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 
 ```html
 <button id="add-option">
-  Add option
+	Add option
 </button>
 <button id="remove-option">
-  Remove option
+	Remove option
 </button>
 <hr>
 <label id="custom-events-select-label">Choose an Avenger:</label>
 <ace-select id="custom-events-select">
-  <button><span ace-select-trigger-text>No options available</span></button>
-  <ul aria-labelledby="custom-events-select-label"></ul>
+	<button><span ace-select-trigger-text>No options available</span></button>
+	<ul aria-labelledby="custom-events-select-label"></ul>
 </ace-select>
 ```
 
 ```js
-import {EVENTS} from '/ace/components/select/select.js';
+import { EVENTS } from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const selectEl = document.getElementById('custom-events-select');
-  const selectListEl = selectEl.querySelector('ul');
+	const selectEl = document.getElementById('custom-events-select');
+	const selectListEl = selectEl.querySelector('ul');
 
-  const updateOptions = () => selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () => selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
 
-  document.getElementById('add-option').addEventListener('click', () => {
-    const optionEl = document.createElement('li');
-    optionEl.textContent = 'Option';
-    selectListEl.appendChild(optionEl);
-    updateOptions();
-  });
+	document.getElementById('add-option').addEventListener('click', () => {
+		const optionEl = document.createElement('li');
+		optionEl.textContent = 'Option';
+		selectListEl.appendChild(optionEl);
+		updateOptions();
+	});
 
-  document.getElementById('remove-option').addEventListener('click', () => {
-    const lastOptionEl = selectListEl.querySelector('li:last-child');
-    if (lastOptionEl) {
-      selectListEl.removeChild(lastOptionEl);
-      updateOptions();
-    }
-  });
+	document.getElementById('remove-option').addEventListener('click', () => {
+		const lastOptionEl = selectListEl.querySelector('li:last-child');
+		if (lastOptionEl) {
+			selectListEl.removeChild(lastOptionEl);
+			updateOptions();
+		}
+	});
 });
 ```
 
@@ -262,103 +262,103 @@ An example of how Select can be styled, with the applied CSS shown below.
 ```html
 <label id="styled-select-label" class="styled-select-label">Choose an Avenger:</label>
 <ace-select class="styled-select">
-  <button ace-select-trigger class="styled-select__trigger">
-  </button>
-  <ul aria-labelledby="styled-select-label" class="styled-select__list">
-    <li class="styled-select__option">
-      Select an option
-    </li>
-    <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
-      Iron Man
-    </li>
-    <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
-      Nick Fury
-    </li>
-    <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
-      Hulk
-    </li>
-    <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
-      Thor
-    </li>
-    <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
-      Captain America
-    </li>
-    <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
-      Black Widow
-    </li>
-    <li class="styled-select__option">
-      <img alt="Potato logo" class="styled-select__img" src="/img/logo.svg"/>
-      Scarlet Witch
-    </li>
-  </ul>
+	<button ace-select-trigger class="styled-select__trigger">
+	</button>
+	<ul aria-labelledby="styled-select-label" class="styled-select__list">
+		<li class="styled-select__option">
+			Select an option
+		</li>
+		<li class="styled-select__option">
+			<img alt="Potato logo" class="styled-select__img" src="/img/logo.svg" />
+			Iron Man
+		</li>
+		<li class="styled-select__option">
+			<img alt="Potato logo" class="styled-select__img" src="/img/logo.svg" />
+			Nick Fury
+		</li>
+		<li class="styled-select__option">
+			<img alt="Potato logo" class="styled-select__img" src="/img/logo.svg" />
+			Hulk
+		</li>
+		<li class="styled-select__option">
+			<img alt="Potato logo" class="styled-select__img" src="/img/logo.svg" />
+			Thor
+		</li>
+		<li class="styled-select__option">
+			<img alt="Potato logo" class="styled-select__img" src="/img/logo.svg" />
+			Captain America
+		</li>
+		<li class="styled-select__option">
+			<img alt="Potato logo" class="styled-select__img" src="/img/logo.svg">
+			Black Widow
+		</li>
+		<li class="styled-select__option">
+			<img alt="Potato logo" class="styled-select__img" src="/img/logo.svg" />
+			Scarlet Witch
+		</li>
+	</ul>
 </ace-select>
 ```
 
 ```scss
 .styled-select {
-  display: block;
-  margin-top: 10px;
+	display: block;
+	margin-top: 10px;
 
-  &-label,
-  &__trigger,
-  &__option {
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-  }
+	&-label,
+	&__trigger,
+	&__option {
+		font-family: 'Roboto', sans-serif;
+		font-size: 14px;
+	}
 
-  &__trigger,
-  &__list {
-    border: 1px solid #837b8b;
-    border-radius: 4px;
-    width: 300px;
+	&__trigger,
+	&__list {
+		border: 1px solid #837b8b;
+		border-radius: 4px;
+		width: 300px;
 
-    &:focus {
-      outline-color: #41354d;
-    }
-  }
+		&:focus {
+			outline-color: #41354d;
+		}
+	}
 
-  &__trigger,
-  &__option {
-    padding: 10px 16px;
-  }
+	&__trigger,
+	&__option {
+		padding: 10px 16px;
+	}
 
-  &__trigger {
-    background: transparent;
-    display: flex;
-    justify-content: space-between;
+	&__trigger {
+		background: transparent;
+		display: flex;
+		justify-content: space-between;
 
-    &::after {
-      color: #837b8b;
-      content: '\25BC';
-    }
+		&::after {
+			color: #837b8b;
+			content: '\25BC';
+		}
 
-    &:focus::after {
-      color: #41354d;
-    }
-  }
+		&:focus::after {
+			color: #41354d;
+		}
+	}
 
-  &__list {
-    height: 225px;
-  }
+	&__list {
+		height: 225px;
+	}
 
-  &__option {
-    align-items: center;
-    display: flex;
+	&__option {
+		align-items: center;
+		display: flex;
 
-    &[aria-selected="true"] {
-      background: #41354d;
-    }
-  }
+		&[aria-selected="true"] {
+			background: #41354d;
+		}
+	}
 
-  &__img {
-    height: 2em;
-    margin-right: 10px;
-  }
+	&__img {
+		height: 2em;
+		margin-right: 10px;
+	}
 }
 ```

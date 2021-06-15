@@ -1,14 +1,14 @@
 sidebar-comp(class='sidebar')
-  nav
-    ul(class='sidebar__list')
-      li(class='sidebar__list-item')
-        a(
-          class='sidebar__link'
-          href='/components'
-        ) Components
-      each component, key in components
-        li(class='sidebar__list-item')
-          a(
-            class='sidebar__link'
-            href=`/${key}`
-          )=component.name
+	nav
+		ul(class='sidebar__list')
+			li(class='sidebar__list-item')
+				a(
+					class='sidebar__link'
+					href='/components'
+				) Components
+			each component, key in components
+				li(class='sidebar__list-item')
+					a(
+						class='sidebar__link'
+						href=`/${key}`
+					)=component.name

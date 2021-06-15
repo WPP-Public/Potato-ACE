@@ -11,42 +11,42 @@ $ace-select-selected-option-text-color: #fff !default;
 
 // STYLES
 ace-select {
-  position: relative;
+	position: relative;
 }
 
 [ace-select-list] {
-  background: $ace-select-list-bg-color;
-  color: $ace-select-option-text-color;
-  height: $ace-select-list-height;
-  left: 0;
-  list-style: none;
-  overflow-y: auto;
-  position: absolute;
-  user-select: none;
-  white-space: nowrap;
-  z-index: $ace-select-list-z-index;
+	background: $ace-select-list-bg-color;
+	color: $ace-select-option-text-color;
+	height: $ace-select-list-height;
+	left: 0;
+	list-style: none;
+	overflow-y: auto;
+	position: absolute;
+	user-select: none;
+	white-space: nowrap;
+	z-index: $ace-select-list-z-index;
 
-  &:not([ace-select-list-visible]) {
-    display: none;
-  }
+	&:not([ace-select-list-visible]) {
+		display: none;
+	}
 
-  [aria-selected="true"] {
-    background: $ace-select-selected-option-bg-color;
-    color: $ace-select-selected-option-text-color;
-  }
+	[aria-selected="true"] {
+		background: $ace-select-selected-option-bg-color;
+		color: $ace-select-selected-option-text-color;
+	}
 
-  &[ace-u-float-above] {
-    bottom: 100%;
-    top: initial;
-  }
+	&[ace-u-float-above] {
+		bottom: 100%;
+		top: initial;
+	}
 
-  &[ace-u-float-left] {
-    left: initial;
-    right: 0;
-  }
+	&[ace-u-float-left] {
+		left: initial;
+		right: 0;
+	}
 
-  &[ace-u-float-right] {
-    left: 0;
-    right: initial;
-  }
+	&[ace-u-float-right] {
+		left: 0;
+		right: initial;
+	}
 }

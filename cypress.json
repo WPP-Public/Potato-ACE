@@ -1,10 +1,10 @@
 {
-  "baseUrl": "http://localhost:3030",
-  "integrationFolder": "src",
-  "testFiles": "**/*.{test,spec}.js",
-  "ignoreTestFiles": "**/template.test.js",
-  "env": {
-    "lib_name": "ace"
-  },
-  "retries": 2
+	"baseUrl": "http://localhost:3030",
+	"integrationFolder": "src",
+	"testFiles": "**/*.{test,spec}.js",
+	"ignoreTestFiles": "**/template.test.js",
+	"env": {
+		"lib_name": "ace"
+	},
+	"retries": 2
 }

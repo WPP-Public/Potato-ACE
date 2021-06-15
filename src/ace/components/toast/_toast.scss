@@ -15,23 +15,23 @@ $ace-toast-text-color: #fff !default;
 
 // STYLES
 ace-toast {
-  background: $ace-toast-bg-color;
-  border-radius: $ace-toast-border-radius;
-  bottom: $ace-toast-distance-from-bottom;
-  color: $ace-toast-text-color;
-  font-size: $ace-toast-font-size;
-  left: 50%;
-  max-width: $ace-toast-mobile-max-width;
-  padding: $ace-toast-padding;
-  position: fixed;
-  transform: translateX(-50%);
-  z-index: $ace-toast-z-index;
+	background: $ace-toast-bg-color;
+	border-radius: $ace-toast-border-radius;
+	bottom: $ace-toast-distance-from-bottom;
+	color: $ace-toast-text-color;
+	font-size: $ace-toast-font-size;
+	left: 50%;
+	max-width: $ace-toast-mobile-max-width;
+	padding: $ace-toast-padding;
+	position: fixed;
+	transform: translateX(-50%);
+	z-index: $ace-toast-z-index;
 
-  &:not([ace-toast-visible]) {
-    display: none;
-  }
+	&:not([ace-toast-visible]) {
+		display: none;
+	}
 
-  @media (min-width: $ace-toast-breakpoint) {
-    max-width: $ace-toast-max-width;
-  }
+	@media (min-width: $ace-toast-breakpoint) {
+		max-width: $ace-toast-max-width;
+	}
 }
