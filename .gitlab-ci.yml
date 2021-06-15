@@ -23,9 +23,8 @@ image: node:14.15.4-alpine3.12
 
 cache: &fe_deps
   key:
-    files:
-      - package.json
-      - package-lock.json
+		files:
+		  - package.json
   paths:
     - node_modules/
     - .cache/*
@@ -127,11 +126,12 @@ Firefox:
 #     BROWSER: 'edge'
 
 
-Deploy MR:
+.deploy_job:
+  cache: {}
   needs: [Build]
 
+
 Deploy Staging:
-  needs: [Build]
   rules:
     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
 
