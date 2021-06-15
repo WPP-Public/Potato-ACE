@@ -55,8 +55,8 @@ Install deps:
   only:
     refs:
       - merge_requests
-      - ${CI_DEFAULT_BRANCH}
-      - tags
+      # - ${CI_DEFAULT_BRANCH}
+      # - tags
     changes:
       - package.json
       - package-lock.json
