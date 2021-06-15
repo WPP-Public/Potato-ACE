@@ -133,6 +133,7 @@ Firefox:
 #     BROWSER: 'edge'
 
 
+# DEPLOY STAGE
 .deploy_job:
   cache: {}
   needs: [Build]
