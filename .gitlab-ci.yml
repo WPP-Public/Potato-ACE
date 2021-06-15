@@ -1,40 +1,40 @@
-workflow:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-    - if: '$CI_COMMIT_TAG'
-    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
+# workflow:
+#   rules:
+#     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+#     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+#     - if: '$CI_COMMIT_TAG'
+#     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
 
 
-variables:
-  CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
-  POT_CI_ENABLE_DEPLOY_PROD_JOB: 'true'
-  POT_CI_ENABLE_FLIP_PROD_JOB: 'true'
+# variables:
+#   CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
+#   POT_CI_ENABLE_DEPLOY_PROD_JOB: 'true'
+#   POT_CI_ENABLE_FLIP_PROD_JOB: 'true'
 
 
-include:
-  - project: 'potato/own-things/quality/gitlab-ci-includes'
-    file: 'deploy/firebase.deploy.gitlab-ci.yml'
-    ref: '10-firebase-deploy-inc'
+# include:
+#   - project: 'potato/own-things/quality/gitlab-ci-includes'
+#     file: 'deploy/firebase.deploy.gitlab-ci.yml'
+#     ref: '10-firebase-deploy-inc'
 
 
 image: node:14.15.4-alpine3.12
 
 
-cache: &fe_deps
-  key: ${CI_COMMIT_REF_NAME}
-  paths:
-    - node_modules/
-    - cache/cypress/
-  untracked: true
-  policy: pull
+# cache: &fe_deps
+#   key: ${CI_COMMIT_REF_NAME}
+#   paths:
+#     - node_modules/
+#     - cache/cypress/
+#   untracked: true
+#   policy: pull
 
 
-stages:
-  - Prep
-  - Build
-  - Test
-  - Deploy
+# stages:
+#   - Prep
+#   - Build
+#   - Test
+#   - Deploy
 
 
 # PREP STAGE
@@ -44,79 +44,76 @@ Install deps:
     changes:
       - package.json
       - package-lock.json
-  stage: Prep
-  cache:
-    <<: *fe_deps
-    policy: push
-  interruptible: true
+  # stage: Prep
+  # cache:
+  #   <<: *fe_deps
+  #   policy: push
+  # interruptible: true
   script:
     - npm ci
 
 
-# BUILD STAGE
-Build:
-  stage: Build
-  artifacts:
-    paths:
-      - dist
-    expire_in: 1 week
-  interruptible: true
-  script:
-    - npm run build
+# # BUILD STAGE
+# Build:
+#   stage: Build
+#   artifacts:
+#     paths:
+#       - dist
+#     expire_in: 1 week
+#   interruptible: true
+#   script:
+#     - npm run build
 
-Lint:
-  stage: Build
-  script:
-    - npm run lint
+# Lint:
+#   stage: Build
+#   script:
+#     - npm run lint
 
 
-# TEST STAGE
-.test:
-  stage: Test
-  image: cypress/browsers:node14.15.0-chrome86-ff82
-  interruptible: true
-  artifacts:
-    when: on_failure
-    paths:
-      - cypress/screenshots
-    expire_in: 1 week
-  script:
-    - npm run test:ci:prep
-    - npm run test:ci:$BROWSER
+# # TEST STAGE
+# .test:
+#   stage: Test
+#   image: cypress/browsers:node14.15.0-chrome86-ff82
+#   interruptible: true
+#   artifacts:
+#     when: on_failure
+#     paths:
+#       - cypress/screenshots
+#     expire_in: 1 week
+#   script:
+#     - npm run test:ci:prep
+#     - npm run test:ci:$BROWSER
 
-Chrome:
-  extends: .test
-  variables:
-    BROWSER: 'chrome'
-
-Firefox:
-  extends: .test
-  variables:
-    BROWSER: 'firefox'
-
-# Edge not working atm need to investigate why
-# Edge:
+# Chrome:
 #   extends: .test
-#   image: cypress/browsers:node14.10.1-edge88
-#   allow_failure: true
 #   variables:
-#     BROWSER: 'edge'
+#     BROWSER: 'chrome'
+
+# Firefox:
+#   extends: .test
+#   variables:
+#     BROWSER: 'firefox'
+
+# # Edge not working atm need to investigate why
+# # Edge:
+# #   extends: .test
+# #   image: cypress/browsers:node14.10.1-edge88
+# #   allow_failure: true
+# #   variables:
+# #     BROWSER: 'edge'
 
 
-# DEPLOY STAGE
-.deploy_job:
-  cache: {}
-  needs: [Build]
+# # DEPLOY STAGE
+# .deploy_job:
+#   cache: {}
+#   needs: [Build]
 
 
-Deploy Staging:
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
+# Deploy Staging:
+#   rules:
+#     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
 
-Deploy Named Version Staging:
-  needs: [Build]
-  rules:
-    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
-
-
-
+# Deploy Named Version Staging:
+#   needs: [Build]
+#   rules:
+#     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
