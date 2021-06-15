@@ -27,7 +27,6 @@ cache: &fe_deps
       - package.json
   paths:
     - node_modules/
-    - .cache/*
     - cache/cypress/
   untracked: true
   policy: pull
