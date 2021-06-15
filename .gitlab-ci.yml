@@ -27,6 +27,7 @@ cache: &fe_deps
       - package.json
   paths:
     - node_modules/
+    - .cache/*
     - cache/cypress/
   untracked: true
   policy: pull
@@ -69,39 +70,12 @@ Build:
 
 Lint:
   stage: Build
-  needs: []
-  cache: {}
   script:
-    - DEPS='stylelint stylelint-config-standard stylelint-order stylelint-scss @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint'
-    - for DEP in $DEPS; do
-        npm i $DEP@`node -p -e "require('./package.json').devDependencies['$DEP']"`;
-      done
     - npm run lint
-
-
-# # # BUILD FAIL STAGE
-# # # If any task from build stage fails retry without using cache
-# # Lint without cache:
-# #   extends: .lint
-# #   stage: build fail
-# #   when: on_failure
-# #   before_script:
-# #     - npm i --prefer-cache
-# #   cache:
-# #     <<: *fe_deps
-# #     policy: push
-
-# # Build without cache:
-# #   extends: .build
-# #   stage: build fail
-# #   when: on_failure
-# #   before_script:
-# #     - npm i --prefer-cache
 
 
 # TEST STAGE
 .test:
-  cache: {}
   stage: Test
   image: cypress/browsers:node14.15.0-chrome86-ff82
   interruptible: true
@@ -111,7 +85,6 @@ Lint:
       - cypress/screenshots
     expire_in: 1 week
   script:
-    - npm i cypress@`node -p -e "require('./package.json').devDependencies.cypress"`;
     - npm run test:ci:prep
     - npm run test:ci:$BROWSER
 
