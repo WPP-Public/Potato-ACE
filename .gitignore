@@ -37,6 +37,7 @@
 .vscode
 ehthumbs.db
 Thumbs.db
+.env
 
 # Directories
 node_modules/
@@ -54,3 +55,9 @@ src/**/*.d.ts
 src/ace/**/*.js
 !src/ace/**/examples/*.js
 !src/ace/components/**/*.test.js
+
+
+# Firebase
+_update-notifier-last-checked
+.firebase/
+_cacache/
