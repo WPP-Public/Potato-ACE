@@ -134,4 +134,6 @@ Deploy Named Version Staging:
 
 Deploy MR:
   rules:
-    - if: $CI_MERGE_REQUEST_IID
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+      when: never
