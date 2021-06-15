@@ -1,3 +1,11 @@
+workflow:
+  rules:
+    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_REF_NAME == "test"'
+
+
 variables:
   CYPRESS_CACHE_FOLDER: $CI_PROJECT_DIR/cache/cypress
   POT_CI_ENABLE_DEPLOY_PROD_JOB: 'true'
@@ -113,11 +121,4 @@ Deploy Staging:
 Deploy Named Version Staging:
   needs: [Build]
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
-
-workflow:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-    - if: '$CI_COMMIT_TAG'
     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
