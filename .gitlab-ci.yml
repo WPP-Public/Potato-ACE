@@ -3,12 +3,7 @@ workflow:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
     - if: '$CI_COMMIT_TAG'
-
-
-include:
-  - project: 'potato/own-things/quality/gitlab-ci-includes'
-    file: 'deploy/firebase.deploy.gitlab-ci.yml'
-    ref: '10-firebase-deploy-inc'
+    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
 
 
 variables:
@@ -17,8 +12,13 @@ variables:
   POT_CI_ENABLE_FLIP_PROD_JOB: 'true'
 
 
-stages:
-  - Deploy
+include:
+  - project: 'potato/own-things/quality/gitlab-ci-includes'
+    file: 'deploy/firebase.deploy.gitlab-ci.yml'
+    ref: '10-firebase-deploy-inc'
+  - project: 'potato/own-things/quality/gitlab-ci-includes'
+    file: 'analysis/lightlab/lightlab.gitlab-ci.yml'
+    ref: '1-update-lighthouse-include'
 
 
 image: node:14.15.4-alpine3.12
@@ -42,6 +42,8 @@ stages:
   - Build
   - Test
   - Deploy
+  - Lighthouse Report
+  - Lighthouse Analysis
 
 
 # PREP STAGE
@@ -122,10 +124,18 @@ Firefox:
     BROWSER: 'firefox'
 
 # Edge not working atm need to investigate why
-Edge:
-  extends: .test
-  image: cypress/browsers:node14.10.1-edge88
-  allow_failure: true
-  variables:
-    BROWSER: 'edge'
+# Edge:
+#   extends: .test
+#   image: cypress/browsers:node14.10.1-edge88
+#   allow_failure: true
+#   variables:
+#     BROWSER: 'edge'
 
+
+Deploy Staging:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
+
+Deploy Named Version Staging:
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
