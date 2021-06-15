@@ -1,10 +1,9 @@
 workflow:
   rules:
-    # - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-    # - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-    # - if: '$CI_COMMIT_TAG'
-    # - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
-    - if: '$CI_PIPELINE_SOURCE == "push"'
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_TAG'
+    - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
 
 
 
@@ -43,7 +42,7 @@ stages:
   - Deploy
 
 
-
+# PREP STAGE
 # Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
   stage: Prep
@@ -53,17 +52,6 @@ Install deps:
   interruptible: true
   script:
     - npm ci
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
-      changes:
-        - package.json
-        - package-lock.json
-  # only:
-  #   refs:
-  #     - merge_requests
-  #   changes:
-  #     - package.json
-  #     - package-lock.json
 
 
 # BUILD STAGE
@@ -130,11 +118,3 @@ Deploy Named Version Staging:
   needs: [Build]
   rules:
     - if: '$CI_COMMIT_REF_NAME == "116-ci-improvements"'
-
-
-Deploy MR:
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "push"'
-    - if: '$CI_COMMIT_REF_NAME == $CI_DEFAULT_BRANCH'
-      when: never
-
