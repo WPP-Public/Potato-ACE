@@ -129,15 +129,12 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-html">&lt;button id=&quot;show-1st-toast-btn&quot;&gt;Show first Toast&lt;/button&gt;
 &lt;button id=&quot;show-2nd-toast-btn&quot;&gt;Show second Toast&lt;/button&gt;
 &lt;button id=&quot;show-3rd-toast-btn&quot;&gt;Show third Toast&lt;/button&gt;
-
 &lt;ace-toast&gt;
 	First Toast
 &lt;/ace-toast&gt;
-
 &lt;ace-toast&gt;
 	Second Toast
 &lt;/ace-toast&gt;
-
 &lt;ace-toast&gt;
 	Third Toast
 &lt;/ace-toast&gt;
@@ -155,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	const positionToast = (toastEl) =&gt; {
 		const TOAST_GAP = 10;
 		let offsetTopOfHighestToast;
-		const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}=&quot;true&quot;]`);
+		const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}]`);
 
 		visibleToasts.forEach((visibleToast, index) =&gt; {
 			const visibleToastOffsetTop = visibleToast.offsetTop;

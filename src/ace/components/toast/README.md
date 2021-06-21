@@ -159,15 +159,12 @@ All Toasts occupy the same fixed position at the bottom of the viewport window. 
 <button id="show-1st-toast-btn">Show first Toast</button>
 <button id="show-2nd-toast-btn">Show second Toast</button>
 <button id="show-3rd-toast-btn">Show third Toast</button>
-
 <ace-toast>
 	First Toast
 </ace-toast>
-
 <ace-toast>
 	Second Toast
 </ace-toast>
-
 <ace-toast>
 	Third Toast
 </ace-toast>
@@ -187,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const positionToast = (toastEl) => {
 		const TOAST_GAP = 10;
 		let offsetTopOfHighestToast;
-		const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}="true"]`);
+		const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}]`);
 
 		visibleToasts.forEach((visibleToast, index) => {
 			const visibleToastOffsetTop = visibleToast.offsetTop;
