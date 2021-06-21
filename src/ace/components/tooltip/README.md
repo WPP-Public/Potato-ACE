@@ -213,13 +213,11 @@ These Tooltips have attribute `ace-tooltip-nowrap` that keeps their text on a si
 		<ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
 			handling works</ace-tooltip>
 	</button>
-
 	<button>
 		Tooltip target
 		<ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
 			handling works</ace-tooltip>
 	</button>
-
 	<button>
 		Tooltip target
 		<ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
@@ -311,14 +309,12 @@ An example of how Tooltip can be styled to resemble a commonly used design. Cust
 			Tooltip with dummy text to demonstrate how they can be styled
 		</ace-tooltip>
 	</button>
-
 	<button>
 		Tooltip target
 		<ace-tooltip ace-tooltip-nowrap class="styled-tooltip">
 			Tooltip with dummy text to demonstrate how they can be styled
 		</ace-tooltip>
 	</button>
-
 	<button>
 		Tooltip target
 		<ace-tooltip ace-tooltip-nowrap class="styled-tooltip">
