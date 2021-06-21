@@ -353,7 +353,7 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 <h2>Potato</h2>
 <p>Things we do at Potato:</p>
 
-<ace-accordion class="styled-accordion" id="animated-accordion" >
+<ace-accordion class="styled-accordion">
 	<h3 class="styled-accordion__header">
 		<button class="styled-accordion__trigger">
 			Making new tech count
@@ -372,7 +372,6 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 		</div>
 	</div>
-
 	<h3 class="styled-accordion__header">
 		<button class="styled-accordion__trigger">
 			Making digital for real life
@@ -391,7 +390,6 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 		</div>
 	</div>
-
 	<h3 class="styled-accordion__header">
 		<button class="styled-accordion__trigger">
 			Building for people first
@@ -443,7 +441,10 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 
 		&::after {
 			content: '\25BC';
-			transition: transform $trans-duration linear;
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition: transform $trans-duration linear;
+			}
 		}
 
 		&[aria-expanded="true"] {
@@ -455,20 +456,25 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 
 	&__panel {
 		border-top: 1px solid black;
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-		visibility: hidden;
 
-		&:not([ace-accordion-panel-visible]) {
-			display: block;
+		@media (prefers-reduced-motion: no-preference) {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+			visibility: hidden;
+
+			&:not([ace-accordion-panel-visible]) {
+				display: block;
+			}
 		}
 	}
 
 	[ace-accordion-panel-visible] {
-		max-height: 245px;
-		transition: max-height $trans-duration ease-in;
-		visibility: visible;
+		@media (prefers-reduced-motion: no-preference) {
+			max-height: 245px;
+			transition: max-height $trans-duration ease-in;
+			visibility: visible;
+		}
 	}
 
 	&__panel-inner {

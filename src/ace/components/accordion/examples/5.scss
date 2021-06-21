@@ -27,7 +27,10 @@
 
 		&::after {
 			content: '\25BC';
-			transition: transform $trans-duration linear;
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition: transform $trans-duration linear;
+			}
 		}
 
 		&[aria-expanded="true"] {
@@ -39,20 +42,25 @@
 
 	&__panel {
 		border-top: 1px solid black;
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-		visibility: hidden;
 
-		&:not([ace-accordion-panel-visible]) {
-			display: block;
+		@media (prefers-reduced-motion: no-preference) {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+			visibility: hidden;
+
+			&:not([ace-accordion-panel-visible]) {
+				display: block;
+			}
 		}
 	}
 
 	[ace-accordion-panel-visible] {
-		max-height: 245px;
-		transition: max-height $trans-duration ease-in;
-		visibility: visible;
+		@media (prefers-reduced-motion: no-preference) {
+			max-height: 245px;
+			transition: max-height $trans-duration ease-in;
+			visibility: visible;
+		}
 	}
 
 	&__panel-inner {

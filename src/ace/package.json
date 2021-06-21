@@ -1,6 +1,6 @@
 {
 	"name": "@potato/ace",
-	"version": "2.0",
+	"version": "1.2.0",
 	"description": "Accessible Custom Elements is a library of custom elements that conform to the W3 WAI-ARIA Authoring Practices 1.1",
 	"main": "index.js",
 	"scripts": {

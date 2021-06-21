@@ -363,7 +363,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <p>An example of how Accordion can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below.</p>
 <div class="example-block"><h2>Potato</h2>
 <p>Things we do at Potato:</p>
-<ace-accordion class="styled-accordion" id="animated-accordion" >
+<ace-accordion class="styled-accordion">
 	<h3 class="styled-accordion__header">
 		<button class="styled-accordion__trigger">
 			Making new tech count
@@ -382,50 +382,48 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 		</div>
 	</div>
-<pre><code>&lt;h3 class=&quot;styled-accordion__header&quot;&gt;
-	&lt;button class=&quot;styled-accordion__trigger&quot;&gt;
-		Making digital for real life
-	&lt;/button&gt;
-&lt;/h3&gt;
-&lt;div class=&quot;styled-accordion__panel&quot;&gt;
-	&lt;div class=&quot;styled-accordion__panel-inner&quot;&gt;
-		&lt;p&gt;
-			People value digital products that enhance their lives and positively complement their interactions with the world.
-		&lt;/p&gt;
-		&lt;p&gt;
-			&lt;a href=&quot;https://p.ota.to/work/making-digital-for-real-life&quot; target=&quot;_blank&quot;&gt;
-				Find out more
-			&lt;/a&gt;
-		&lt;/p&gt;
-		&lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
-	&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;h3 class=&quot;styled-accordion__header&quot;&gt;
-	&lt;button class=&quot;styled-accordion__trigger&quot;&gt;
-		Building for people first
-	&lt;/button&gt;
-&lt;/h3&gt;
-&lt;div class=&quot;styled-accordion__panel&quot;&gt;
-	&lt;div class=&quot;styled-accordion__panel-inner&quot;&gt;
-		&lt;p&gt;
-			Gaining direct insight through testing products with people is the fundamental requirement to make things better.
-		&lt;/p&gt;
-		&lt;p&gt;
-			&lt;a href=&quot;https://p.ota.to/work/building-for-people-first&quot; target=&quot;_blank&quot;&gt;
-				Find out more
-			&lt;/a&gt;
-		&lt;/p&gt;
-		&lt;img src=&quot;/img/goggles-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with virtual reality goggles&quot;/&gt;
-	&lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+	<h3 class="styled-accordion__header">
+		<button class="styled-accordion__trigger">
+			Making digital for real life
+		</button>
+	</h3>
+	<div class="styled-accordion__panel">
+		<div class="styled-accordion__panel-inner">
+			<p>
+				People value digital products that enhance their lives and positively complement their interactions with the world.
+			</p>
+			<p>
+				<a href="https://p.ota.to/work/making-digital-for-real-life" target="_blank">
+					Find out more
+				</a>
+			</p>
+			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+		</div>
+	</div>
+	<h3 class="styled-accordion__header">
+		<button class="styled-accordion__trigger">
+			Building for people first
+		</button>
+	</h3>
+	<div class="styled-accordion__panel">
+		<div class="styled-accordion__panel-inner">
+			<p>
+				Gaining direct insight through testing products with people is the fundamental requirement to make things better.
+			</p>
+			<p>
+				<a href="https://p.ota.to/work/building-for-people-first" target="_blank">
+					Find out more
+				</a>
+			</p>
+			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
+		</div>
+	</div>
 </ace-accordion>
 </div>
 <pre><code class="language-html">&lt;h2&gt;Potato&lt;/h2&gt;
 &lt;p&gt;Things we do at Potato:&lt;/p&gt;
 
-&lt;ace-accordion class=&quot;styled-accordion&quot; id=&quot;animated-accordion&quot; &gt;
+&lt;ace-accordion class=&quot;styled-accordion&quot;&gt;
 	&lt;h3 class=&quot;styled-accordion__header&quot;&gt;
 		&lt;button class=&quot;styled-accordion__trigger&quot;&gt;
 			Making new tech count
@@ -444,7 +442,6 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 			&lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;
-
 	&lt;h3 class=&quot;styled-accordion__header&quot;&gt;
 		&lt;button class=&quot;styled-accordion__trigger&quot;&gt;
 			Making digital for real life
@@ -463,7 +460,6 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 			&lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
 		&lt;/div&gt;
 	&lt;/div&gt;
-
 	&lt;h3 class=&quot;styled-accordion__header&quot;&gt;
 		&lt;button class=&quot;styled-accordion__trigger&quot;&gt;
 			Building for people first
@@ -513,7 +509,10 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
 		&amp;::after {
 			content: '\25BC';
-			transition: transform $trans-duration linear;
+
+			@media (prefers-reduced-motion: no-preference) {
+				transition: transform $trans-duration linear;
+			}
 		}
 
 		&amp;[aria-expanded=&quot;true&quot;] {
@@ -525,20 +524,25 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
 	&amp;__panel {
 		border-top: 1px solid black;
-		max-height: 0;
-		overflow: hidden;
-		transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
-		visibility: hidden;
 
-		&amp;:not([ace-accordion-panel-visible]) {
-			display: block;
+		@media (prefers-reduced-motion: no-preference) {
+			max-height: 0;
+			overflow: hidden;
+			transition: max-height $trans-duration ease-out, visibility 0s linear $trans-duration;
+			visibility: hidden;
+
+			&amp;:not([ace-accordion-panel-visible]) {
+				display: block;
+			}
 		}
 	}
 
 	[ace-accordion-panel-visible] {
-		max-height: 245px;
-		transition: max-height $trans-duration ease-in;
-		visibility: visible;
+		@media (prefers-reduced-motion: no-preference) {
+			max-height: 245px;
+			transition: max-height $trans-duration ease-in;
+			visibility: visible;
+		}
 	}
 
 	&amp;__panel-inner {
