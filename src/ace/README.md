@@ -4,7 +4,7 @@ Accessible Custom Elements (ACE) is a library of components that are accessible 
 
 ## Installation
 
-To install ACE all ACE components and the common files required by them run
+To install all ACE components and the common files required by them run
 
 ```sh
 npm i @potato/ace
