@@ -455,8 +455,6 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 	}
 
 	&__panel {
-		border-top: 1px solid black;
-
 		@media (prefers-reduced-motion: no-preference) {
 			max-height: 0;
 			overflow: hidden;

@@ -151,7 +151,6 @@ body {
 
 main {
 	height: 100%;
-	margin-top: $header-height;
 
 	@include mq(desktop) {
 		display: grid;
@@ -164,6 +163,6 @@ article {
 	grid-column: 2;
 	margin: 0 auto;
 	max-width: 900px;
-	padding: 30px;
+	padding: calc(#{$header-height} + #{$buffer-m}) $buffer-m $buffer-m;
 	width: 100%;
 }

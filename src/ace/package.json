@@ -7,13 +7,14 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [
-		"custom elements",
-		"web components",
 		"accessibility",
 		"a11y",
+		"custom elements",
+		"UI components",
 		"WAI-ARIA",
 		"accessible components",
-		"inclusive components"
+		"inclusive components",
+		"web components"
 	],
 	"author": "Potato (https://p.ota.to)",
 	"contributors": [

@@ -6,13 +6,13 @@ Accessible Custom Elements (ACE) is a library of components that are accessible 
 
 To install all ACE components and the common files required by them run
 
-```sh
+```bash
 npm i @potato/ace
 ```
 
 or
 
-```sh
+```bash
 yarn add @potato/ace
 ```
 
