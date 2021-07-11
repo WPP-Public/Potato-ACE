@@ -24,6 +24,7 @@ const PAGES_DIR = `${SRC}/pages`;
 const BUILD_DOCS_CMD = 'npm run build-docs';
 
 const componentsData = require(`${COMPS_DIR}/components.json`);
+const collaboratorsData = require(`${PAGES_DIR}/about/collaborators.json`);
 
 
 // Get value of given argument
@@ -159,7 +160,10 @@ gulp.task('pug', () => {
 	return gulp.src(src, {base: PAGES_DIR})
 		.pipe(pug({
 			pretty: true,
-			data: {components: componentsData},
+			data: {
+				components: componentsData,
+				collaborators: collaboratorsData,
+			},
 		}))
 		.pipe(flatten({includeParents: -1}))
 		.pipe(gulp.dest(DIST));

@@ -1,0 +1,48 @@
+extends ../includes/base
+
+block article
+	h1 About
+	p ACE is a library of accessible, UI components developed and maintained by #[a(href="https://p.ota.to") Potato].
+	p It is an open-source project licensed under the MIT license. The source code for the npm package and this documentation website share the same repo, which is hosted on #[a(href="https://gitlab.com/potato-oss/ace/ace") Gitlab].
+
+	h2 Get involved
+	p In staying true to ACE's ultimate goal of inclusivity we welcome any collaboration or suggestions. Please feel free to create a #[a(href="https://gitlab.com/potato-oss/ace/ace/-/issues/new") GitLab issue] to report any bugs or to request a feature or a new component. ACE is open-source so you could even submit a pull requests.
+
+
+	h2 Team
+	p ACE was developed and is maintained by a small team of developers at #[a(href="https://p.ota.to") Potato]:
+
+	ul.collaborator-list
+		each collaborator in collaborators
+			li.collaborator-list__item
+				if collaborator.avatar
+					h3.collaborator-list__name.u-no-margin= collaborator.name
+					img(
+						alt='Team member avatar'
+						role='presentation'
+						class='collaborator-list__img'
+						src= `/img/avatars/${collaborator.avatar}`
+					)
+					p.u-no-margin
+						if collaborator.website
+							a(
+								class="collaborator-list__link"
+								aria-label="Visit Website"
+								href= collaborator.website
+							)
+								img(
+									alt='website icon'
+									class='collaborator-list__icon'
+									src='/img/website.svg'
+								)
+						if collaborator.github
+							a(
+								class="collaborator-list__link"
+								aria-label="Visit Github page"
+								href= collaborator.github
+							)
+								img(
+									alt='github icon'
+									class='collaborator-list__icon'
+									src='/img/github.svg'
+								)
