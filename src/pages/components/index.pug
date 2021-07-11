@@ -8,3 +8,9 @@ block article
 	ul(class='component-grid')
 		each component, key in components
 			+component(key, component)
+
+block scripts
+	script(
+		src='/js/components/component-video.js'
+		type='module'
+	)
