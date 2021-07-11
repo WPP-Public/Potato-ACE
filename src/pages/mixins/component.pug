@@ -1,17 +1,20 @@
 mixin component(key, component)
-	li(class="component-grid__component")
+	li(class="component")
 		component-video
-			a(href=`/${key}` class="component-grid__component-link")
+			a(href=`/${key}` class="component__link")
 				h2=component.name
 				if component.aliases
 					p
 						strong=`Alias${component.aliases.length > 1 ? 'es' : ''}: `
 						=`${component.aliases.join(', ')}.`
 				video(
-						aria-label=`${component.name} in action`
-						class="component-grid__component-vid"
-						loop
+						aria-hidden='true'
+						class="component__video"
 						muted
 						src=`/vids/components/${key}.mp4`
 						type="video/mp4"
 				)
+			button(
+				aria-hidden='true'
+				class='component__btn'
+			) Play/pause
