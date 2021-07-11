@@ -3,6 +3,7 @@
 	background: map-get($pot-grey, 7);
 	color: #fff;
 	display: flex;
+	font-weight: 700;
 	height: $header-height;
 	justify-content: space-between;
 	left: 0;
@@ -12,10 +13,54 @@
 	top: 0;
 	z-index: $header-z-index;
 
+	&__left,
+	&__right {
+		align-items: center;
+		display: flex;
+		height: 100%;
+	}
+
+	&__lockup {
+		@extend .unstyled-anchor;
+
+		align-items: center;
+		display: inline-flex;
+		height: 100%;
+
+		&-img {
+			height: 100%;
+		}
+
+		&-text {
+			font-size: 2.5rem;
+			line-height: 1;
+			margin-left: $buffer-xs;
+		}
+	}
+
+	&__skip {
+		@extend .unstyled-anchor;
+
+		margin-right: $buffer-xs;
+		transform: translateY(-200%);
+
+		&:active,
+		&:focus {
+			transform: translateY(0);
+		}
+	}
+
+	&__actions-item {
+		display: flex;
+		width: 50px;
+	}
+
 	&__sidebar-btn {
+		@extend .u-only-handheld;
 		@include icon-btn(50px, '../img/menu.svg');
 		@include overlayed-pseudo($type: 'before');
-		@extend .u-only-handheld;
+
+		margin-left: $buffer-xs;
 
 		&::before {
 			background-color: map-get($pot-blue, 5);

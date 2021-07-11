@@ -1,18 +1,36 @@
 header(class='header')
-	a(
-		aria-label='Go to home page'
-		class='lockup'
-		href='/'
-	)
-		img(
-			alt='Potato logo'
-			class='lockup__img'
-			src='/img/logo.svg'
+	div.header__left
+		a(
+			aria-label='Go to ACE home page'
+			class='header__lockup'
+			href='/'
 		)
-		span(class='lockup__text') ACE
+			img(
+				alt='Potato logo'
+				class='header__lockup-img'
+				src='/img/logo.svg'
+			)
+			span(class='header__lockup-text') ACE
 
-	button(
-		aria-label="Open sidenav"
-		class="header__sidebar-btn"
-		sidebar-btn
-	)
+	div.header__right
+		a(
+			class='header__skip'
+			href='#article'
+		) Skip to main content
+		a(
+			aria-label="See the repo on GitLab"
+			href="https://gitlab.com/potato-oss/ace/ace"
+			target="_blank"
+		)
+			img(
+				alt='GitLab logo'
+				class='header__actions-item'
+				role="presentation"
+				src='/img/gitlab.svg'
+			)
+
+		button(
+			aria-label="Open sidenav"
+			class="header__sidebar-btn"
+			sidebar-btn
+		)
