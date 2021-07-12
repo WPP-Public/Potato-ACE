@@ -1,7 +1,7 @@
 {
 	"name": "@potato/ace",
 	"version": "1.2.0",
-	"description": "Accessible Custom Elements is a library of custom elements that conform to the W3 WAI-ARIA Authoring Practices 1.1",
+	"description": "ACE (Accessible Custom Elements) is a library of customisable UI components that conform to the W3 WAI-ARIA Authoring Practices for accessibility",
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
