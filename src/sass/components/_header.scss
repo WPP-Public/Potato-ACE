@@ -13,6 +13,10 @@
 	top: 0;
 	z-index: $header-z-index;
 
+	a:focus {
+		outline: 2px solid #fff;
+	}
+
 	&__left,
 	&__right {
 		align-items: center;
