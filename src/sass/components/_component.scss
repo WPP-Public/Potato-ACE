@@ -35,7 +35,7 @@
 		top: 50%;
 		transform: translate(-50%, -50%);
 
-		@media (hover: hover) {
+		@include mq($from: desktop) {
 			display: none;
 		}
 	}
