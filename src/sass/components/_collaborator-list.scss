@@ -1,0 +1,26 @@
+.collaborator-list {
+	display: grid;
+	gap: $buffer-l;
+	list-style: none;
+	margin-top: $buffer-xl;
+	max-width: 600px;
+	text-align: center;
+
+	@include mq($from: tablet) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	&__img {
+		border-radius: 50%;
+		margin: $buffer-s 0;
+		width: 90px;
+	}
+
+	&__link:not(:first-of-type) {
+		margin-left: $buffer-m;
+	}
+
+	&__icon {
+		height: 30px;
+	}
+}

@@ -1,18 +1,20 @@
 # ACE
 
-Accessible Custom Elements (ACE) is a library of components that are accessible to users who rely on assistive technologies or keyboard navigation. ACE components have full keyboard support and all the required WAI-ARIA roles, states and properties, specified in the [W3 WAI-ARIA Authoring Practices 1.1](https://www.w3.org/TR/wai-aria-practices-1.1). The components also have minimal CSS styling applied to them that can be easily overridden making them compatible with almost any visual design. Most of the components are also provided in different variants that cover common use cases. The goal of ACE is to make it easier for developers to create rich, dynamic and creative websites that are also fully accessible for all users.
+Accessible Custom Elements (ACE) is a library of UI components that are accessible to users who rely on assistive technologies or keyboard navigation. ACE components have full keyboard support and all the required WAI-ARIA roles, states and properties specified in the [W3 WAI-ARIA Authoring Practices 1.1](https://www.w3.org/TR/wai-aria-practices-1.1).
+
+The components all have minimal CSS styling applied to them that can be easily overridden making them compatible with almost any design system. Most of the components are provided in different variants that cover common use cases. This helps developers create rich, dynamic and creative websites that are also fully accessible for all users. More information about ACE can be found [here](https://ace.p.ota.to/about).
 
 ## Installation
 
-To install ACE all ACE components and the common files required by them run
+To install all ACE components and the common files required by them run
 
-```sh
+```bash
 npm i @potato/ace
 ```
 
 or
 
-```sh
+```bash
 yarn add @potato/ace
 ```
 

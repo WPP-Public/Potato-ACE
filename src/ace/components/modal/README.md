@@ -174,7 +174,7 @@ The JavaScript used by this example is shown below.
 
 <ace-modal aria-label="Example Modal" id="simple-modal" ace-modal-visible>
   <h3>Modal heading</h3>
-  <p>This modal was shown on page load as it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
+  <p>This modal was shown on page load because it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
   <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 
   <button id="toggle-disabled-btn-btn">Toggle disabled button</button>

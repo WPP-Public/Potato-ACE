@@ -1,0 +1,32 @@
+[
+	{
+		"avatar": "ahmed.jpg",
+		"github": "https://github.com/hungryphilomath",
+		"name": "Ahmed Abuelgasim",
+		"website": "https://ahmeda.ga"
+	},
+	{
+		"avatar": "alex.jpg",
+		"github": "https://github.com/AlexEales",
+		"name": "Alex Eales",
+		"website": "https://alex-eales.com"
+	},
+	{
+		"avatar": "wills.jpg",
+		"github": "https://github.com/WillsB3",
+		"name": "Wills Bithrey",
+		"website": "https://willsbithrey.com"
+	},
+	{
+		"avatar": "alexandra.jpg",
+		"github": "https://github.com/alexandrastoica",
+		"name": "Alexandra Stoica",
+		"website": "http://alexandrastoica.co.uk"
+	},
+	{
+		"avatar": "michael.jpg",
+		"github": "https://github.com/mstrutt",
+		"name": "Michael Strutt",
+		"website": "http://mstrutt.co.uk"
+	}
+]

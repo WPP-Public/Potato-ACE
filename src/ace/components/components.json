@@ -10,15 +10,16 @@
 		"aliases": [
 			"Image rotator",
 			"Slide show",
+			"Slideshow",
 			"Slider"
 		]
 	},
 	"combobox": {
 		"name": "Combobox",
 		"aliases": [
+			"List lookup",
 			"Search box",
-			"Search input",
-			"List lookup"
+			"Search input"
 		]
 	},
 	"disclosure": {

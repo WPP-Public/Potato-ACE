@@ -5,31 +5,4 @@
 	@include mq($from: tablet) {
 		grid-template-columns: repeat(2, 1fr);
 	}
-
-	&__component {
-		list-style: none;
-		@include bordered($color: map-get($pot-blue, 5), $padding: 0);
-
-		&:focus,
-		&:hover {
-			border-color: $active-color;
-		}
-	}
-
-	&__component-link {
-		display: block;
-		height: 100%;
-		padding: $buffer-s;
-		width: 100%;
-
-		&,
-		&:visited {
-			color: inherit;
-		}
-	}
-
-	&__component-vid {
-		display: block;
-		width: 100%;
-	}
 }

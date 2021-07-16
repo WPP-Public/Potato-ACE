@@ -25,6 +25,15 @@ $btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$btn-offset}));
 	}
 }
 
+code {
+	font-weight: 500;
+}
+
+code.language-bash::before {
+	color: #a6e22e;
+	content: '$ ';
+}
+
 
 // TOOLBAR & COPY BUTTON
 .toolbar-item {

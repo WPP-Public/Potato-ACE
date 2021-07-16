@@ -2,7 +2,6 @@
 .sidebar {
 	$sidebar-switch-bp: 'desktop';
 
-	@include resp-prop(font-size, 3rem, 2.5rem, 2rem);
 	background: map-get($pot-grey, 6);
 	bottom: 0;
 	color: #fff;
@@ -35,11 +34,26 @@
 		list-style: none;
 	}
 
-	&__list-item:not(:first-of-type) {
-		margin-top: $buffer-m;
+
+	&__list-item,
+	&__list-subitem {
+		padding: $buffer-xs;
+	}
+
+	&__list-item {
+		font-size: 2.5rem;
 
 		@include mq($from: $sidebar-switch-bp) {
-			margin-top: $buffer-s;
+			font-size: 2.25rem;
+		}
+	}
+
+	&__list-subitem {
+		font-size: 2rem;
+
+		@include mq($from: $sidebar-switch-bp) {
+			font-size: 1.75rem;
+			padding-left: $buffer-s;
 		}
 	}
 
@@ -50,6 +64,10 @@
 		&:focus,
 		&:visited {
 			color: #fff;
+		}
+
+		&:focus {
+			outline: 2px solid #fff;
 		}
 
 		&:hover {

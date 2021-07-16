@@ -26,6 +26,7 @@ const resetTabs = () => {
 			cy.get('@tabsTabs')
 				.eq(id === IDS.INFINITE_TABS ? 1 : 0)
 				.click()
+				.focused()
 				.blur();
 		});
 };
@@ -650,6 +651,73 @@ context(`Tabs`, () => {
 	});
 
 
+
+
+	context(`Tabs controlled using custom events`, () => {
+		const TABS_ID = IDS.CUSTOM_EVENTS_TABS;
+
+		beforeEach(() => getEls(TABS_ID));
+
+
+		it(`Should initialise correctly`, () => tabsInitChecks());
+
+
+		it(`Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched`, () => {
+			cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, 2))
+				.get(`#${IDS.NEXT_TAB_BTN}`)
+				.click()
+				.click();
+			checkTabSelected(3);
+
+			cy.get(`#${IDS.PREV_TAB_BTN}`)
+				.click()
+				.click()
+				.click();
+			checkTabSelected(1);
+		});
+
+
+		it(`Should update Tabs when a tab is added or removed and the UPDATE custom event is dispatched`, () => {
+			// Test Tabs update properly when new tab added
+			const tabNumber = 3;
+			const ADDED_TAB_ID = `${TABS_ID}-tab-${tabNumber}`;
+			const ADDED_PANEL_ID = `${TABS_ID}-panel-${tabNumber}`;
+
+			cy.addCustomEventListener(EVENTS.OUT.READY, { 'id': TABS_ID })
+				.get(`#${IDS.ADD_TAB_BTN}`)
+				.click()
+				// Check Panel attributes
+				.get('@tabs')
+				.find(`[${ATTRS.PANEL}]`)
+				.eq(tabNumber - 1)
+				.should('have.id', ADDED_PANEL_ID)
+				.and('have.attr', 'aria-labelledby', ADDED_TAB_ID)
+				.and('have.attr', 'role', 'tabpanel')
+				.and('have.attr', 'tabIndex', '0')
+				.and('not.have.attr', ATTRS.PANEL_VISIBLE)
+
+				// Check Tab attributes
+				.get('@tabs')
+				.find(`[${ATTRS.TAB}]`)
+				.eq(tabNumber - 1)
+				.and('have.attr', 'aria-controls', ADDED_PANEL_ID)
+				.and('have.attr', 'aria-selected', 'false')
+				.should('have.attr', 'role', 'tab')
+				.and('have.id', ADDED_TAB_ID)
+				.click();
+			checkTabSelected(tabNumber);
+
+			// Test Tabs update properly when new tab removed
+			cy.get(`#${IDS.REMOVE_TAB_BTN}`).click();
+			checkTabSelected(tabNumber);
+			cy.get('@tabsButton1')
+				.focus()
+				.type('{leftarrow}');
+			checkTabSelected(tabNumber - 1);
+		});
+	});
+
+
 	context(`Deep-linked Tabs`, () => {
 		const TABS_1_ID = IDS.DEEP_LINKED_TABS;
 		const TABS_2_ID = IDS.DEEP_LINKED_INITIALLY_SET_TABS;
@@ -715,71 +783,6 @@ context(`Tabs`, () => {
 				.should('have.attr', ATTRS.SELECTED_TAB, '1')
 				.get('@tabs2')
 				.should('have.attr', ATTRS.SELECTED_TAB, '2');
-		});
-	});
-
-
-	context(`Tabs controlled using custom events`, () => {
-		const TABS_ID = IDS.CUSTOM_EVENTS_TABS;
-
-		beforeEach(() => getEls(TABS_ID));
-
-
-		it(`Should initialise correctly`, () => tabsInitChecks());
-
-
-		it(`Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched`, () => {
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, 2))
-				.get(`#${IDS.NEXT_TAB_BTN}`)
-				.click()
-				.click();
-			checkTabSelected(3);
-
-			cy.get(`#${IDS.PREV_TAB_BTN}`)
-				.click()
-				.click()
-				.click();
-			checkTabSelected(1);
-		});
-
-
-		it(`Should update Tabs when a tab is added or removed and the UPDATE custom event is dispatched`, () => {
-			// Test Tabs update properly when new tab added
-			const tabNumber = 3;
-			const ADDED_TAB_ID = `${TABS_ID}-tab-${tabNumber}`;
-			const ADDED_PANEL_ID = `${TABS_ID}-panel-${tabNumber}`;
-
-			cy.addCustomEventListener(EVENTS.OUT.READY, { 'id': TABS_ID })
-				.get(`#${IDS.ADD_TAB_BTN}`)
-				.click()
-				// Check Panel attributes
-				.get('@tabs')
-				.find(`[${ATTRS.PANEL}]`)
-				.eq(tabNumber - 1)
-				.should('have.id', ADDED_PANEL_ID)
-				.and('have.attr', 'aria-labelledby', ADDED_TAB_ID)
-				.and('have.attr', 'role', 'tabpanel')
-				.and('have.attr', 'tabIndex', '0')
-				.and('not.have.attr', ATTRS.PANEL_VISIBLE)
-
-				// Check Tab attributes
-				.get('@tabs')
-				.find(`[${ATTRS.TAB}]`)
-				.eq(tabNumber - 1)
-				.and('have.attr', 'aria-controls', ADDED_PANEL_ID)
-				.and('have.attr', 'aria-selected', 'false')
-				.should('have.attr', 'role', 'tab')
-				.and('have.id', ADDED_TAB_ID)
-				.click();
-			checkTabSelected(tabNumber);
-
-			// Test Tabs update properly when new tab removed
-			cy.get(`#${IDS.REMOVE_TAB_BTN}`).click();
-			checkTabSelected(tabNumber);
-			cy.get('@tabsButton1')
-				.focus()
-				.type('{leftarrow}');
-			checkTabSelected(tabNumber - 1);
 		});
 	});
 });

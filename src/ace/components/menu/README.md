@@ -280,7 +280,7 @@ An example of how Menu can be styled, with the applied CSS shown below.
 		}
 
 		&::after {
-			content: '\2807';
+			content: '\22EE';
 			display: inline-block;
 			left: 30%;
 			position: absolute;

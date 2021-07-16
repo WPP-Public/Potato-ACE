@@ -6,12 +6,12 @@ html(lang='en')
 		include header
 		main
 			include sidebar
-			article
+			article#article
 				block article
 
 		block scripts
 		script(src='/js/prism.min.js')
 		script(
-			src='/js/script.js'
+			src='/js/components/sidebar.js'
 			type='module'
 		)

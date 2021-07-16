@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const positionToast = (toastEl) => {
 		const TOAST_GAP = 10;
 		let offsetTopOfHighestToast;
-		const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}="true"]`);
+		const visibleToasts = document.querySelectorAll(`[${ATTRS.VISIBLE}]`);
 
 		visibleToasts.forEach((visibleToast, index) => {
 			const visibleToastOffsetTop = visibleToast.offsetTop;
