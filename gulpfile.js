@@ -8,7 +8,7 @@ const minify = require('gulp-clean-css');
 const pjson = require('./package.json');
 const postcss = require('gulp-postcss');
 const pug = require('gulp-pug');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const terser = require('gulp-terser');
 
 // Get component library name from package.json

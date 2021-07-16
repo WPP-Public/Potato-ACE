@@ -1,3 +1,6 @@
+@use '../common/constants' as *;
+@use '../common/mixins' as *;
+
 .component-grid {
 	display: grid;
 	gap: $buffer-m;

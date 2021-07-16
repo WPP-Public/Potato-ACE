@@ -1,5 +1,11 @@
+@use '../common/constants' as *;
+@use '../common/mixins' as *;
+
+$component-border-color: map-get($pot-blue, 5);
+
 .component {
-	@include bordered($color: map-get($pot-blue, 5), $padding: 0);
+	@include bordered(0, $component-border-color);
+
 	list-style: none;
 	position: relative;
 
@@ -28,7 +34,7 @@
 	&__btn {
 		@include icon-btn(75px, '../img/play.svg', #fff);
 
-		border: 1px solid map-get($pot-blue, 5);
+		border: 1px solid $component-border-color;
 		box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
 		left: 50%;
 		position: absolute;

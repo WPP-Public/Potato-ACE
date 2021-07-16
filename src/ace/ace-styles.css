@@ -14,8 +14,7 @@ ace-carousel {
   height: 12px;
   margin: 0 calc(8px / 2);
 }
-
-[ace-carousel-slide-picker-btn][aria-selected="true"] {
+[ace-carousel-slide-picker-btn][aria-selected=true] {
   background-color: steelblue;
   border-style: inset;
 }
@@ -43,26 +42,21 @@ ace-combobox {
   width: 100%;
   z-index: 1;
 }
-
 [ace-combobox-list]:not([ace-combobox-list-visible]) {
   display: none;
 }
-
-[ace-combobox-list] [aria-selected="true"] {
+[ace-combobox-list] [aria-selected=true] {
   background: steelblue;
   color: #fff;
 }
-
 [ace-combobox-list][ace-u-float-above] {
   bottom: 100%;
   top: initial;
 }
-
 [ace-combobox-list][ace-u-float-left] {
   left: initial;
   right: 0;
 }
-
 [ace-combobox-list][ace-u-float-right] {
   left: 0;
   right: initial;
@@ -78,8 +72,7 @@ ace-disclosure:not([ace-disclosure-visible]) {
   overflow-y: auto;
   user-select: none;
 }
-
-[ace-listbox-list] [aria-selected="true"] {
+[ace-listbox-list] [aria-selected=true] {
   background: steelblue;
   color: #fff;
 }
@@ -102,31 +95,26 @@ ace-menu {
   white-space: nowrap;
   z-index: 1;
 }
-
 [ace-menu-list]:focus {
   outline: none;
 }
-
 [ace-menu-list]:not([ace-menu-list-visible]) {
   display: none;
 }
-
 [ace-menu-list][ace-u-float-above] {
   bottom: 100%;
   top: initial;
 }
-
 [ace-menu-list][ace-u-float-left] {
   left: initial;
   right: 0;
 }
-
 [ace-menu-list][ace-u-float-right] {
   left: 0;
   right: initial;
 }
 
-[ace-menu-option]:hover, [ace-menu-option][aria-selected="true"] {
+[ace-menu-option]:hover, [ace-menu-option][aria-selected=true] {
   background: steelblue;
   color: #fff;
 }
@@ -137,7 +125,6 @@ ace-modal {
   position: fixed;
   z-index: calc(2 + 1);
 }
-
 @media (max-width: 767px) {
   ace-modal {
     height: 100vh;
@@ -146,7 +133,6 @@ ace-modal {
     width: 100vw;
   }
 }
-
 @media (min-width: 768px) {
   ace-modal {
     left: 50%;
@@ -154,7 +140,6 @@ ace-modal {
     transform: translate(-50%, -50%);
   }
 }
-
 ace-modal:not([ace-modal-visible]) {
   display: none;
 }
@@ -173,7 +158,6 @@ ace-modal:not([ace-modal-visible]) {
   top: 0;
   z-index: 2;
 }
-
 [ace-modal-backdrop]:not([ace-modal-is-visible]) {
   display: none;
 }
@@ -194,26 +178,21 @@ ace-select {
   white-space: nowrap;
   z-index: 1;
 }
-
 [ace-select-list]:not([ace-select-list-visible]) {
   display: none;
 }
-
-[ace-select-list] [aria-selected="true"] {
+[ace-select-list] [aria-selected=true] {
   background: steelblue;
   color: #fff;
 }
-
 [ace-select-list][ace-u-float-above] {
   bottom: 100%;
   top: initial;
 }
-
 [ace-select-list][ace-u-float-left] {
   left: initial;
   right: 0;
 }
-
 [ace-select-list][ace-u-float-right] {
   left: 0;
   right: initial;
@@ -233,11 +212,9 @@ ace-select {
   cursor: pointer;
   padding: 16px 32px;
 }
-
 [ace-tabs-tab]:focus, [ace-tabs-tab]:hover {
   background-color: #eee;
 }
-
 [ace-tabs-tab]:focus {
   outline: none;
 }
@@ -249,7 +226,6 @@ ace-select {
 [ace-tabs-panel] {
   padding: 16px;
 }
-
 [ace-tabs-panel]:not([ace-tabs-panel-visible]) {
   display: none;
 }
@@ -257,12 +233,10 @@ ace-select {
 [ace-tabs-vertical] {
   display: flex;
 }
-
 [ace-tabs-vertical] [ace-tabs-tablist] {
   flex-direction: column;
   overflow: hidden auto;
 }
-
 [ace-tabs-vertical] [ace-tabs-tab] {
   border-width: 0 4px 0 0;
 }
@@ -280,11 +254,9 @@ ace-toast {
   transform: translateX(-50%);
   z-index: 4;
 }
-
 ace-toast:not([ace-toast-visible]) {
   display: none;
 }
-
 @media (min-width: 600px) {
   ace-toast {
     max-width: 500px;
@@ -308,25 +280,20 @@ ace-tooltip {
   transform: translateX(-50%);
   z-index: 4;
 }
-
 ace-tooltip:not([ace-tooltip-visible]) {
   visibility: hidden;
 }
-
 ace-tooltip[ace-u-float-right], ace-tooltip[ace-u-float-left] {
   transform: translateX(0);
 }
-
 ace-tooltip[ace-u-float-above] {
   bottom: 100%;
   top: initial;
 }
-
 ace-tooltip[ace-u-float-left] {
   left: initial;
   right: 0;
 }
-
 ace-tooltip[ace-u-float-right] {
   left: 0;
   right: initial;
@@ -335,3 +302,5 @@ ace-tooltip[ace-u-float-right] {
 [ace-tooltip-nowrap] {
   white-space: nowrap;
 }
+
+/*# sourceMappingURL=ace-styles.css.map */

@@ -10,8 +10,9 @@ ace-carousel {
   height: 12px;
   margin: 0 calc(8px / 2);
 }
-
-[ace-carousel-slide-picker-btn][aria-selected="true"] {
+[ace-carousel-slide-picker-btn][aria-selected=true] {
   background-color: steelblue;
   border-style: inset;
 }
+
+/*# sourceMappingURL=ace-carousel.css.map */

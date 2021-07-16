@@ -1,17 +1,28 @@
+@use '../common/constants' as *;
+@use '../common/mixins' as *;
+@use '../common/utils' as *;
+
+$height: 60px;
+$z-index: 2;
+
 .header {
 	align-items: center;
 	background: map-get($pot-grey, 7);
 	color: #fff;
 	display: flex;
 	font-weight: 700;
-	height: $header-height;
+	height: $height;
 	justify-content: space-between;
 	left: 0;
 	padding: $buffer-xs $buffer-s;
 	position: fixed;
 	right: 0;
 	top: 0;
-	z-index: $header-z-index;
+	z-index: $z-index;
+
+	a:focus {
+		outline: 2px solid #fff;
+	}
 
 	&__left,
 	&__right {
@@ -32,6 +43,7 @@
 		}
 
 		&-text {
+			color: #fff;
 			font-size: 2.5rem;
 			line-height: 1;
 			margin-left: $buffer-xs;

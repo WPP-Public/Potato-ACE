@@ -6,15 +6,7 @@ $breakpoints: (
 );
 
 
-// VERTICAL SPACINGS
-$vertical-spacings: (
-	s: (mobile: 10px, tablet: 20px, desktop: 30px),
-	m: (mobile: 40px, tablet: 50px, desktop: 60px),
-	l: (mobile: 60px, tablet: 80px, desktop: 120px)
-);
-
-
-// FIXED SPACINGS
+// SPACINGS
 $buffer-xs: 10px;
 $buffer-s: 20px;
 $buffer-m: 30px;
@@ -22,13 +14,17 @@ $buffer-l: 40px;
 $buffer-xl: 50px;
 
 
+// RESPONSIVE SPACINGS
+$vertical-spacings: (
+	s: (mobile: 10px, tablet: 20px, desktop: 30px),
+	m: (mobile: 40px, tablet: 50px, desktop: 60px),
+	l: (mobile: 60px, tablet: 80px, desktop: 120px)
+);
+
+
 // SIZES
 $border-width: 2px;
 $border-radius: 4px;
-
-$header-height: 60px;
-$sidebar-width: 225px;
-
 $icon-btn-size: 40px;
 
 
@@ -76,15 +72,9 @@ $pot-yellow: (
 $active-color: map-get($pot-blue, 7);
 $interactive-color: map-get($pot-blue, 6);
 $interactive-light-color: map-get($pot-blue, 4);
-
 $text-color: map-get($pot-grey, 7);
 
 
 // ANIMATIONS
 $animation: .5s forwards;
 $transition: .1s ease-in;
-
-
-// Z-INDEXES
-$header-z-index: 2;
-$sidebar-z-index: 3;

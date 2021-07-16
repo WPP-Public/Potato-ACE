@@ -1,27 +1,24 @@
 // ACE VARIABLE USER OVERRIDES
-@import 'ace-variable-overrides';
+@use 'ace-variable-overrides';
 
 
 // ACE
-@import '../ace/ace';
+@use '../ace/ace';
 
 
 // USER STYLES
-@import 'common/constants';
-@import 'common/mixins';
-@import 'common/prism-overrides';
-
-@import './base';
+@use 'common/prism-overrides';
+@use './base';
 
 // Components
-@import 'components/button';
-@import 'components/component-grid';
-@import 'components/component';
-@import 'components/collaborator-list';
-@import 'components/example-block';
-@import 'components/header';
-@import 'components/sidebar';
+@use 'components/button';
+@use 'components/component-grid';
+@use 'components/component';
+@use 'components/collaborator-list';
+@use 'components/example-block';
+@use 'components/header';
+@use 'components/sidebar';
 
 
 // Utils
-@import 'common/utils';
+@use 'common/utils';

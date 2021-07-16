@@ -4,7 +4,6 @@ ace-modal {
   position: fixed;
   z-index: calc(2 + 1);
 }
-
 @media (max-width: 767px) {
   ace-modal {
     height: 100vh;
@@ -13,7 +12,6 @@ ace-modal {
     width: 100vw;
   }
 }
-
 @media (min-width: 768px) {
   ace-modal {
     left: 50%;
@@ -21,7 +19,6 @@ ace-modal {
     transform: translate(-50%, -50%);
   }
 }
-
 ace-modal:not([ace-modal-visible]) {
   display: none;
 }
@@ -40,7 +37,8 @@ ace-modal:not([ace-modal-visible]) {
   top: 0;
   z-index: 2;
 }
-
 [ace-modal-backdrop]:not([ace-modal-is-visible]) {
   display: none;
 }
+
+/*# sourceMappingURL=ace-modal.css.map */
