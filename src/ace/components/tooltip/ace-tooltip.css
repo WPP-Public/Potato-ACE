@@ -15,25 +15,20 @@ ace-tooltip {
   transform: translateX(-50%);
   z-index: 4;
 }
-
 ace-tooltip:not([ace-tooltip-visible]) {
   visibility: hidden;
 }
-
 ace-tooltip[ace-u-float-right], ace-tooltip[ace-u-float-left] {
   transform: translateX(0);
 }
-
 ace-tooltip[ace-u-float-above] {
   bottom: 100%;
   top: initial;
 }
-
 ace-tooltip[ace-u-float-left] {
   left: initial;
   right: 0;
 }
-
 ace-tooltip[ace-u-float-right] {
   left: 0;
   right: initial;
@@ -42,3 +37,5 @@ ace-tooltip[ace-u-float-right] {
 [ace-tooltip-nowrap] {
   white-space: nowrap;
 }
+
+/*# sourceMappingURL=ace-tooltip.css.map */

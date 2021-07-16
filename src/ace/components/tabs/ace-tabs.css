@@ -12,11 +12,9 @@
   cursor: pointer;
   padding: 16px 32px;
 }
-
 [ace-tabs-tab]:focus, [ace-tabs-tab]:hover {
   background-color: #eee;
 }
-
 [ace-tabs-tab]:focus {
   outline: none;
 }
@@ -28,7 +26,6 @@
 [ace-tabs-panel] {
   padding: 16px;
 }
-
 [ace-tabs-panel]:not([ace-tabs-panel-visible]) {
   display: none;
 }
@@ -36,12 +33,12 @@
 [ace-tabs-vertical] {
   display: flex;
 }
-
 [ace-tabs-vertical] [ace-tabs-tablist] {
   flex-direction: column;
   overflow: hidden auto;
 }
-
 [ace-tabs-vertical] [ace-tabs-tab] {
   border-width: 0 4px 0 0;
 }
+
+/*# sourceMappingURL=ace-tabs.css.map */
