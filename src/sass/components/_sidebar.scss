@@ -1,7 +1,13 @@
-// For sidebar trigger btn styles see `_header.scss`
-.sidebar {
-	$sidebar-switch-bp: 'desktop';
+@use '../common/constants' as *;
+@use '../common/mixins' as *;
+@use './header';
 
+$switch-bp: 'desktop';
+$width: 225px;
+$z-index: 3;
+
+// Sidebar trigger btn styles are in `_header.scss`
+.sidebar {
 	background: map-get($pot-grey, 6);
 	bottom: 0;
 	color: #fff;
@@ -10,11 +16,11 @@
 	overflow-y: auto;
 	padding: $buffer-m $buffer-s;
 	position: fixed;
-	top: $header-height;
-	width: $sidebar-width;
-	z-index: $sidebar-z-index;
+	top: header.$height;
+	width: $width;
+	z-index: $z-index;
 
-	@include mq($until: $sidebar-switch-bp) {
+	@include mq($until: $switch-bp) {
 		padding: $buffer-l;
 		text-align: center;
 		transform: translateX(100%);
@@ -43,7 +49,7 @@
 	&__list-item {
 		font-size: 2.5rem;
 
-		@include mq($from: $sidebar-switch-bp) {
+		@include mq($from: $switch-bp) {
 			font-size: 2.25rem;
 		}
 	}
@@ -51,7 +57,7 @@
 	&__list-subitem {
 		font-size: 2rem;
 
-		@include mq($from: $sidebar-switch-bp) {
+		@include mq($from: $switch-bp) {
 			font-size: 1.75rem;
 			padding-left: $buffer-s;
 		}

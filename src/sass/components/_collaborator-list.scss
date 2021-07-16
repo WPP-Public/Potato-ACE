@@ -1,3 +1,6 @@
+@use '../common/constants' as *;
+@use '../common/mixins' as *;
+
 .collaborator-list {
 	display: grid;
 	gap: $buffer-l;

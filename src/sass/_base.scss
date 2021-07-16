@@ -1,3 +1,9 @@
+@use './common/constants' as *;
+@use './common/mixins' as *;
+
+@use './components/header';
+@use './components/sidebar';
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 // REPEATING ELEMENTS
@@ -158,15 +164,16 @@ main {
 
 	@include mq(desktop) {
 		display: grid;
-		grid-template-columns: $sidebar-width minmax(0, 1fr);
+		grid-template-columns: sidebar.$width minmax(0, 1fr);
 	}
 }
 
 article {
+	$_padding-top: header.$height + $buffer-m;
 	color: $text-color;
 	grid-column: 2;
 	margin: 0 auto;
 	max-width: 900px;
-	padding: calc(#{$header-height} + #{$buffer-m}) $buffer-m $buffer-m;
+	padding: $_padding-top $buffer-m $buffer-m;
 	width: 100%;
 }

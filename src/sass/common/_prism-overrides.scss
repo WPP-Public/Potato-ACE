@@ -1,6 +1,9 @@
+@use './constants' as *;
+@use './mixins' as *;
+
 $code-block-font-size: 1.4rem;
-$btn-offset: 4px;
-$btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$btn-offset}));
+$_btn-offset: 4px;
+$_btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$_btn-offset}));
 
 
 // CODE BLOCK
@@ -9,7 +12,7 @@ $btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$btn-offset}));
 	border-radius: $border-radius;
 	font-size: $code-block-font-size;
 	margin-bottom: $buffer-m;
-	padding-right: calc(#{$btn-size} + 4px);
+	padding-right: calc(#{$_btn-size} + 4px);
 	position: relative;
 
 	pre {
@@ -38,11 +41,11 @@ code.language-bash::before {
 // TOOLBAR & COPY BUTTON
 .toolbar-item {
 	position: absolute;
-	right: $btn-offset;
-	top: $btn-offset;
+	right: $_btn-offset;
+	top: $_btn-offset;
 
 	button {
-		@include icon-btn($btn-size, '../img/clipboard.svg');
+		@include icon-btn($_btn-size, '../img/clipboard.svg');
 
 		&:active {
 			background-color: #fff;

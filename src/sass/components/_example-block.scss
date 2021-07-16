@@ -1,5 +1,9 @@
+@use '../common/constants' as *;
+@use '../common/mixins' as *;
+
 .example-block {
 	@include bordered;
+
 	font-size: 1.4rem;
 	margin: 0 0 $buffer-m;
 

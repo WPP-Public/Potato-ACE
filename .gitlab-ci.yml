@@ -102,19 +102,19 @@ Firefox:
 #     BROWSER: 'edge'
 
 
+
 # DEPLOY STAGE OPTIMISATION
 .deploy_job:
   cache: {}
-
-Flip Prod:
-  cache: {}
-
-GitLab Release:
-  cache: {}
-
 
 Deploy MR:
   needs: [Build]
 
 Deploy Staging:
   needs: [Build]
+
+Flip Prod:
+  cache: {}
+
+GitLab Release:
+  cache: {}

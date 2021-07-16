@@ -14,27 +14,24 @@ ace-select {
   white-space: nowrap;
   z-index: 1;
 }
-
 [ace-select-list]:not([ace-select-list-visible]) {
   display: none;
 }
-
-[ace-select-list] [aria-selected="true"] {
+[ace-select-list] [aria-selected=true] {
   background: steelblue;
   color: #fff;
 }
-
 [ace-select-list][ace-u-float-above] {
   bottom: 100%;
   top: initial;
 }
-
 [ace-select-list][ace-u-float-left] {
   left: initial;
   right: 0;
 }
-
 [ace-select-list][ace-u-float-right] {
   left: 0;
   right: initial;
 }
+
+/*# sourceMappingURL=ace-select.css.map */
