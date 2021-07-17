@@ -28,6 +28,12 @@ context(`Tooltip`, () => {
 	before(() => cy.visit(`/tooltip`));
 
 
+	it("should pass lighthouse and pa11y audits", function () {
+		cy.lighthouse();
+		cy.pa11y();
+	});
+
+
 	it(`Tooltip without ID should initialise with an ID`, () => {
 		cy.get(TOOLTIP)
 			.first()

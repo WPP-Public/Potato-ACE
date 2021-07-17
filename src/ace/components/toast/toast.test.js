@@ -20,6 +20,12 @@ context(`Toast`, () => {
 	before(() => cy.visit(`/toast`));
 
 
+	it("should pass lighthouse and pa11y audits", function () {
+		cy.lighthouse();
+		cy.pa11y();
+	});
+
+
 	it(`Toast without ID should initialise with an ID`, () => {
 		cy.get(TOAST)
 			.first()

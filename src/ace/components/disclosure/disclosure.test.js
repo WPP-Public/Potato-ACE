@@ -48,6 +48,12 @@ context(`Disclosure`, () => {
 	before(() => cy.visit(`/disclosure`));
 
 
+	it("should pass lighthouse and pa11y audits", function () {
+		cy.lighthouse();
+		cy.pa11y();
+	});
+
+
 	context(`Simple Disclosure`, () => {
 		const ID = IDS.SIMPLE_DISCLOSURE;
 

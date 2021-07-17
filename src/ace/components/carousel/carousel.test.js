@@ -262,6 +262,12 @@ context(`Carousel`, () => {
 	before(() => cy.visit(`/carousel`));
 
 
+	it("should pass lighthouse and pa11y audits", function () {
+		cy.lighthouse();
+		cy.pa11y();
+	});
+
+
 	it(`Carousel without ID should initialise with an ID`, () => cy.get(CAROUSEL).first().should('have.id', `${CAROUSEL}-1`));
 
 

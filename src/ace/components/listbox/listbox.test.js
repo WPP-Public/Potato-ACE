@@ -48,6 +48,12 @@ context(`Listbox`, () => {
 	before(() => cy.visit(`/listbox`));
 
 
+	it("should pass lighthouse and pa11y audits", function () {
+		cy.lighthouse();
+		cy.pa11y();
+	});
+
+
 	it(`Listbox without ID should initialise with an ID`, () => {
 		cy.get(LISTBOX)
 			.eq(0)

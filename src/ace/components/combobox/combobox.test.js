@@ -106,6 +106,12 @@ context(`Combobox`, () => {
 	before(() => cy.visit(`/combobox`));
 
 
+	it("should pass lighthouse and pa11y audits", function () {
+		cy.lighthouse();
+		cy.pa11y();
+	});
+
+
 	it(`Combobox without ID should initialise with an ID`, () => {
 		cy.get(COMBOBOX)
 			.first()
