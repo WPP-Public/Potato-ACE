@@ -24,6 +24,9 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => {...})
 
+// Allows for the usage of cy.lighthouse() and cy.pa11y()
+import "cypress-audit/commands";
+
 Cypress.Commands.add('addCustomEventListener', (eventName, expectedDetail) => {
 	cy.window().then((window) => {
 		window.addEventListener(eventName, (e) => {
