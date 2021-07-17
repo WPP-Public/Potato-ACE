@@ -85,6 +85,11 @@ Lint:
 
 Chrome:
   extends: .test
+  artifacts:
+    when: on_success
+    paths:
+      - cypress/reports
+    expire_in: 1 week
   variables:
     BROWSER: 'chrome'
 

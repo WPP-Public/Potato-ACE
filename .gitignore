@@ -46,6 +46,7 @@ styles.css
 newticket.py
 .cache/
 src/pages/**/*/index.html
+/cypress/reports
 /cypress/screenshots
 /package/
 

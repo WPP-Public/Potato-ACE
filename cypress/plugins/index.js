@@ -8,7 +8,12 @@
 // https://on.cypress.io/plugins-guide
 // ***********************************************************
 
+const fs = require('fs');
 const { lighthouse, pa11y, prepareAudit } = require('cypress-audit');
+
+const REPORTS_BASE_PATH = 'cypress/reports';
+const LIGHTHOUSE_REPORT_PATH = `${REPORTS_BASE_PATH}/lighthouse.txt`;
+const PA11Y_REPORT_PATH = `${REPORTS_BASE_PATH}/pa11y.txt`;
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
@@ -22,11 +27,25 @@ module.exports = (on, config) => {
 	// this is normal!
 	on("before:browser:launch", (_, launchOptions) => {
 		prepareAudit(launchOptions);
+
+		// Truncate
+		if (fs.existsSync(LIGHTHOUSE_REPORT_PATH)) {
+			fs.truncateSync(LIGHTHOUSE_REPORT_PATH);
+		}
+		if (fs.existsSync(PA11Y_REPORT_PATH)) {
+			fs.truncateSync(PA11Y_REPORT_PATH);
+		}
+		// Create reports directory
+		fs.mkdirSync(REPORTS_BASE_PATH, { recursive: true });
 	});
 
 	// Important calls to make sure cypress-audit is setup to run in the tests
 	on("task", {
-		lighthouse: lighthouse(),
-		pa11y: pa11y(),
+		lighthouse: lighthouse((lighthouseReport) => {
+			fs.appendFileSync(LIGHTHOUSE_REPORT_PATH, JSON.stringify(lighthouseReport, null, 2));
+		}),
+		pa11y: pa11y((p11yReport) => {
+			fs.appendFileSync(PA11Y_REPORT_PATH, JSON.stringify(p11yReport, null, 2));
+		}),
 	});
 };
