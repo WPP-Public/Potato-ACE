@@ -75,9 +75,9 @@ Lint:
   image: cypress/browsers:node14.15.0-chrome86-ff82
   interruptible: true
   artifacts:
-    when: on_failure
     paths:
       - cypress/screenshots
+      - cypress/reports
     expire_in: 1 week
   script:
     - npm run test:ci:prep
@@ -85,11 +85,6 @@ Lint:
 
 Chrome:
   extends: .test
-  artifacts:
-    when: on_success
-    paths:
-      - cypress/reports
-    expire_in: 1 week
   variables:
     BROWSER: 'chrome'
 
