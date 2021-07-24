@@ -181,7 +181,7 @@ Examples of simple Tooltips for:
 <hr>
 
 <button aria-label="Tooltip target label">
-	<img src="/img/clipboard.svg" aria-hidden="true">
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
 	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
 </button>
 
@@ -189,14 +189,14 @@ Examples of simple Tooltips for:
 
 <label id="tooltip-target-label">Tooltip target label</label><br>
 <button aria-labelledby="tooltip-target-label">
-	<img src="/img/clipboard.svg" aria-hidden="true">
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
 	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
 </button>
 
 <hr>
 
 <button>
-	<img src="/img/clipboard.svg" aria-hidden="true">
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
 	<ace-tooltip>Tooltip acting as target label</ace-tooltip>
 </button>
 ```
