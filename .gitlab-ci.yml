@@ -41,7 +41,6 @@ stages:
 
 
 # PREP STAGE
-# Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
   stage: Prep
   cache:
@@ -72,7 +71,7 @@ Lint:
 # TEST STAGE
 .test:
   stage: Test
-  image: cypress/browsers:node14.15.0-chrome86-ff82
+  image: cypress/browsers:node14.17.0-chrome88-ff89
   interruptible: true
   artifacts:
     when: on_failure
@@ -102,16 +101,9 @@ Firefox:
 #     BROWSER: 'edge'
 
 
-
 # DEPLOY STAGE OPTIMISATION
 .deploy_job:
   cache: {}
-
-Deploy MR:
-  needs: [Build]
-
-Deploy Staging:
-  needs: [Build]
 
 Flip Prod:
   cache: {}
