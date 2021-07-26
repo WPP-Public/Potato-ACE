@@ -71,6 +71,9 @@ export default class Toast extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(TOAST);
+
+
 		/* GET DOM ELEMENTS */
 
 
@@ -100,6 +103,5 @@ export default class Toast extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(TOAST);
 	customElements.define(TOAST, Toast);
 });

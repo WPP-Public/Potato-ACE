@@ -63,6 +63,9 @@ export default class Accordion extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(ACCORDION);
+
+
 		/* GET DOM ELEMENTS */
 
 
@@ -338,6 +341,5 @@ export default class Accordion extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(ACCORDION);
 	customElements.define(ACCORDION, Accordion);
 });

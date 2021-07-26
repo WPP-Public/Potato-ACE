@@ -136,6 +136,9 @@ export default class Carousel extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(CAROUSEL);
+
+
 		/* GET DOM ELEMENTS */
 		// Automatic slide show toggle button
 		this.autoSlideShowCarousel = this.hasAttribute(ATTRS.AUTO_SLIDE_SHOW);
@@ -666,6 +669,5 @@ export default class Carousel extends HTMLElement {
 
 /* INITIALISE AND REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(CAROUSEL);
 	customElements.define(CAROUSEL, Carousel);
 });

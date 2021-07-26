@@ -52,6 +52,9 @@ export default class Listbox extends HTMLElement {
 
 
 	private connectedCallback(): void {
+		this.id = this.id || autoID(LISTBOX);
+
+
 		/* GET DOM ELEMENTS */
 		this.listEl = this.querySelector('ul') || this.querySelector('ol');
 		// Error if no <ul> nor <ol> present because they can't be automatically generated because they require an 'aria-label' or an 'aria-labelledby' attribute from the user
@@ -162,6 +165,5 @@ export default class Listbox extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(LISTBOX);
 	customElements.define(LISTBOX, Listbox);
 });

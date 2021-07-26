@@ -81,6 +81,9 @@ export default class Combobox extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(COMBOBOX);
+
+
 		/* GET DOM ELEMENTS */
 		this.inputEl = getElByAttrOrSelector(this, ATTRS.INPUT, 'input') as HTMLInputElement;
 		this.listEl = getElByAttrOrSelector(this, ATTRS.LIST, 'ul') as HTMLUListElement;
@@ -521,6 +524,5 @@ export default class Combobox extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(COMBOBOX);
 	customElements.define(COMBOBOX, Combobox);
 });

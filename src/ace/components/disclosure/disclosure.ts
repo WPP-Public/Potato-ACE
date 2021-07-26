@@ -65,6 +65,9 @@ export default class Disclosure extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(DISCLOSURE);
+
+
 		/* GET DOM ELEMENTS */
 		this.triggerEls = document.querySelectorAll(`[${ATTRS.TRIGGER}=${this.id}]`);
 
@@ -115,8 +118,6 @@ export default class Disclosure extends HTMLElement {
 
 /* INITIALISE AND REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(DISCLOSURE);
-
 	// Add window click handler for Disclosure triggers
 	window.addEventListener('click', (e) => {
 		const triggerClicked = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`);

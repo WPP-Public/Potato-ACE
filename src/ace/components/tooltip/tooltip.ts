@@ -62,6 +62,9 @@ export default class Tooltip extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(TOOLTIP);
+
+
 		/* GET DOM ELEMENTS */
 		this.targetEl = this.parentElement;
 		// If target is not focusable tooltip is not accessible to keyboard users
@@ -198,6 +201,5 @@ export default class Tooltip extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(TOOLTIP);
 	customElements.define(TOOLTIP, Tooltip);
 });
