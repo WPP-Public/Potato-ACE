@@ -59,7 +59,7 @@ export default class Sidebar extends HTMLElement {
 			if (this.focusTrap) {
 				this.focusTrap.destroy();
 			}
-			return
+			return;
 		}
 
 		this.focusTrap = new FocusTrap(this);
