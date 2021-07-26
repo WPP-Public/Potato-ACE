@@ -100,18 +100,17 @@ Firefox:
 #   allow_failure: true
 #   variables:
 #     BROWSER: 'edge'
+Edge:
+  extends: .test
+  image: cypress/browsers:node14.10.1-edge88
+  variables:
+    BROWSER: 'edge'
 
 
 
 # DEPLOY STAGE OPTIMISATION
 .deploy_job:
   cache: {}
-
-Deploy MR:
-  needs: [Build]
-
-Deploy Staging:
-  needs: [Build]
 
 Flip Prod:
   cache: {}
