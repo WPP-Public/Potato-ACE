@@ -67,6 +67,9 @@ export default class Select extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(SELECT);
+
+
 		/* GET DOM ELEMENTS */
 		// Get list element
 		this.listEl = this.querySelector('ul') || this.querySelector('ol');
@@ -350,6 +353,5 @@ export default class Select extends HTMLElement {
 
 /* INITIALISE AND REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(SELECT);
 	customElements.define(SELECT, Select);
 });

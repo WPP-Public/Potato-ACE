@@ -6,24 +6,14 @@ import { KeyType } from './types.js';
 /*
 	Automatically assign IDs to components that do not have them
 */
-export const autoID = (component: string): void => {
-	let i = 0;
-	document
-		.querySelectorAll(component)
-		.forEach((elem) => {
-			if (elem.id) {
-				return;
-			}
-
-			let newId;
-			// Ensure ID is unique
-			do {
-				i++;
-				newId = `${component}-${i}`;
-			} while (document.getElementById(newId));
-
-			elem.id = newId;
-		});
+const autoIdCounts:{ [idPrefix: string]: number } = {};
+export const autoID = (idPrefix: string): string => {
+	if (autoIdCounts[idPrefix]) {
+		++autoIdCounts[idPrefix];
+	} else {
+		autoIdCounts[idPrefix] = 1;
+	}
+	return `${idPrefix}-${autoIdCounts[idPrefix]}`;
 };
 
 
