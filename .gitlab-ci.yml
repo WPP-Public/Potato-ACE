@@ -92,13 +92,11 @@ Firefox:
   variables:
     BROWSER: 'firefox'
 
-# Edge not working atm need to investigate why
-# Edge:
-#   extends: .test
-#   image: cypress/browsers:node14.10.1-edge88
-#   allow_failure: true
-#   variables:
-#     BROWSER: 'edge'
+Edge:
+  extends: .test
+  image: cypress/browsers:node14.10.1-edge88
+  variables:
+    BROWSER: 'edge'
 
 
 # DEPLOY STAGE OPTIMISATION
