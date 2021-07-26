@@ -41,7 +41,6 @@ stages:
 
 
 # PREP STAGE
-# Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
   stage: Prep
   cache:
@@ -100,12 +99,6 @@ Firefox:
 #   allow_failure: true
 #   variables:
 #     BROWSER: 'edge'
-Edge:
-  extends: .test
-  image: cypress/browsers:node14.10.1-edge88
-  variables:
-    BROWSER: 'edge'
-
 
 
 # DEPLOY STAGE OPTIMISATION
