@@ -72,7 +72,7 @@ Lint:
 # TEST STAGE
 .test:
   stage: Test
-  image: cypress/browsers:node14.15.0-chrome86-ff82
+  image: cypress/browsers:node14.17.0-chrome88-ff89
   interruptible: true
   artifacts:
     when: on_failure
