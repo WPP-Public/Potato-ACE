@@ -35,6 +35,9 @@ const getAllComponents = async () => {
 
 // Convert main SASS file (excluding examples SASS) of components to CSS
 const convertSass = async () => {
+	console.log(LOG_COLORS.MAGENTA, `>> Linting SASS...`);
+	execCmd('npm run lint:scss');
+
 	// If component name given as argument then convert it's SASS only, otherwise convert all component SASS files (excluding examples SASS)
 	const componentGiven = process.argv[2];
 	const components = componentGiven ? [componentGiven] : await getAllComponents();
