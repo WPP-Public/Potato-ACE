@@ -14,7 +14,6 @@ variables:
 include:
   - project: 'potato/own-things/quality/gitlab-ci-includes'
     file: 'deploy/firebase.deploy.gitlab-ci.yml'
-    ref: '10-firebase-deploy-inc'
 
 
 image: node:14.15.4-alpine3.12
