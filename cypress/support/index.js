@@ -19,8 +19,14 @@ import './commands';
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
+const LIGHTHOUSE_THRESHOLDS = {
+  'best-practices': 90,
+  'performance': 50,
+  'pwa': 10,
+};
+
 beforeEach(() => {
   cy.log('Running lighthouse and pa11y tests');
-  cy.lighthouse();
+  cy.lighthouse(LIGHTHOUSE_THRESHOLDS);
   cy.pa11y();
 });
