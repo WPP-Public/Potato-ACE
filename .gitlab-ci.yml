@@ -14,7 +14,6 @@ variables:
 include:
   - project: 'potato/own-things/quality/gitlab-ci-includes'
     file: 'deploy/firebase.deploy.gitlab-ci.yml'
-    ref: '10-firebase-deploy-inc'
 
 
 image: node:14.15.4-alpine3.12
@@ -41,7 +40,6 @@ stages:
 
 
 # PREP STAGE
-# Install deps if package.json or package-lock.json changed or commit pushed to default branch
 Install deps:
   stage: Prep
   cache:
@@ -72,7 +70,7 @@ Lint:
 # TEST STAGE
 .test:
   stage: Test
-  image: cypress/browsers:node14.15.0-chrome86-ff82
+  image: cypress/browsers:node14.17.0-chrome88-ff89
   interruptible: true
   artifacts:
     paths:
@@ -93,25 +91,16 @@ Firefox:
   variables:
     BROWSER: 'firefox'
 
-# Edge not working atm need to investigate why
-# Edge:
-#   extends: .test
-#   image: cypress/browsers:node14.10.1-edge88
-#   allow_failure: true
-#   variables:
-#     BROWSER: 'edge'
-
+Edge:
+  extends: .test
+  image: cypress/browsers:node14.10.1-edge88
+  variables:
+    BROWSER: 'edge'
 
 
 # DEPLOY STAGE OPTIMISATION
 .deploy_job:
   cache: {}
-
-Deploy MR:
-  needs: [Build]
-
-Deploy Staging:
-  needs: [Build]
 
 Flip Prod:
   cache: {}

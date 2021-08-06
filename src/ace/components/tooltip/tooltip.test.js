@@ -51,12 +51,12 @@ context(`Tooltip`, () => {
 		it(`Tooltip should initialise correctly`, () => tooltipInitChecks());
 
 
-		it(`Content of Tooltip for target with text content should be treated as supplimentary information`, () => {
+		it(`Content of Tooltip for target with text content should be treated as supplementary information`, () => {
 			cy.get('@tooltipTarget').should('have.attr', 'aria-describedby', TOOLTIP_ID);
 		});
 
 
-		it(`Content of Tooltip for target with aria-label should be treated as supplimentary information`, () => {
+		it(`Content of Tooltip for target with aria-label should be treated as supplementary information`, () => {
 			const TOOLTIP_ID = `${TOOLTIP}-2`;
 
 			cy.get(`#${TOOLTIP_ID}`)
@@ -65,7 +65,7 @@ context(`Tooltip`, () => {
 		});
 
 
-		it(`Content of Tooltip for target with aria-labelledby should be treated as supplimentary information`, () => {
+		it(`Content of Tooltip for target with aria-labelledby should be treated as supplementary information`, () => {
 			const TOOLTIP_ID = `${TOOLTIP}-3`;
 
 			cy.get(`#${TOOLTIP_ID}`)

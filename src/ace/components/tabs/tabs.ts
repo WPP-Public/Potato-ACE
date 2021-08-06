@@ -112,6 +112,9 @@ export default class Tabs extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(TABS);
+
+
 		/* GET DOM ELEMENTS */
 		this.tablistEl = getElByAttrOrSelector(this, ATTRS.TABLIST, `#${this.id} > div`);
 		if (!this.tablistEl) {
@@ -428,6 +431,5 @@ export default class Tabs extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(TABS);
 	customElements.define(TABS, Tabs);
 });

@@ -14,7 +14,7 @@
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Tooltip</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Tooltip is instantiated within each <code>&lt;ace-tooltip&gt;</code> element and an ID <code>ace-tooltip-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-tooltip-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>Tooltip must be a child of its target element and will add attribute <code>ace-tooltip-target</code> to it as well as set the value of its <code>aria-labelledby</code> or <code>aria-describedby</code> to the Tooltip's ID based on whether the Tooltip contains primary or supplimentary information. Tooltip content is considered primary information if its target does not have attributes <code>aria-label</code> nor <code>aria-labelledby</code>, nor text content, thus the value of the target element's <code>aria-labelledby</code> attribute is set to the Tooltip ID. Otherwise the Tooltip content is considered suplimentary information and its ID is set as the value of the target element's <code>aria-describedby</code> attribute instead.</p>
+<p>Tooltip must be a child of its target element and will add attribute <code>ace-tooltip-target</code> to it as well as set the value of its <code>aria-labelledby</code> or <code>aria-describedby</code> to the Tooltip's ID based on whether the Tooltip contains primary or supplementary information. Tooltip content is considered primary information if its target does not have attributes <code>aria-label</code> nor <code>aria-labelledby</code>, nor text content, thus the value of the target element's <code>aria-labelledby</code> attribute is set to the Tooltip ID. Otherwise the Tooltip content is considered suplimentary information and its ID is set as the value of the target element's <code>aria-describedby</code> attribute instead.</p>
 <p>A Tooltip can only be added to a target element that can receive keyboard focus, otherwise it would be inaccessible to keyboard users. Furthermore, Tooltips can not be used with elements that have the HTML <code>disabled</code> attribute as they are not focusable nor do they fire the mouse events needed to show and hide them upon hover. If the Tooltip's purpose is to explain why an element is disabled then developers are strongly advised to use a different technique to convey this information to the user. If however this is an unavoidable requirement it is advised that the <code>disabled</code> attribute not be used and instead the target should be styled using CSS to look disabled, while explaining in the Tooltip text that the target is disabled and why. See the <strong>Disabled Tooltip target</strong> example below for a demo of this.</p>
 <p>Tooltips appear after a short delay, the default value of which is 1 second, however developers can provide a custom delay time in milliseconds as the value of attribute <code>ace-tooltip-delay</code>. To prevent the text content of a Tooltip from wrapping onto multiple lines the attribute <code>ace-tooltip-nowrap</code> can be added to it. Wide Tooltips with long text strings prevent themselved from overflowing outside the viewport by aligning themselves to the left or right edge of their target as appropriate. See the <strong>Non-wrapping Toooltips</strong> example below for a demo of this. If there is no space in the viewport below a Tooltip's target it will appear above it.</p>
 <h2>Usage</h2>
@@ -116,49 +116,49 @@ ace-tooltip {
 </ol>
 <div class="example-block"><a href="#">
 	Tooltip target
-	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
 </a>
 <hr>
 <button aria-label="Tooltip target label">
-	<img src="/img/clipboard.svg" aria-hidden="true">
-	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
+	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
 </button>
 <hr>
 <p><label id="tooltip-target-label">Tooltip target label</label><br>
 <button aria-labelledby="tooltip-target-label">
-<img src="/img/clipboard.svg" aria-hidden="true">
-<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
+<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
 </button></p>
 <hr>
 <button>
-	<img src="/img/clipboard.svg" aria-hidden="true">
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
 	<ace-tooltip>Tooltip acting as target label</ace-tooltip>
 </button>
 </div>
 <pre><code class="language-html">&lt;a href=&quot;#&quot;&gt;
 	Tooltip target
-	&lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
+	&lt;ace-tooltip&gt;Tooltip with supplementary text&lt;/ace-tooltip&gt;
 &lt;/a&gt;
 
 &lt;hr&gt;
 
 &lt;button aria-label=&quot;Tooltip target label&quot;&gt;
-	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
-	&lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
+	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot; width=&quot;24px&quot;&gt;
+	&lt;ace-tooltip&gt;Tooltip with supplementary text&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 
 &lt;hr&gt;
 
 &lt;label id=&quot;tooltip-target-label&quot;&gt;Tooltip target label&lt;/label&gt;&lt;br&gt;
 &lt;button aria-labelledby=&quot;tooltip-target-label&quot;&gt;
-	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
-	&lt;ace-tooltip&gt;Tooltip with supplimentary text&lt;/ace-tooltip&gt;
+	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot; width=&quot;24px&quot;&gt;
+	&lt;ace-tooltip&gt;Tooltip with supplementary text&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 
 &lt;hr&gt;
 
 &lt;button&gt;
-	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot;&gt;
+	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot; width=&quot;24px&quot;&gt;
 	&lt;ace-tooltip&gt;Tooltip acting as target label&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 </code></pre>

@@ -31,7 +31,7 @@ For convenience the ES6 class is exported as `Tooltip` and the attribute names u
 
 After the event `DOMContentLoaded` is fired on `document` an instance of Tooltip is instantiated within each `<ace-tooltip>` element and an ID `ace-tooltip-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-tooltip-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
-Tooltip must be a child of its target element and will add attribute `ace-tooltip-target` to it as well as set the value of its `aria-labelledby` or `aria-describedby` to the Tooltip's ID based on whether the Tooltip contains primary or supplimentary information. Tooltip content is considered primary information if its target does not have attributes `aria-label` nor `aria-labelledby`, nor text content, thus the value of the target element's `aria-labelledby` attribute is set to the Tooltip ID. Otherwise the Tooltip content is considered suplimentary information and its ID is set as the value of the target element's `aria-describedby` attribute instead.
+Tooltip must be a child of its target element and will add attribute `ace-tooltip-target` to it as well as set the value of its `aria-labelledby` or `aria-describedby` to the Tooltip's ID based on whether the Tooltip contains primary or supplementary information. Tooltip content is considered primary information if its target does not have attributes `aria-label` nor `aria-labelledby`, nor text content, thus the value of the target element's `aria-labelledby` attribute is set to the Tooltip ID. Otherwise the Tooltip content is considered suplimentary information and its ID is set as the value of the target element's `aria-describedby` attribute instead.
 
 A Tooltip can only be added to a target element that can receive keyboard focus, otherwise it would be inaccessible to keyboard users. Furthermore, Tooltips can not be used with elements that have the HTML `disabled` attribute as they are not focusable nor do they fire the mouse events needed to show and hide them upon hover. If the Tooltip's purpose is to explain why an element is disabled then developers are strongly advised to use a different technique to convey this information to the user. If however this is an unavoidable requirement it is advised that the `disabled` attribute not be used and instead the target should be styled using CSS to look disabled, while explaining in the Tooltip text that the target is disabled and why. See the **Disabled Tooltip target** example below for a demo of this.
 
@@ -175,28 +175,28 @@ Examples of simple Tooltips for:
 ```html
 <a href="#">
 	Tooltip target
-	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
 </a>
 
 <hr>
 
 <button aria-label="Tooltip target label">
-	<img src="/img/clipboard.svg" aria-hidden="true">
-	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
+	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
 </button>
 
 <hr>
 
 <label id="tooltip-target-label">Tooltip target label</label><br>
 <button aria-labelledby="tooltip-target-label">
-	<img src="/img/clipboard.svg" aria-hidden="true">
-	<ace-tooltip>Tooltip with supplimentary text</ace-tooltip>
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
+	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
 </button>
 
 <hr>
 
 <button>
-	<img src="/img/clipboard.svg" aria-hidden="true">
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
 	<ace-tooltip>Tooltip acting as target label</ace-tooltip>
 </button>
 ```

@@ -80,6 +80,9 @@ export default class Modal extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(MODAL);
+
+
 		// Determine if Modal instance can use HTML inert attribute (browser supports it and Modal is a child of body)
 		this.canUseInert = BROWSER_SUPPORTS_INERT && this.parentElement === document.body;
 
@@ -239,9 +242,6 @@ export default class Modal extends HTMLElement {
 
 /* INITIALISE AND REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(MODAL);
-	customElements.define(MODAL, Modal);
-
 	window.addEventListener('click', (e) => {
 		// Show Modal if any of its triggers are clicked
 		const triggerClicked = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`);
@@ -261,4 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
 			visibleModalEl.removeAttribute(ATTRS.VISIBLE);
 		}
 	});
+
+	customElements.define(MODAL, Modal);
 });

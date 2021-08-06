@@ -123,23 +123,34 @@ gulp.task('examples-sass', () => {
 });
 
 // Convert all SASS to CSS and move to dist
-gulp.task('sass', gulp.parallel('docs-sass', 'examples-sass'));
+gulp.task('sass',  gulp.series(
+	async () => {
+		console.log('>> Linting SASS...');
+		await runCmd('npm run lint:scss');
+	},
+	gulp.parallel('docs-sass', 'examples-sass')
+));
 // ///////////
 
 // ///////////
 // TS
 // ///////////
 // Move JS to dist
-gulp.task('js', () => {
+gulp.task('js', async () => {
 	isProd = prodArgGiven();
+	await runCmd('npm run lint:js');
+
 	return gulp.src([`${SRC}/**/*.js`, `!**/*.test.js`], {sourcemaps: isProd})
 		.pipe(gulpif(isProd, terser()))
 		.pipe(gulp.dest(DIST, {sourcemaps: isProd}));
 });
 
-// Convert TS files to JS and then run 'ts' task
+// Convert TS files to JS and then run 'js' task
 gulp.task('ts', gulp.series(
 	async () => {
+		console.log('>> Linting TS...');
+		await runCmd('npm run lint:ts');
+
 		console.log('>> Converting TS to JS');
 		await runCmd('tsc');
 	},

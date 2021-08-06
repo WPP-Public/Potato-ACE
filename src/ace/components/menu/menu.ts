@@ -56,6 +56,9 @@ export default class Menu extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(MENU);
+
+
 		/* GET DOM ELEMENTS */
 		this.triggerEl = this.querySelector('button');
 		this.listEl = this.querySelector('ul');
@@ -270,6 +273,5 @@ export default class Menu extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(MENU);
 	customElements.define(MENU, Menu);
 });
