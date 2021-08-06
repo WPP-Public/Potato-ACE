@@ -18,3 +18,9 @@ import './commands';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+beforeEach(() => {
+  cy.log('Running lighthouse and pa11y tests');
+  cy.lighthouse();
+  cy.pa11y();
+});

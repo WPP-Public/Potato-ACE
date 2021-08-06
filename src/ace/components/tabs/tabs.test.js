@@ -128,12 +128,6 @@ context(`Tabs`, () => {
 	before(() => cy.visit(`/tabs`));
 
 
-	it("should pass lighthouse and pa11y audits", function () {
-		cy.lighthouse();
-		cy.pa11y();
-	});
-
-
 	it(`Tabs without ID should initialise with an ID`, () => {
 		cy.get(TABS)
 			.first()

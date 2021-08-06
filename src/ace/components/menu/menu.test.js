@@ -78,12 +78,6 @@ context(`Menu`, () => {
 	});
 
 
-	it("should pass lighthouse and pa11y audits", function () {
-		cy.lighthouse();
-		cy.pa11y();
-	});
-
-
 	it(`Should initialise with an ID even if one not provided`, () => {
 		cy.get(MENU)
 			.first()

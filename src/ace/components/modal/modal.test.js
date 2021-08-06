@@ -55,12 +55,6 @@ context(`Modal`, () => {
 	});
 
 
-	it("should pass lighthouse and pa11y audits", function () {
-		cy.lighthouse();
-		cy.pa11y();
-	});
-
-
 	context(`Simple Modal`, () => {
 		const ID = IDS.SIMPLE_MODAL;
 
