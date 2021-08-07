@@ -64,17 +64,7 @@ $z-index: 3;
 	}
 
 	&__link {
-		font-weight: inherit;
-
-		&,
-		&:focus,
-		&:visited {
-			color: #fff;
-		}
-
-		&:focus {
-			outline: 2px solid #fff;
-		}
+		@include focus-outline($light: true);
 
 		&:hover {
 			color: map-get($pot-grey, 2);

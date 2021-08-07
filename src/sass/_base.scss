@@ -1,42 +1,40 @@
 @use './common/constants' as *;
 @use './common/mixins' as *;
 
-@use './components/header';
 @use './components/sidebar';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 // REPEATING ELEMENTS
-*,
-*::after,
-*::before {
-	box-sizing: inherit;
-}
-
 * {
 	box-sizing: border-box;
 	-webkit-font-smoothing: antialiased;
+	// Firefox scrollbar
+	scrollbar-color: $scrollbar-color transparent;
+	scrollbar-width: thin;
+
+	&,
+	&::before,
+	&::after {
+		box-sizing: inherit;
+	}
+
+	// Chrome, Edge, Safari scrollbar
+	&::-webkit-scrollbar {
+		height: $scrollbar-webkit-width;
+		width: $scrollbar-webkit-width;
+
+		&-thumb {
+			background-color: $scrollbar-color;
+			border-radius: $scrollbar-webkit-border-radius;
+		}
+	}
 }
 
 a {
-	font-weight: 700;
+	color: inherit;
 	text-decoration: none;
 	transition: color $transition;
-
-	&,
-	&:visited {
-		color: $interactive-color;
-	}
-
-	&:active,
-	&:focus,
-	&:hover {
-		color: $active-color;
-	}
-
-	&:focus {
-		outline: 2px solid $active-color;
-	}
 }
 
 // Inline Code
@@ -49,6 +47,10 @@ code {
 		font-size: 1.4rem;
 		padding: 2px 4px;
 	}
+}
+
+em {
+	word-break: break-all;
 }
 
 h1,
@@ -113,6 +115,11 @@ kbd {
 	white-space: nowrap;
 }
 
+ol {
+	list-style-position: inside;
+	padding: 0;
+}
+
 p {
 	margin: 0 0 $buffer-s;
 }
@@ -121,15 +128,10 @@ table {
 	border-collapse: collapse;
 }
 
-ol {
-	list-style-position: inside;
-	padding: 0;
-}
-
-ul {
-	list-style-position: inside;
-	margin: 0;
-	padding: 0;
+tr,
+td,
+th {
+	border: 1px solid map-get($pot-mauve, 7);
 }
 
 td,
@@ -138,10 +140,10 @@ th {
 	padding: 10px;
 }
 
-tr,
-td,
-th {
-	border: 1px solid map-get($pot-mauve, 7);
+ul {
+	list-style-position: inside;
+	margin: 0;
+	padding: 0;
 }
 
 // ONE-OFF ELEMENTS
@@ -166,18 +168,4 @@ main {
 		display: grid;
 		grid-template-columns: sidebar.$width minmax(0, 1fr);
 	}
-}
-
-article {
-	$_padding-top: header.$height + $buffer-m;
-	color: $text-color;
-	grid-column: 2;
-	margin: 0 auto;
-	max-width: 900px;
-	padding: $_padding-top $buffer-m $buffer-m;
-	width: 100%;
-}
-
-em {
-	word-break: break-all;
 }

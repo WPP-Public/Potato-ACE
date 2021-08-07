@@ -20,8 +20,8 @@ $z-index: 2;
 	top: 0;
 	z-index: $z-index;
 
-	a:focus {
-		outline: 2px solid #fff;
+	a {
+		@include focus-outline($light: true);
 	}
 
 	&__left,
@@ -51,9 +51,8 @@ $z-index: 2;
 	}
 
 	&__skip {
-		@extend .unstyled-anchor;
-
 		margin-right: $buffer-xs;
+		padding: 4px;
 		transform: translateY(-200%);
 
 		&:active,

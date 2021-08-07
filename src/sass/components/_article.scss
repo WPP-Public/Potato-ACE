@@ -1,0 +1,29 @@
+@use '../common/constants' as *;
+@use './common/mixins' as *;
+
+@use '../components/header';
+
+$_padding-top: header.$height + $buffer-m;
+
+article {
+	color: $text-color;
+	grid-column: 2;
+	margin: 0 auto;
+	max-width: 900px;
+	padding: $_padding-top $buffer-m $buffer-m;
+	width: 100%;
+
+	a {
+		color: $interactive-color;
+		font-weight: 700;
+
+		&:active,
+		&:focus,
+		&:focus-visible,
+		&:hover {
+			color: $active-color;
+		}
+
+		@include focus-outline();
+	}
+}

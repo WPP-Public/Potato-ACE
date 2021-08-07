@@ -169,3 +169,26 @@
 		transition: mask-image $transition;
 	}
 }
+
+// ADDS AN OUTLINE THAT IS ONLY VISIBLE ON KEYBOARD FOCUS WITH FALLBACK
+@mixin focus-outline($outline: false, $light: false) {
+	@if $light {
+		$outline: $outline-light;
+	}
+	@else if $outline == false {
+		$outline: $outline-dark;
+	}
+
+	&:focus {
+		outline: $outline;
+	}
+
+	// Do not combine with above declaration
+	&:focus-visible {
+		outline: $outline;
+	}
+
+	&:focus:not(:focus-visible) {
+		outline: none;
+	}
+}
