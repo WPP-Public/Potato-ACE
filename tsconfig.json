@@ -7,7 +7,7 @@
 			"es2017",
 			"dom.iterable"
 		],
-		"target": "esnext",
+		"target": "ES6",
 		"declaration": true
 	},
 	"include": [

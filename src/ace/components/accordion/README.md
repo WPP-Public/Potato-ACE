@@ -86,7 +86,7 @@ This event is dispatched when Accordion finishes initialising just after page lo
 
 `ace-accordion-changed`
 
-This event is dispatched when a panel's visiblity changes. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when a panel's visiblity changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
 
 ```javascript
 'detail': {
