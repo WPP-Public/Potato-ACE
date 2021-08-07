@@ -177,3 +177,7 @@ article {
 	padding: $_padding-top $buffer-m $buffer-m;
 	width: 100%;
 }
+
+em {
+	word-break: break-all;
+}
