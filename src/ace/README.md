@@ -69,7 +69,7 @@ The example demonstrates:
 - Listening for a custom event dispatched by Accordion, then using `useState` and `useEffect` to conditionally disablling a button in the parent component.
 - Using `useRef` & `forwardRef` to dispatch a custom event on Accordion from the parent.
 
-Starting with a fresh project, created using `npx create-react-app`, the following changes were made:
+Starting with a fresh project, created using `npx create-react-app`, ACE was installed using `npm i @potato/ace` before the following changes were made:
 
 *src/Accordion.jsx*
 
