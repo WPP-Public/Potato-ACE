@@ -18,28 +18,144 @@ or
 yarn add @potato/ace
 ```
 
-To use a component import it's SASS file into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file, and `<component-name>` with the component name:
-
-```scss
-@import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>';
-```
-
-and import the class into your main JavaScript file:
+To use a component import the class into your main JavaScript file:
 
 ```js
 import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>';
 ```
 
-Specific instructions for how to use a particular component can be found in the component's *README* file located at *\<path-to-node_modules>/@potato/ace/\<component-name>/READE.md*, for example, the Accordion component instructions can be found in *\<path-to-node_modules>/@potato/ace/accordion/README.md*. The same instructions can be also found on the component's webpage along with live examples.
+Then import the component's SASS file into a SASS file in your project, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file, and `<component-name>` with the component name:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>';
+```
+
+Alternatively, you can import the component's CSS file into a CSS file in your project:
+
+```css
+@import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>.css';
+```
+
+Specific instructions for how to use a particular component can be found on the component's webpage, along with live examples, or in the component's *README* file located at *\<path-to-node_modules>/@potato/ace/\<component-name>/READE.md*.
+
+For example, the Accordion component instructions can be found on it's [webpage](https://ace.p.ota.to/accordion) or in *\<path-to-node_modules>/@potato/ace/accordion/README.md*.
 
 ## Component SASS variables
 
-ACE components makes use of SASS variables defined with the keyword `!default`, which allow developers to easily configure component styles by simply assigning a value to the variable before importing the component SASS file where the variable is defined. For example, the selected option highlight color of the Listbox component can be changed as follows: 
+ACE components define SASS variables using the `!default` keyword, allowing developers to easily configure component styles by simply assigning a value to the variable before importing the SASS file where the variable is defined.
+
+For example, the selected option highlight color of the Listbox component can be changed as follows: 
 
 ```scss
-/* ACE Variable Overrides */
+/* Override ACE variable... */
 $ace-listbox-selected-option-bg-color: #cccccc;
 
-/* ACE Components */
+/* Then import SASS file where it's defined */
 @import '<path-to-node_modules>/node_modules/@potato/ace/listbox/listbox';
+```
+
+
+## Using ACE with JavaScript frameworks
+
+ACE components are custom elements and can therefore be easily used with JavaScript frameworks. This section demonstrates how this can be done using popular JS Framweworks.
+
+### React
+
+The following example shows how ACE components can be used with React. More general information about how to use web components with React can be found in [React's Web Components guide](https://reactjs.org/docs/web-components.html).
+
+The example demonstrates:
+
+- Passing data from a parent component to a ACE Accordion component via `props`.
+- Listening for a custom event dispatched by Accordion, then using `useState` and `useEffect` to conditionally disablling a button in the parent component.
+- Using `useRef` & `forwardRef` to dispatch a custom event on Accordion from the parent.
+
+Starting with a fresh project, created using `npx create-react-app`, the following changes were made:
+
+*src/Accordion.jsx*
+
+```jsx
+import React, {forwardRef} from 'react';
+
+// forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
+export const Accordion = forwardRef(({panels}, ref) => {
+	return (
+		<ace-accordion ref={ref}>
+			{panels.map((panel, index) => {
+				return <React.Fragment key={index}>
+					<h3>
+						<button>{panel.trigger}</button>
+					</h3>
+					<div>
+						<p>{panel.content}</p>
+					</div>
+				</React.Fragment>
+			})}
+		</ace-accordion>
+	);
+});
+```
+
+*src/App.js*
+
+```jsx
+import {useEffect, useRef, useState} from 'react';
+
+import {ATTRS as ACE_ACCORDION_ATTRS, EVENTS as ACE_ACCORDION_EVENTS} from '@potato/ace/components/accordion/accordion';
+import {Accordion} from './Accordion';
+import './App.css';
+
+const accordionContent = [
+	{
+		content: 'Panel 1 content',
+		trigger: 'Panel 1 trigger',
+	},
+	{
+		content: 'Panel 2 content',
+		trigger: 'Panel 2 trigger',
+	},
+	{
+		content: 'Panel 3 content',
+		trigger: 'Panel 3 trigger',
+	},
+];
+
+function App() {
+	// useRef used to reference Accordion DOM element in Accordion.jsx, to dispatch custom event on it
+	const accordionRef = useRef(null);
+	const [disableCollapseAllBtn, setDisableCollapseAllBtn] = useState(true);
+
+	// Accordion "changed" event handler that disables "Collapse all" button if all panels are already collaped
+	const handleAccordionPanelStateChange = () => {
+		const panelsCollapsed = document.querySelectorAll(`[${ACE_ACCORDION_ATTRS.PANEL_VISIBLE}]`).length === 0;
+		setDisableCollapseAllBtn(panelsCollapsed);
+	}
+
+	// useEffect used to add and remove Accordion "changed" event listener
+	useEffect(() => {
+		window.addEventListener(ACE_ACCORDION_EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+		return () => window.removeEventListener(ACE_ACCORDION_EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+	}, []);
+
+	// Collapse Accordion's panels using Accordion's "hide panels" custom event
+	const collapseAll = () => accordionRef.current.dispatchEvent(
+    new CustomEvent(ACE_ACCORDION_EVENTS.IN.HIDE_PANELS)
+ 	);
+
+  return (
+		<>
+			<button	disabled={disableCollapseAllBtn} onClick={collapseAll} >
+				Collapse all
+			</button>
+			<Accordion panels={accordionContent} ref={accordionRef} />
+		</>
+  );
+}
+
+export default App;
+```
+
+*src/index.css*
+
+```css
+@import '~@potato/ace/components/disclosure/ace-disclosure.css';
 ```
