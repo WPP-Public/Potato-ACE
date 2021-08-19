@@ -88,7 +88,7 @@ This event is dispatched when Accordion finishes initialising just after page lo
 
 This event is dispatched when a panel's visiblity changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
 
-```javascript
+```js
 'detail': {
   'id': // ID of Accordion [string]
   'panelNumber': // The number of the panel that changed [number]
@@ -184,6 +184,7 @@ This Accordion will show the second panel upon page load as it has the attribute
 ```
 
 ### Animated Accordion
+
 Example of how an Accordion can be animated. Custom styles have been applied to this example and are shown below.
 
 Note that this method should only be used if the panels are of the same or similar heights. The reason for this is that the height transitions from 0px to `max-height` over the transition duration time, therefore `max-height` must be set to a value that allows the tallest panel to be visible. If one panel is significantly taller than the others the shorter panels have less to reveal during the transition which will therefore seem to take less time than expected as when the panel is fully visible the transition is still ongoing until `max-height` reaches the value given.
@@ -237,8 +238,6 @@ Note that this method should only be used if the panels are of the same or simil
 ```
 
 ### Accordion controlled through custom events
-
-
 
 The JavaScript used by this example is shown below.
 

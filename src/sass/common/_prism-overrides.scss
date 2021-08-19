@@ -1,7 +1,7 @@
 @use './constants' as *;
 @use './mixins' as *;
 
-$code-block-font-size: 1.4rem;
+$code-block-font-size: 1.3rem;
 $_btn-offset: 4px;
 $_btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$_btn-offset}));
 
