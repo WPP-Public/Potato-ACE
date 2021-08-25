@@ -57,7 +57,7 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 
 ## Using ACE with JavaScript frameworks
 
-ACE components are custom elements and can therefore be easily used with JavaScript frameworks. This section demonstrates how this can be done using popular JS Framweworks.
+ACE components are custom elements and can therefore be easily used with JavaScript frameworks.
 
 ### React
 
@@ -77,10 +77,10 @@ Starting with a fresh project, created using `npx create-react-app`, ACE was ins
 import React, {forwardRef} from 'react';
 
 // forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
-export const Accordion = forwardRef(({panels}, ref) => {
+export const Accordion = forwardRef(({content}, ref) => {
 	return (
 		<ace-accordion ref={ref}>
-			{panels.map((panel, index) => {
+			{content.map((panel, index) => {
 				return <React.Fragment key={index}>
 					<h3>
 						<button>{panel.trigger}</button>
@@ -137,16 +137,18 @@ function App() {
 	}, []);
 
 	// Collapse Accordion's panels using Accordion's "hide panels" custom event
-	const collapseAll = () => accordionRef.current.dispatchEvent(
-    new CustomEvent(ACE_ACCORDION_EVENTS.IN.HIDE_PANELS)
- 	);
+	const collapseAll = () => {
+		if (accordionRef.current) {
+      accordionRef.current.dispatchEvent(new CustomEvent(ACE_ACCORDION_EVENTS.IN.HIDE_PANELS));
+    }
+	}
 
   return (
 		<>
 			<button	disabled={disableCollapseAllBtn} onClick={collapseAll} >
 				Collapse all
 			</button>
-			<Accordion panels={accordionContent} ref={accordionRef} />
+			<Accordion content={accordionContent} ref={accordionRef} />
 		</>
   );
 }
@@ -154,8 +156,86 @@ function App() {
 export default App;
 ```
 
-*src/index.css*
+*src/App.css*
 
 ```css
-@import '~@potato/ace/components/disclosure/ace-disclosure.css';
+@import '~@potato/ace/components/accordion/ace-accordion.css';
 ```
+
+#### React with TypeScript
+
+To use ACE components in a React project that uses TypeScript follow the previous instructions then make the following changes:
+
+*src/Accordion.jsx*
+
+- Rename *Accordion**.jsx*** to *Accordion**.tsx***
+
+- Replace content with the following:
+
+  ```tsx
+  import React, {forwardRef} from 'react';
+  import {AccordionContent} from './App';
+  
+  // forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
+  export const Accordion = forwardRef((props: {content:Array<AccordionContent>}, ref) => {
+  	return (
+  		<ace-accordion ref={ref}>
+  			{props.content.map((panel: AccordionContent, index: number) => {
+  				return <React.Fragment key={index}>
+  					<h3>
+  						<button>{panel.trigger}</button>
+  					</h3>
+  					<div>
+  						<p>{panel.content}</p>
+  					</div>
+  				</React.Fragment>
+  			})}
+  		</ace-accordion>
+  	);
+  });
+  
+  
+  declare global {
+    namespace JSX {
+      interface IntrinsicElements {
+        'ace-accordion': any;
+      }
+    }
+  }
+  
+  ```
+
+*src/App.tsx*
+
+- Replace:
+
+  ```tsx
+  const accordionContent = [
+  ```
+
+  with:
+
+  ```tsx
+  const accordionContent:Array<AccordionContent> = [
+  ```
+
+- Replace:
+
+  ```tsx
+  const accordionRef = useRef(null);
+  ```
+
+  with:
+
+  ```tsx
+  const accordionRef = useRef<HTMLElement>(null);
+  ```
+
+- Add this to the end of the file:
+
+  ```tsx
+  export interface AccordionContent {
+    content: string;
+    trigger: string;
+  }
+  ```
