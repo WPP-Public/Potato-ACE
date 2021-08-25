@@ -122,14 +122,10 @@ export default App;
 <pre><code class="language-css">@import '~@potato/ace/components/accordion/ace-accordion.css';
 </code></pre>
 <h4>React with TypeScript</h4>
-<p>To use ACE components in a React project that uses TypeScript follow the previous instructions then make the following changes:</p>
+<p>ACE components can also be used in React projects that use TypeScript.</p>
+<p>For example to use the ACE Accordion component in a TypeScript React project follow the previous instructions then make the following changes:</p>
 <p><em>src/Accordion.jsx</em></p>
-<ul>
-<li>
-<p>Rename <em>Accordion</em>*.jsx*** to <em>Accordion</em>*.tsx***</p>
-</li>
-<li>
-<p>Replace content with the following:</p>
+<p>Rename <em>Accordion.jsx</em> to <em>Accordion.tsx</em> and replace content with the following:</p>
 <pre><code class="language-tsx">import React, {forwardRef} from 'react';
 import {AccordionContent} from './App';
 
@@ -151,42 +147,30 @@ export const Accordion = forwardRef((props: {content:Array&lt;AccordionContent&g
 	);
 });
 
-
 declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'ace-accordion': any;
-    }
-  }
+	namespace JSX {
+		interface IntrinsicElements {
+			'ace-accordion': any;
+		}
+	}
 }
-
 </code></pre>
-</li>
-</ul>
 <p><em>src/App.tsx</em></p>
-<ul>
-<li>
 <p>Replace:</p>
 <pre><code class="language-tsx">const accordionContent = [
 </code></pre>
 <p>with:</p>
 <pre><code class="language-tsx">const accordionContent:Array&lt;AccordionContent&gt; = [
 </code></pre>
-</li>
-<li>
-<p>Replace:</p>
+<p>then replace:</p>
 <pre><code class="language-tsx">const accordionRef = useRef(null);
 </code></pre>
 <p>with:</p>
 <pre><code class="language-tsx">const accordionRef = useRef&lt;HTMLElement&gt;(null);
 </code></pre>
-</li>
-<li>
-<p>Add this to the end of the file:</p>
+<p>and finally add the following to the end of the file:</p>
 <pre><code class="language-tsx">export interface AccordionContent {
-  content: string;
-  trigger: string;
+	content: string;
+	trigger: string;
 }
 </code></pre>
-</li>
-</ul>

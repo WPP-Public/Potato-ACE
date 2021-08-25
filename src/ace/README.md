@@ -162,80 +162,72 @@ export default App;
 @import '~@potato/ace/components/accordion/ace-accordion.css';
 ```
 
+
 #### React with TypeScript
 
-To use ACE components in a React project that uses TypeScript follow the previous instructions then make the following changes:
+ACE components can also be used in React projects that use TypeScript.
+
+For example to use the ACE Accordion component in a TypeScript React project follow the previous instructions then make the following changes:
 
 *src/Accordion.jsx*
 
-- Rename *Accordion**.jsx*** to *Accordion**.tsx***
+Rename *Accordion.jsx* to *Accordion.tsx* and replace content with the following:
 
-- Replace content with the following:
+```tsx
+import React, {forwardRef} from 'react';
+import {AccordionContent} from './App';
 
-  ```tsx
-  import React, {forwardRef} from 'react';
-  import {AccordionContent} from './App';
-  
-  // forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
-  export const Accordion = forwardRef((props: {content:Array<AccordionContent>}, ref) => {
-  	return (
-  		<ace-accordion ref={ref}>
-  			{props.content.map((panel: AccordionContent, index: number) => {
-  				return <React.Fragment key={index}>
-  					<h3>
-  						<button>{panel.trigger}</button>
-  					</h3>
-  					<div>
-  						<p>{panel.content}</p>
-  					</div>
-  				</React.Fragment>
-  			})}
-  		</ace-accordion>
-  	);
-  });
-  
-  
-  declare global {
-    namespace JSX {
-      interface IntrinsicElements {
-        'ace-accordion': any;
-      }
-    }
-  }
-  
-  ```
+// forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
+export const Accordion = forwardRef((props: {content:Array<AccordionContent>}, ref) => {
+	return (
+		<ace-accordion ref={ref}>
+			{props.content.map((panel: AccordionContent, index: number) => {
+				return <React.Fragment key={index}>
+					<h3>
+						<button>{panel.trigger}</button>
+					</h3>
+					<div>
+						<p>{panel.content}</p>
+					</div>
+				</React.Fragment>
+			})}
+		</ace-accordion>
+	);
+});
+
+declare global {
+	namespace JSX {
+		interface IntrinsicElements {
+			'ace-accordion': any;
+		}
+	}
+}
+```
 
 *src/App.tsx*
 
-- Replace:
+Replace:
+```tsx
+const accordionContent = [
+```
+with:
+```tsx
+const accordionContent:Array<AccordionContent> = [
+```
 
-  ```tsx
-  const accordionContent = [
-  ```
+then replace:
+```tsx
+const accordionRef = useRef(null);
+```
+with:
+```tsx
+const accordionRef = useRef<HTMLElement>(null);
+```
 
-  with:
-
-  ```tsx
-  const accordionContent:Array<AccordionContent> = [
-  ```
-
-- Replace:
-
-  ```tsx
-  const accordionRef = useRef(null);
-  ```
-
-  with:
-
-  ```tsx
-  const accordionRef = useRef<HTMLElement>(null);
-  ```
-
-- Add this to the end of the file:
-
-  ```tsx
-  export interface AccordionContent {
-    content: string;
-    trigger: string;
-  }
-  ```
+and finally add the following to the end of the file:
+```tsx
+export interface AccordionContent {
+	content: string;
+	trigger: string;
+}
+```
