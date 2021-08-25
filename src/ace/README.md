@@ -145,10 +145,10 @@ function App() {
 
   return (
 		<>
+			<Accordion content={accordionContent} ref={accordionRef} />
 			<button	disabled={disableCollapseAllBtn} onClick={collapseAll} >
 				Collapse all
 			</button>
-			<Accordion content={accordionContent} ref={accordionRef} />
 		</>
   );
 }
