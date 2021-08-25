@@ -29,7 +29,7 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 @import '&lt;path-to-node_modules&gt;/node_modules/@potato/ace/listbox/listbox';
 </code></pre>
 <h2>Using ACE with JavaScript frameworks</h2>
-<p>ACE components are custom elements and can therefore be easily used with JavaScript frameworks. This section demonstrates how this can be done using popular JS Framweworks.</p>
+<p>ACE components are custom elements and can therefore be easily used with JavaScript frameworks.</p>
 <h3>React</h3>
 <p>The following example shows how ACE components can be used with React. More general information about how to use web components with React can be found in <a href="https://reactjs.org/docs/web-components.html">React's Web Components guide</a>.</p>
 <p>The example demonstrates:</p>
@@ -43,10 +43,10 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 <pre><code class="language-jsx">import React, {forwardRef} from 'react';
 
 // forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
-export const Accordion = forwardRef(({panels}, ref) =&gt; {
+export const Accordion = forwardRef(({content}, ref) =&gt; {
 	return (
 		&lt;ace-accordion ref={ref}&gt;
-			{panels.map((panel, index) =&gt; {
+			{content.map((panel, index) =&gt; {
 				return &lt;React.Fragment key={index}&gt;
 					&lt;h3&gt;
 						&lt;button&gt;{panel.trigger}&lt;/button&gt;
@@ -100,22 +100,93 @@ function App() {
 	}, []);
 
 	// Collapse Accordion's panels using Accordion's &quot;hide panels&quot; custom event
-	const collapseAll = () =&gt; accordionRef.current.dispatchEvent(
-    new CustomEvent(ACE_ACCORDION_EVENTS.IN.HIDE_PANELS)
- 	);
+	const collapseAll = () =&gt; {
+		if (accordionRef.current) {
+      accordionRef.current.dispatchEvent(new CustomEvent(ACE_ACCORDION_EVENTS.IN.HIDE_PANELS));
+    }
+	}
 
   return (
 		&lt;&gt;
 			&lt;button	disabled={disableCollapseAllBtn} onClick={collapseAll} &gt;
 				Collapse all
 			&lt;/button&gt;
-			&lt;Accordion panels={accordionContent} ref={accordionRef} /&gt;
+			&lt;Accordion content={accordionContent} ref={accordionRef} /&gt;
 		&lt;/&gt;
   );
 }
 
 export default App;
 </code></pre>
-<p><em>src/index.css</em></p>
-<pre><code class="language-css">@import '~@potato/ace/components/disclosure/ace-disclosure.css';
+<p><em>src/App.css</em></p>
+<pre><code class="language-css">@import '~@potato/ace/components/accordion/ace-accordion.css';
 </code></pre>
+<h4>React with TypeScript</h4>
+<p>To use ACE components in a React project that uses TypeScript follow the previous instructions then make the following changes:</p>
+<p><em>src/Accordion.jsx</em></p>
+<ul>
+<li>
+<p>Rename <em>Accordion</em>*.jsx*** to <em>Accordion</em>*.tsx***</p>
+</li>
+<li>
+<p>Replace content with the following:</p>
+<pre><code class="language-tsx">import React, {forwardRef} from 'react';
+import {AccordionContent} from './App';
+
+// forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
+export const Accordion = forwardRef((props: {content:Array&lt;AccordionContent&gt;}, ref) =&gt; {
+	return (
+		&lt;ace-accordion ref={ref}&gt;
+			{props.content.map((panel: AccordionContent, index: number) =&gt; {
+				return &lt;React.Fragment key={index}&gt;
+					&lt;h3&gt;
+						&lt;button&gt;{panel.trigger}&lt;/button&gt;
+					&lt;/h3&gt;
+					&lt;div&gt;
+						&lt;p&gt;{panel.content}&lt;/p&gt;
+					&lt;/div&gt;
+				&lt;/React.Fragment&gt;
+			})}
+		&lt;/ace-accordion&gt;
+	);
+});
+
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'ace-accordion': any;
+    }
+  }
+}
+
+</code></pre>
+</li>
+</ul>
+<p><em>src/App.tsx</em></p>
+<ul>
+<li>
+<p>Replace:</p>
+<pre><code class="language-tsx">const accordionContent = [
+</code></pre>
+<p>with:</p>
+<pre><code class="language-tsx">const accordionContent:Array&lt;AccordionContent&gt; = [
+</code></pre>
+</li>
+<li>
+<p>Replace:</p>
+<pre><code class="language-tsx">const accordionRef = useRef(null);
+</code></pre>
+<p>with:</p>
+<pre><code class="language-tsx">const accordionRef = useRef&lt;HTMLElement&gt;(null);
+</code></pre>
+</li>
+<li>
+<p>Add this to the end of the file:</p>
+<pre><code class="language-tsx">export interface AccordionContent {
+  content: string;
+  trigger: string;
+}
+</code></pre>
+</li>
+</ul>
