@@ -149,7 +149,7 @@ export default class Combobox extends HTMLElement {
 
 		// Keep copy of original options so they may be replaced when autocomplete filter removed
 		if (this.listAutocompletes) {
-			this.allOptionEls = [...this.list?.optionEls].map(option => option.cloneNode(true));
+			this.allOptionEls = [...this.list.optionEls].map(option => option.cloneNode(true));
 		}
 
 		// Dispatch 'Ready' event
@@ -318,10 +318,10 @@ export default class Combobox extends HTMLElement {
 					return;
 				}
 				const optionEl = this.listEl?.querySelector(`#${detail['optionId']}`) as HTMLLIElement;
-				if (!optionEl) {
+				if (!optionEl || !this.list?.optionEls) {
 					return;
 				}
-				const optionElIndex = [...this.list?.optionEls].indexOf(optionEl);
+				const optionElIndex = [...this.list.optionEls].indexOf(optionEl);
 				this.changeSelectedOption(optionElIndex);
 				break;
 			}
@@ -330,7 +330,7 @@ export default class Combobox extends HTMLElement {
 				break;
 			case EVENTS.IN.UPDATE_OPTIONS:
 				this.list?.initOptionEls();
-				if (this.listAutocompletes) {
+				if (this.listAutocompletes && this.list?.optionEls) {
 					this.allOptionEls = [...this.list?.optionEls].map(optionEl => optionEl.cloneNode(true));
 				}
 				window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTIONS_UPDATED, {
