@@ -148,7 +148,7 @@ export default class Combobox extends HTMLElement {
 		warnIfElHasNoAriaLabel(this.inputEl, 'Input element of Combobox');
 
 		// Keep copy of original options so they may be replaced when autocomplete filter removed
-		if (this.listAutocompletes) {
+		if (this.listAutocompletes && this.list.optionEls) {
 			this.allOptionEls = [...this.list.optionEls].map(option => option.cloneNode(true));
 		}
 
