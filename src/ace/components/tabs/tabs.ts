@@ -204,7 +204,7 @@ export default class Tabs extends HTMLElement {
 	*/
 	private determineStartingSelectedTab(): void {
 		let urlStartingTabNumber;
-		let startingSelectedTabNumber = +(this.getAttribute(ATTRS.SELECTED_TAB) || 1);
+		let startingSelectedTabNumber = +(this.getAttribute(ATTRS.SELECTED_TAB) as string) || 1;
 
 		// If Tabs previously initialised (updating) and index is greater than max, default to last tab (means last tab was selected and subsequently deleted)
 		if (startingSelectedTabNumber > this.tabCount && this.initialised) {
@@ -214,11 +214,7 @@ export default class Tabs extends HTMLElement {
 		// if Tabs deep-linked and not initialised yet, get starting tab number from URL
 		if (this.deepLinked && !this.initialised) {
 			const params = new URLSearchParams(location.search);
-			const urlStartingTab = params.get(this.id);
-			if (!urlStartingTab) {
-				return;
-			}
-			urlStartingTabNumber = +urlStartingTab;
+			urlStartingTabNumber = +(params.get(this.id) as string);
 			if (urlStartingTabNumber > 0 && urlStartingTabNumber <= this.tabCount) {
 				startingSelectedTabNumber = urlStartingTabNumber;
 			}
