@@ -20,15 +20,15 @@ export const autoID = (idPrefix: string): string => {
 /*
 	Search a given container for an element using a given attribute, if not found find element using given selector, set the given attribute on it, then return the element.
 */
-export const getElByAttrOrSelector = (container: Element, attr: string, selector: string): HTMLElement => {
-	let el = container.querySelector(`[${attr}]`) as HTMLElement;
+export const getElByAttrOrSelector = (container: Element, attr: string, selector: string): HTMLElement | null => {
+	let el = container.querySelector(`[${attr}]`);
 	if (!el) {
 		el = container.querySelector(selector);
 		if (el) {
 			el.setAttribute(attr, '');
 		}
 	}
-	return el;
+	return el as HTMLElement;
 };
 
 
@@ -125,7 +125,7 @@ export const warnIfElHasNoAriaLabel = (element: HTMLElement, elementName: string
 		const labelEl = document.getElementById(elementLabelledById);
 		if (!labelEl) {
 			console.warn(`${DISPLAY_NAME}: ${elementName} with ID ${elementWithId.id} has aria-labelledby attribute set to an element that does not exist.`);
-		} else if (!labelEl.textContent.length) {
+		} else if (!labelEl.textContent || labelEl.textContent.length) {
 			console.warn(`${DISPLAY_NAME}: ${elementName} with ID ${elementWithId.id} has aria-labelledby attribute set to an element with no text content.`);
 		}
 	} else if (!elementHasLabel) {
