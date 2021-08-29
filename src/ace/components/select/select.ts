@@ -38,7 +38,7 @@ export const SEARCH_TIMEOUT = List.SEARCH_TIMEOUT;
 
 /* CLASS */
 export default class Select extends HTMLElement {
-	private chosenOptionIndex: number | null = null;
+	private chosenOptionIndex: number | undefined;
 	private inputEl: HTMLInputElement | null = null;
 	private list: List  | undefined;
 	private listEl: HTMLUListElement | HTMLOListElement | null = null;
@@ -176,10 +176,10 @@ export default class Select extends HTMLElement {
 		Add mutation observer to detect changes to selected options
 	*/
 	private updateSelectForFormAttributes(): void {
-		if (!this.list) {
+		if (!this.list?.optionEls) {
 			return;
 		}
-		const selectedOptionEl = this.list.optionEls[this.list.lastSelectedOptionIndex];
+		const selectedOptionEl = this.list.optionEls[this.list.lastSelectedOptionIndex as number];
 		if (this.inputEl && selectedOptionEl) {
 			const selectedOptionElText = selectedOptionEl.textContent;
 			if (selectedOptionElText) {
@@ -224,7 +224,7 @@ export default class Select extends HTMLElement {
 		Confirm the change in selected option by updating the trigger text, hiding the
 	*/
 	private confirmOptionChange(): void {
-		if (!this.list || !this.triggerEl) {
+		if (!this.list?.optionEls || !this.triggerEl) {
 			return;
 		}
 
@@ -240,7 +240,7 @@ export default class Select extends HTMLElement {
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTION_CHOSEN, {
 			'detail': {
 				'chosenOption': {
-					'id': this.list.optionEls[this.list.lastSelectedOptionIndex].id,
+					'id': this.list.optionEls[this.list.lastSelectedOptionIndex as number].id,
 					'index': this.list.lastSelectedOptionIndex,
 				},
 				'id': this.id,
@@ -363,7 +363,10 @@ export default class Select extends HTMLElement {
 		Update the trigger text
 	*/
 	private updateTriggerText(): void {
-		const chosenOptionEl = this.list?.optionEls[this.list.lastSelectedOptionIndex];
+		if (!this.list?.optionEls) {
+			return;
+		}
+		const chosenOptionEl = this.list.optionEls[this.list.lastSelectedOptionIndex as number];
 		const chosenOptionElText = chosenOptionEl?.textContent?.trim();
 
 		if (this.triggerTextEl && chosenOptionElText) {
