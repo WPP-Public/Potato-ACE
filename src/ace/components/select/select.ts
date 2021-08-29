@@ -38,14 +38,14 @@ export const SEARCH_TIMEOUT = List.SEARCH_TIMEOUT;
 
 /* CLASS */
 export default class Select extends HTMLElement {
-	private chosenOptionIndex: number;
-	private inputEl: HTMLInputElement;
-	private list: List;
-	private listEl: HTMLUListElement|HTMLOListElement;
-	private mutationObserver: MutationObserver;
-	private selectForForm: boolean;
-	private triggerEl: HTMLButtonElement;
-	private triggerTextEl: HTMLSpanElement;
+	private chosenOptionIndex: number | null = null;
+	private inputEl: HTMLInputElement | null = null;
+	private list: List  | undefined;
+	private listEl: HTMLUListElement | HTMLOListElement | null = null;
+	private mutationObserver: MutationObserver | undefined;
+	private selectForForm = false;
+	private triggerEl: HTMLButtonElement | null = null;
+	private triggerTextEl: HTMLSpanElement | null = null;
 
 
 	constructor() {
@@ -162,10 +162,10 @@ export default class Select extends HTMLElement {
 
 
 	public disconnectedCallback(): void {
-		this.list.destroy();
+		this.list?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
-		this.listEl.removeEventListener('blur', this.blurHandler);
+		this.listEl?.removeEventListener('blur', this.blurHandler);
 		this.removeEventListener('click', this.clickHandler);
 		this.removeEventListener('keydown', this.keydownHandler);
 		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
@@ -176,9 +176,15 @@ export default class Select extends HTMLElement {
 		Add mutation observer to detect changes to selected options
 	*/
 	private updateSelectForFormAttributes(): void {
+		if (!this.list) {
+			return;
+		}
 		const selectedOptionEl = this.list.optionEls[this.list.lastSelectedOptionIndex];
-		if (selectedOptionEl) {
-			this.inputEl.value = encodeURIComponent(selectedOptionEl.textContent);
+		if (this.inputEl && selectedOptionEl) {
+			const selectedOptionElText = selectedOptionEl.textContent;
+			if (selectedOptionElText) {
+				this.inputEl.value = encodeURIComponent(selectedOptionElText);
+			}
 			this.inputEl.setAttribute(ATTRS.SELECTED_OPTION_ID, selectedOptionEl.id);
 		}
 	}
@@ -189,7 +195,7 @@ export default class Select extends HTMLElement {
 	*/
 	private cancelOptionChange(): void {
 		if (this.chosenOptionIndex || this.chosenOptionIndex == 0) {
-			this.list.selectOption(this.chosenOptionIndex);
+			this.list?.selectOption(this.chosenOptionIndex);
 		}
 		this.hideList();
 	}
@@ -218,6 +224,10 @@ export default class Select extends HTMLElement {
 		Confirm the change in selected option by updating the trigger text, hiding the
 	*/
 	private confirmOptionChange(): void {
+		if (!this.list || !this.triggerEl) {
+			return;
+		}
+
 		this.chosenOptionIndex = this.list.lastSelectedOptionIndex;
 		this.updateTriggerText();
 		this.hideList();
@@ -242,8 +252,8 @@ export default class Select extends HTMLElement {
 	/*
 		Handle focus events on list
 	*/
-	private blurHandler(e: MouseEvent): void {
-		const relatedTarget = e.relatedTarget as HTMLElement;
+	private blurHandler(e: Event): void {
+		const relatedTarget = (e as MouseEvent).relatedTarget as HTMLElement;
 		if (!relatedTarget || !relatedTarget.closest(SELECT)) {
 			this.cancelOptionChange();
 		}
@@ -254,6 +264,9 @@ export default class Select extends HTMLElement {
 		Hide dropdown list
 	*/
 	private hideList(): void {
+		if (!this.listEl || !this.triggerEl) {
+			return;
+		}
 		this.listEl.removeAttribute(ATTRS.LIST_VISIBLE);
 		this.triggerEl.setAttribute('aria-expanded', 'false');
 	}
@@ -280,7 +293,7 @@ export default class Select extends HTMLElement {
 		// ESC pressed on list
 		if (keydownOnList && keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
 			this.cancelOptionChange();
-			this.triggerEl.focus();
+			this.triggerEl?.focus();
 			return;
 		}
 
@@ -300,7 +313,7 @@ export default class Select extends HTMLElement {
 
 		// Letter pressed on trigger
 		if (keydownOnTrigger) {
-			this.list.keydownHandler(e);
+			this.list?.keydownHandler(e);
 			this.confirmOptionChange();
 		}
 	}
@@ -310,6 +323,10 @@ export default class Select extends HTMLElement {
 		Show dropdown list
 	*/
 	private showList(): void {
+		if (!this.listEl || !this.triggerEl) {
+			return;
+		}
+
 		this.triggerEl.setAttribute('aria-expanded', 'true');
 		this.listEl.setAttribute(ATTRS.LIST_VISIBLE, '');
 		handleOverflow(this.listEl);
@@ -321,6 +338,9 @@ export default class Select extends HTMLElement {
 		Update options custom event handler
 	*/
 	private updateOptionsHandler(): void {
+		if (!this.list) {
+			return;
+		}
 		this.list.initOptionEls();
 		if (!this.list.lastSelectedOptionIndex && this.list.lastSelectedOptionIndex !== 0) {
 			this.list.selectOption(0);
@@ -343,9 +363,11 @@ export default class Select extends HTMLElement {
 		Update the trigger text
 	*/
 	private updateTriggerText(): void {
-		const chosenOptionEl = this.list.optionEls[this.list.lastSelectedOptionIndex];
-		if (chosenOptionEl) {
-			this.triggerTextEl.textContent = chosenOptionEl.textContent.trim();
+		const chosenOptionEl = this.list?.optionEls[this.list.lastSelectedOptionIndex];
+		const chosenOptionElText = chosenOptionEl?.textContent?.trim();
+
+		if (this.triggerTextEl && chosenOptionElText) {
+			this.triggerTextEl.textContent = chosenOptionElText;
 		}
 	}
 }
