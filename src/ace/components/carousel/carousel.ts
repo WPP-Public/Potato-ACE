@@ -63,29 +63,29 @@ export const DEFAULT_SLIDE_SHOW_TIME = 5000;
 
 /* CLASS */
 export default class Carousel extends HTMLElement {
-	private autoSlideShowBtn: HTMLButtonElement;
-	private autoSlideShowCarousel: boolean;
+	private autoSlideShowBtn: HTMLButtonElement | null = null;
+	private autoSlideShowCarousel = false;
 	private autoSlideShowStopped = false;
-	private autoSlideShowTime: number;
-	private autoSlideShowTimer: number;
+	private autoSlideShowTime = DEFAULT_SLIDE_SHOW_TIME;
+	private autoSlideShowTimer: number | undefined;
 	private carouselHasSlidePicker = false;
-	private goToFirstSlideLabel: string;
-	private goToLastSlideLabel: string;
-	private goToNextSlideLabel: string;
-	private goToPrevSlideLabel: string;
-	private infinite: boolean;
+	private goToFirstSlideLabel = 'Go to first slide';
+	private goToLastSlideLabel = 'Go to last slide';
+	private goToNextSlideLabel = 'Go to next slide';
+	private goToPrevSlideLabel = 'Go to previous slide';
+	private infinite = false;
 	private initialised = false;
-	private nextSlideBtn: HTMLButtonElement;
-	private prevSlideBtn: HTMLButtonElement;
-	private selectedSlideIndex: number;
-	private slideAriaLabelInfix: string;
-	private slideCount: number;
-	private slideEls: NodeListOf<HTMLElement>;
-	private slidePickerBtnAriaLabelPrefix: string;
-	private slidePickerEl: HTMLElement;
-	private slidesWrapper: HTMLElement;
-	private startAutoSlideShowLabel: string;
-	private stopAutoSlideShowLabel: string;
+	private nextSlideBtn: HTMLButtonElement | null = null;
+	private prevSlideBtn: HTMLButtonElement | null = null;
+	private selectedSlideIndex = 0;
+	private slideAriaLabelInfix = 'of';
+	private slideCount = 0;
+	private slideEls: NodeListOf<HTMLElement> | undefined;
+	private slidePickerBtnAriaLabelPrefix = 'Slide';
+	private slidePickerEl: HTMLElement | null = null;
+	private slidesWrapper: HTMLElement | null = null;
+	private startAutoSlideShowLabel = 'Start automatic slide show';
+	private stopAutoSlideShowLabel = 'Stop automatic slide show';
 
 
 	constructor() {
@@ -182,7 +182,7 @@ export default class Carousel extends HTMLElement {
 		/* GET DOM DATA */
 		this.infinite = this.hasAttribute(ATTRS.INFINITE);
 
-		let initiallySelectedSlideNumber = +this.getAttribute(ATTRS.SELECTED_SLIDE);
+		let initiallySelectedSlideNumber = +(this.getAttribute(ATTRS.SELECTED_SLIDE) || '');
 		if (!initiallySelectedSlideNumber) {
 			initiallySelectedSlideNumber = 1;
 			this.setAttribute(ATTRS.SELECTED_SLIDE, initiallySelectedSlideNumber.toString());
@@ -191,30 +191,28 @@ export default class Carousel extends HTMLElement {
 
 		// Automatic slide show
 		if (this.autoSlideShowCarousel) {
-			this.autoSlideShowTime = +this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_TIME) || DEFAULT_SLIDE_SHOW_TIME;
+			this.autoSlideShowTime = +(this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_TIME) || '') || this.autoSlideShowTime;
 
 			// Get user provided aria labels for auto slide show start and stop states or use default values
 			this.stopAutoSlideShowLabel =
-				this.autoSlideShowBtn.getAttribute(ATTRS.STOP_AUTO_SLIDE_SHOW_LABEL) ||
-				'Stop automatic slide show';
+				this.autoSlideShowBtn?.getAttribute(ATTRS.STOP_AUTO_SLIDE_SHOW_LABEL) || this.stopAutoSlideShowLabel;
 			this.startAutoSlideShowLabel =
-				this.autoSlideShowBtn.getAttribute(ATTRS.START_AUTO_SLIDE_SHOW_LABEL) ||
-				'Start automatic slide show';
+				this.autoSlideShowBtn?.getAttribute(ATTRS.START_AUTO_SLIDE_SHOW_LABEL) || this.startAutoSlideShowLabel;
 		}
 
 		// Get user provided aria labels for the prev and next slide btns or use default values
-		this.goToPrevSlideLabel = this.prevSlideBtn.getAttribute(ATTRS.GO_TO_PREV_SLIDE_LABEL) || 'Go to previous slide';
-		this.goToLastSlideLabel = this.prevSlideBtn.getAttribute(ATTRS.GO_TO_LAST_SLIDE_LABEL) || 'Go to last slide';
-		this.goToNextSlideLabel = this.nextSlideBtn.getAttribute(ATTRS.GO_TO_NEXT_SLIDE_LABEL) || 'Go to next slide';
-		this.goToFirstSlideLabel = this.nextSlideBtn.getAttribute(ATTRS.GO_TO_FIRST_SLIDE_LABEL) || 'Go to first slide';
+		this.goToFirstSlideLabel = this.nextSlideBtn.getAttribute(ATTRS.GO_TO_FIRST_SLIDE_LABEL) || this.goToFirstSlideLabel;
+		this.goToLastSlideLabel = this.prevSlideBtn.getAttribute(ATTRS.GO_TO_LAST_SLIDE_LABEL) || this.goToLastSlideLabel;
+		this.goToNextSlideLabel = this.nextSlideBtn.getAttribute(ATTRS.GO_TO_NEXT_SLIDE_LABEL) || this.goToNextSlideLabel;
+		this.goToPrevSlideLabel = this.prevSlideBtn.getAttribute(ATTRS.GO_TO_PREV_SLIDE_LABEL) || this.goToPrevSlideLabel;
 
-		// For localisation, users can provide a string to prefix before the slide number in the slide picker button aria-label attributes, e.g. if this.slidePickerEl has attribute ace-carousel-slide-picker-btn-aria-label-prefix set to "Card" the aria labels of the slide picker buttons will be "Card n", where n is the slide number.
+		// For localisation, users can provide a string to prefix before the slide number in the slide picker button aria-label attributes, e.g. if this.slidePickerEl has attribute ace-carousel-slide-picker-btn-aria-label-prefix="Diapositiva" the aria labels of the slide picker buttons will be "Diapositiva n" where n is the slide number.
 		if (this.carouselHasSlidePicker) {
-			this.slidePickerBtnAriaLabelPrefix = this.slidePickerEl.getAttribute(ATTRS.SLIDE_PICKER_BTN_ARIA_LABEL_PREFIX);
+			this.slidePickerBtnAriaLabelPrefix = this.slidePickerEl?.getAttribute(ATTRS.SLIDE_PICKER_BTN_ARIA_LABEL_PREFIX) || this.slidePickerBtnAriaLabelPrefix;
 		}
 
-		// For localisation, users can provide a string to infix between the slide number and slide count in the slide aria-label attributes, e.g. if this.slidesWrapper has attribute ace-carousel-slide-aria-label-infix set to "de" the aria labels of the slides will be "1 de N", "2 de N", ... "n de N" where n is the slide number and N is the slide count.
-		this.slideAriaLabelInfix = this.slidesWrapper.getAttribute(ATTRS.SLIDE_ARIA_LABEL_INFIX);
+		// For localisation, users can provide a string to infix between the slide number and slide count in the slide aria-label attributes, e.g. if this.slidesWrapper has attribute ace-carousel-slide-aria-label-infix="de" the aria labels of the slides will be "1 de N", "2 de N", ... "n de N" where n is the slide number and N is the slide count.
+		this.slideAriaLabelInfix = this.slidesWrapper.getAttribute(ATTRS.SLIDE_ARIA_LABEL_INFIX) || this.slideAriaLabelInfix;
 
 
 		/* SET DOM DATA */
@@ -224,8 +222,8 @@ export default class Carousel extends HTMLElement {
 		// Automatic slideshow Carousel
 		if (this.autoSlideShowCarousel) {
 			this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_TIME, this.autoSlideShowTime.toString());
-			this.autoSlideShowBtn.setAttribute(ATTRS.AUTO_SLIDE_SHOW_BTN, '');
-			this.autoSlideShowBtn.setAttribute('aria-label', this.stopAutoSlideShowLabel);
+			this.autoSlideShowBtn?.setAttribute(ATTRS.AUTO_SLIDE_SHOW_BTN, '');
+			this.autoSlideShowBtn?.setAttribute('aria-label', this.stopAutoSlideShowLabel);
 		}
 
 		// Previous and next slide buttons
@@ -238,10 +236,10 @@ export default class Carousel extends HTMLElement {
 		// Carousel with slide picker
 		if (this.carouselHasSlidePicker) {
 			this.setAttribute(ATTRS.WITH_SLIDE_PICKER, '');
-			this.slidePickerEl.setAttribute(ATTRS.SLIDE_PICKER, '');
-			this.slidePickerEl.setAttribute('role', 'tablist');
-			if (!this.slidePickerEl.hasAttribute('aria-label') || !this.slidePickerEl.hasAttribute('aria-labelledby')) {
-				this.slidePickerEl.setAttribute('aria-label', 'Choose slide to display');
+			this.slidePickerEl?.setAttribute(ATTRS.SLIDE_PICKER, '');
+			this.slidePickerEl?.setAttribute('role', 'tablist');
+			if (!this.slidePickerEl?.hasAttribute('aria-label') || !this.slidePickerEl?.hasAttribute('aria-labelledby')) {
+				this.slidePickerEl?.setAttribute('aria-label', 'Choose slide to display');
 			}
 		}
 
@@ -261,7 +259,7 @@ export default class Carousel extends HTMLElement {
 		this.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
 
 		if (this.autoSlideShowCarousel) {
-			document.addEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE, this.visibilityChangeHandler);
+			document.addEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE as string, this.visibilityChangeHandler);
 			this.addEventListener('focusin', this.focusAndMouseHandler);
 			this.addEventListener('focusout', this.focusAndMouseHandler);
 			this.addEventListener('mouseenter', this.focusAndMouseHandler);
@@ -296,7 +294,7 @@ export default class Carousel extends HTMLElement {
 		this.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
 
 		if (this.autoSlideShowCarousel) {
-			document.removeEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE, this.visibilityChangeHandler);
+			document.removeEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE as string, this.visibilityChangeHandler);
 			this.removeEventListener('focusin', this.focusAndMouseHandler);
 			this.removeEventListener('focusout', this.focusAndMouseHandler);
 			this.removeEventListener('mouseenter', this.focusAndMouseHandler);
@@ -341,8 +339,10 @@ export default class Carousel extends HTMLElement {
 		if (this.carouselHasSlidePicker) {
 			const slidePickerBtnClicked = target.closest(`[${ATTRS.SLIDE_PICKER_BTN}][aria-selected="false"]`);
 			if (slidePickerBtnClicked) {
-				const slideToSelect = +slidePickerBtnClicked.getAttribute(ATTRS.SLIDE_PICKER_BTN);
-				this.setSelectedSlide(slideToSelect - 1);
+				const slideToSelect = slidePickerBtnClicked.getAttribute(ATTRS.SLIDE_PICKER_BTN);
+				if (slideToSelect !== null) {
+					this.setSelectedSlide(+slideToSelect - 1);
+				}
 			}
 		}
 	}
@@ -351,7 +351,7 @@ export default class Carousel extends HTMLElement {
 	/*
 		Handler for incoming custom events
 	*/
-	private customEventsHander(e: CustomEvent): void {
+	private customEventsHander(e: Event): void {
 		switch (e.type) {
 			case EVENTS.IN.SET_PREV_SLIDE:
 			case EVENTS.IN.SET_NEXT_SLIDE: {
@@ -405,8 +405,8 @@ export default class Carousel extends HTMLElement {
 	*/
 	private initSlides(): void {
 		// Get slides
-		this.slideEls = this.slidesWrapper.querySelectorAll(`[${ATTRS.SLIDES}] > *`);
-		this.slideCount = this.slideEls.length;
+		this.slideEls = this.slidesWrapper?.querySelectorAll(`[${ATTRS.SLIDES}] > *`);
+		this.slideCount = this.slideEls?.length || this.slideCount;
 
 		// If last slide was selected before it was deleted select the current last slide
 		if (this.selectedSlideIndex >= this.slideCount) {
@@ -415,21 +415,21 @@ export default class Carousel extends HTMLElement {
 
 		// Slide picker buttons
 		if (this.carouselHasSlidePicker) {
-			let slidePickerBtns = this.slidePickerEl.querySelectorAll('button');
-			const slidePickerBtnsCount = slidePickerBtns.length;
+			let slidePickerBtns = this.slidePickerEl?.querySelectorAll('button');
+			const slidePickerBtnsCount = slidePickerBtns?.length;
 			if (slidePickerBtnsCount === 0) {
-				this.slideEls.forEach(() => this.slidePickerEl.appendChild(document.createElement('button')));
-				slidePickerBtns = this.slidePickerEl.querySelectorAll('button');
+				this.slideEls?.forEach(() => this.slidePickerEl?.appendChild(document.createElement('button')));
+				slidePickerBtns = this.slidePickerEl?.querySelectorAll('button');
 			} else if (slidePickerBtnsCount !== this.slideCount) {
 				console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has decendant with attribute ${ATTRS.SLIDE_PICKER} that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
 				return;
 			}
 
-			slidePickerBtns.forEach((slidePickerBtn, index) => {
+			slidePickerBtns?.forEach((slidePickerBtn, index) => {
 				const slideNumber = index + 1;
 				const isSelectedSlideBtn = index === this.selectedSlideIndex;
 				slidePickerBtn.setAttribute(ATTRS.SLIDE_PICKER_BTN, `${slideNumber}`);
-				slidePickerBtn.setAttribute('aria-label', `${this.slidePickerBtnAriaLabelPrefix || 'Slide'} ${slideNumber}`);
+				slidePickerBtn.setAttribute('aria-label', `${this.slidePickerBtnAriaLabelPrefix} ${slideNumber}`);
 				slidePickerBtn.setAttribute('aria-selected', isSelectedSlideBtn ? 'true' : 'false');
 				slidePickerBtn.setAttribute('aria-controls', `${this.id}-slide-${slideNumber}`);
 				slidePickerBtn.setAttribute('tabindex', isSelectedSlideBtn ? '0' : '-1');
@@ -449,7 +449,7 @@ export default class Carousel extends HTMLElement {
 			}));
 		}
 
-		if (this.autoSlideShowCarousel && this.slideEls.length > 0) {
+		if (this.autoSlideShowCarousel && this.slideEls && this.slideEls.length > 0) {
 			this.startAutoSlideShow();
 		}
 	}
@@ -493,16 +493,20 @@ export default class Carousel extends HTMLElement {
 		this.slideEls[slideToSelectIndex].setAttribute(ATTRS.SLIDE_SELECTED, '');
 
 		if (this.carouselHasSlidePicker) {
-			const selectedSlidePickerBtn = this.slidePickerEl.querySelector('button[aria-selected="true"]') as HTMLButtonElement;
-			const slideToSelectPickerBtn = this.slidePickerEl.querySelector(`button:nth-of-type(${slideToSelectIndex + 1})`) as HTMLButtonElement;
+			const selectedSlidePickerBtn = this.slidePickerEl?.querySelector('button[aria-selected="true"]');
+			const slideToSelectPickerBtn = this.slidePickerEl?.querySelector(`button:nth-of-type(${slideToSelectIndex + 1})`);
 
-			selectedSlidePickerBtn.setAttribute('tabindex', '-1');
-			selectedSlidePickerBtn.setAttribute('aria-selected', 'false');
+			if (selectedSlidePickerBtn) {
+				selectedSlidePickerBtn.setAttribute('tabindex', '-1');
+				selectedSlidePickerBtn.setAttribute('aria-selected', 'false');
+			}
 
-			slideToSelectPickerBtn.setAttribute('aria-selected', 'true');
-			slideToSelectPickerBtn.setAttribute('tabindex', '0');
-			if (selectedSlidePickerBtn === document.activeElement) {
-				slideToSelectPickerBtn.focus();
+			if (slideToSelectPickerBtn) {
+				slideToSelectPickerBtn.setAttribute('aria-selected', 'true');
+				slideToSelectPickerBtn.setAttribute('tabindex', '0');
+				if (selectedSlidePickerBtn === document.activeElement) {
+					(slideToSelectPickerBtn as HTMLButtonElement).focus();
+				}
 			}
 		}
 
@@ -536,25 +540,25 @@ export default class Carousel extends HTMLElement {
 		it is going to take.
 	*/
 	private setNavBtnAttributes(): void {
-		this.prevSlideBtn.setAttribute('aria-label', this.goToPrevSlideLabel);
-		this.prevSlideBtn.removeAttribute('disabled');
+		this.prevSlideBtn?.setAttribute('aria-label', this.goToPrevSlideLabel);
+		this.prevSlideBtn?.removeAttribute('disabled');
 
 		if (this.selectedSlideIndex === 0) {
 			if (this.infinite) {
-				this.prevSlideBtn.setAttribute('aria-label', this.goToLastSlideLabel);
+				this.prevSlideBtn?.setAttribute('aria-label', this.goToLastSlideLabel);
 			} else {
-				this.prevSlideBtn.setAttribute('disabled', '');
+				this.prevSlideBtn?.setAttribute('disabled', '');
 			}
 		}
 
-		this.nextSlideBtn.setAttribute('aria-label', this.goToNextSlideLabel);
-		this.nextSlideBtn.removeAttribute('disabled');
+		this.nextSlideBtn?.setAttribute('aria-label', this.goToNextSlideLabel);
+		this.nextSlideBtn?.removeAttribute('disabled');
 
 		if (this.selectedSlideIndex === this.slideCount - 1) {
 			if (this.infinite) {
-				this.nextSlideBtn.setAttribute('aria-label', this.goToFirstSlideLabel);
+				this.nextSlideBtn?.setAttribute('aria-label', this.goToFirstSlideLabel);
 			} else {
-				this.nextSlideBtn.setAttribute('disabled', '');
+				this.nextSlideBtn?.setAttribute('disabled', '');
 			}
 		}
 	}
@@ -572,7 +576,7 @@ export default class Carousel extends HTMLElement {
 		Set slide attributes
 	*/
 	private setSlideAttributes(): void {
-		this.slideEls.forEach((slide, index) => {
+		this.slideEls?.forEach((slide, index) => {
 			// Set ID only if it was not given or we have previously provided it automatically
 			if (!slide.id || slide.id.includes(`${this.id}-slide-`)) {
 				slide.id = `${this.id}-slide-${index + 1}`;
@@ -584,7 +588,7 @@ export default class Carousel extends HTMLElement {
 			} else {
 				slide.removeAttribute(ATTRS.SLIDE_SELECTED);
 			}
-			slide.setAttribute('aria-label', `${index + 1} ${this.slideAriaLabelInfix || 'of'} ${this.slideCount}`);
+			slide.setAttribute('aria-label', `${index + 1} ${this.slideAriaLabelInfix} ${this.slideCount}`);
 			slide.setAttribute('aria-roledescription', 'slide');
 			slide.setAttribute('role', this.carouselHasSlidePicker ? 'tabpanel' : 'group');
 		});
@@ -598,7 +602,7 @@ export default class Carousel extends HTMLElement {
 		if (
 			this.autoSlideShowStopped ||
 			this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE) === 'true' ||
-			(document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN]
+			(document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN as string]
 		) {
 			return;
 		}
@@ -609,11 +613,11 @@ export default class Carousel extends HTMLElement {
 		}, this.autoSlideShowTime);
 
 		this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true');
-		this.slidesWrapper.setAttribute('aria-live', 'off');
+		this.slidesWrapper?.setAttribute('aria-live', 'off');
 
 		if (!paused) {
 			this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
-			this.autoSlideShowBtn.setAttribute('aria-label', this.stopAutoSlideShowLabel);
+			this.autoSlideShowBtn?.setAttribute('aria-label', this.stopAutoSlideShowLabel);
 		}
 
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {
@@ -634,11 +638,11 @@ export default class Carousel extends HTMLElement {
 
 		window.clearInterval(this.autoSlideShowTimer);
 		this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false');
-		this.slidesWrapper.setAttribute('aria-live', 'polite');
+		this.slidesWrapper?.setAttribute('aria-live', 'polite');
 
 		if (!paused) {
 			this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true');
-			this.autoSlideShowBtn.setAttribute('aria-label', this.startAutoSlideShowLabel);
+			this.autoSlideShowBtn?.setAttribute('aria-label', this.startAutoSlideShowLabel);
 		}
 
 		const eventName = (EVENTS.OUT as any)[`AUTO_SLIDE_SHOW_${paused ? 'PAUSED' : 'STOPPED'}`];
@@ -658,7 +662,7 @@ export default class Carousel extends HTMLElement {
 			return;
 		}
 
-		if ((document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN]) {
+		if ((document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN as string]) {
 			this.stopAutoSlideShow(true);
 		} else {
 			this.startAutoSlideShow(true);

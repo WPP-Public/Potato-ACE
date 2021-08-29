@@ -46,18 +46,18 @@ export const EVENTS = {
 /* CLASS */
 export default class Combobox extends HTMLElement {
 	/* CLASS CONSTANTS */
-	private allOptionEls: Array<Node>;
-	private inputAutocompletes: boolean;
-	private inputEl: HTMLInputElement;
-	private lastChosenOptionIndex: number = null;
-	private list: List;
-	private listAutocompletes: boolean;
-	private listAutoselects: boolean;
-	private listEl: HTMLUListElement;
+	private allOptionEls: Array<Node> = [];
+	private inputAutocompletes = false;
+	private inputEl: HTMLInputElement | undefined;
+	private lastChosenOptionIndex: number | null = null;
+	private list: List | undefined;
+	private listAutocompletes = false;
+	private listAutoselects = false;
+	private listEl: HTMLUListElement | undefined;
 	private listVisible = false;
-	private noInputUpdate: boolean;
+	private noInputUpdate = false;
 	private query = '';
-	private selectedOptionIndex: number = null;
+	private selectedOptionIndex: number | null = null;
 
 
 	constructor() {
@@ -149,7 +149,7 @@ export default class Combobox extends HTMLElement {
 
 		// Keep copy of original options so they may be replaced when autocomplete filter removed
 		if (this.listAutocompletes) {
-			this.allOptionEls = [...this.list.optionEls].map(option => option.cloneNode(true));
+			this.allOptionEls = [...this.list?.optionEls].map(option => option.cloneNode(true));
 		}
 
 		// Dispatch 'Ready' event
@@ -167,12 +167,12 @@ export default class Combobox extends HTMLElement {
 		this.removeEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
 		this.removeEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
 		this.removeEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
-		this.inputEl.removeEventListener('focus', this.focusHandler);
-		this.inputEl.removeEventListener('blur', this.focusHandler);
-		this.inputEl.removeEventListener('keydown', this.keydownHandler);
-		this.inputEl.removeEventListener('input', this.inputHandler);
-		this.listEl.removeEventListener('click', this.clickHandler);
-		this.listEl.removeEventListener('mousedown', this.mousedownHandler);
+		this.inputEl?.removeEventListener('focus', this.focusHandler);
+		this.inputEl?.removeEventListener('blur', this.focusHandler);
+		this.inputEl?.removeEventListener('keydown', this.keydownHandler);
+		this.inputEl?.removeEventListener('input', this.inputHandler);
+		this.listEl?.removeEventListener('click', this.clickHandler);
+		this.listEl?.removeEventListener('mousedown', this.mousedownHandler);
 	}
 
 
@@ -180,10 +180,14 @@ export default class Combobox extends HTMLElement {
 		Autocomplete the input value
 	*/
 	private autocompleteInput(): void {
-		if (!this.list.optionElsCount) {
+		if (!this.inputEl || !this.list || !this.list.optionEls) {
 			return;
 		}
-		const selectedOptionText = this.list.optionEls[0].textContent.trim();
+		const selectedOptionText = this.list.optionEls[0].textContent?.trim();
+		if (!selectedOptionText) {
+			return;
+		}
+
 		this.inputEl.value = selectedOptionText;
 		this.inputEl.setSelectionRange(this.query.length, selectedOptionText.length);
 	}
@@ -193,21 +197,23 @@ export default class Combobox extends HTMLElement {
 		Autocomplete the list options
 	*/
 	private autocompleteList(): void {
-		const inputVal = this.inputEl.value.toLowerCase();
+		const inputVal = this.inputEl?.value.toLowerCase() || '';
 		const inputEmpty = inputVal.length === 0;
-		this.listEl.innerHTML = '';
+		if (this.listEl) {
+			this.listEl.innerHTML = '';
+		}
 		this.deselectSelectedOption();
 
 		// If input value empty append all option els to list, else only append option els whose text starts with input value
 		this.allOptionEls.forEach((optionEl) => {
-			const optionElTextStartsWithInputVal = optionEl.textContent.trim().toLowerCase().startsWith(inputVal);
+			const optionElTextStartsWithInputVal = optionEl.textContent?.trim().toLowerCase().startsWith(inputVal);
 			if (inputEmpty || optionElTextStartsWithInputVal) {
-				this.listEl.appendChild(optionEl.cloneNode(true));
+				this.listEl?.appendChild(optionEl.cloneNode(true));
 			}
 		});
-		this.list.initOptionEls();
+		this.list?.initOptionEls();
 
-		if (this.list.optionElsCount === 0) {
+		if (this.list?.optionElsCount === 0) {
 			this.hideList();
 			return;
 		}
@@ -222,7 +228,7 @@ export default class Combobox extends HTMLElement {
 		Changes the selected option in the list
 	*/
 	private changeSelectedOption(optionToSelectIndex: number): void {
-		if (optionToSelectIndex === this.selectedOptionIndex) {
+		if (optionToSelectIndex === this.selectedOptionIndex || !this.inputEl || !this.list?.optionEls) {
 			return;
 		}
 
@@ -249,6 +255,9 @@ export default class Combobox extends HTMLElement {
 		Run when a user confirms an option and updates the input value to that of the chosen option
 	*/
 	private chooseOption(optionToChooseIndex: number): void {
+		if (!this.inputEl || !this.list?.optionEls) {
+			return;
+		}
 		this.changeSelectedOption(optionToChooseIndex);
 		const chosenOption = this.list.optionEls[optionToChooseIndex];
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTION_CHOSEN, {
@@ -262,8 +271,8 @@ export default class Combobox extends HTMLElement {
 			return;
 		}
 
-		const optionText = chosenOption.textContent.trim();
-		if (optionText.length > 0) {
+		const optionText = chosenOption.textContent?.trim();
+		if (optionText && optionText.length > 0) {
 			this.inputEl.value = optionText;
 
 			if (this.inputAutocompletes && this.listAutoselects) {
@@ -288,7 +297,7 @@ export default class Combobox extends HTMLElement {
 	*/
 	private clickHandler(e: MouseEvent): void {
 		const optionElClicked = (e.target as HTMLElement).closest(`[${ATTRS.OPTION}]`) as HTMLLIElement;
-		if (optionElClicked) {
+		if (optionElClicked && this.list) {
 			const optionElClickedIndex = [...this.list.optionEls].indexOf(optionElClicked);
 			this.chooseOption(optionElClickedIndex);
 		}
@@ -298,21 +307,21 @@ export default class Combobox extends HTMLElement {
 	/*
 		Prevent inputEl blur event from triggering when list or a descendant of it is clicked
 	*/
-	private customEventsHandler(e: CustomEvent): void {
+	private customEventsHandler(e: Event): void {
 		switch (e.type) {
 			case EVENTS.IN.HIDE_LIST:
 				this.hideList();
 				break;
 			case EVENTS.IN.SELECT_OPTION: {
-				const detail = e['detail'];
+				const detail = (e as CustomEvent)['detail'];
 				if (!detail || !detail['optionId']) {
 					return;
 				}
-				const optionEl = this.listEl.querySelector(`#${detail['optionId']}`) as HTMLLIElement;
+				const optionEl = this.listEl?.querySelector(`#${detail['optionId']}`) as HTMLLIElement;
 				if (!optionEl) {
 					return;
 				}
-				const optionElIndex = [...this.list.optionEls].indexOf(optionEl);
+				const optionElIndex = [...this.list?.optionEls].indexOf(optionEl);
 				this.changeSelectedOption(optionElIndex);
 				break;
 			}
@@ -320,9 +329,9 @@ export default class Combobox extends HTMLElement {
 				this.showList();
 				break;
 			case EVENTS.IN.UPDATE_OPTIONS:
-				this.list.initOptionEls();
+				this.list?.initOptionEls();
 				if (this.listAutocompletes) {
-					this.allOptionEls = [...this.list.optionEls].map(optionEl => optionEl.cloneNode(true));
+					this.allOptionEls = [...this.list?.optionEls].map(optionEl => optionEl.cloneNode(true));
 				}
 				window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTIONS_UPDATED, {
 					'detail': {
@@ -338,13 +347,13 @@ export default class Combobox extends HTMLElement {
 		Deselct currectly delected option
 	*/
 	private deselectSelectedOption(): void {
-		if (this.selectedOptionIndex === null) {
+		if (!this.list?.optionEls || this.selectedOptionIndex === null) {
 			return;
 		}
 
 		const selectedOption = this.list.optionEls[this.selectedOptionIndex];
 		selectedOption.setAttribute('aria-selected', 'false');
-		this.inputEl.removeAttribute('aria-activedescendant');
+		this.inputEl?.removeAttribute('aria-activedescendant');
 		this.selectedOptionIndex = null;
 	}
 
@@ -357,7 +366,7 @@ export default class Combobox extends HTMLElement {
 	private focusHandler(e: FocusEvent): void {
 		// FOCUS
 		if (e.type === 'focus' && !this.listAutocompletes) {
-			if (this.list.optionElsCount === 0) {
+			if (this.list?.optionElsCount === 0) {
 				return;
 			}
 
@@ -383,7 +392,7 @@ export default class Combobox extends HTMLElement {
 		Hide list
 	*/
 	private hideList(): void {
-		if (!this.listVisible) {
+		if (!this.listVisible || !this.listEl || !this.inputEl) {
 			return;
 		}
 
@@ -405,8 +414,11 @@ export default class Combobox extends HTMLElement {
 		Handle input events on input element:
 		Deselect selected option, remove stored lastChosenOptionIndex then show list
 	*/
-	private inputHandler(e: InputEvent): void {
-		const stringInput = e.data;
+	private inputHandler(e: Event): void {
+		if (!this.inputEl || !this.list) {
+			return;
+		}
+		const stringInput = (e as InputEvent).data;
 		this.lastChosenOptionIndex = null;
 
 		// If list autocompletes remove options whose text doesn't start with input value
@@ -436,7 +448,7 @@ export default class Combobox extends HTMLElement {
 		UP/DOWN changes the selected option (wrapping around if necesary)
 	*/
 	public keydownHandler(e: KeyboardEvent): void {
-		if (this.list.optionElsCount === 0) {
+		if (!this.inputEl || !this.list || this.list?.optionElsCount === 0) {
 			return;
 		}
 
@@ -470,9 +482,11 @@ export default class Combobox extends HTMLElement {
 			const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
 			let optionElToSelectIndex;
 			if (this.selectedOptionIndex !== null) {
-				optionElToSelectIndex = getIndexBasedOnDirection(this.selectedOptionIndex, direction, this.list.optionElsCount, true);
+				optionElToSelectIndex =
+					getIndexBasedOnDirection(this.selectedOptionIndex, direction, this.list.optionElsCount, true);
 			} else if (this.lastChosenOptionIndex !== null) {
-				optionElToSelectIndex = getIndexBasedOnDirection(this.lastChosenOptionIndex, direction, this.list.optionElsCount, true);
+				optionElToSelectIndex =
+					getIndexBasedOnDirection(this.lastChosenOptionIndex, direction, this.list.optionElsCount, true);
 			} else {
 				optionElToSelectIndex = direction === 1 ? 0 : this.list.optionElsCount - 1;
 			}
@@ -480,8 +494,11 @@ export default class Combobox extends HTMLElement {
 
 
 			// If input autocompletes make input value match option text
-			if (this.inputAutocompletes) {
-				this.inputEl.value = this.list.optionEls[this.selectedOptionIndex].textContent.trim();
+			if (this.inputAutocompletes && this.list.optionEls && this.selectedOptionIndex !== null) {
+				const selectedOptionText = this.list.optionEls[this.selectedOptionIndex].textContent?.trim();
+				if (selectedOptionText) {
+					this.inputEl.value = selectedOptionText;
+				}
 				const inputValLength = this.inputEl.value.length;
 				this.inputEl.setSelectionRange(inputValLength, inputValLength);
 			}
@@ -503,7 +520,7 @@ export default class Combobox extends HTMLElement {
 		Show list
 	*/
 	private showList(): void {
-		if (this.listVisible) {
+		if (!this.inputEl || !this.listEl || this.listVisible) {
 			return;
 		}
 
