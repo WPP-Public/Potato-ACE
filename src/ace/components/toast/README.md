@@ -122,18 +122,18 @@ This event is dispatched when Toast visibility changes. The event name is availa
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 ### Simple Toast and long show time Toast
-A Toast with a default 4 second show time and one with a custom 7 second show time. The JavaScript used by this example is shown below.
+A Toast with a default 4 second show time and one with a custom 5 second show time. The JavaScript used by this example is shown below.
 
 ```html
 <button id="simple-toast-btn">Show Toast</button>
-<button id="long-show-time-toast-btn">Show Toast with 7 second show time</button>
+<button id="long-show-time-toast-btn">Show Toast with 5 second show time</button>
 
 <ace-toast>
 	Toast with standard 4 second show time
 </ace-toast>
 
-<ace-toast ace-toast-show-time="7000">
-	Toast with developer-defined 7 second show time
+<ace-toast ace-toast-show-time="5000">
+	Toast with developer-defined 5 second show time
 </ace-toast>
 ```
 
