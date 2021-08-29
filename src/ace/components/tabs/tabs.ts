@@ -49,19 +49,19 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Tabs extends HTMLElement {
-	private activeTabIndex: number;
-	private deepLinked: boolean;
-	private infinite: boolean;
+	private activeTabIndex: number | null = null;
+	private deepLinked = false;
+	private infinite = false;
 	private initialised = false;
 	private manualSelection = true;
 	private nextTabKey = KEYS.RIGHT;
-	private panelEls: NodeListOf<Element>;
+	private panelEls: NodeListOf<Element> | undefined;
 	private prevTabKey = KEYS.LEFT;
-	private selectedTabIndex: number;
-	private tabCount: number;
-	private tabEls: NodeListOf<HTMLButtonElement>;
-	private tablistEl: HTMLElement;
-	private vertical: boolean;
+	private selectedTabIndex: number | null = null;
+	private tabCount = 0;
+	private tabEls: NodeListOf<HTMLButtonElement> | undefined;
+	private tablistEl: HTMLElement | null = null;
+	private vertical = false;
 
 
 	constructor() {
@@ -159,8 +159,8 @@ export default class Tabs extends HTMLElement {
 		/* REMOVE EVENT LISTENERS */
 		this.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
 		this.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
-		this.tablistEl.removeEventListener('click', this.clickHandler);
-		this.tablistEl.removeEventListener('keydown', this.keydownHandler);
+		this.tablistEl?.removeEventListener('click', this.clickHandler);
+		this.tablistEl?.removeEventListener('keydown', this.keydownHandler);
 	}
 
 
@@ -169,7 +169,7 @@ export default class Tabs extends HTMLElement {
 	*/
 	private clickHandler(e: MouseEvent): void {
 		const tabClicked = (e.target as HTMLElement).closest(`[${ATTRS.TAB}]`) as HTMLButtonElement;
-		if (!tabClicked) {
+		if (!tabClicked || !this.tabEls) {
 			return;
 		}
 		const tabIndex = [...this.tabEls].indexOf(tabClicked);
@@ -180,10 +180,13 @@ export default class Tabs extends HTMLElement {
 	/*
 		Handler for incoming custom events
 	*/
-	private customEventsHander(e: CustomEvent): void {
+	private customEventsHander(e: Event): void {
 		switch (e.type) {
 			case EVENTS.IN.SET_PREV_TAB:
 			case EVENTS.IN.SET_NEXT_TAB: {
+				if (this.selectedTabIndex === null) {
+					return;
+				}
 				const direction = (e.type === EVENTS.IN.SET_PREV_TAB) ? -1 : 1;
 				const newTabIndex = getIndexBasedOnDirection(this.selectedTabIndex, direction, this.tabCount, this.infinite);
 				this.setSelectedTab(newTabIndex);
@@ -201,7 +204,7 @@ export default class Tabs extends HTMLElement {
 	*/
 	private determineStartingSelectedTab(): void {
 		let urlStartingTabNumber;
-		let startingSelectedTabNumber = +this.getAttribute(ATTRS.SELECTED_TAB) || 1;
+		let startingSelectedTabNumber = +(this.getAttribute(ATTRS.SELECTED_TAB) || 1);
 
 		// If Tabs previously initialised (updating) and index is greater than max, default to last tab (means last tab was selected and subsequently deleted)
 		if (startingSelectedTabNumber > this.tabCount && this.initialised) {
@@ -211,7 +214,11 @@ export default class Tabs extends HTMLElement {
 		// if Tabs deep-linked and not initialised yet, get starting tab number from URL
 		if (this.deepLinked && !this.initialised) {
 			const params = new URLSearchParams(location.search);
-			urlStartingTabNumber = +params.get(this.id);
+			const urlStartingTab = params.get(this.id);
+			if (!urlStartingTab) {
+				return;
+			}
+			urlStartingTabNumber = +urlStartingTab;
 			if (urlStartingTabNumber > 0 && urlStartingTabNumber <= this.tabCount) {
 				startingSelectedTabNumber = urlStartingTabNumber;
 			}
@@ -231,8 +238,8 @@ export default class Tabs extends HTMLElement {
 		Initialises Tabs panel and tab elements. Should be run whenever Tabs markup changes
 	*/
 	private initTabs(): void {
-		this.tabEls = this.tablistEl.querySelectorAll('button');
-		this.tabCount = this.tabEls.length;
+		this.tabEls = this.tablistEl?.querySelectorAll('button');
+		this.tabCount = this.tabEls?.length || this.tabCount;
 
 		// If ATTRS.PANEL not given then take all children except first (which is the tablist)
 		this.panelEls = getElsByAttrOrSelector(this, ATTRS.PANEL, `${TABS} > :not(:first-child)`);
@@ -272,7 +279,9 @@ export default class Tabs extends HTMLElement {
 		// SPACE or ENTER key pressed
 		if (this.manualSelection && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {
 			e.preventDefault();
-			this.setSelectedTab(this.activeTabIndex);
+			if (this.activeTabIndex !== null) {
+				this.setSelectedTab(this.activeTabIndex);
+			}
 			return;
 		}
 
@@ -283,12 +292,15 @@ export default class Tabs extends HTMLElement {
 
 		e.preventDefault();
 		let desiredTabIndex = homeKeyPressed ? 0 : this.tabCount - 1;
-		if (prevTabKeyPressed || nextTabKeyPressed) {
+		if ((prevTabKeyPressed || nextTabKeyPressed) && this.activeTabIndex !== null && this.selectedTabIndex !== null) {
 			const direction = prevTabKeyPressed ? -1 : 1;
 			const startingPoint = this.manualSelection ? this.activeTabIndex : this.selectedTabIndex;
 			desiredTabIndex = getIndexBasedOnDirection(startingPoint, direction, this.tabCount, this.infinite);
 		}
 		if (this.manualSelection) {
+			if (!this.tabEls || this.activeTabIndex === null) {
+				return;
+			}
 			this.tabEls[this.activeTabIndex].setAttribute('tabindex', '-1');
 			this.activeTabIndex = desiredTabIndex;
 			const desiredTabEl = this.tabEls[desiredTabIndex];
@@ -316,6 +328,9 @@ export default class Tabs extends HTMLElement {
 
 		// De-select previously selected tab and panel
 		const oldTabIndex = this.selectedTabIndex;
+		if (oldTabIndex === null) {
+			return;
+		}
 		const oldTabEl = this.tabEls[oldTabIndex];
 		const oldPanelEl = this.panelEls[oldTabIndex];
 		oldTabEl.removeAttribute(ATTRS.TAB_SELECTED);
@@ -359,7 +374,7 @@ export default class Tabs extends HTMLElement {
 	private setOrientation(): void {
 		this.prevTabKey = this.vertical ? KEYS.UP : KEYS.LEFT;
 		this.nextTabKey = this.vertical ? KEYS.DOWN : KEYS.RIGHT;
-		this.tablistEl.setAttribute('aria-orientation', this.vertical ? 'vertical' : 'horizontal');
+		this.tablistEl?.setAttribute('aria-orientation', this.vertical ? 'vertical' : 'horizontal');
 	}
 
 
@@ -376,7 +391,7 @@ export default class Tabs extends HTMLElement {
 		Set the search parameter value in the URL
 	*/
 	private setTabNumberInUrl(): void {
-		if (!this.deepLinked) {
+		if (!this.deepLinked || this.selectedTabIndex === null) {
 			return;
 		}
 
@@ -391,7 +406,10 @@ export default class Tabs extends HTMLElement {
 		Set panel and tab attributes
 	*/
 	private setTabsAttributes(): void {
-		this.tabEls.forEach((tabEl, index) => {
+		this.tabEls?.forEach((tabEl, index) => {
+			if (!this.panelEls) {
+				return;
+			}
 			const correspondingPanel = this.panelEls[index];
 
 			// Set IDs

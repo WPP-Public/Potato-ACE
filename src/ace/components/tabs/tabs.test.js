@@ -652,7 +652,6 @@ context(`Tabs`, () => {
 
 
 
-
 	context(`Tabs controlled using custom events`, () => {
 		const TABS_ID = IDS.CUSTOM_EVENTS_TABS;
 
