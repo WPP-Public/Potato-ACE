@@ -34,10 +34,10 @@ export const SEARCH_TIMEOUT = List.SEARCH_TIMEOUT;
 
 /* CLASS */
 export default class Menu extends HTMLElement {
-	private list: List;
-	private listEl: HTMLUListElement;
+	private list: List | null = null;
+	private listEl: HTMLUListElement | null = null;
 	private listVisible = false;
-	private triggerEl: HTMLButtonElement;
+	private triggerEl: HTMLButtonElement | null = null;
 
 
 	constructor() {
@@ -110,7 +110,7 @@ export default class Menu extends HTMLElement {
 
 
 	public disconnectedCallback(): void {
-		this.list.destroy();
+		this.list?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
 		this.removeEventListener('click', this.clickHandler);
@@ -124,6 +124,9 @@ export default class Menu extends HTMLElement {
 		Choose option and dispatch custom event
 	*/
 	private chooseOption(): void {
+		if (!this.triggerEl || !this.list) {
+			return;
+		}
 		this.hideList();
 		this.triggerEl.focus();
 
@@ -158,15 +161,15 @@ export default class Menu extends HTMLElement {
 		// Trigger clicked
 		this.listVisible ? this.hideList() : this.showList();
 		// Firefox doesn't focus on clicked buttons automatically so we need to force focus after clicking
-		this.triggerEl.focus();
+		this.triggerEl?.focus();
 	}
 
 
 	/*
 		Handle focusout event
 	*/
-	private focusOutHandler(e: MouseEvent): void {
-		const focusedEl = e.relatedTarget as HTMLElement;
+	private focusOutHandler(e: Event): void {
+		const focusedEl = (e as MouseEvent).relatedTarget as HTMLElement;
 		if (!focusedEl || !focusedEl.closest(MENU)) {
 			this.hideList();
 		}
@@ -177,7 +180,7 @@ export default class Menu extends HTMLElement {
 		Deselect option and hide list
 	*/
 	private hideList(): void {
-		if (!this.listVisible) {
+		if (!this.triggerEl || !this.listEl || !this.list || !this.listVisible) {
 			return;
 		}
 
@@ -196,6 +199,9 @@ export default class Menu extends HTMLElement {
 		Handle keydown events
 	*/
 	private keydownHandler(e: KeyboardEvent): void {
+		if (!this.listEl || !this.list) {
+			return;
+		}
 		const target = e.target as HTMLElement;
 		const keydownOnTrigger = target.closest(`[${ATTRS.TRIGGER}]`);
 		const keydownOnList = target.closest(`[${ATTRS.LIST}]`);
@@ -235,7 +241,7 @@ export default class Menu extends HTMLElement {
 		// ESC pressed on list or trigger
 		if (this.listVisible && keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
 			this.hideList();
-			this.triggerEl.focus();
+			this.triggerEl?.focus();
 		}
 	}
 
@@ -244,7 +250,7 @@ export default class Menu extends HTMLElement {
 		Show list and handle it's overflow
 	*/
 	private showList(): void {
-		if (this.listVisible) {
+		if (!this.triggerEl || !this.listEl || this.listVisible) {
 			return;
 		}
 		this.triggerEl.setAttribute('aria-expanded', 'true');
@@ -258,8 +264,11 @@ export default class Menu extends HTMLElement {
 		Update options custom event handler
 	*/
 	private updateOptionsHandler(): void {
+		if (!this.list || !this.listEl) {
+			return;
+		}
 		this.list.initOptionEls();
-		this.listEl.querySelectorAll('a').forEach(link => link.setAttribute('tabindex', '-1'));
+		this.listEl.querySelectorAll('a').forEach((link) => link.setAttribute('tabindex', '-1'));
 
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
 			'detail': {

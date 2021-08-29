@@ -30,7 +30,7 @@ export const EVENTS = {
 /* CLASS */
 export default class Disclosure extends HTMLElement {
 	private initialised = false;
-	private triggerEls: NodeListOf<Element>;
+	private triggerEls: NodeListOf<Element> | undefined;
 
 
 	constructor() {
@@ -53,7 +53,7 @@ export default class Disclosure extends HTMLElement {
 		}
 
 		const disclosureVisible = newValue === '';
-		this.triggerEls.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', disclosureVisible.toString()));
+		this.triggerEls?.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', disclosureVisible.toString()));
 
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
 			'detail': {
@@ -126,9 +126,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 
 		const disclosureId = triggerClicked.getAttribute(ATTRS.TRIGGER);
+		if (!disclosureId) {
+			return;
+		}
 		const disclosureEl = document.getElementById(disclosureId);
+		if (!disclosureEl) {
+			return;
+		}
 
-		let showDisclosure: boolean = null;
+		let showDisclosure: boolean;
 		if (triggerClicked.hasAttribute(ATTRS.TRIGGER_SHOW)) {
 			showDisclosure = true;
 		}
