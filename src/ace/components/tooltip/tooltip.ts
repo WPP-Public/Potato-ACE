@@ -31,10 +31,10 @@ export const DEFAULT_DELAY = 1000;
 
 /* CLASS */
 export default class Tooltip extends HTMLElement {
-	private delay: number;
-	private isDisabled: boolean;
-	private showTimeout: number | null = null;
-	private targetEl: Element;
+	private delay = DEFAULT_DELAY;
+	private isDisabled = false;
+	private showTimeout: number | undefined;
+	private targetEl: Element | null = null;
 
 
 	constructor() {
@@ -67,18 +67,21 @@ export default class Tooltip extends HTMLElement {
 
 		/* GET DOM ELEMENTS */
 		this.targetEl = this.parentElement;
-		// If target is not focusable tooltip is not accessible to keyboard users
+		if (!this.targetEl) {
+			return;
+		}
+		// If target is not focusable then tooltip is not accessible to keyboard users
 		if (
 			!this.targetEl.closest(FOCUSABLE_ELEMENTS_SELECTOR) &&
-			(this.targetEl.getAttribute('tabindex') && parseInt(this.targetEl.getAttribute('tabindex')) <= 0)
+			(this.targetEl.getAttribute('tabindex') && parseInt(this.targetEl.getAttribute('tabindex') as string) <= 0)
 		) {
-			console.error(`${DISPLAY_NAME}: The target of Tooltip with ID ${this.id} is not a focusable element making the tooltip inaccessible to keyboard users.`);
+			console.error(`${DISPLAY_NAME}: The target of Tooltip with ID ${this.id} is not a focusable element which means the tooltip is inaccessible to keyboard users.`);
 			return;
 		}
 
 
 		/* GET DOM DATA */
-		const delay = parseInt(this.getAttribute(ATTRS.DELAY));
+		const delay = parseInt(this.getAttribute(ATTRS.DELAY) as string);
 		this.delay = (delay || delay === 0) ? delay : DEFAULT_DELAY;
 
 
@@ -114,12 +117,12 @@ export default class Tooltip extends HTMLElement {
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
 
-		this.targetEl.removeEventListener('blur', this.hide);
-		this.targetEl.removeEventListener('click', this.hide);
-		this.targetEl.removeEventListener('focus', this.show);
-		this.targetEl.removeEventListener('keydown', this.keydownHandler);
-		this.targetEl.removeEventListener('mouseenter', this.show);
-		this.targetEl.removeEventListener('mouseleave', this.hide);
+		this.targetEl?.removeEventListener('blur', this.hide);
+		this.targetEl?.removeEventListener('click', this.hide);
+		this.targetEl?.removeEventListener('focus', this.show);
+		this.targetEl?.removeEventListener('keydown', this.keydownHandler);
+		this.targetEl?.removeEventListener('mouseenter', this.show);
+		this.targetEl?.removeEventListener('mouseleave', this.hide);
 		this.removeEventListener(EVENTS.IN.HIDE, this.hide);
 		this.removeEventListener(EVENTS.IN.SHOW, this.show);
 	}
@@ -144,8 +147,8 @@ export default class Tooltip extends HTMLElement {
 	/*
 		Handle keydown event
 	*/
-	private keydownHandler(e: KeyboardEvent): void {
-		const keyPressed = e.key || e.which || e.keyCode;
+	private keydownHandler(e: Event): void {
+		const keyPressed = (e as KeyboardEvent).key || (e as KeyboardEvent).which || (e as KeyboardEvent).keyCode;
 		if (keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
 			if (!this.hasAttribute(ATTRS.VISIBLE)) {
 				return;
@@ -180,21 +183,27 @@ export default class Tooltip extends HTMLElement {
 
 
 	/*
-		Determine if tooltip text is a primary or secondary label based on whether or not the tooltip target has text or is labelled
+		Determine if tooltip text is a primary or secondary label based on whether the tooltip target has text or is labelled
 	*/
 	private tooltipIsPrimaryLabel(): boolean {
-		if (this.targetEl.textContent.trim().length - this.textContent.trim().length) {
+		if (!this.targetEl) {
 			return false;
 		}
 
+		if (this.targetEl.textContent && this.textContent) {
+			if (this.targetEl.textContent.trim().length - this.textContent.trim().length) {
+				return false;
+			}
+		}
+
 		const targetAriaLabel = this.targetEl.getAttribute('aria-label');
-		if (targetAriaLabel && targetAriaLabel.length) {
+		if (targetAriaLabel?.length) {
 			return false;
 		}
 
 		const targetLabellingElId = this.targetEl.getAttribute('aria-labelledby');
-		const targetLabellingEl = document.getElementById(targetLabellingElId);
-		return !(targetLabellingEl && targetLabellingEl.textContent.length);
+		const targetLabellingEl = document.getElementById(targetLabellingElId as string);
+		return !(targetLabellingEl && targetLabellingEl.textContent?.length);
 	}
 }
 
