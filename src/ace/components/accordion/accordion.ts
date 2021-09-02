@@ -40,11 +40,11 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Accordion extends HTMLElement {
-	private headerEls: NodeListOf<HTMLElement>;
+	private headerEls: NodeListOf<HTMLElement> | undefined;
 	private initialised = false;
-	private panelEls: NodeListOf<HTMLElement>;
-	private singleVisiblePanel: boolean;
-	private triggerEls: Array<HTMLButtonElement>;
+	private panelEls: NodeListOf<HTMLElement> | undefined;
+	private singleVisiblePanel = false;
+	private triggerEls: Array<HTMLButtonElement> = [];
 
 
 	constructor() {
@@ -126,12 +126,16 @@ export default class Accordion extends HTMLElement {
 		Handle click events
 	*/
 	private clickHandler(e: MouseEvent): void {
+		if (!this.triggerEls) {
+			return;
+		}
+
 		const target = e.target as HTMLElement;
 		const triggerClicked = target.closest(`[${ATTRS.TRIGGER}]`) as HTMLButtonElement;
-
 		if (!triggerClicked) {
 			return;
 		}
+
 		this.togglePanel(this.triggerEls.indexOf(triggerClicked));
 	}
 
@@ -139,12 +143,12 @@ export default class Accordion extends HTMLElement {
 	/*
 		Handler for incoming custom events
 	*/
-	private customEventsHander(e: CustomEvent): void {
+	private customEventsHander(e: Event): void {
 		switch (e.type) {
 			case EVENTS.IN.HIDE_PANEL:
 			case EVENTS.IN.SHOW_PANEL:
 			case EVENTS.IN.TOGGLE_PANEL: {
-				const detail = e['detail'];
+				const detail = (e as CustomEvent)['detail'];
 				if (!detail || !detail['panelNumber']) {
 					return;
 				}
@@ -160,7 +164,7 @@ export default class Accordion extends HTMLElement {
 			}
 			case EVENTS.IN.HIDE_PANELS:
 			case EVENTS.IN.SHOW_PANELS:
-				this.panelEls.forEach((panelEl, index) => {
+				this.panelEls?.forEach((_, index) => {
 					if (e.type === EVENTS.IN.HIDE_PANELS) {
 						this.hidePanel(index);
 					} else {
@@ -179,12 +183,16 @@ export default class Accordion extends HTMLElement {
 		Hide panel
 	*/
 	private hidePanel(panelIndex: number): void {
+		if (!this.panelEls || !this.triggerEls) {
+			return;
+		}
+
 		const panelEl = this.panelEls[panelIndex];
 		if (!panelEl.hasAttribute(ATTRS.PANEL_VISIBLE)) {
 			return;
 		}
-
 		panelEl.removeAttribute(ATTRS.PANEL_VISIBLE);
+
 		this.triggerEls[panelIndex].setAttribute('aria-expanded', 'false');
 
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
@@ -219,7 +227,7 @@ export default class Accordion extends HTMLElement {
 			}
 
 			// Warn if any header has a different element type to the other headers
-			if (index > 0 && headerEl.nodeName !== this.headerEls[0].nodeName) {
+			if (index > 0 && this.headerEls && headerEl.nodeName !== this.headerEls[0].nodeName) {
 				error = true;
 				console.error(`${DISPLAY_NAME}: All headers of Accordion with ID ${this.id} must be of same type, e.g. all <h2>, all <h3> etc.`);
 				return;
@@ -267,6 +275,10 @@ export default class Accordion extends HTMLElement {
 	*/
 	private setAccordionAttributes(): void {
 		this.triggerEls.forEach((triggerEl, index) => {
+			if (!this.panelEls) {
+				return;
+			}
+
 			// Set IDs
 			if (!triggerEl.id || triggerEl.id.includes(`${this.id}-trigger-`)) {
 				triggerEl.id = `${this.id}-trigger-${index + 1}`;
@@ -296,6 +308,9 @@ export default class Accordion extends HTMLElement {
 		Show panel
 	*/
 	private showPanel(panelIndex: number): void {
+		if (!this.panelEls) {
+			return;
+		}
 		const panelEl = this.panelEls[panelIndex];
 		if (panelEl.hasAttribute(ATTRS.PANEL_VISIBLE)) {
 			return;
@@ -329,6 +344,9 @@ export default class Accordion extends HTMLElement {
 		Toggle panel visibility
 	*/
 	private togglePanel(panelIndex: number): void {
+		if (!this.panelEls) {
+			return;
+		}
 		const panelVisible = this.panelEls[panelIndex].hasAttribute(ATTRS.PANEL_VISIBLE);
 		if (panelVisible) {
 			this.hidePanel(panelIndex);
