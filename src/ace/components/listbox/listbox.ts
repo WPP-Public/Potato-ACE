@@ -36,10 +36,10 @@ export const SEARCH_TIMEOUT = List.SEARCH_TIMEOUT;
 
 /* CLASS */
 export default class Listbox extends HTMLElement {
-	private inputEl: HTMLInputElement;
-	private list: List;
-	private listEl: HTMLUListElement|HTMLOListElement;
-	private mutationObserver: MutationObserver;
+	private inputEl: HTMLInputElement | null = null;
+	private list: List | undefined;
+	private listEl: HTMLUListElement | HTMLOListElement | null = null;
+	private mutationObserver: MutationObserver | undefined;
 
 
 	constructor() {
@@ -115,8 +115,8 @@ export default class Listbox extends HTMLElement {
 
 
 	private disconnectedCallback(): void {
-		this.mutationObserver.disconnect();
-		this.list.destroy();
+		this.mutationObserver?.disconnect();
+		this.list?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
 		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
@@ -133,17 +133,25 @@ export default class Listbox extends HTMLElement {
 			subtree: true,
 		};
 		this.mutationObserver = new MutationObserver(() => {
+			if (!this.inputEl || !this.listEl) {
+				return;
+			}
 			const selectedIds: Array<string> = [];
 			const selectedValues: Array<string> = [];
 			this.listEl.querySelectorAll(`[aria-selected="true"]`)
-				.forEach((selectedOption: Element) => {
-					selectedValues.push(selectedOption.textContent);
+				.forEach((selectedOption) => {
+					if (selectedOption.textContent) {
+						selectedValues.push(selectedOption.textContent);
+					}
 					selectedIds.push(selectedOption.id);
 				});
 
 			this.inputEl.value = encodeURIComponent(JSON.stringify(selectedValues));
-			this.inputEl.setAttribute(ATTRS.SELECTED_OPTION_IDS, JSON.stringify(selectedIds));
+			this.inputEl?.setAttribute(ATTRS.SELECTED_OPTION_IDS, JSON.stringify(selectedIds));
 		});
+		if (!this.listEl) {
+			return;
+		}
 		this.mutationObserver.observe(this.listEl, mutationObserverOptions);
 	}
 
@@ -152,7 +160,7 @@ export default class Listbox extends HTMLElement {
 		Custom event handler for updating options
 	*/
 	private updateOptionsHandler(): void {
-		this.list.initOptionEls();
+		this.list?.initOptionEls();
 
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
 			'detail': {
