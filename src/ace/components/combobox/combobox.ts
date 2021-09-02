@@ -297,7 +297,7 @@ export default class Combobox extends HTMLElement {
 	*/
 	private clickHandler(e: MouseEvent): void {
 		const optionElClicked = (e.target as HTMLElement).closest(`[${ATTRS.OPTION}]`) as HTMLLIElement;
-		if (optionElClicked && this.list) {
+		if (optionElClicked && this.list?.optionEls) {
 			const optionElClickedIndex = [...this.list.optionEls].indexOf(optionElClicked);
 			this.chooseOption(optionElClickedIndex);
 		}
