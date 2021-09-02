@@ -124,7 +124,7 @@ export default class Menu extends HTMLElement {
 		Choose option and dispatch custom event
 	*/
 	private chooseOption(): void {
-		if (!this.triggerEl || !this.list) {
+		if (!this.triggerEl || !this.list || !this.list.optionEls) {
 			return;
 		}
 		this.hideList();
@@ -133,7 +133,7 @@ export default class Menu extends HTMLElement {
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTION_CHOSEN, {
 			'detail': {
 				'chosenOption': {
-					'id': this.list.optionEls[this.list.lastSelectedOptionIndex].id,
+					'id': this.list.optionEls[this.list.lastSelectedOptionIndex as number].id,
 					'index': this.list.lastSelectedOptionIndex,
 				},
 				'id': this.id,
@@ -180,15 +180,15 @@ export default class Menu extends HTMLElement {
 		Deselect option and hide list
 	*/
 	private hideList(): void {
-		if (!this.triggerEl || !this.listEl || !this.list || !this.listVisible) {
+		if (!this.list?.optionEls || !this.listVisible) {
 			return;
 		}
 
-		this.listEl.removeAttribute(ATTRS.LIST_VISIBLE);
-		this.triggerEl.removeAttribute('aria-expanded');
+		this.listEl?.removeAttribute(ATTRS.LIST_VISIBLE);
+		this.triggerEl?.removeAttribute('aria-expanded');
 		this.listVisible = false;
 
-		const selectedOption = this.list.optionEls[this.list.lastSelectedOptionIndex];
+		const selectedOption = this.list.optionEls[this.list.lastSelectedOptionIndex as number];
 		if (selectedOption) {
 			selectedOption.setAttribute('aria-selected', 'false');
 		}
@@ -228,7 +228,10 @@ export default class Menu extends HTMLElement {
 		// ENTER on list
 		if (keydownOnList && keyPressedMatches(keyPressed, KEYS.ENTER)) {
 			e.preventDefault();
-			const selectedOptionEl = this.list.optionEls[this.list.lastSelectedOptionIndex];
+			if (!this.list.optionEls) {
+				return;
+			}
+			const selectedOptionEl = this.list.optionEls[this.list.lastSelectedOptionIndex as number];
 			const selectedOptionLink = selectedOptionEl.querySelector('a');
 			if (selectedOptionLink) {
 				selectedOptionLink.click();
