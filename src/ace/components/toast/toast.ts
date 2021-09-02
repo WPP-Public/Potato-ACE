@@ -28,9 +28,8 @@ export const DEFAULT_SHOW_TIME = 4000;
 /* CLASS */
 export default class Toast extends HTMLElement {
 	private initialised = false;
-	private innerEl: HTMLElement;
-	private showTime: number;
-	private showTimeout: number | null = null;
+	private showTime = DEFAULT_SHOW_TIME;
+	private showTimeout: number | undefined;
 
 
 	constructor() {
@@ -78,7 +77,10 @@ export default class Toast extends HTMLElement {
 
 
 		/* GET DOM DATA */
-		this.showTime = parseInt(this.getAttribute(ATTRS.SHOW_TIME)) || DEFAULT_SHOW_TIME;
+		const userDefinedShowTime = this.getAttribute(ATTRS.SHOW_TIME);
+		if (userDefinedShowTime !== null) {
+			this.showTime = parseInt(userDefinedShowTime);
+		}
 
 
 		/* SET DOM DATA */

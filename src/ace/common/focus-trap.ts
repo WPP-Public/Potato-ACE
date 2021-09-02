@@ -8,8 +8,8 @@ import { isInteractable, keyPressedMatches } from './functions.js';
 export default class FocusTrap {
 	private element: HTMLElement;
 	private mutationObserver: MutationObserver;
-	public focusableDescendants: Array<HTMLElement>;
-	public interactableDescendants: Array<HTMLElement>;
+	public focusableDescendants: Array<HTMLElement> = [];
+	public interactableDescendants: Array<HTMLElement> = [];
 
 
 	constructor(element: HTMLElement) {
