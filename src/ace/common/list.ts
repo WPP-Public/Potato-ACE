@@ -13,18 +13,18 @@ import { getIndexBasedOnDirection, keyPressedMatches, warnIfElHasNoAriaLabel } f
 const DEFAULT_OPTION_ATTR = `${NAME}-list-option`;
 
 export default class List {
-	public activeOptionAttr: string;
+	public activeOptionAttr = `${DEFAULT_OPTION_ATTR}-active`;
 	private activeOptionIndex = 0;
 	private allSelected = false;
-	private isMenu: boolean;
-	public lastSelectedOptionIndex: number;
-	private listEl: HTMLUListElement | HTMLOListElement;
-	public multiselectable: boolean;
-	public optionAttr: string;
-	public optionEls: NodeListOf<HTMLLIElement>;
-	public optionElsCount: number;
+	private isMenu = false;
+	public lastSelectedOptionIndex: number | undefined;
+	private listEl!: HTMLUListElement | HTMLOListElement;
+	public multiselectable = false;
+	public optionAttr = DEFAULT_OPTION_ATTR;
+	public optionEls: NodeListOf<HTMLLIElement> | undefined;
+	public optionElsCount = 0;
 	private query = '';
-	private searchTimeout: number | null = null;
+	private searchTimeout: number | undefined;
 
 	// Time List will wait before considering a character as start of new string when using type-ahead search
 	static SEARCH_TIMEOUT = 500;
@@ -77,8 +77,10 @@ export default class List {
 
 		warnIfElHasNoAriaLabel(this.listEl, 'List');
 
-		this.optionAttr = optionAttr || DEFAULT_OPTION_ATTR;
-		this.activeOptionAttr = `${optionAttr ? optionAttr : DEFAULT_OPTION_ATTR}-active`;
+		if (optionAttr) {
+			this.optionAttr = optionAttr;
+			this.activeOptionAttr = `${optionAttr}-active`;
+		}
 
 		this.initOptionEls();
 	}
@@ -96,7 +98,11 @@ export default class List {
 	/*
 		Handle clicks on list options
 	*/
-	private clickHandler(e: MouseEvent): void {
+	private clickHandler(e: Event): void {
+		if (!this.optionEls) {
+			return;
+		}
+
 		const optionClicked = (e.target as Element).closest(`li`);
 		if (!optionClicked) {
 			return;
@@ -111,7 +117,7 @@ export default class List {
 			return;
 		}
 
-		if (e.shiftKey) {
+		if ((e as MouseEvent).shiftKey) {
 			if (this.lastSelectedOptionIndex || this.lastSelectedOptionIndex === 0) {
 				this.selectRangeOfOptions(clickedOptionIndex, this.lastSelectedOptionIndex);
 				this.makeOptionActive(clickedOptionIndex);
@@ -137,7 +143,7 @@ export default class List {
 
 		const startingIndex = i;
 		do {
-			if (this.optionEls[i].textContent.toLowerCase().startsWith(this.query)) {
+			if (this.optionEls && this.optionEls[i].textContent?.toLowerCase().startsWith(this.query)) {
 				this.selectOptionOrMakeActive(i);
 				break;
 			}
@@ -167,7 +173,10 @@ export default class List {
 		}
 
 		// If list blurred
-		this.optionEls[this.activeOptionIndex].removeAttribute(this.activeOptionAttr);
+		if (this.optionEls) {
+			this.optionEls[this.activeOptionIndex].removeAttribute(this.activeOptionAttr);
+		}
+
 		this.listEl.removeAttribute('aria-activedescendant');
 	}
 
@@ -224,15 +233,16 @@ export default class List {
 	/*
 		Handle keystrokes on list
 	*/
-	public keydownHandler(e: KeyboardEvent): void {
-		const keyPressed = e.key || e.which || e.keyCode;
+	public keydownHandler(e: Event): void {
+		const keyboardEvent = e as KeyboardEvent;
+		const keyPressed = keyboardEvent.key;
 
 		if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
 			e.preventDefault();
 			const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
 			const indexOfOptionToUpdate = getIndexBasedOnDirection(this.activeOptionIndex, direction, this.optionElsCount, true);
 			if (this.multiselectable) {
-				if (e.shiftKey) {
+				if (keyboardEvent.shiftKey) {
 					this.toggleOptionSelection(indexOfOptionToUpdate);
 				} else {
 					this.makeOptionActive(indexOfOptionToUpdate);
@@ -249,7 +259,7 @@ export default class List {
 			const optionIndex = homeKeyPressed ? 0 : this.optionElsCount - 1;
 			if (this.multiselectable) {
 				// If Ctrl + Shift + Home pressed select all options between active and first options inclusive
-				if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+				if ((keyboardEvent.ctrlKey || keyboardEvent.metaKey) && keyboardEvent.shiftKey) {
 					this.selectRangeOfOptions(
 						homeKeyPressed ? 0 : this.activeOptionIndex,
 						homeKeyPressed ? this.activeOptionIndex : this.optionElsCount - 1
@@ -262,7 +272,7 @@ export default class List {
 
 		if (this.multiselectable && keyPressedMatches(keyPressed, KEYS.SPACE)) {
 			e.preventDefault();
-			if (e.shiftKey) {
+			if (keyboardEvent.shiftKey) {
 				if (this.lastSelectedOptionIndex || this.lastSelectedOptionIndex === 0) {
 					this.selectRangeOfOptions(this.lastSelectedOptionIndex, this.activeOptionIndex);
 				}
@@ -273,20 +283,22 @@ export default class List {
 		}
 
 		// Select or deselect all with 'Ctrl + A'
-		if (this.multiselectable && keyPressedMatches(keyPressed, KEYS.A) && (e.ctrlKey || e.metaKey)) {
+		if (this.multiselectable && keyPressedMatches(keyPressed, KEYS.A) && (keyboardEvent.ctrlKey || keyboardEvent.metaKey)) {
 			e.preventDefault();
 			this.allSelected = !this.allSelected;
-			this.optionEls.forEach(option => option.setAttribute('aria-selected', (this.allSelected).toString()));
+			if (this.optionEls) {
+				this.optionEls.forEach(option => option.setAttribute('aria-selected', (this.allSelected).toString()));
+			}
 			return;
 		}
 
 		// "Type-ahead" search functionality
 		// Ignore non-alphanumeric keys
-		if (e.key.length > 1 || e.ctrlKey || e.metaKey) {
+		if (keyPressed.length > 1 || keyboardEvent.ctrlKey || keyboardEvent.metaKey) {
 			return;
 		}
 
-		this.findOption(e.key.toLowerCase());
+		this.findOption(keyboardEvent.key.toLowerCase());
 	}
 
 
@@ -298,6 +310,10 @@ export default class List {
 		https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
 	*/
 	private makeOptionActive(index: number): void {
+		if (!this.optionEls) {
+			return;
+		}
+
 		// Make currently active option inactive
 		const currentlyActiveOption = this.optionEls[this.activeOptionIndex];
 		if (currentlyActiveOption) {
@@ -323,11 +339,13 @@ export default class List {
 		Scroll option at given index into view
 	*/
 	private scrollOptionIntoView(index: number): void {
-		this.optionEls[index].scrollIntoView({
-			behaviour: 'smooth',
-			block: 'nearest',
-			inline: 'start',
-		} as ScrollIntoViewOptions);
+		if (this.optionEls) {
+			this.optionEls[index].scrollIntoView({
+				behaviour: 'smooth',
+				block: 'nearest',
+				inline: 'start',
+			} as ScrollIntoViewOptions);
+		}
 	}
 
 
@@ -335,11 +353,17 @@ export default class List {
 		Select option at given index
 	*/
 	public selectOption(index: number): void {
+		if (!this.optionEls) {
+			return;
+		}
+
 		if (!this.multiselectable) {
 			// Deselect currently selected option
-			const currentlySelectedOption = this.optionEls[this.lastSelectedOptionIndex];
-			if (currentlySelectedOption) {
-				currentlySelectedOption.setAttribute('aria-selected', 'false');
+			if (this.lastSelectedOptionIndex || this.lastSelectedOptionIndex === 0) {
+				const currentlySelectedOption = this.optionEls[this.lastSelectedOptionIndex];
+				if (currentlySelectedOption) {
+					currentlySelectedOption.setAttribute('aria-selected', 'false');
+				}
 			}
 			this.makeOptionActive(index);
 		}
@@ -378,6 +402,10 @@ export default class List {
 		Toggle selection of option at given index
 	*/
 	private toggleOptionSelection(index: number): void {
+		if (!this.optionEls) {
+			return;
+		}
+
 		const optionElToToggle = this.optionEls[index];
 		const newSelectedState = optionElToToggle.getAttribute('aria-selected') !== 'true';
 		if (index !== this.activeOptionIndex) {

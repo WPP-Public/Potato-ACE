@@ -1,14 +1,17 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
-		"noImplicitAny": true,
+		"declaration": true,
+		"forceConsistentCasingInFileNames": true,
 		"lib": [
 			"dom",
 			"es2017",
 			"dom.iterable"
 		],
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitAny": true,
+		"noImplicitReturns": true,
 		"target": "ES6",
-		"declaration": true
 	},
 	"include": [
 		"src/js/**/*",
