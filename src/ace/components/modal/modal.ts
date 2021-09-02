@@ -31,13 +31,13 @@ export const EVENTS = {
 
 /* CLASS */
 export default class Modal extends HTMLElement {
-	private backdropEl: HTMLElement;
+	private backdropEl: HTMLElement | null = null;
 	private canUseInert = false;
-	private firstInteractableDescendant: HTMLElement;
-	private focusTrap: FocusTrap;
+	private firstInteractableDescendant: HTMLElement | undefined;
+	private focusTrap: FocusTrap | undefined;
 	private inertedEls: Array<Element> = [];
 	private initialised = false;
-	private lastActiveElement: HTMLElement;
+	private lastActiveElement: HTMLElement | null = null;
 
 
 	constructor() {
@@ -85,6 +85,7 @@ export default class Modal extends HTMLElement {
 
 		// Determine if Modal instance can use HTML inert attribute (browser supports it and Modal is a child of body)
 		this.canUseInert = BROWSER_SUPPORTS_INERT && this.parentElement === document.body;
+		console.log(this.canUseInert);
 
 
 		/* GET DOM ELEMENTS */
@@ -152,7 +153,7 @@ export default class Modal extends HTMLElement {
 
 
 	public disconnectedCallback(): void {
-		this.focusTrap.destroy();
+		this.focusTrap?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
 		this.removeEventListener('click', this.clickHandler);
@@ -179,6 +180,9 @@ export default class Modal extends HTMLElement {
 		Handle custom events
 	*/
 	private customEventsHandler(): void {
+		if (!this.focusTrap) {
+			return;
+		}
 		this.focusTrap.getInteractableDescendants();
 		this.firstInteractableDescendant = this.focusTrap.interactableDescendants[0];
 	}
@@ -189,7 +193,7 @@ export default class Modal extends HTMLElement {
 	*/
 	private hide(): void {
 		document.body.removeAttribute(ATTRS.IS_VISIBLE);
-		this.backdropEl.removeAttribute(ATTRS.IS_VISIBLE);
+		this.backdropEl?.removeAttribute(ATTRS.IS_VISIBLE);
 
 		// Remove inert HTML attribute from all body children to which it was added when Modal was shown
 		if (this.canUseInert) {
@@ -197,7 +201,7 @@ export default class Modal extends HTMLElement {
 			this.inertedEls = [];
 		}
 
-		this.lastActiveElement.focus();
+		this.lastActiveElement?.focus();
 	}
 
 
@@ -219,7 +223,7 @@ export default class Modal extends HTMLElement {
 	*/
 	private show(): void {
 		document.body.setAttribute(ATTRS.IS_VISIBLE, '');
-		this.backdropEl.setAttribute(ATTRS.IS_VISIBLE, '');
+		this.backdropEl?.setAttribute(ATTRS.IS_VISIBLE, '');
 
 		// Store element that was active before Modal was shown, to return focus to it when Modal is hidden
 		this.lastActiveElement = document.activeElement as HTMLElement;
@@ -235,7 +239,7 @@ export default class Modal extends HTMLElement {
 			});
 		}
 
-		this.firstInteractableDescendant.focus();
+		this.firstInteractableDescendant?.focus();
 	}
 }
 
@@ -247,6 +251,9 @@ document.addEventListener('DOMContentLoaded', () => {
 		const triggerClicked = (e.target as HTMLElement).closest(`[${ATTRS.TRIGGER}]`);
 		if (triggerClicked) {
 			const modalId = triggerClicked.getAttribute(ATTRS.TRIGGER);
+			if (!modalId) {
+				return;
+			}
 			const modalEl = document.getElementById(modalId);
 			if (modalEl) {
 				modalEl.setAttribute(ATTRS.VISIBLE, '');
@@ -258,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		const backdropClicked = (e.target as HTMLElement).closest(`[${ATTRS.BACKDROP}]`);
 		if (backdropClicked) {
 			const visibleModalEl = document.querySelector(`[${ATTRS.VISIBLE}`);
-			visibleModalEl.removeAttribute(ATTRS.VISIBLE);
+			visibleModalEl?.removeAttribute(ATTRS.VISIBLE);
 		}
 	});
 
