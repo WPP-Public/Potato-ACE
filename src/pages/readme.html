@@ -28,3 +28,122 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 /* Then import SASS file where ACE variable is defined */
 @import '&lt;path-to-node_modules&gt;/node_modules/@potato/ace/listbox/listbox';
 </code></pre>
+<h2>Using ACE with JavaScript frameworks</h2>
+<h3>Vue</h3>
+<p>The following example shows how ACE components can be used with Vue (v3+). More general information about how to use web components with Vue can be found in <a href="https://v3.vuejs.org/guide/web-components.html#skipping-component-resolution">Vue's Web Components guide</a>.</p>
+<p>The example demonstrates:</p>
+<ul>
+<li>Passing data from a parent component to an ACE Accordion component via <code>props</code>.</li>
+<li>Using the <code>created</code> &amp; <code>unmounted</code> lifecycle hooks in the parent component to listen for a custom event dispatched by Accordion, to conditionally disable a button.</li>
+<li>Using template refs to dispatch a custom event on Accordion from a parent component.</li>
+</ul>
+<p>Starting with a fresh project, created using the Vue CLI and <code>vue create</code>, ACE was installed using <code>npm i @potato/ace</code> before the following changes were made.</p>
+<p><em><strong>src/components/Accordion.vue</strong></em></p>
+<pre><code class="language-html">&lt;template&gt;
+&lt;ace-accordion ref=&quot;accordion&quot;&gt;
+	&lt;template v-for=&quot;(panel, index) of content&quot; :key=&quot;index&quot;&gt;
+		&lt;h3&gt;
+			&lt;button&gt;{{panel.trigger}}&lt;/button&gt;
+		&lt;/h3&gt;
+		&lt;div&gt;
+			&lt;p&gt;{{panel.content}}&lt;/p&gt;
+		&lt;/div&gt;
+	&lt;/template&gt;
+&lt;/ace-accordion&gt;
+&lt;/template&gt;
+
+
+&lt;script&gt;
+import {EVENTS} from '@potato/ace/components/accordion/accordion';
+
+export default {
+  name: 'Accordion',
+  props: {
+    content: Array
+  },
+	methods: {
+		collapseAll() {
+			this.$refs.accordion.dispatchEvent(
+				new CustomEvent(EVENTS.IN.HIDE_PANELS)
+			);
+    }
+	}
+}
+&lt;/script&gt;
+
+
+&lt;style&gt;
+@import '~@potato/ace/components/accordion/ace-accordion.css';
+&lt;/style&gt;
+</code></pre>
+<p><em><strong>src/App.vue</strong></em></p>
+<pre><code class="language-html">&lt;template&gt;
+  &lt;Accordion :content=&quot;accordionContent&quot; ref=&quot;mainAccordion&quot;/&gt;
+
+  &lt;button :disabled=&quot;panelsCollapsed&quot; @click=&quot;collapseAll&quot;&gt;
+    Collapse all
+  &lt;/button&gt;
+&lt;/template&gt;
+
+
+&lt;script&gt;
+import Accordion from './components/Accordion.vue';
+import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
+
+export default {
+  name: 'App',
+  components: {
+    Accordion
+  },
+  data() {
+    return {
+      accordionContent: [
+        {
+          content: 'Panel 1 content',
+          trigger: 'Panel 1 trigger',
+        },
+        {
+          content: 'Panel 2 content',
+          trigger: 'Panel 2 trigger',
+        },
+        {
+          content: 'Panel 3 content',
+          trigger: 'Panel 3 trigger',
+        },
+      ],
+      panelsCollapsed: true,
+    }
+  },
+  created () {
+    window.addEventListener(EVENTS.OUT.CHANGED, this.onPanelChange);
+  },
+  unmounted () {
+    window.removeEventListener(EVENTS.OUT.CHANGED, this.onPanelChange);
+  },
+  methods: {
+    collapseAll() {
+      this.$refs.mainAccordion.collapseAll();
+    },
+    onPanelChange() {
+      this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+    },
+  },
+}
+&lt;/script&gt;
+</code></pre>
+<p><em><strong>vue.config.js</strong></em></p>
+<pre><code class="language-js">module.exports = {
+  chainWebpack: config =&gt; {
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap(options =&gt; ({
+        ...options,
+        compilerOptions: {
+          // treat any tag that starts with ace- as custom elements
+          isCustomElement: tag =&gt; tag.startsWith('ace-')
+        }
+      }))
+  }
+}
+</code></pre>
