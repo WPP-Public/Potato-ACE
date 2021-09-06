@@ -63,9 +63,9 @@ The following example shows how ACE components can be used with React. More gene
 
 The example demonstrates:
 
-- Passing data from a parent component to a ACE Accordion component via `props`.
-- Listening for a custom event dispatched by Accordion, then using `useState` and `useEffect` to conditionally disablling a button in the parent component.
-- Using `useRef` & `forwardRef` to dispatch a custom event on Accordion from the parent.
+- Passing data from a parent component to an ACE Accordion component via `props`.
+- Listening for a custom event dispatched by Accordion, then using `useState` and `useEffect` to conditionally disable a button in a parent component.
+- Using `useRef` & `forwardRef` to dispatch a custom event on Accordion from a parent component.
 
 Starting with a fresh project, created using `npx create-react-app`, ACE was installed using `npm i @potato/ace` before the following changes were made.
 
