@@ -18,28 +18,38 @@ or
 yarn add @potato/ace
 ```
 
-To use a component import it's SASS file into your main SASS file, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file, and `<component-name>` with the component name:
-
-```scss
-@import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>';
-```
-
-and import the class into your main JavaScript file:
+To use a component import the class into your main JavaScript file:
 
 ```js
 import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>';
 ```
 
-Specific instructions for how to use a particular component can be found in the component's *README* file located at *\<path-to-node_modules>/@potato/ace/\<component-name>/READE.md*, for example, the Accordion component instructions can be found in *\<path-to-node_modules>/@potato/ace/accordion/README.md*. The same instructions can be also found on the component's webpage along with live examples.
+Then import the component's SASS file into a SASS file in your project, replacing `<path-to-node_modules>` with the path to the *node_modules* directory relative to the file, and `<component-name>` with the component name:
+
+```scss
+@import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>';
+```
+
+Alternatively, you can import the component's CSS file into a CSS file in your project:
+
+```css
+@import '<path-to-node_modules>/@potato/ace/components/<component-name>/<component-name>.css';
+```
+
+Specific instructions for how to use a particular component can be found on the component's webpage, along with live examples, or in the component's *README* file located at *\<path-to-node_modules>/@potato/ace/\<component-name>/READE.md*.
+
+For example, the Accordion component instructions can be found on it's [webpage](https://ace.p.ota.to/accordion) or in *\<path-to-node_modules>/@potato/ace/accordion/README.md*.
 
 ## Component SASS variables
 
-ACE components makes use of SASS variables defined with the keyword `!default`, which allow developers to easily configure component styles by simply assigning a value to the variable before importing the component SASS file where the variable is defined. For example, the selected option highlight color of the Listbox component can be changed as follows: 
+ACE components define SASS variables using the `!default` keyword, allowing developers to easily configure component styles by simply assigning a value to the variable before importing the SASS file where the variable is defined.
+
+For example, the selected option highlight color of the Listbox component can be changed as follows: 
 
 ```scss
-/* ACE Variable Overrides */
+/* Override ACE variable... */
 $ace-listbox-selected-option-bg-color: #cccccc;
 
-/* ACE Components */
+/* Then import SASS file where ACE variable is defined */
 @import '<path-to-node_modules>/node_modules/@potato/ace/listbox/listbox';
 ```

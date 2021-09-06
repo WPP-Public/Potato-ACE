@@ -8,18 +8,23 @@
 <p>or</p>
 <pre><code class="language-bash">yarn add @potato/ace
 </code></pre>
-<p>To use a component import it's SASS file into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file, and <code>&lt;component-name&gt;</code> with the component name:</p>
-<pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/&lt;component-name&gt;/&lt;component-name&gt;';
-</code></pre>
-<p>and import the class into your main JavaScript file:</p>
+<p>To use a component import the class into your main JavaScript file:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/&lt;component-name&gt;/&lt;component-name&gt;';
 </code></pre>
-<p>Specific instructions for how to use a particular component can be found in the component's <em>README</em> file located at <em>&lt;path-to-node_modules&gt;/@potato/ace/&lt;component-name&gt;/READE.md</em>, for example, the Accordion component instructions can be found in <em>&lt;path-to-node_modules&gt;/@potato/ace/accordion/README.md</em>. The same instructions can be also found on the component's webpage along with live examples.</p>
+<p>Then import the component's SASS file into a SASS file in your project, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file, and <code>&lt;component-name&gt;</code> with the component name:</p>
+<pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/&lt;component-name&gt;/&lt;component-name&gt;';
+</code></pre>
+<p>Alternatively, you can import the component's CSS file into a CSS file in your project:</p>
+<pre><code class="language-css">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/&lt;component-name&gt;/&lt;component-name&gt;.css';
+</code></pre>
+<p>Specific instructions for how to use a particular component can be found on the component's webpage, along with live examples, or in the component's <em>README</em> file located at <em>&lt;path-to-node_modules&gt;/@potato/ace/&lt;component-name&gt;/READE.md</em>.</p>
+<p>For example, the Accordion component instructions can be found on it's <a href="https://ace.p.ota.to/accordion">webpage</a> or in <em>&lt;path-to-node_modules&gt;/@potato/ace/accordion/README.md</em>.</p>
 <h2>Component SASS variables</h2>
-<p>ACE components makes use of SASS variables defined with the keyword <code>!default</code>, which allow developers to easily configure component styles by simply assigning a value to the variable before importing the component SASS file where the variable is defined. For example, the selected option highlight color of the Listbox component can be changed as follows:</p>
-<pre><code class="language-scss">/* ACE Variable Overrides */
+<p>ACE components define SASS variables using the <code>!default</code> keyword, allowing developers to easily configure component styles by simply assigning a value to the variable before importing the SASS file where the variable is defined.</p>
+<p>For example, the selected option highlight color of the Listbox component can be changed as follows:</p>
+<pre><code class="language-scss">/* Override ACE variable... */
 $ace-listbox-selected-option-bg-color: #cccccc;
 
-/* ACE Components */
+/* Then import SASS file where ACE variable is defined */
 @import '&lt;path-to-node_modules&gt;/node_modules/@potato/ace/listbox/listbox';
 </code></pre>
