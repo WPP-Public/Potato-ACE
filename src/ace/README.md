@@ -63,7 +63,7 @@ The following example shows how ACE components can be used with Vue (v3+). More 
 The example demonstrates:
 
 - Passing data from a parent component to an ACE Accordion component via `props`.
-- Using the `created` & `unmounted` lifecycle hooks in the parent component to listen for a custom event dispatched by Accordion, to conditionally disable a button.
+- Using the `created` & `unmounted` lifecycle hooks in the parent component to listen for a custom event dispatched by Accordion, then conditionally disabling a button.
 - Using template refs to dispatch a custom event on Accordion from a parent component.
 
 Starting with a fresh project, created using the Vue CLI and `vue create`, ACE was installed using `npm i @potato/ace` before the following changes were made.
