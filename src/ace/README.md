@@ -50,7 +50,7 @@ For example, the selected option highlight color of the Listbox component can be
 /* Override ACE variable... */
 $ace-listbox-selected-option-bg-color: #cccccc;
 
-/* Then import SASS file where it's defined */
+/* Then import SASS file where ACE variable is defined */
 @import '<path-to-node_modules>/node_modules/@potato/ace/listbox/listbox';
 ```
 
@@ -227,4 +227,3 @@ export interface AccordionContent {
 	trigger: string;
 }
 ```
-

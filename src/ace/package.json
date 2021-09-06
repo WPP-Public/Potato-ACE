@@ -6,6 +6,11 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
+	"homepage": "https://ace.p.ota.to/",
+	"repository": {
+    "type": "git",
+    "url": "https://gitlab.com/potato-oss/ace/ace"
+  },
 	"keywords": [
 		"accessibility",
 		"a11y",
