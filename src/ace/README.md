@@ -67,12 +67,14 @@ The example demonstrates:
 - Listening for a custom event dispatched by Accordion, then using `useState` and `useEffect` to conditionally disablling a button in the parent component.
 - Using `useRef` & `forwardRef` to dispatch a custom event on Accordion from the parent.
 
-Starting with a fresh project, created using `npx create-react-app`, ACE was installed using `npm i @potato/ace` before the following changes were made:
+Starting with a fresh project, created using `npx create-react-app`, ACE was installed using `npm i @potato/ace` before the following changes were made.
 
 ***src/Accordion.jsx***
 
 ```jsx
 import React, {forwardRef} from 'react';
+
+import '@potato/ace/components/accordion/accordion';
 
 // forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
 export const Accordion = forwardRef(({content}, ref) => {
@@ -163,7 +165,7 @@ export default App;
 
 ACE components can also be used in React projects that use TypeScript.
 
-For example, to use ACE Accordion in a TypeScript React project follow the previous instructions then make the following changes:
+For example, to use ACE Accordion in a TypeScript React project follow the previous instructions then make the following changes.
 
 ***src/Accordion.jsx***
 
@@ -212,15 +214,19 @@ declare global {
 ***src/App.tsx***
 
 Replace
+
 ```tsx
 const accordionRef = useRef(null);
 ```
+
 with
+
 ```tsx
 const accordionRef = useRef<any>(null);
 ```
 
 and add this at the end of the file
+
 ```tsx
 export interface AccordionContent {
 	content: string;
