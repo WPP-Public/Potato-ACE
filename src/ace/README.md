@@ -62,9 +62,9 @@ The following example shows how ACE components can be used with Angular.
 
 The example demonstrates:
 
-- Passing data from a parent component to a ACE Accordion component via `@Input`.
+- Passing data from a parent component to an ACE Accordion component via `@Input`.
 - Using `@HostListener` in the parent component to listen for a custom event dispatched by Accordion, then conditionally disabling a button.
-- Using a reference variable and `@ViewChild` to dispatch a custom event on Accordion from the parent.
+- Using a reference variable and `@ViewChild` to dispatch a custom event on Accordion from a parent component.
 
 Starting with a fresh project, created using the Angular CLI command `ng new`, ACE was installed using `npm i @potato/ace` before the following changes were made.
 
