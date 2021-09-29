@@ -31,7 +31,7 @@ import '<path-to-node_modules>/@potato/ace/components/template/template';
 
 For convenience the ES6 class is exported as `Template` <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Template is instantiated within each `<ace-template>` element and an ID `ace-template-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-template-ready` is dispatched to `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Template is instantiated within each `<ace-template>` element and an ID `ace-template-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete the **Ready** custom event is dispatched. See the **Custom events** section below for more details.
 
 <!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
 

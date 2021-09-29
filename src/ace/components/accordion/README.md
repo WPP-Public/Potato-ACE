@@ -29,7 +29,7 @@ import '<path-to-node_modules>/@potato/ace/components/accordion/accordion';
 
 For convenience the ES6 class is exported as `Accordion` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Accordion is instantiated within each `<ace-accordion>` element and an ID `ace-accordion-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete the **Ready** custom event. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Accordion is instantiated within each `<ace-accordion>` element and an ID `ace-accordion-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete the **Ready** custom event is dispatched. See the **Custom events** section below for more details.
 
 For each section of content Accordion requires a descendant panel and a corresponding descendant header that in turn contains a child trigger. The number of headers, triggers and panels must be the same. Having said this, Accordions can be initalised with none of these and they can be added later and initialised by dispatching the **Update** custom event. See the **Custom events** section below for more details.
 

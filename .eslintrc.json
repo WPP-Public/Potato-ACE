@@ -29,6 +29,7 @@
 		"@typescript-eslint/no-explicit-any": "off",
 		"cypress/no-unnecessary-waiting": 0,
 		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"no-debugger": "warn",
 		"no-autofix/prefer-const": "error",
 		"no-multiple-empty-lines": [
 			"error",
