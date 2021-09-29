@@ -1,9 +1,14 @@
 import { EVENTS } from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const listboxEl = document.getElementById('custom-events-listbox');
+	const LISTBOX_ID = 'custom-events-listbox';
+	const listboxEl = document.getElementById(LISTBOX_ID);
 
-	const updateOptions = () => listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () => {
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {
+			'detail': {'id': LISTBOX_ID}
+		}));
+	};
 
 	document.getElementById('add-option')
 		.addEventListener('click', () => {
