@@ -1,7 +1,8 @@
 import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const carouselEl = document.getElementById('custom-events-carousel');
+	const CAROUSEL_ID = 'custom-events-carousel';
+	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 
 	const addSlide = () => {
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		newSlideEl.appendChild(headingEl);
 		newSlideEl.appendChild(p);
 		slidesWrapper.appendChild(newSlideEl);
-		carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES, {'detail': {'id': CAROUSEL_ID}}));
 	};
 
 	window.addEventListener('click', (e) => {
@@ -22,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'prev-slide-btn':
 			case 'next-slide-btn': {
 				const event = EVENTS.IN[`SET_${targetId === 'prev-slide-btn' ? 'PREV' : 'NEXT'}_SLIDE`];
-				carouselEl.dispatchEvent(new CustomEvent(event));
+				window.dispatchEvent(new CustomEvent(event, {'detail': {'id': CAROUSEL_ID}}));
 				break;
 			}
 			case 'add-slide-btn':
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				} else {
 					slidesWrapper.removeChild(slidesWrapper.lastElementChild);
 				}
-				carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES, {'detail': {'id': CAROUSEL_ID}}));
 				break;
 		}
 	});
