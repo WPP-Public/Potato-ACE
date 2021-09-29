@@ -52,6 +52,9 @@ export default class Template extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		// Set ID if element doesn't have one
+		this.id = this.id || autoID(TEMPLATE);
+
 		/* GET DOM ELEMENTS */
 		// Add suffix `El` to the names of class constants containing elements:
 		// this.someEl = this.querySelector(`[${ATTRS.ATTR_NAME}]`);
@@ -79,7 +82,7 @@ export default class Template extends HTMLElement {
 			}
 		}));
 		// CUSTOM EVENT NOTES:
-		// Dispatch custom events on 'window'
+		// Dispatch custom events to 'window'
 		// When dispatching custom events include class instance ID in the 'detail' property
 	}
 
@@ -93,21 +96,21 @@ export default class Template extends HTMLElement {
 	// Sort methods alphabetically, excluding constructor, connectedCallback & disconnectedCallback
 	// For each method, first add a block comment that describes the method
 	// Use two blank lines between methods
+
 	// /*
-	//	 Handler for incoming custom events
+	// 	 Handler for incoming custom events
 	// */
-	// customEventsHandler(e: CustomEvent): void {
-	//	 // Check if event has a 'detail' property and if detail has an id that matches this class instance id
-	//	 const detail = e['detail'];
-	//	 if (!detail || (detail['id'] !== this.id)) {
-	//		 return;
-	//	 }
+	// customEventsHandler(e: Event): void {
+	// 	 // Check if event has a 'detail' property and if detail has an 'id' that matches this class instance id
+	// 		const detail = (e as CustomEvent)['detail'];
+	// 		if (!detail || detail['id'] !== this.id) {
+	// 			return;
+	// 		}
 	// }
 }
 
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(TEMPLATE);
 	customElements.define(TEMPLATE, Template);
 });

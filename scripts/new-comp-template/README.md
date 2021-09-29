@@ -21,7 +21,7 @@ Alternatively *ace.scss* includes all ACE component SASS files, so if using mult
 @import '<path-to-node_modules>/@potato/ace/ace';
 ```
 
-A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/template/ace-template.css`.
+A CSS file with the component styles is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/template/ace-template.css`.
 
 Then import the class into your JavaScript entry point:
 
@@ -31,7 +31,7 @@ import '<path-to-node_modules>/@potato/ace/components/template/template';
 
 For convenience the ES6 class is exported as `Template` <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Template is instantiated within each `<ace-template>` element and an ID `ace-template-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-template-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Template is instantiated within each `<ace-template>` element and an ID `ace-template-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-template-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
 <!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
 
@@ -52,7 +52,7 @@ After the event `DOMContentLoaded` is fired on `document` an instance of Templat
 
 ## Styles
 
-The following SASS is applied to Template. <!-- TODO: If no SASS variables used remove following sentence --> The SASS variables use `!default` so can also be easily overridden by developers. <!-- TODO: If SASS variable from common/constants.scss file used add the following sentence --> SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
+The following SASS is applied to Template. <!-- TODO: If SASS variable from common/constants.scss file used add the following sentence --> SASS variables used that are not defined here are defined in *<path-to-node_modules>/@potato/ace/common/constants.scss*.
 
 
 ```scss
@@ -67,13 +67,14 @@ Template uses the following custom events, the names of which are available in i
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Template.
+The following events are dispatched to `window` by Template.
 
 
 #### Ready
 
 `ace-template-ready`
 
+<!-- DESCRIBE WHEN EVENT IS DISPACTHED -->
 This event is dispatched when Template finishes initialising. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
@@ -85,24 +86,23 @@ This event is dispatched when Template finishes initialising. The event name is 
 
 ### Listened for events
 
-Template listens for the following events, which should be dispatched on the specific `ace-template` element.
+Template listens for the following events, which should be dispatched to `window`.
 
 
 <!-- TODO: Replace 'Event name' with a descriptive name -->
 #### Event name
 
-<!-- TODO: Replace 'event-name' with actual value -->
+<!-- TODO: Replace 'ace-template-event-name' with actual event name -->
 `ace-template-event-name`
 
-<!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
-This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
-
-<!-- TODO: If detail property used add the following and describe each of its properties --> 
-and its `detail` property should be composed as follows:
+<!-- DESCRIBE EVENT HERE -->
+The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>` and its `detail` property should be composed as follows:
 
 ```js
 'detail': {
-  'prop': // Description of prop [prop type (string/boolean etc.)]
+	'id': // ID of target Template [string]
+	// TODO: If other detail properties used add them with a short description and the type in square brackets
+  // 'prop': // Description of prop [prop type (string/boolean etc.)]
 }
 ```
 
