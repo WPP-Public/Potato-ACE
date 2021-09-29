@@ -8,14 +8,14 @@
 <p>Alternatively <em>ace.scss</em> includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/ace';
 </code></pre>
-<p>A CSS file is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/ace-combobox.css</code>.</p>
+<p>A CSS file with the component styles is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/ace-combobox.css</code>.</p>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/combobox/combobox';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Combobox</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Combobox is instantiated within each <code>&lt;ace-combobox&gt;</code> element and an ID <code>ace-combobox-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-combobox-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Combobox is instantiated within each <code>&lt;ace-combobox&gt;</code> element and an ID <code>ace-combobox-&lt;n&gt;</code> is given to any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete the <strong>Ready</strong>  custom event is dispatched to <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Combobox must have a descendant input box and will use a <code>&lt;input&gt;</code> with attribute <code>ace-combobox-input</code>. If no descendant has this attribute then the first decendant <code>&lt;input&gt;</code> will be used and given the attribute. It is strongly recommended that this <code>&lt;input&gt;</code> is given an accessible label using either <code>aria-label</code> or <code>aria-labelledby</code>. Similarly, Combobox must have a descendant list and will use a <code>&lt;ul&gt;</code> with attribute <code>ace-combobox-list</code>. If no descendant has this attribute then the first decendant <code>&lt;ul&gt;</code> will be used and given the attribute. It is strongly recommended that the <code>&lt;ul&gt;</code> is given an accessible label using <code>aria-label</code>, describing its options.</p>
-<p>The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-combobox-update-options</code> is dispatched on the Combobox instance afterwards.</p>
+<p>The list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as th <strong>Update options</strong> custom event is dispatched afterwards.</p>
 <h2>Usage</h2>
 <p>Comboboxes come in three main types depending on auto-complete behaviour; no auto-completion, list auto-completion, and inline and list auto-completion. Futhermore, each of these types can have manual or automatic selection, where no option or the first option is selected respectively when the listbox appears or its options are updated. Manual selection is the default behaviour and users can select the first or last option in the listbox once it appears by pressing <kbd>↑</kbd> or <kbd>↓</kbd> respectively. Automatic selection can be activated by adding an attribute <code>ace-combobox-autoselect</code> to the Combobox.</p>
 <p>The following features apply to all Combobox types:</p>
@@ -23,7 +23,7 @@
 <li><kbd>↓</kbd> selects the next option unless no option or the last option is selected in which cases it selects the first option.</li>
 <li><kbd>↑</kbd> selects the previous option unless no option or the first option is selected in which cases it selects the last option.</li>
 <li><kbd>Esc</kbd> hides the listbox without changing the value of the input textbox.</li>
-<li><kbd>Enter</kbd> chooses the selected option changing the input textbox value to match that of the chosen option and dispatching a custom event <code>ace-combobox-option-chosen</code>. This is also achieved by clicking on an option. An attribute <code>ace-combobox-no-input-update</code> can be added to the Combobox to dispatch the event without updating the input textbox.</li>
+<li><kbd>Enter</kbd> chooses the selected option changing the input textbox value to match that of the chosen option and dispatching the Option chosen custom event. This is also achieved by clicking on an option. An attribute <code>ace-combobox-no-input-update</code> can be added to the Combobox to dispatch the event without updating the input textbox.</li>
 <li>When the Combobox loses focus the listbox is automatically hidden. If the listbox had a selected option before it was hidden that option is automatically chosen.</li>
 </ul>
 <h3>Simple Combobox</h3>
@@ -96,7 +96,7 @@ ace-combobox {
 <h2>Custom events</h2>
 <p>Combobox uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Combobox.</p>
+<p>The following events are dispatched to <code>window</code> by Combobox.</p>
 <h4>Ready</h4>
 <p><code>ace-combobox-ready</code></p>
 <p>This event is dispatched when Combobox finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
@@ -136,20 +136,29 @@ ace-combobox {
 }
 </code></pre>
 <h3>Listened for events</h3>
-<p>Combobox listens for the following events, which should be dispatched on the specific <code>ace-combobox</code> element.</p>
+<p>Combobox listens for the following events, which should be dispatched to <code>window</code>.</p>
 <h4>Hide and show list</h4>
 <p><code>ace-combobox-hide-list</code> &amp; <code>ace-combobox-show-list</code></p>
-<p>These events should be dispatched to hide &amp; show the listbox respectively. The event names are available as <code>EVENTS.IN.HIDE_LIST</code> &amp; <code>EVENTS.IN.SHOW_LIST</code>.</p>
+<p>These events should be dispatched to hide &amp; show the listbox respectively. The event names are available as <code>EVENTS.IN.HIDE_LIST</code> &amp; <code>EVENTS.IN.SHOW_LIST</code> and their <code>detail</code> properties should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of target Combobox [string]
+}
+</code></pre>
 <h4>Select option</h4>
 <p><code>ace-combobox-select-option</code></p>
 <p>This event should be dispatched to programatically select an option. The event name is available as <code>EVENTS.IN.SELECT_OPTION</code>, and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
+  'id': // ID of target Combobox [string],
   'optionId': // ID of option to select [string]
 }
 </code></pre>
 <h4>Update options</h4>
 <p><code>ace-combobox-update-options</code></p>
-<p>This event should be dispatched when options are added to or removed from the list and causes Combobox to initialise them and then dispatch the <code>ace-combobox-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
+<p>This event should be dispatched when options are added to or removed from the list and causes Combobox to initialise them and then dispatch the <strong>Ready</strong> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code> and its <code>detail</code> property should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of target Combobox [string]
+}
+</code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Comboboxes with manual selection</h3>
@@ -411,8 +420,8 @@ ace-combobox {
 &lt;/ace-combobox&gt;
 </code></pre>
 <h3>Combobox controlled using custom events</h3>
-<p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events on the Tabs.</p>
-<p>The <strong>Add options</strong> button adds options to the initially empty Combobox then dispatches the <code>ace-combobox-update-options</code> custom event. The <strong>Show list</strong> and <strong>Hide list</strong> buttons dispatch the <code>ace-combobox-show-list</code> and <code>ace-combobox-hide-list</code> custom events to show and hide the listbox respectively. An option in the listbox can be selected by setting the option number in the <strong>Select option</strong> input and clicking <strong>Go</strong>, which dispatches the <code>ace-combobox-select-option</code> custom event. The JavaScript used by this example is shown below.</p>
+<p>The buttons in this example dispatch the <code>ace-tabs-set-prev-tab</code>, <code>ace-tabs-set-next-tab</code> and <code>ace-tabs-update-tabs</code> custom events to <code>window</code>.</p>
+<p>The <strong>Add options</strong> button adds options to the initially empty Combobox then dispatches the <strong>Update options</strong> custom event. The <strong>Show list</strong> and <strong>Hide list</strong> buttons dispatch the <strong>Show list</strong> and <strong>Hide list</strong> custom events to show and hide the listbox. An option in the listbox can be selected by setting the option number in the <strong>Select option</strong> input and clicking <strong>Go</strong>, which dispatches the  <strong>Select option</strong> custom event. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button id="add-options-btn">Add options</button>
 <button id="show-list-btn">Show list</button>
 <button id="hide-list-btn">Hide list</button>
@@ -450,7 +459,8 @@ ace-combobox {
 <pre><code class="language-js">import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const comboboxEl = document.getElementById('custom-events-combobox');
+	const COMBOBOX_ID = 'custom-events-combobox';
+	const comboboxEl = document.getElementById(COMBOBOX_ID);
 	const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
 	const selectOptionForm = document.getElementById('select-option-form');
 
@@ -462,13 +472,13 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 					newOption.textContent = 'New Option';
 					comboboxListEl.appendChild(newOption);
 				}
-				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {'detail': {'id': COMBOBOX_ID}}));
 				break;
 			case 'show-list-btn':
-				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST, {'detail': {'id': COMBOBOX_ID}}));
 				break;
 			case 'hide-list-btn':
-				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST, {'detail': {'id': COMBOBOX_ID}}));
 				break;
 		}
 	});
@@ -480,16 +490,17 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		if (!option) {
 			return;
 		}
-		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
-			detail: {
-				optionId: option.id,
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
+			'detail': {
+				'id': COMBOBOX_ID,
+				'optionId': option.id,
 			}
 		}));
 	});
 });
 </code></pre>
 <h3>Search Combobox with dynamically updated options</h3>
-<p>This example demonstrates how Combobox can be used as a search box with results optained through an API call, where the user types a search string into the combobox then presses <kbd>Enter</kbd> to start the search. In the example the delay associated with a slow API call is simulated using a 3 second timeout. An element with attributes <code>role=&quot;status&quot;</code> and <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via assistive technologies that the search is underway. After the timeout, results are added to the combobox's list, and are initialised by dispatching the <code>ace-combobox-update-options</code> custom event. The <code>role=&quot;status&quot;</code> element is finally updated to announce how many results were found. The JavaScript used by this example is shown below.</p>
+<p>This example demonstrates how Combobox can be used as a search box with results optained through an API call, where the user types a search string into the combobox then presses <kbd>Enter</kbd> to start the search. In the example the delay associated with a slow API call is simulated using a 3 second timeout. An element with attributes <code>role=&quot;status&quot;</code> and <code>aria-live=&quot;polite&quot;</code> is used to announce to the user via assistive technologies that the search is underway. After the timeout, results are added to the combobox's list, and are initialised by dispatching the <strong>Update options</strong> custom event. The <code>role=&quot;status&quot;</code> element is finally updated to announce how many results were found. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><p aria-live="polite" role="status" id="combobox-status"></p>
 <div>
 	<label id="search-combobox-label">Search:</label>
@@ -574,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 			comboboxListEl.appendChild(resultOption);
 		});
 		// Update combobox options
-		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {'detail': {'id': COMBOBOX_ID}}));
 		searching = false;
 	});
 
@@ -583,7 +594,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		if (comboboxListEl.childNodes.length === 0) {
 			return;
 		}
-		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST, {'detail': {'id': COMBOBOX_ID}}));
 	});
 
 	// Show results list when options intialised
@@ -592,7 +603,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
 			return;
 		}
-		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST, {'detail': {'id': COMBOBOX_ID}}));
 	});
 
 	// Listen for chosen options
@@ -605,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		chosenResultEl.textContent = `Option with ID '${detail['chosenOptionId']}' chosen.`;
 
 		// Hide list
-		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST, {'detail': {'id': COMBOBOX_ID}}));
 	});
 
 	// Show list when clicking on input if list has options
