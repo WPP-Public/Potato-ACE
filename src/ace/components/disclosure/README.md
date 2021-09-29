@@ -19,7 +19,7 @@ Alternatively *ace.scss* includes all ACE component SASS files, so if using mult
 @import '<path-to-node_modules>/@potato/ace/ace';
 ```
 
-A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/disclosure/ace-disclosure.css`.
+A CSS file with the component styles is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/disclosure/ace-disclosure.css`.
 
 Then import the class into your JavaScript entry point:
 
@@ -29,11 +29,11 @@ import '<path-to-node_modules>/@potato/ace/components/disclosure/disclosure';
 
 For convenience the ES6 class is exported as `Disclosure` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Disclosure is instantiated within each `<ace-disclosure>` element and an ID `ace-disclosure-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Disclosure is instantiated within each `<ace-disclosure>` element and an ID `ace-disclosure-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete the **Ready** custom event is dispatched. See the **Custom events** section below for more details.
 
 ## Usage
 
-Disclosures are hidden by default but can be initially shown on page load by adding the `ace-disclosure-visible="true"` attribute to it. The attribute `ace-disclosure-trigger-for` should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>` elements are used for triggers. Disclosures can also be triggered using a custom event. See the **Custom events** section below for more details.
+Disclosures are hidden by default but can be initially shown on page load by adding the `ace-disclosure-visible="true"` attribute to it. The attribute `ace-disclosure-trigger-for` should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only `<button>` elements are used for triggers. Disclosures can also be triggered using the **Toggle visibility** custom event. See the **Custom events** section below for more details.
 
 Triggers will by default toggle the visibiility of the Disclosure, but the `ace-disclosure-show-trigger` or `ace-disclosure-hide-trigger` attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.
 
@@ -55,7 +55,7 @@ Disclosure uses the following custom events, the names of which are available in
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Disclosure.
+The following events are dispatched to `window` by Disclosure.
 
 #### Ready
 
@@ -70,11 +70,11 @@ This event is dispatched when Disclosure finishes initialising. The event name i
 ```
 
 
-#### Changed
+#### Visibility changed
 
-`ace-disclosure-changed`
+`ace-disclosure-visibility-changed`
 
-This event is dispatched when Disclosure's visibility changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
+This event is dispatched when Disclosure's visibility changes. The event name is available as `EVENTS.OUT.VISIBILITY_CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -85,14 +85,19 @@ This event is dispatched when Disclosure's visibility changes. The event name is
 
 ### Listened for event
 
-Disclosure listens for the following event, which should be dispatched on the specific `ace-disclosure` element.
+Disclosure listens for the following event, which should be dispatched to `window`.
 
 
-#### Toggle
+#### Toggle visibility
 
-`ace-disclosure-toggle`
+`ace-disclosure-toggle-visibility`
 
-This event should be dispatched to toggle the visibility of the Disclosure and the event name is available as `EVENTS.IN.TOGGLE`.
+This event should be dispatched to toggle the visibility of the Disclosure. The event name is available as `EVENTS.IN.TOGGLE_VISIBILITY`and its `detail` property should be composed as follows:
+```js
+'detail': {
+  'id': // ID of target Disclosure [string]
+}
+```
 
 
 ## Examples
@@ -145,11 +150,11 @@ In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initia
 
 ### Disclosure controlled using custom event
 
-The button in this example is **not** a trigger button but instead is a button that dispatches the `ace-disclosure-toggle` custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The JavaScript used by this example is shown below.
+The button in this example is **not** a trigger button but instead is a button that dispatches the **Toggle visibility** custom event. This implementation is only for demonstration purposes and trigger buttons should have the `ace-disclosure-trigger-for` attribute instead. The JavaScript used by this example is shown below.
 
 ```html
 <button id="toggle-custom-event-btn">
-	Toggle disclosure using custom event
+	Toggle disclosure visibility using custom event
 </button>
 <hr>
 <ace-disclosure id="custom-events-disclosure">
@@ -163,11 +168,11 @@ The button in this example is **not** a trigger button but instead is a button t
 import { EVENTS } from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const disclosureEl = document.getElementById('custom-events-disclosure');
+	const DISCLOSURE_ID = 'custom-events-disclosure';
 	const customEventBtn = document.getElementById('toggle-custom-event-btn');
 
 	customEventBtn.addEventListener('click', () => {
-		disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE_VISIBILITY, {'detail': {'id': DISCLOSURE_ID}}));
 	});
 });
 ```

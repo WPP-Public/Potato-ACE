@@ -8,14 +8,14 @@
 <p>Alternatively <em>ace.scss</em> includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/ace';
 </code></pre>
-<p>A CSS file is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/ace-disclosure.css</code>.</p>
+<p>A CSS file with the component styles is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/ace-disclosure.css</code>.</p>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/disclosure';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Disclosure</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Disclosure is instantiated within each <code>&lt;ace-disclosure&gt;</code> element and an ID <code>ace-disclosure-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-disclosure-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Disclosure is instantiated within each <code>&lt;ace-disclosure&gt;</code> element and an ID <code>ace-disclosure-&lt;n&gt;</code> is given to any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete the <strong>Ready</strong> custom event is dispatched. See the <strong>Custom events</strong> section below for more details.</p>
 <h2>Usage</h2>
-<p>Disclosures are hidden by default but can be initially shown on page load by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for</code> should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code> elements are used for triggers. Disclosures can also be triggered using a custom event. See the <strong>Custom events</strong> section below for more details.</p>
+<p>Disclosures are hidden by default but can be initially shown on page load by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for</code> should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code> elements are used for triggers. Disclosures can also be triggered using the <strong>Toggle visibility</strong> custom event. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>ace-disclosure-show-trigger</code> or <code>ace-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to Disclosure.</p>
@@ -26,7 +26,7 @@
 <h2>Custom events</h2>
 <p>Disclosure uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Disclosure.</p>
+<p>The following events are dispatched to <code>window</code> by Disclosure.</p>
 <h4>Ready</h4>
 <p><code>ace-disclosure-ready</code></p>
 <p>This event is dispatched when Disclosure finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
@@ -34,19 +34,23 @@
   'id': // ID of Disclosure [string]
 }
 </code></pre>
-<h4>Changed</h4>
-<p><code>ace-disclosure-changed</code></p>
-<p>This event is dispatched when Disclosure's visibility changes. The event name is available as <code>EVENTS.OUT.CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
+<h4>Visibility changed</h4>
+<p><code>ace-disclosure-visibility-changed</code></p>
+<p>This event is dispatched when Disclosure's visibility changes. The event name is available as <code>EVENTS.OUT.VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Disclosure [string]
   'visible': // Whether the Disclosure is visible or not [boolean]
 }
 </code></pre>
 <h3>Listened for event</h3>
-<p>Disclosure listens for the following event, which should be dispatched on the specific <code>ace-disclosure</code> element.</p>
-<h4>Toggle</h4>
-<p><code>ace-disclosure-toggle</code></p>
-<p>This event should be dispatched to toggle the visibility of the Disclosure and the event name is available as <code>EVENTS.IN.TOGGLE</code>.</p>
+<p>Disclosure listens for the following event, which should be dispatched to <code>window</code>.</p>
+<h4>Toggle visibility</h4>
+<p><code>ace-disclosure-toggle-visibility</code></p>
+<p>This event should be dispatched to toggle the visibility of the Disclosure. The event name is available as <code>EVENTS.IN.TOGGLE_VISIBILITY</code>and its <code>detail</code> property should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of target Disclosure [string]
+}
+</code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Disclosure</h3>
@@ -112,9 +116,9 @@
 &lt;/ace-disclosure&gt;
 </code></pre>
 <h3>Disclosure controlled using custom event</h3>
-<p>The button in this example is <strong>not</strong> a trigger button but instead is a button that dispatches the <code>ace-disclosure-toggle</code> custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The JavaScript used by this example is shown below.</p>
+<p>The button in this example is <strong>not</strong> a trigger button but instead is a button that dispatches the <strong>Toggle visibility</strong> custom event. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button id="toggle-custom-event-btn">
-	Toggle disclosure using custom event
+	Toggle disclosure visibility using custom event
 </button>
 <hr>
 <ace-disclosure id="custom-events-disclosure">
@@ -124,7 +128,7 @@
 </ace-disclosure>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;toggle-custom-event-btn&quot;&gt;
-	Toggle disclosure using custom event
+	Toggle disclosure visibility using custom event
 &lt;/button&gt;
 &lt;hr&gt;
 &lt;ace-disclosure id=&quot;custom-events-disclosure&quot;&gt;
@@ -136,11 +140,11 @@
 <pre><code class="language-js">import { EVENTS } from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const disclosureEl = document.getElementById('custom-events-disclosure');
+	const DISCLOSURE_ID = 'custom-events-disclosure';
 	const customEventBtn = document.getElementById('toggle-custom-event-btn');
 
 	customEventBtn.addEventListener('click', () =&gt; {
-		disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE_VISIBILITY, {'detail': {'id': DISCLOSURE_ID}}));
 	});
 });
 </code></pre>

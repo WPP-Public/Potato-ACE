@@ -18,11 +18,11 @@ export const ATTRS = {
 
 export const EVENTS = {
 	IN: {
-		TOGGLE: `${DISCLOSURE}-toggle`,
+		TOGGLE_VISIBILITY: `${DISCLOSURE}-toggle-visibility`,
 	},
 	OUT: {
-		CHANGED: `${DISCLOSURE}-changed`,
 		READY: `${DISCLOSURE}-ready`,
+		VISIBILITY_CHANGED: `${DISCLOSURE}-visibility-changed`,
 	},
 };
 
@@ -55,7 +55,7 @@ export default class Disclosure extends HTMLElement {
 		const disclosureVisible = newValue === '';
 		this.triggerEls?.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', disclosureVisible.toString()));
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': disclosureVisible,
@@ -83,7 +83,7 @@ export default class Disclosure extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.addEventListener(EVENTS.IN.TOGGLE, this.toggleCustomEventHandler);
+		window.addEventListener(EVENTS.IN.TOGGLE_VISIBILITY, this.toggleCustomEventHandler);
 
 
 		/* INITIALISATION */
@@ -99,14 +99,19 @@ export default class Disclosure extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		this.removeEventListener(EVENTS.IN.TOGGLE, this.toggleCustomEventHandler);
+		window.removeEventListener(EVENTS.IN.TOGGLE_VISIBILITY, this.toggleCustomEventHandler);
 	}
 
 
 	/*
 		Handle custom events
 	*/
-	private toggleCustomEventHandler(): void {
+	private toggleCustomEventHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		if (this.hasAttribute(ATTRS.VISIBLE)) {
 			this.removeAttribute(ATTRS.VISIBLE);
 		} else {

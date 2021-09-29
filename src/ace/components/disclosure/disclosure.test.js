@@ -63,7 +63,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 
 
 			// Check that disclosure's first toggle trigger toggles it
@@ -84,7 +84,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 
 			// Check that disclosure's second toggle trigger toggles it
 			cy.get('@disclosureTriggers')
@@ -105,7 +105,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 
 			cy.get('@disclosure')
 				.invoke('attr', ATTRS.VISIBLE, '')
@@ -118,7 +118,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 			cy.get('@disclosure')
 				.invoke('removeAttr', ATTRS.VISIBLE)
 				.get('@disclosureTriggers')
@@ -144,7 +144,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 
 			// Check that disclosure's first toggle trigger toggles it
 			cy.get('@disclosureTriggers')
@@ -165,7 +165,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 
 				// Check that disclosure's second toggle trigger toggles it
 				.get('@disclosureTriggers')
@@ -186,7 +186,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get(`[${ATTRS.TRIGGER}="${ID}"][${ATTRS.TRIGGER_SHOW}]`)
 				.as('disclosureShowTrigger')
 				.get(`[${ATTRS.TRIGGER}="${ID}"][${ATTRS.TRIGGER_HIDE}]`)
@@ -199,7 +199,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@disclosureHideTrigger')
 				.click()
 				.get('@disclosure')
@@ -220,7 +220,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 
 			cy.get('@disclosure')
 				.invoke('removeAttr', ATTRS.VISIBLE)
@@ -233,7 +233,7 @@ context(`Disclosure`, () => {
 				'id': ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 			cy.get('@disclosure')
 				.invoke('attr', ATTRS.VISIBLE, '')
 				.get('@disclosureTriggers')
@@ -244,14 +244,14 @@ context(`Disclosure`, () => {
 	});
 
 
-	it(`Should toggle visibility when toggle custom event dispatched on it`, () => {
+	it(`Should toggle visibility when toggle custom event dispatched to it`, () => {
 		const ID = IDS.CUSTOM_EVENTS_DISCLOSURE;
 
 		let expectedDetail = {
 			'id': ID,
 			'visible': true,
 		};
-		cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+		cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 			.get(`#${IDS.CUSTOM_EVENTS_DISCLOSURE}`)
 			.as('disclosure')
 			.get(`#${IDS.TOGGLE_CUSTOM_EVENT_BTN}`)
@@ -264,7 +264,7 @@ context(`Disclosure`, () => {
 			'id': ID,
 			'visible': false,
 		};
-		cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+		cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 			.get('@toggleBtn')
 			.click()
 			.get('@disclosure')
