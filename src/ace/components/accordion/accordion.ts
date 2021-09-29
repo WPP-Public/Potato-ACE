@@ -78,12 +78,12 @@ export default class Accordion extends HTMLElement {
 
 		/* ADD EVENT LISTENERS */
 		this.addEventListener('click', this.clickHandler);
-		this.addEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
 
 
 		/* INITIALISATION */
@@ -113,12 +113,12 @@ export default class Accordion extends HTMLElement {
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
 		this.removeEventListener('click', this.clickHandler);
-		this.removeEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
 	}
 
 
@@ -144,6 +144,11 @@ export default class Accordion extends HTMLElement {
 		Handler for incoming custom events
 	*/
 	private customEventsHander(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		switch (e.type) {
 			case EVENTS.IN.HIDE_PANEL:
 			case EVENTS.IN.SHOW_PANEL:

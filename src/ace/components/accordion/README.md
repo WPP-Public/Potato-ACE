@@ -19,7 +19,7 @@ Alternatively *ace.scss* includes all ACE component SASS files, so if using mult
 @import '<path-to-node_modules>/@potato/ace/ace';
 ```
 
-A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/accordion/ace-accordion.css`.
+A CSS file with the component styles is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/accordion/ace-accordion.css`.
 
 Then import the class into your JavaScript entry point:
 
@@ -29,9 +29,9 @@ import '<path-to-node_modules>/@potato/ace/components/accordion/accordion';
 
 For convenience the ES6 class is exported as `Accordion` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Accordion is instantiated within each `<ace-accordion>` element and an ID `ace-accordion-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-accordion-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Accordion is instantiated within each `<ace-accordion>` element and an ID `ace-accordion-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete the **Ready** custom event. See the **Custom events** section below for more details.
 
-For each section of content Accordion requires a descendant **panel** and a corresponding descendant **header** that in turn contains a child **trigger**. The number of headers, triggers and panels must be the same. Having said this, Accordions can be initalised with none of these, which can instead be added later and initialised by dispatching a custom event. See the **Custom events** section below for more details.
+For each section of content Accordion requires a descendant panel and a corresponding descendant header that in turn contains a child trigger. The number of headers, triggers and panels must be the same. Having said this, Accordions can be initalised with none of these and they can be added later and initialised by dispatching the **Update** custom event. See the **Custom events** section below for more details.
 
 Accordion headers must be HTML heading elements, i.e. `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<h5>` or`<h6>` and of the same type, e.g. all `<h3>`. Accordion will use all heading elements with attribute `ace-accordion-header` as long as they are of the same type. If no descendant heading elements have this attribute then all descendant heading elements will be used as headers, as long as they are of the same type, and given this attribute.
 
@@ -43,7 +43,7 @@ The visibility of a panel can be toggled by clicking on it's corresponding trigg
 
 ## Animating panels
 
-Since animations can be achieved using many different methods Accordion does not animate the showing and hiding of panels. Developers interested in doing so can listen for the `ace-carousel-panel-visibility-changed` custom event and then apply their own animations, as demonstrated in one of the examples below.
+Since animations can be achieved using many different methods Accordion does not animate the showing and hiding of panels. Developers interested in doing so can listen for the **Panel visibility changed** custom event and then apply their own animations, as demonstrated in one of the examples below.
 
 In order to implement animations without hindering accessibility developers must hide non-visible panels from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
 
@@ -67,14 +67,14 @@ Accordion uses the following custom events, the names of which are available in 
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Accordion.
+The following events are dispatched to `window` by Accordion.
 
 
 #### Ready
 
 `ace-accordion-ready`
 
-This event is dispatched when Accordion finishes initialising just after page load, and after dynamically added descendants are initialised in response to the `ace-accordion-update` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when Accordion finishes initialising after page load, and after dynamically added descendants are initialised in response to the **Update** custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -82,7 +82,7 @@ This event is dispatched when Accordion finishes initialising just after page lo
 }
 ```
 
-#### Changed
+#### Panel visibility changed
 
 `ace-accordion-panel-visibility-changed`
 
@@ -98,7 +98,7 @@ This event is dispatched when a panel's visiblity changes. The event name is ava
 
 ### Listened for events
 
-Accordion listens for the following events, which should be dispatched on the specific `ace-accordion` element.
+Accordion listens for the following events, which should be dispatched to `window`.
 
 #### Show, hide and toggle panel
 
@@ -108,6 +108,7 @@ These events should be dispatched to show, hide and toggle the visibility of a p
 
 ```js
 'detail': {
+	'id': // ID of target Accordion [string]
   'panelNumber': // The number of the panel to change the visibility of [number]
 }
 ```
@@ -116,13 +117,25 @@ These events should be dispatched to show, hide and toggle the visibility of a p
 
 `ace-accordion-show-panels` &  `ace-accordion-hide-panels`
 
-These events should be dispatched to show and hide all panels. The event names are available as `EVENTS.IN.SHOW_PANELS` and  `EVENTS.IN.HIDE_PANELS`.
+These events should be dispatched to show and hide all panels. The event names are available as `EVENTS.IN.SHOW_PANELS` and  `EVENTS.IN.HIDE_PANELS` and their `detail` properties should be composed as follows:
+
+```js
+'detail': {
+  'id': // ID of target Accordion [string]
+}
+```
 
 #### Update
 
 `ace-accordion-update`
 
-This event should be dispatched when headers, triggers and panels are added or removed and causes Accordion to initialise them and then dispatch the `ace-accordion-ready` event. The event name is available as `EVENTS.IN.UPDATE`.
+This event should be dispatched when headers, triggers and panels are added or removed and causes Accordion to initialise them and then dispatch the **Ready** event. The event name is available as `EVENTS.IN.UPDATE` and its `detail` property should be composed as follows:
+
+```js
+'detail': {
+  'id': // ID of target XXXXX [string]
+}
+```
 
 
 ## Examples
@@ -238,8 +251,6 @@ Note that this method should only be used if the panels are of the same or simil
 
 ### Accordion controlled through custom events
 
-
-
 The JavaScript used by this example is shown below.
 
 ```html
@@ -285,7 +296,8 @@ The JavaScript used by this example is shown below.
 import {ATTRS, EVENTS} from '/ace/components/accordion/accordion.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const accordionEl = document.getElementById('custom-events-accordion');
+	const ACCORDION_ID = 'custom-events-accordion';
+	const accordionEl = document.getElementById(ACCORDION_ID);
 
 	window.addEventListener('click', (e) => {
 		let customEvent;
@@ -300,8 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
 				} else {
 					customEvent = EVENTS.IN[`${targetId === 'hide-panel-btn' ? 'HIDE' : 'SHOW'}_PANEL`];
 				}
-				accordionEl.dispatchEvent(new CustomEvent(customEvent, {
+				window.dispatchEvent(new CustomEvent(customEvent, {
 					'detail': {
+						'id': ACCORDION_ID,
 						'panelNumber': panelNumber,
 					}
 				}));
@@ -310,7 +323,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'show-panels-btn':
 			case 'hide-panels-btn': {
 				customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_PANELS`];
-				accordionEl.dispatchEvent(new CustomEvent(customEvent));
+				window.dispatchEvent(new CustomEvent(customEvent, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 			case 'append-panel-btn': {
@@ -328,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				accordionEl.append(newHeaderEl);
 				accordionEl.append(newPanelEl);
-				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 			case 'remove-panel-btn': {
@@ -336,7 +349,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const panelEl = accordionEl.querySelector(`[${ATTRS.PANEL}]`);
 				accordionEl.removeChild(headerEl);
 				accordionEl.removeChild(panelEl);
-				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 		}

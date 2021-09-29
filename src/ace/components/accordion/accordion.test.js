@@ -229,7 +229,7 @@ context(`Accordion`, () => {
 		});
 
 
-		it(`Should show, hide and toggle panel when ${EVENTS.IN.SHOW_PANEL}, ${EVENTS.IN.HIDE_PANEL} & ${EVENTS.IN.TOGGLE_PANEL}custom events dispatched`, () => {
+		it(`Should show, hide and toggle panel when ${EVENTS.IN.SHOW_PANEL}, ${EVENTS.IN.HIDE_PANEL} & ${EVENTS.IN.TOGGLE_PANEL} custom events dispatched`, () => {
 			const panelIndex = 2;
 			let expectedDetail = {
 				'id': ACCORDION_ID,
