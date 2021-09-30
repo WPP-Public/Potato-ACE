@@ -151,7 +151,7 @@ context(`Tabs`, () => {
 			tabSequence.forEach((index) => {
 				const oldTabNumber = newTabNumber;
 				newTabNumber = index;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
 					.get('@tabsTabs')
 					.eq(newTabNumber - 1)
 					.click();
@@ -172,7 +172,7 @@ context(`Tabs`, () => {
 			it(`Should select previous tab when LEFT pressed`, () => {
 				// Check that LEFT works
 				const newTabNumber = 1;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
 					.get('@tabsButton2')
 					.focus()
 					.type('{leftarrow}');
@@ -189,7 +189,7 @@ context(`Tabs`, () => {
 			it(`Should select next tab when RIGHT pressed`, () => {
 				// Check that RIGHT works
 				const newTabNumber = 3;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
 					.get('@tabsButton2')
 					.focus()
 					.type('{rightarrow}');
@@ -216,7 +216,7 @@ context(`Tabs`, () => {
 		describe(`Observed attributes`, () => {
 			it(`Should set correct tab when observed attribute changed`, () => {
 				const tabNumber = 3;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
 					.get('@tabs')
 					.invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
 				checkTabSelected(tabNumber);
@@ -276,7 +276,7 @@ context(`Tabs`, () => {
 				tabSequence.forEach((index) => {
 					const oldTabNumber = newTabNumber;
 					newTabNumber = index;
-					cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
+					cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
 						.get('@tabsButton1')
 						.focus()
 						.type('{leftarrow}');
@@ -291,7 +291,7 @@ context(`Tabs`, () => {
 				tabSequence.forEach((index) => {
 					const oldTabNumber = newTabNumber;
 					newTabNumber = index;
-					cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
+					cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
 						.get('@tabsButton1')
 						.focus()
 						.type('{rightarrow}');
@@ -304,7 +304,7 @@ context(`Tabs`, () => {
 		describe(`Observed attributes`, () => {
 			it(`Should select correct tab when observed attribute changed`, () => {
 				const tabNumber = 3;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, tabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 2, tabNumber))
 					.get('@tabs')
 					.invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
 				checkTabSelected(tabNumber);
@@ -360,7 +360,7 @@ context(`Tabs`, () => {
 			tabSequence.forEach((index) => {
 				const oldTabNumber = newTabNumber;
 				newTabNumber = index;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
 					.get('@tabsTabs')
 					.eq(newTabNumber - 1)
 					.click();
@@ -381,7 +381,7 @@ context(`Tabs`, () => {
 			it(`Should select previous tab when UP pressed`, () => {
 				// Check that UP works
 				const newTabNumber = 1;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
 					.get('@tabsButton2')
 					.focus()
 					.type('{uparrow}');
@@ -398,7 +398,7 @@ context(`Tabs`, () => {
 			it(`Should select next tab when DOWN pressed`, () => {
 				// Check that DOWN works
 				const newTabNumber = 3;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 2, newTabNumber))
 					.get('@tabsButton2')
 					.focus()
 					.type('{downarrow}');
@@ -438,7 +438,7 @@ context(`Tabs`, () => {
 		describe(`Observed attributes`, () => {
 			it(`Should select correct tab when observed attribute changed`, () => {
 				const tabNumber = 2;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
 					.get('@tabs')
 					.invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
 				checkTabSelected(tabNumber);
@@ -494,7 +494,7 @@ context(`Tabs`, () => {
 			tabSequence.forEach((index) => {
 				const oldTabNumber = newTabNumber;
 				newTabNumber = index;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, oldTabNumber, newTabNumber))
 					.get('@tabsTabs')
 					.eq(newTabNumber - 1)
 					.click();
@@ -611,7 +611,7 @@ context(`Tabs`, () => {
 		describe(`Observed attributes`, () => {
 			it(`Should set correct tab when observed attribute changed`, () => {
 				const tabNumber = 3;
-				cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
+				cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 1, tabNumber))
 					.get('@tabs')
 					.invoke('attr', ATTRS.SELECTED_TAB, tabNumber);
 				checkTabSelected(tabNumber);
@@ -662,7 +662,7 @@ context(`Tabs`, () => {
 
 
 		it(`Should respond correctly when SET_PREV_TAB and SET_NEXT_TAB custom events dispatched`, () => {
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, getExpectedDetailObj(TABS_ID, 1, 2))
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, getExpectedDetailObj(TABS_ID, 1, 2))
 				.get(`#${IDS.NEXT_TAB_BTN}`)
 				.click()
 				.click();

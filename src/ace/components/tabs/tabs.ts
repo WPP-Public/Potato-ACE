@@ -41,8 +41,8 @@ export const EVENTS = {
 		UPDATE: `${TABS}-update`
 	},
 	OUT: {
-		CHANGED: `${TAB}-changed`,
 		READY: `${TABS}-ready`,
+		VISIBILITY_CHANGED: `${TAB}-visibility-changed`,
 	}
 };
 
@@ -70,7 +70,7 @@ export default class Tabs extends HTMLElement {
 
 		/* CLASS METHOD BINDINGS */
 		this.clickHandler = this.clickHandler.bind(this);
-		this.customEventsHander = this.customEventsHander.bind(this);
+		this.customEventsHandler = this.customEventsHandler.bind(this);
 		this.determineStartingSelectedTab = this.determineStartingSelectedTab.bind(this);
 		this.initTabs = this.initTabs.bind(this);
 		this.keydownHandler = this.keydownHandler.bind(this);
@@ -135,9 +135,9 @@ export default class Tabs extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.addEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE, this.customEventsHandler);
 		this.tablistEl.addEventListener('click', this.clickHandler);
 		this.tablistEl.addEventListener('keydown', this.keydownHandler);
 
@@ -157,8 +157,9 @@ export default class Tabs extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		this.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHandler);
 		this.tablistEl?.removeEventListener('click', this.clickHandler);
 		this.tablistEl?.removeEventListener('keydown', this.keydownHandler);
 	}
@@ -180,7 +181,12 @@ export default class Tabs extends HTMLElement {
 	/*
 		Handler for incoming custom events
 	*/
-	private customEventsHander(e: Event): void {
+	private customEventsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		switch (e.type) {
 			case EVENTS.IN.SET_PREV_TAB:
 			case EVENTS.IN.SET_NEXT_TAB: {
@@ -348,7 +354,7 @@ export default class Tabs extends HTMLElement {
 
 		tabToSelectEl.focus();
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'currentlySelectedTab': {
 					'id': tabToSelectEl.id,
