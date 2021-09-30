@@ -132,15 +132,15 @@ export default class Combobox extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		window.addEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
-		window.addEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
 		window.addEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
-		this.inputEl.addEventListener('focus', this.focusHandler);
+		window.addEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		this.inputEl.addEventListener('blur', this.focusHandler);
-		this.inputEl.addEventListener('keydown', this.keydownHandler);
-		this.inputEl.addEventListener('input', this.inputHandler);
 		this.listEl.addEventListener('click', this.clickHandler);
+		this.inputEl.addEventListener('focus', this.focusHandler);
+		this.inputEl.addEventListener('input', this.inputHandler);
+		this.inputEl.addEventListener('keydown', this.keydownHandler);
 		this.listEl.addEventListener('mousedown', this.mousedownHandler);
 
 
@@ -163,15 +163,15 @@ export default class Combobox extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		window.removeEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
-		window.removeEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
 		window.removeEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
-		this.inputEl?.removeEventListener('focus', this.focusHandler);
+		window.removeEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		this.inputEl?.removeEventListener('blur', this.focusHandler);
-		this.inputEl?.removeEventListener('keydown', this.keydownHandler);
-		this.inputEl?.removeEventListener('input', this.inputHandler);
 		this.listEl?.removeEventListener('click', this.clickHandler);
+		this.inputEl?.removeEventListener('focus', this.focusHandler);
+		this.inputEl?.removeEventListener('input', this.inputHandler);
+		this.inputEl?.removeEventListener('keydown', this.keydownHandler);
 		this.listEl?.removeEventListener('mousedown', this.mousedownHandler);
 	}
 

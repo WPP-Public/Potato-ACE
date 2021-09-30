@@ -93,6 +93,7 @@ Disclosure listens for the following event, which should be dispatched to `windo
 `ace-disclosure-toggle-visibility`
 
 This event should be dispatched to toggle the visibility of the Disclosure. The event name is available as `EVENTS.IN.TOGGLE_VISIBILITY`and its `detail` property should be composed as follows:
+
 ```js
 'detail': {
   'id': // ID of target Disclosure [string]

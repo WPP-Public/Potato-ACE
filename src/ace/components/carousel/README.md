@@ -151,6 +151,7 @@ Carousel listens for the following events, which should be dispatched to `window
 `ace-carousel-set-prev-slide`
 
 This event should be dispatched to display the previous slide, or the last slide if the Carousel has the attribute `ace-carousel-infinite` and its first slide is displayed. The event name is available as `EVENTS.IN.SET_PREV_SLIDE` and its `detail` property should be composed as follows:
+
 ```js
 'detail': {
   'id': // ID of target Carousel [string]
@@ -163,6 +164,7 @@ This event should be dispatched to display the previous slide, or the last slide
 `ace-carousel-set-next-slide`
 
 This event should be dispatched to display the next slide, or the first slide if the Carousel has the attribute `ace-carousel-infinite` and its the last slide is displayed. The event name is available as `EVENTS.IN.SET_NEXT_SLIDE` and its `detail` property should be composed as follows:
+
 ```js
 'detail': {
   'id': // ID of target Carousel [string]
@@ -175,6 +177,7 @@ This event should be dispatched to display the next slide, or the first slide if
 `ace-carousel-update-slides`
 
 This event should be dispatched when slides are added or removed and causes Carousel to initialise them and then dispatch the **Ready** event. The event name is available as `EVENTS.IN.UPDATE_SLIDES` and its `detail` property should be composed as follows:
+
 ```js
 'detail': {
   'id': // ID of target Carousel [string]
@@ -186,9 +189,10 @@ This event should be dispatched when slides are added or removed and causes Caro
 `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show`
 
 These event should be dispatched to start or stop the automatic slide show respectively. The event names are available as `EVENTS.IN.START_AUTO_SLIDE_SHOW` and `EVENTS.IN.STOP_AUTO_SLIDE_SHOW` and their `detail` properties should be composed as follows:
+
 ```js
 'detail': {
-  'id': // ID of target XXXXX [string]
+  'id': // ID of target Carousel [string]
 }
 ```
 

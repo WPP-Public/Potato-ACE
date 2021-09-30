@@ -158,6 +158,7 @@ Menu listens for the following event, which should be dispatched to `window`.
 `ace-menu-update-options`
 
 This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the **Ready** custom event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS` and its `detail` property should be composed as follows:
+
 ```js
 'detail': {
   'id': // ID of target Menu [string]

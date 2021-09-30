@@ -253,19 +253,19 @@ export default class Carousel extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.addEventListener('click', this.clickHandler);
-		window.addEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
 		window.addEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
 		window.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
+		this.addEventListener('click', this.clickHandler);
 
 		if (this.autoSlideShowCarousel) {
 			document.addEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE as string, this.visibilityChangeHandler);
+			window.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
+			window.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
 			this.addEventListener('focusin', this.focusAndMouseHandler);
 			this.addEventListener('focusout', this.focusAndMouseHandler);
 			this.addEventListener('mouseenter', this.focusAndMouseHandler);
 			this.addEventListener('mouseleave', this.focusAndMouseHandler);
-			window.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
-			window.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
 		}
 
 		if (this.carouselHasSlidePicker) {
@@ -288,19 +288,19 @@ export default class Carousel extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		this.removeEventListener('click', this.clickHandler);
-		window.removeEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
 		window.removeEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
 		window.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
+		this.removeEventListener('click', this.clickHandler);
 
 		if (this.autoSlideShowCarousel) {
 			document.removeEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE as string, this.visibilityChangeHandler);
+			window.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
+			window.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
 			this.removeEventListener('focusin', this.focusAndMouseHandler);
 			this.removeEventListener('focusout', this.focusAndMouseHandler);
 			this.removeEventListener('mouseenter', this.focusAndMouseHandler);
 			this.removeEventListener('mouseleave', this.focusAndMouseHandler);
-			window.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
-			window.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
 		}
 
 		if (this.carouselHasSlidePicker) {

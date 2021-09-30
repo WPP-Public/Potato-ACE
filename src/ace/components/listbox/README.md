@@ -122,6 +122,7 @@ Listbox listens for the following event, which should be dispatched to `window`.
 `ace-listbox-update-options`
 
 This event should be dispatched when options are added to or removed from the list and causes Listbox to initialise them and then dispatch the **Ready** event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS` and its `detail` property should be composed as follows:
+
 ```js
 'detail': {
   'id': // ID of target Listbox [string]

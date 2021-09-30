@@ -77,13 +77,13 @@ export default class Accordion extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.addEventListener('click', this.clickHandler);
 		window.addEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
 		window.addEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
 		window.addEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
 		window.addEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
 		window.addEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
 		window.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		this.addEventListener('click', this.clickHandler);
 
 
 		/* INITIALISATION */
@@ -112,13 +112,13 @@ export default class Accordion extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		this.removeEventListener('click', this.clickHandler);
 		window.removeEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
 		window.removeEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
 		window.removeEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
 		window.removeEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
 		window.removeEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
 		window.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		this.removeEventListener('click', this.clickHandler);
 	}
 
 

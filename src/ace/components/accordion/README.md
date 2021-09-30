@@ -133,7 +133,7 @@ This event should be dispatched when headers, triggers and panels are added or r
 
 ```js
 'detail': {
-  'id': // ID of target XXXXX [string]
+  'id': // ID of target Accordion [string]
 }
 ```
 

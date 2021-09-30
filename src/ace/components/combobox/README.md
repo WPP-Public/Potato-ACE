@@ -236,6 +236,7 @@ This event should be dispatched to programatically select an option. The event n
 `ace-combobox-update-options`
 
 This event should be dispatched when options are added to or removed from the list and causes Combobox to initialise them and then dispatch the **Ready** event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS` and its `detail` property should be composed as follows:
+
 ```js
 'detail': {
   'id': // ID of target Combobox [string]
