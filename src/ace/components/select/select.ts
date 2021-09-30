@@ -56,12 +56,12 @@ export default class Select extends HTMLElement {
 		this.cancelOptionChange = this.cancelOptionChange.bind(this);
 		this.clickHandler = this.clickHandler.bind(this);
 		this.confirmOptionChange = this.confirmOptionChange.bind(this);
+		this.customEventsHandler = this.customEventsHandler.bind(this);
 		this.blurHandler = this.blurHandler.bind(this);
 		this.hideList = this.hideList.bind(this);
 		this.keydownHandler = this.keydownHandler.bind(this);
 		this.showList = this.showList.bind(this);
 		this.updateSelectForFormAttributes = this.updateSelectForFormAttributes.bind(this);
-		this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
 		this.updateTriggerText = this.updateTriggerText.bind(this);
 	}
 
@@ -140,10 +140,10 @@ export default class Select extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.listEl.addEventListener('blur', this.blurHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		this.addEventListener('click', this.clickHandler);
 		this.addEventListener('keydown', this.keydownHandler);
-		this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		this.listEl.addEventListener('blur', this.blurHandler);
 
 
 		/* INITIALISATION */
@@ -165,10 +165,10 @@ export default class Select extends HTMLElement {
 		this.list?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
-		this.listEl?.removeEventListener('blur', this.blurHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		this.removeEventListener('click', this.clickHandler);
 		this.removeEventListener('keydown', this.keydownHandler);
-		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		this.listEl?.removeEventListener('blur', this.blurHandler);
 	}
 
 
@@ -337,7 +337,12 @@ export default class Select extends HTMLElement {
 	/*
 		Update options custom event handler
 	*/
-	private updateOptionsHandler(): void {
+	private customEventsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		if (!this.list) {
 			return;
 		}

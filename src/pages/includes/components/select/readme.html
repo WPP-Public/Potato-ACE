@@ -8,13 +8,13 @@
 <p>Alternatively <em>ace.scss</em> includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/ace';
 </code></pre>
-<p>A CSS file is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/select/ace-select.css</code>.</p>
+<p>A CSS file with the component styles is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/select/ace-select.css</code>.</p>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Select</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Select is instantiated within each <code>&lt;ace-select&gt;</code> element and an ID <code>ace-select-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-select-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>Select must have a descendant button to show the hidden list of options, so if one is not present Select will create a <code>&lt;button&gt;</code> to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a descendant list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-select-update-options</code> is dispatched on the Select instance afterwards.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Select is instantiated within each <code>&lt;ace-select&gt;</code> element and an ID <code>ace-select-&lt;n&gt;</code> is given to any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete the <strong>Ready</strong> custom event is dispatched. See the <strong>Custom events</strong> section below for more details.</p>
+<p>Select must have a descendant button to show the hidden list of options, so if one is not present Select will create a <code>&lt;button&gt;</code> to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a descendant list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-select-update-options</code> is dispatched to the Select instance afterwards.</p>
 <p>If using a Select in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-select-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-select-input</code>. The value of the selected option is stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded string. Similarly, the selected option ID is stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-id</code>.</p>
 <p>If using a Select in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-select-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-select-input</code>. The value of the selected option is stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded string. Similarly, the selected option ID is stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-id</code>.</p>
 <h2>Usage</h2>
@@ -79,7 +79,7 @@ ace-select {
 <h2>Custom events</h2>
 <p>Select uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Select.</p>
+<p>The following events are dispatched to <code>window</code> by Select.</p>
 <h4>Ready</h4>
 <p><code>ace-select-ready</code></p>
 <p>This event is dispatched when Select finishes initialising just after page load, and after dynamically added options are initialised in response to the <code>ace-select-update-options</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
@@ -99,7 +99,7 @@ ace-select {
 }
 </code></pre>
 <h3>Listened for event</h3>
-<p>Select listens for the following event, which should be dispatched on the specific <code>ace-select</code> element.</p>
+<p>Select listens for the following event, which should be dispatched to the specific <code>ace-select</code> element.</p>
 <h4>Update options</h4>
 <p><code>ace-select-update-options</code></p>
 <p>This event should be dispatched when options are added to or removed from the list and causes Select to initialise them and then dispatch the <code>ace-select-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
@@ -216,10 +216,17 @@ ace-select {
 <pre><code class="language-js">import { EVENTS } from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const selectEl = document.getElementById('custom-events-select');
+	const SELECT_ID = 'custom-events-select';
+	const selectEl = document.getElementById(SELECT_ID);
 	const selectListEl = selectEl.querySelector('ul');
 
-	const updateOptions = () =&gt; selectEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () =&gt; {
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {
+			'detail': {
+				'id': SELECT_ID,
+			}
+		}));
+	};
 
 	document.getElementById('add-option').addEventListener('click', () =&gt; {
 		const optionEl = document.createElement('li');
