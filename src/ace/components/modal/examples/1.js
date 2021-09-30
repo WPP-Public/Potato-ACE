@@ -1,7 +1,8 @@
 import {EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const modalEl = document.getElementById('simple-modal');
+	const MODAL_ID = 'simple-modal';
+  const modalEl = document.getElementById(MODAL_ID);
   const disabledBtn = document.getElementById('disabled-btn');
 
   modalEl.addEventListener('click', (e) => {
@@ -29,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
         linkEl.remove();
       }
     }
-    modalEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_FOCUS_TRAP));
+    window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_FOCUS_TRAP, {
+			'detail': {
+				'id': MODAL_ID,
+			}
+		}));
   });
 });

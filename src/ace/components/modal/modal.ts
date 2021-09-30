@@ -23,8 +23,8 @@ export const EVENTS = {
 		UPDATE_FOCUS_TRAP: `${MODAL}-update-focus-trap`,
 	},
 	OUT: {
-		CHANGED: `${MODAL}-changed`,
 		READY: `${MODAL}-ready`,
+		VISIBILITY_CHANGED: `${MODAL}-visibility-changed`,
 	},
 };
 
@@ -70,7 +70,7 @@ export default class Modal extends HTMLElement {
 			this.hide();
 		}
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': show,
@@ -118,11 +118,11 @@ export default class Modal extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
+		if (!this.canUseInert) {
+			window.addEventListener(EVENTS.IN.UPDATE_FOCUS_TRAP, this.customEventsHandler);
+		}
 		this.addEventListener('click', this.clickHandler);
 		this.addEventListener('keydown', this.keydownHandler);
-		if (!this.canUseInert) {
-			this.addEventListener(EVENTS.IN.UPDATE_FOCUS_TRAP, this.customEventsHandler);
-		}
 
 
 		/* INITIALISATION */
@@ -178,7 +178,12 @@ export default class Modal extends HTMLElement {
 	/*
 		Handle custom events
 	*/
-	private customEventsHandler(): void {
+	private customEventsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		if (!this.focusTrap) {
 			return;
 		}

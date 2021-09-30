@@ -6,10 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
   let otherModalTriggerClicked;
 
   // If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden
-  const otherModalTrigger = modalEl.querySelector(`[ace-modal-trigger-for="${OTHER_MODAL_ID}"]`);
+  const otherModalTrigger = modalEl.querySelector(
+		`[ace-modal-trigger-for="${OTHER_MODAL_ID}"]`
+	);
   otherModalTrigger.addEventListener('click', () => otherModalTriggerClicked = true);
 
-  window.addEventListener(EVENTS.OUT.CHANGED, (e) => {
+  window.addEventListener(EVENTS.OUT.VISIBILITY_CHANGED, (e) => {
     if (!e.detail || e.detail.id !== OTHER_MODAL_ID || e.detail.visible || !otherModalTriggerClicked) {
       return;
     }

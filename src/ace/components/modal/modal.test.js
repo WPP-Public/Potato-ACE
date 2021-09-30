@@ -74,7 +74,7 @@ context(`Modal`, () => {
 				'id': ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@modal')
 				.invoke('removeAttr', ATTRS.VISIBLE)
 				.then(() => {
@@ -86,7 +86,7 @@ context(`Modal`, () => {
 				'id': ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@modal')
 				.invoke('attr', ATTRS.VISIBLE, '')
 				.then(() => {
@@ -102,7 +102,7 @@ context(`Modal`, () => {
 				'id': ID,
 				'visible': visible,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@modalHideBtn')
 				.click();
 			checkModalState(visible);
@@ -114,7 +114,7 @@ context(`Modal`, () => {
 				'id': ID,
 				'visible': visible,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail);
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail);
 			cy.get('@modalTriggers')
 				.eq(0)
 				.click()
@@ -154,7 +154,7 @@ context(`Modal`, () => {
 				'id': ID,
 				'visible': visible,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@modalBackdrop')
 				.click({ force: true });
 			checkModalState(visible);
@@ -173,7 +173,7 @@ context(`Modal`, () => {
 				'id': ID,
 				'visible': visible,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@modalHideBtn')
 				.type('{esc}');
 			checkModalState(visible);
@@ -208,7 +208,7 @@ context(`Modal`, () => {
 				'id': ID,
 				'visible': visible,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@modalTriggers')
 				.eq(0)
 				.click()
