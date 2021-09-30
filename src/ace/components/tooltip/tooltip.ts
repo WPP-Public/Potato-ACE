@@ -21,8 +21,8 @@ export const EVENTS = {
 		SHOW: `${TOOLTIP}-show`,
 	},
 	OUT: {
-		CHANGED: `${TOOLTIP}-changed`,
 		READY: `${TOOLTIP}-ready`,
+		VISIBILITY_CHANGED: `${TOOLTIP}-visibility-changed`,
 	},
 };
 
@@ -42,6 +42,7 @@ export default class Tooltip extends HTMLElement {
 
 
 		/* CLASS METHOD BINDINGS */
+		this.customEventsHandler = this.customEventsHandler.bind(this);
 		this.hide = this.hide.bind(this);
 		this.keydownHandler = this.keydownHandler.bind(this);
 		this.show = this.show.bind(this);
@@ -95,14 +96,14 @@ export default class Tooltip extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
+		window.addEventListener(EVENTS.IN.HIDE, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.SHOW, this.customEventsHandler);
 		this.targetEl.addEventListener('blur', this.hide);
 		this.targetEl.addEventListener('click', this.hide);
 		this.targetEl.addEventListener('focus', this.show);
 		this.targetEl.addEventListener('keydown', this.keydownHandler);
 		this.targetEl.addEventListener('mouseenter', this.show);
 		this.targetEl.addEventListener('mouseleave', this.hide);
-		this.addEventListener(EVENTS.IN.HIDE, this.hide);
-		this.addEventListener(EVENTS.IN.SHOW, this.show);
 
 
 		/* INITIALISATION */
@@ -117,14 +118,34 @@ export default class Tooltip extends HTMLElement {
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
 
+		window.removeEventListener(EVENTS.IN.HIDE, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.SHOW, this.customEventsHandler);
 		this.targetEl?.removeEventListener('blur', this.hide);
 		this.targetEl?.removeEventListener('click', this.hide);
 		this.targetEl?.removeEventListener('focus', this.show);
 		this.targetEl?.removeEventListener('keydown', this.keydownHandler);
 		this.targetEl?.removeEventListener('mouseenter', this.show);
 		this.targetEl?.removeEventListener('mouseleave', this.hide);
-		this.removeEventListener(EVENTS.IN.HIDE, this.hide);
-		this.removeEventListener(EVENTS.IN.SHOW, this.show);
+	}
+
+
+	/*
+		Handler for incoming custom events
+	*/
+	private customEventsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
+		switch (e.type) {
+			case EVENTS.IN.HIDE:
+				this.hide();
+				break;
+			case EVENTS.IN.SHOW:
+				this.show();
+				break;
+		}
 	}
 
 
@@ -132,10 +153,14 @@ export default class Tooltip extends HTMLElement {
 		Hide tooltip
 	*/
 	private hide(): void {
+		if (!this.hasAttribute(ATTRS.VISIBLE)) {
+			return;
+		}
+
 		clearTimeout(this.showTimeout);
 		this.removeAttribute(ATTRS.VISIBLE);
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': false,
@@ -165,20 +190,21 @@ export default class Tooltip extends HTMLElement {
 		Show tooltip
 	*/
 	private show(): void {
-		if (this.isDisabled) {
+		if (this.hasAttribute(ATTRS.VISIBLE) || this.isDisabled) {
 			return;
 		}
 
 		clearTimeout(this.showTimeout);
 		handleOverflow(this);
-		this.showTimeout = window.setTimeout(() => this.setAttribute(ATTRS.VISIBLE, ''), this.delay);
-
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
-			'detail': {
-				'id': this.id,
-				'visible': true,
-			}
-		}));
+		this.showTimeout = window.setTimeout(() => {
+			this.setAttribute(ATTRS.VISIBLE, '');
+			window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
+				'detail': {
+					'id': this.id,
+					'visible': true,
+				}
+			}));
+		}, this.delay);
 	}
 
 

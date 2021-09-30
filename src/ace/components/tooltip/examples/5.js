@@ -1,12 +1,17 @@
 import { EVENTS } from '/ace/components/tooltip/tooltip.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-	const tooltipEl = document.getElementById('custom-events-tooltip');
-
-	window.addEventListener('click', (e) => {
-		const targetId = e.target.id;
-		if (targetId === 'show-tooltip-btn' || targetId === 'hide-tooltip-btn') {
-			tooltipEl.dispatchEvent(new CustomEvent(EVENTS.IN[`${targetId === 'show-tooltip-btn' ? 'SHOW' : 'HIDE'}`]));
+window.addEventListener('click', (e) => {
+	const targetId = e.target.id;
+	switch (targetId) {
+		case 'hide-tooltip-btn':
+		case 'show-tooltip-btn': {
+			const event = targetId === 'hide-tooltip-btn' ? EVENTS.IN.HIDE : EVENTS.IN.SHOW;
+			window.dispatchEvent(new CustomEvent(event, {
+				'detail': {
+					'id': 'custom-events-tooltip',
+				}
+			}));
+			break;
 		}
-	});
+	}
 });

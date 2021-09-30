@@ -8,12 +8,12 @@
 <p>Alternatively <em>ace.scss</em> includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/ace';
 </code></pre>
-<p>A CSS file is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/tooltip/ace-tooltip.css</code>.</p>
+<p>A CSS file with the component styles is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/tooltip/ace-tooltip.css</code>.</p>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/tooltip/tooltip';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Tooltip</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Tooltip is instantiated within each <code>&lt;ace-tooltip&gt;</code> element and an ID <code>ace-tooltip-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-tooltip-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Tooltip is instantiated within each <code>&lt;ace-tooltip&gt;</code> element and an ID <code>ace-tooltip-&lt;n&gt;</code> is given to any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete the <strong>Ready</strong> custom event is dispatched. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Tooltip must be a child of its target element and will add attribute <code>ace-tooltip-target</code> to it as well as set the value of its <code>aria-labelledby</code> or <code>aria-describedby</code> to the Tooltip's ID based on whether the Tooltip contains primary or supplementary information. Tooltip content is considered primary information if its target does not have attributes <code>aria-label</code> nor <code>aria-labelledby</code>, nor text content, thus the value of the target element's <code>aria-labelledby</code> attribute is set to the Tooltip ID. Otherwise the Tooltip content is considered suplimentary information and its ID is set as the value of the target element's <code>aria-describedby</code> attribute instead.</p>
 <p>A Tooltip can only be added to a target element that can receive keyboard focus, otherwise it would be inaccessible to keyboard users. Furthermore, Tooltips can not be used with elements that have the HTML <code>disabled</code> attribute as they are not focusable nor do they fire the mouse events needed to show and hide them upon hover. If the Tooltip's purpose is to explain why an element is disabled then developers are strongly advised to use a different technique to convey this information to the user. If however this is an unavoidable requirement it is advised that the <code>disabled</code> attribute not be used and instead the target should be styled using CSS to look disabled, while explaining in the Tooltip text that the target is disabled and why. See the <strong>Disabled Tooltip target</strong> example below for a demo of this.</p>
 <p>Tooltips appear after a short delay, the default value of which is 1 second, however developers can provide a custom delay time in milliseconds as the value of attribute <code>ace-tooltip-delay</code>. To prevent the text content of a Tooltip from wrapping onto multiple lines the attribute <code>ace-tooltip-nowrap</code> can be added to it. Wide Tooltips with long text strings prevent themselved from overflowing outside the viewport by aligning themselves to the left or right edge of their target as appropriate. See the <strong>Non-wrapping Toooltips</strong> example below for a demo of this. If there is no space in the viewport below a Tooltip's target it will appear above it.</p>
@@ -83,7 +83,7 @@ ace-tooltip {
 <h2>Custom events</h2>
 <p>Tooltip uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Tooltip.</p>
+<p>The following events are dispatched to <code>window</code> by Tooltip.</p>
 <h4>Ready</h4>
 <p><code>ace-tooltip-ready</code></p>
 <p>This event is dispatched when Tooltip finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
@@ -93,14 +93,14 @@ ace-tooltip {
 </code></pre>
 <h4>Changed</h4>
 <p><code>ace-tooltip-changed</code></p>
-<p>This event is dispatched when Tooltip visibility changes. The event name is available as <code>EVENTS.OUT.CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
+<p>This event is dispatched when Tooltip visibility changes. The event name is available as <code>EVENTS.OUT.VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Tooltip [string]
   'visible': // Whether the Tooltip is visible or not [boolean]
 }
 </code></pre>
 <h3>Listened for events</h3>
-<p>Tooltip listens for the following events, which should be dispatched on the specific <code>ace-tooltip</code> element.</p>
+<p>Tooltip listens for the following events, which should be dispatched to the specific <code>ace-tooltip</code> element.</p>
 <h4>Show and hide</h4>
 <p><code>ace-tooltip-show</code> &amp; <code>ace-tooltip-hide</code></p>
 <p>These events should be dispatched to show and hide the Tooltip. The event names are available as <code>EVENTS.IN.SHOW</code> and <code>EVENTS.IN.HIDE</code>:</p>
@@ -201,7 +201,7 @@ ace-tooltip {
 &lt;/div&gt;
 </code></pre>
 <h3>Tooltips with custom delay times</h3>
-<p>In this example the first Tooltip has a custom delay of 2 seconds while the second has no delay.</p>
+<p>In this example the first Tooltip has a custom delay of 2 seconds and the second one has no delay.</p>
 <div class="example-block"><button>
 	Tooltip target
 	<ace-tooltip ace-tooltip-delay="2000">Tooltip text</ace-tooltip>
@@ -225,12 +225,12 @@ ace-tooltip {
 <p>Tooltips are not compatible with disabled targets as they are not focusable nor do they dispatch the mouse events required by Tooltip. This example shows a possible way of showing a Tooltip with a button that does not have the <code>disabled</code> attribute but is instead styled to look disabled as a workaround. Developers are advised against using this anti-pattern and to instead convey this information in another way. The example is provided only for situations where such functionality is unavoidable. Custom styles have been applied to this example and are shown below.</p>
 <div class="example-block"><button class="disabled">
 	Tooltip target
-	<ace-tooltip ace-tooltip-nowrap>This button is disabled until all required form fields are completed</ace-tooltip>
+	<ace-tooltip>Tooltip on button that is styled to look disabled</ace-tooltip>
 </button>
 </div>
 <pre><code class="language-html">&lt;button class=&quot;disabled&quot;&gt;
 	Tooltip target
-	&lt;ace-tooltip ace-tooltip-nowrap&gt;This button is disabled until all required form fields are completed&lt;/ace-tooltip&gt;
+	&lt;ace-tooltip&gt;Tooltip on button that is styled to look disabled&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 </code></pre>
 <pre><code class="language-scss">.disabled {
@@ -263,15 +263,20 @@ ace-tooltip {
 </code></pre>
 <pre><code class="language-js">import { EVENTS } from '/ace/components/tooltip/tooltip.js';
 
-document.addEventListener('DOMContentLoaded', () =&gt; {
-	const tooltipEl = document.getElementById('custom-events-tooltip');
-
-	window.addEventListener('click', (e) =&gt; {
-		const targetId = e.target.id;
-		if (targetId === 'show-tooltip-btn' || targetId === 'hide-tooltip-btn') {
-			tooltipEl.dispatchEvent(new CustomEvent(EVENTS.IN[`${targetId === 'show-tooltip-btn' ? 'SHOW' : 'HIDE'}`]));
+window.addEventListener('click', (e) =&gt; {
+	const targetId = e.target.id;
+	switch (targetId) {
+		case 'hide-tooltip-btn':
+		case 'show-tooltip-btn': {
+			const event = targetId === 'hide-tooltip-btn' ? EVENTS.IN.HIDE : EVENTS.IN.SHOW;
+			window.dispatchEvent(new CustomEvent(event, {
+				'detail': {
+					'id': 'custom-events-tooltip',
+				}
+			}));
+			break;
 		}
-	});
+	}
 });
 </code></pre>
 <h3>Styled Tooltip</h3>
