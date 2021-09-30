@@ -16,8 +16,8 @@ export const ATTRS = {
 
 export const EVENTS = {
 	OUT: {
-		CHANGED: `${TOAST}-changed`,
 		READY: `${TOAST}-ready`,
+		VISIBILITY_CHANGED: `${TOAST}-visibility-changed`,
 	},
 };
 
@@ -55,7 +55,7 @@ export default class Toast extends HTMLElement {
 		}
 
 		const visible = (newValue === '');
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': visible,

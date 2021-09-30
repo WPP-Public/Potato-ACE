@@ -32,8 +32,8 @@ export const EVENTS = {
 		UPDATE: `${ACCORDION}-update`,
 	},
 	OUT: {
-		CHANGED: `${ACCORDION}-panel-visibility-changed`,
 		READY: `${ACCORDION}-ready`,
+		VISIBILITY_CHANGED: `${ACCORDION}-panel-visibility-changed`,
 	},
 };
 
@@ -53,7 +53,7 @@ export default class Accordion extends HTMLElement {
 
 		/* CLASS METHOD BINDINGS */
 		this.clickHandler = this.clickHandler.bind(this);
-		this.customEventsHander = this.customEventsHander.bind(this);
+		this.customEventsHandler = this.customEventsHandler.bind(this);
 		this.hidePanel = this.hidePanel.bind(this);
 		this.initAccordion = this.initAccordion.bind(this);
 		this.setAccordionAttributes = this.setAccordionAttributes.bind(this);
@@ -77,12 +77,12 @@ export default class Accordion extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		window.addEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
-		window.addEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
-		window.addEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
-		window.addEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
-		window.addEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
-		window.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE, this.customEventsHandler);
 		this.addEventListener('click', this.clickHandler);
 
 
@@ -112,12 +112,12 @@ export default class Accordion extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		window.removeEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
-		window.removeEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
-		window.removeEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
-		window.removeEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
-		window.removeEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
-		window.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHandler);
 		this.removeEventListener('click', this.clickHandler);
 	}
 
@@ -143,7 +143,7 @@ export default class Accordion extends HTMLElement {
 	/*
 		Handler for incoming custom events
 	*/
-	private customEventsHander(e: Event): void {
+	private customEventsHandler(e: Event): void {
 		const detail = (e as CustomEvent)['detail'];
 		if (!detail || detail['id'] !== this.id) {
 			return;
@@ -153,8 +153,7 @@ export default class Accordion extends HTMLElement {
 			case EVENTS.IN.HIDE_PANEL:
 			case EVENTS.IN.SHOW_PANEL:
 			case EVENTS.IN.TOGGLE_PANEL: {
-				const detail = (e as CustomEvent)['detail'];
-				if (!detail || !detail['panelNumber']) {
+				if (!detail['panelNumber']) {
 					return;
 				}
 				const panelIndex = detail['panelNumber'] - 1;
@@ -200,7 +199,7 @@ export default class Accordion extends HTMLElement {
 
 		this.triggerEls[panelIndex].setAttribute('aria-expanded', 'false');
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'panelNumber': panelIndex + 1,
@@ -335,7 +334,7 @@ export default class Accordion extends HTMLElement {
 			});
 		}
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'panelNumber': panelIndex + 1,

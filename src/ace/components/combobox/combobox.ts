@@ -318,8 +318,7 @@ export default class Combobox extends HTMLElement {
 				this.hideList();
 				break;
 			case EVENTS.IN.SELECT_OPTION: {
-				const detail = (e as CustomEvent)['detail'];
-				if (!detail || !detail['optionId']) {
+				if (!detail['optionId']) {
 					return;
 				}
 				const optionEl = this.listEl?.querySelector(`#${detail['optionId']}`) as HTMLLIElement;

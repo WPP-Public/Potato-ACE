@@ -234,7 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	const updateOptions = () => {
 		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {
-			'detail': {'id': LISTBOX_ID}
+			'detail': {
+				'id': LISTBOX_ID,
+			}
 		}));
 	};
 

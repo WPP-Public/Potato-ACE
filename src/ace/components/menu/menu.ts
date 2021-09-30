@@ -51,7 +51,7 @@ export default class Menu extends HTMLElement {
 		this.hideList = this.hideList.bind(this);
 		this.keydownHandler = this.keydownHandler.bind(this);
 		this.showList = this.showList.bind(this);
-		this.updateOptionsHandler = this.updateOptionsHandler.bind(this);
+		this.customEventsHandler = this.customEventsHandler.bind(this);
 	}
 
 
@@ -88,7 +88,7 @@ export default class Menu extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		this.addEventListener('click', this.clickHandler);
 		this.addEventListener('focusout', this.focusOutHandler);
 		this.addEventListener('keydown', this.keydownHandler);
@@ -113,7 +113,7 @@ export default class Menu extends HTMLElement {
 		this.list?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
-		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
 		this.removeEventListener('click', this.clickHandler);
 		this.removeEventListener('focusout', this.focusOutHandler);
 		this.removeEventListener('keydown', this.keydownHandler);
@@ -266,7 +266,7 @@ export default class Menu extends HTMLElement {
 	/*
 		Update options custom event handler
 	*/
-	private updateOptionsHandler(e: Event): void {
+	private customEventsHandler(e: Event): void {
 		const detail = (e as CustomEvent)['detail'];
 		if (!detail || detail['id'] !== this.id) {
 			return;

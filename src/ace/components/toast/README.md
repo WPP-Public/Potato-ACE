@@ -19,7 +19,7 @@ Alternatively *ace.scss* includes all ACE component SASS files, so if using mult
 @import '<path-to-node_modules>/@potato/ace/ace';
 ```
 
-A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/toast/ace-toast.css`.
+A CSS file with the component styles is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/toast/ace-toast.css`.
 
 Then import the class into your JavaScript entry point:
 
@@ -29,7 +29,7 @@ import '<path-to-node_modules>/@potato/ace/components/toast/toast';
 
 For convenience the ES6 class is exported as `Toast` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Toast is instantiated within each `<ace-toast>` element and an ID `ace-toast-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-toast-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Toast is instantiated within each `<ace-toast>` element and an ID `ace-toast-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete the **Ready** custom event is dispatched. See the **Custom events** section below for more details.
 
 ## Usage
 
@@ -89,7 +89,7 @@ Toast uses the following custom events, the names of which are available in its 
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Toast.
+The following events are dispatched to `window` by Toast.
 
 #### Ready
 
@@ -103,11 +103,11 @@ This event is dispatched when Toast finishes initialising. The event name is ava
 }
 ```
 
-#### Changed
+#### Visibility changed
 
-`ace-toast-changed`
+`ace-toast-visibility-changed`
 
-This event is dispatched when Toast visibility changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
+This event is dispatched when Toast visibility changes. The event name is available as `EVENTS.OUT.VISIBILITY_CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {

@@ -8,12 +8,12 @@
 <p>Alternatively <em>ace.scss</em> includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/ace';
 </code></pre>
-<p>A CSS file is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/toast/ace-toast.css</code>.</p>
+<p>A CSS file with the component styles is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/toast/ace-toast.css</code>.</p>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/toast/toast';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Toast</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Toast is instantiated within each <code>&lt;ace-toast&gt;</code> element and an ID <code>ace-toast-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-toast-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Toast is instantiated within each <code>&lt;ace-toast&gt;</code> element and an ID <code>ace-toast-&lt;n&gt;</code> is given to any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete the <strong>Ready</strong> custom event is dispatched. See the <strong>Custom events</strong> section below for more details.</p>
 <h2>Usage</h2>
 <p>Toasts have an attribute <code>ace-toast-visible</code> which is initially set to <code>false</code>. This is an observed attribute and therefore dynamically be set to <code>true</code> which will cause the Toast to appear for a default show time of 4 seconds before disappearing. Developers can specify a custom show time by setting attribute <code>ace-toast-show-time</code> to the value of the show time in milliseconds as demonstrated in the example below.</p>
 <h2>Styles</h2>
@@ -59,7 +59,7 @@ ace-toast {
 <h2>Custom events</h2>
 <p>Toast uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Toast.</p>
+<p>The following events are dispatched to <code>window</code> by Toast.</p>
 <h4>Ready</h4>
 <p><code>ace-toast-ready</code></p>
 <p>This event is dispatched when Toast finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
@@ -67,9 +67,9 @@ ace-toast {
   'id': // ID of Toast [string]
 }
 </code></pre>
-<h4>Changed</h4>
-<p><code>ace-toast-changed</code></p>
-<p>This event is dispatched when Toast visibility changes. The event name is available as <code>EVENTS.OUT.CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
+<h4>Visibility changed</h4>
+<p><code>ace-toast-visibility-changed</code></p>
+<p>This event is dispatched when Toast visibility changes. The event name is available as <code>EVENTS.OUT.VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Toast [string]
   'visible': // Whether Toast is visible or not [boolean]

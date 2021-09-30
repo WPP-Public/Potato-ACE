@@ -42,7 +42,7 @@ context(`Toast`, () => {
 				'id': TOAST_ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@toast')
 				.invoke('attr', ATTRS.VISIBLE, '')
 				.then(() => {
@@ -50,7 +50,7 @@ context(`Toast`, () => {
 						'id': TOAST_ID,
 						'visible': false,
 					};
-					cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+					cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 						.wait(DEFAULT_SHOW_TIME)
 						.get('@toast')
 						.should('not.have.attr', ATTRS.VISIBLE);
@@ -91,7 +91,7 @@ context(`Toast`, () => {
 				'id': TOAST_ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@toast')
 				.invoke('attr', ATTRS.SHOW_TIME)
 				.then((showTime) => {
@@ -102,7 +102,7 @@ context(`Toast`, () => {
 								'id': TOAST_ID,
 								'visible': false,
 							};
-							cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+							cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 								.wait(+showTime)
 								.get('@toast')
 								.should('not.have.attr', ATTRS.VISIBLE);

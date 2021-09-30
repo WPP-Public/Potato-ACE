@@ -94,7 +94,7 @@ export default class Carousel extends HTMLElement {
 
 		/* CLASS METHOD BINDINGS */
 		this.clickHandler = this.clickHandler.bind(this);
-		this.customEventsHander = this.customEventsHander.bind(this);
+		this.customEventsHandler = this.customEventsHandler.bind(this);
 		this.focusAndMouseHandler = this.focusAndMouseHandler.bind(this);
 		this.initSlides = this.initSlides.bind(this);
 		this.keydownHandler = this.keydownHandler.bind(this);
@@ -253,15 +253,15 @@ export default class Carousel extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		window.addEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
-		window.addEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
-		window.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHandler);
 		this.addEventListener('click', this.clickHandler);
 
 		if (this.autoSlideShowCarousel) {
 			document.addEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE as string, this.visibilityChangeHandler);
-			window.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
-			window.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
+			window.addEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHandler);
+			window.addEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHandler);
 			this.addEventListener('focusin', this.focusAndMouseHandler);
 			this.addEventListener('focusout', this.focusAndMouseHandler);
 			this.addEventListener('mouseenter', this.focusAndMouseHandler);
@@ -288,15 +288,15 @@ export default class Carousel extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		window.removeEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHander);
-		window.removeEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHander);
-		window.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SET_NEXT_SLIDE, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.SET_PREV_SLIDE, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_SLIDES, this.customEventsHandler);
 		this.removeEventListener('click', this.clickHandler);
 
 		if (this.autoSlideShowCarousel) {
 			document.removeEventListener(PAGE_VISIBILITY_API_STRINGS.VISIBILITY_CHANGE as string, this.visibilityChangeHandler);
-			window.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHander);
-			window.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHander);
+			window.removeEventListener(EVENTS.IN.START_AUTO_SLIDE_SHOW, this.customEventsHandler);
+			window.removeEventListener(EVENTS.IN.STOP_AUTO_SLIDE_SHOW, this.customEventsHandler);
 			this.removeEventListener('focusin', this.focusAndMouseHandler);
 			this.removeEventListener('focusout', this.focusAndMouseHandler);
 			this.removeEventListener('mouseenter', this.focusAndMouseHandler);
@@ -351,7 +351,7 @@ export default class Carousel extends HTMLElement {
 	/*
 		Handler for incoming custom events
 	*/
-	private customEventsHander(e: Event): void {
+	private customEventsHandler(e: Event): void {
 		const detail = (e as CustomEvent)['detail'];
 		if (!detail || detail['id'] !== this.id) {
 			return;

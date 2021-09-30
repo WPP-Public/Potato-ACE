@@ -38,7 +38,7 @@ export default class Disclosure extends HTMLElement {
 
 
 		/* CLASS METHOD BINDINGS */
-		this.toggleCustomEventHandler = this.toggleCustomEventHandler.bind(this);
+		this.customEventsHandler = this.customEventsHandler.bind(this);
 	}
 
 
@@ -83,7 +83,7 @@ export default class Disclosure extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		window.addEventListener(EVENTS.IN.TOGGLE_VISIBILITY, this.toggleCustomEventHandler);
+		window.addEventListener(EVENTS.IN.TOGGLE_VISIBILITY, this.customEventsHandler);
 
 
 		/* INITIALISATION */
@@ -99,14 +99,14 @@ export default class Disclosure extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		window.removeEventListener(EVENTS.IN.TOGGLE_VISIBILITY, this.toggleCustomEventHandler);
+		window.removeEventListener(EVENTS.IN.TOGGLE_VISIBILITY, this.customEventsHandler);
 	}
 
 
 	/*
 		Handle custom events
 	*/
-	private toggleCustomEventHandler(e: Event): void {
+	private customEventsHandler(e: Event): void {
 		const detail = (e as CustomEvent)['detail'];
 		if (!detail || detail['id'] !== this.id) {
 			return;

@@ -12,10 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'show-panel-btn':
 			case 'toggle-panel-btn': {
 				const panelNumber = document.getElementById('panel-number').value;
-				if (targetId === 'toggle-panel-btn') {
-					customEvent = EVENTS.IN.TOGGLE_PANEL;
+				if (targetId === 'hide-panel-btn') {
+					customEvent = EVENTS.IN.HIDE_PANEL;
+				} else if (targetId === 'show-panel-btn') {
+					customEvent = EVENTS.IN.SHOW_PANEL;
 				} else {
-					customEvent = EVENTS.IN[`${targetId === 'hide-panel-btn' ? 'HIDE' : 'SHOW'}_PANEL`];
+					customEvent = EVENTS.IN.TOGGLE_PANEL;
 				}
 				window.dispatchEvent(new CustomEvent(customEvent, {
 					'detail': {
@@ -25,10 +27,20 @@ document.addEventListener('DOMContentLoaded', () => {
 				}));
 				break;
 			}
-			case 'show-panels-btn':
+			case 'show-panels-btn': {
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_PANELS, {
+					'detail': {
+						'id': ACCORDION_ID,
+					}
+				}));
+				break;
+			}
 			case 'hide-panels-btn': {
-				customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_PANELS`];
-				window.dispatchEvent(new CustomEvent(customEvent, {'detail': {'id': ACCORDION_ID}}));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_PANELS, {
+					'detail': {
+						'id': ACCORDION_ID,
+					}
+				}));
 				break;
 			}
 			case 'append-panel-btn': {
@@ -46,7 +58,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				accordionEl.append(newHeaderEl);
 				accordionEl.append(newPanelEl);
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {
+					'detail': {
+						'id': ACCORDION_ID,
+					}
+				}));
 				break;
 			}
 			case 'remove-panel-btn': {
@@ -54,7 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 				const panelEl = accordionEl.querySelector(`[${ATTRS.PANEL}]`);
 				accordionEl.removeChild(headerEl);
 				accordionEl.removeChild(panelEl);
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {
+					'detail': {
+						'id': ACCORDION_ID,
+					}
+				}));
 				break;
 			}
 		}
