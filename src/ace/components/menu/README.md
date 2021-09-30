@@ -19,7 +19,7 @@ Alternatively *ace.scss* includes all ACE component SASS files, so if using mult
 @import '<path-to-node_modules>/@potato/ace/ace';
 ```
 
-A CSS file is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/menu/ace-menu.css`.
+A CSS file with the component styles is also provided for convenience and is located at `<path-to-node_modules>/@potato/ace/components/menu/ace-menu.css`.
 
 Then import the class into your JavaScript entry point:
 
@@ -29,16 +29,16 @@ import '<path-to-node_modules>/@potato/ace/components/menu/menu';
 
 For convenience the ES6 class is exported as `Menu` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Menu is instantiated within each `<ace-menu>` element and an ID `ace-menu-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-menu-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Menu is instantiated within each `<ace-menu>` element and an ID `ace-menu-<n>` is given to any instance without one, where `<n>` is a unique integer. Once instantiation is complete the **Ready** custom event is dispatched. See the **Custom events** section below for more details.
 
-Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-menu-update-options` is dispatched on the Menu instance afterwards.
+Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as the **Update options** custom event is dispatched afterwards.
 
 
 ## Usage
 
 The list of options is displayed when users click on the trigger or press <kbd>&#8593;</kbd>, <kbd>&#8595;</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focused, with <kbd>&#8593;</kbd> also selecting the last option in the list and the other three keys also selecting the first option. The list is aware of it's position in the window and ensures that it is fully visible in the viewport. It will hence appear below the trigger and aligned to it's left edge if there is enough space, otherwise it will appear above and/or aligned to the right edge, as necessary. Clicking outside a shown list or pressing <kdb>Esc</kbd> hides the list.
 
-Clicking on an option or navigating to it using <kbd>&#8593;</kbd> or <kbd>&#8595;</kbd> and pressing <kbd>Enter</kbd> will select the option, hide the list and dispatch the `ace-menu-option-chosen` custom event.
+Clicking on an option or navigating to it using <kbd>&#8593;</kbd> or <kbd>&#8595;</kbd> and pressing <kbd>Enter</kbd> will select the option, hide the list and dispatch the **Option chosen** custom event.
 
 Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options.
 
@@ -115,14 +115,14 @@ Menu uses the following custom events, the names of which are available in its e
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Menu.
+The following events are dispatched to `window` by Menu.
 
 
 #### Ready
 
 `ace-menu-ready`
 
-This event is dispatched when Menu finishes initialising just after page load, and after dynamically added options are initialised in response to the `ace-menu-update-options` custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
+This event is dispatched when Menu finishes initialising just after page load, and after dynamically added options are initialised in response to the **Update options** custom event being dispatched. The event name is available as `EVENTS.OUT.READY` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -150,14 +150,19 @@ This event is dispatched when an option is chosen by the user. The event name is
 
 ### Listened for event
 
-Menu listens for the following event, which should be dispatched on the specific `ace-menu` element.
+Menu listens for the following event, which should be dispatched to `window`.
 
 
 #### Update options
 
 `ace-menu-update-options`
 
-This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the `ace-menu-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the **Ready** custom event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS` and its `detail` property should be composed as follows:
+```js
+'detail': {
+  'id': // ID of target Menu [string]
+}
+```
 
 
 ## Examples
@@ -167,7 +172,7 @@ Each example contains a live demo and the HTML code that produced it. The code s
 ### Simple Menu
 
 Example of a simple Menu with options that contain text and an opiton containing a link.
- 
+
 ```html
 <ace-menu>
 	<button>Menu trigger</button>
@@ -182,8 +187,8 @@ Example of a simple Menu with options that contain text and an opiton containing
 
 ### Menu with dynamic options
 
-In this example the Menu instantiates with an empty `<ul>` that can be populated with options using **Add option**. The last option can be removed using the **Remove option**. Both these buttons dispatch the `ace-menu-update-options` event that updates the list options. The extra JavaScript code required by this example is also included below.
- 
+In this example the Menu instantiates with an empty `<ul>` that can be populated with options using **Add option**. The last option can be removed using the **Remove option**. Both these buttons dispatch the **Update options** custom event that updates the list options. The extra JavaScript code required by this example is also included below.
+
 ```html
 <button id="add-option">
 	Add option
@@ -197,15 +202,22 @@ In this example the Menu instantiates with an empty `<ul>` that can be populated
 	<ul></ul>
 </ace-menu>
 ```
- 
+
 ```js
 import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const menuEl = document.getElementById('custom-events-menu');
+	const MENU_ID = 'custom-events-menu';
+	const menuEl = document.getElementById(MENU_ID);
 	const menuListEl = menuEl.querySelector('ul');
 
-	const updateOptions = () => menuEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () => {
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {
+			'detail': {
+				'id': MENU_ID
+			}
+		}));
+	};
 
 	document.getElementById('add-option').addEventListener('click', () => {
 		const optionEl = document.createElement('li');

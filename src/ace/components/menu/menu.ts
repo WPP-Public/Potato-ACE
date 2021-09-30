@@ -88,10 +88,10 @@ export default class Menu extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 		this.addEventListener('click', this.clickHandler);
 		this.addEventListener('focusout', this.focusOutHandler);
 		this.addEventListener('keydown', this.keydownHandler);
-		this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 
 
 		/* INITIALISATION */
@@ -113,10 +113,10 @@ export default class Menu extends HTMLElement {
 		this.list?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 		this.removeEventListener('click', this.clickHandler);
 		this.removeEventListener('focusout', this.focusOutHandler);
 		this.removeEventListener('keydown', this.keydownHandler);
-		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 	}
 
 
@@ -266,7 +266,12 @@ export default class Menu extends HTMLElement {
 	/*
 		Update options custom event handler
 	*/
-	private updateOptionsHandler(): void {
+	private updateOptionsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		if (!this.list || !this.listEl) {
 			return;
 		}

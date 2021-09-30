@@ -1,10 +1,17 @@
 import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const menuEl = document.getElementById('custom-events-menu');
+	const MENU_ID = 'custom-events-menu';
+	const menuEl = document.getElementById(MENU_ID);
 	const menuListEl = menuEl.querySelector('ul');
 
-	const updateOptions = () => menuEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () => {
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {
+			'detail': {
+				'id': MENU_ID
+			}
+		}));
+	};
 
 	document.getElementById('add-option').addEventListener('click', () => {
 		const optionEl = document.createElement('li');

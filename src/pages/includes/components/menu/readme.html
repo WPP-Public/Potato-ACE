@@ -8,13 +8,13 @@
 <p>Alternatively <em>ace.scss</em> includes all ACE component SASS files, so if using multiple ACE components it can be imported instead:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/ace';
 </code></pre>
-<p>A CSS file is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/menu/ace-menu.css</code>.</p>
+<p>A CSS file with the component styles is also provided for convenience and is located at <code>&lt;path-to-node_modules&gt;/@potato/ace/components/menu/ace-menu.css</code>.</p>
 <p>Then import the class into your JavaScript entry point:</p>
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/menu/menu';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Menu</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Menu is instantiated within each <code>&lt;ace-menu&gt;</code> element and an ID <code>ace-menu-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-menu-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<p>Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-menu-update-options</code> is dispatched on the Menu instance afterwards.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Menu is instantiated within each <code>&lt;ace-menu&gt;</code> element and an ID <code>ace-menu-&lt;n&gt;</code> is given to any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete the <strong>Ready</strong> custom event is dispatched. See the <strong>Custom events</strong> section below for more details.</p>
+<p>Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-menu-update-options</code> is dispatched to the Menu instance afterwards.</p>
 <h2>Usage</h2>
 <p>The list of options is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focused, with <kbd>↑</kbd> also selecting the last option in the list and the other three keys also selecting the first option. The list is aware of it's position in the window and ensures that it is fully visible in the viewport. It will hence appear below the trigger and aligned to it's left edge if there is enough space, otherwise it will appear above and/or aligned to the right edge, as necessary. Clicking outside a shown list or pressing <kdb>Esc</kbd> hides the list.</p>
 <p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> will select the option, hide the list and dispatch the <code>ace-menu-option-chosen</code> custom event.</p>
@@ -81,7 +81,7 @@ ace-menu {
 <h2>Custom events</h2>
 <p>Menu uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Menu.</p>
+<p>The following events are dispatched to <code>window</code> by Menu.</p>
 <h4>Ready</h4>
 <p><code>ace-menu-ready</code></p>
 <p>This event is dispatched when Menu finishes initialising just after page load, and after dynamically added options are initialised in response to the <code>ace-menu-update-options</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
@@ -101,7 +101,7 @@ ace-menu {
 }
 </code></pre>
 <h3>Listened for event</h3>
-<p>Menu listens for the following event, which should be dispatched on the specific <code>ace-menu</code> element.</p>
+<p>Menu listens for the following event, which should be dispatched to the specific <code>ace-menu</code> element.</p>
 <h4>Update options</h4>
 <p><code>ace-menu-update-options</code></p>
 <p>This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the <code>ace-menu-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code>.</p>
@@ -158,10 +158,17 @@ ace-menu {
 <pre><code class="language-js">import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const menuEl = document.getElementById('custom-events-menu');
+	const MENU_ID = 'custom-events-menu';
+	const menuEl = document.getElementById(MENU_ID);
 	const menuListEl = menuEl.querySelector('ul');
 
-	const updateOptions = () =&gt; menuEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () =&gt; {
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {
+			'detail': {
+				'id': MENU_ID
+			}
+		}));
+	};
 
 	document.getElementById('add-option').addEventListener('click', () =&gt; {
 		const optionEl = document.createElement('li');
