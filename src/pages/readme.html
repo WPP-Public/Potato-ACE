@@ -28,3 +28,183 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 /* Then import SASS file where ACE variable is defined */
 @import '&lt;path-to-node_modules&gt;/node_modules/@potato/ace/listbox/listbox';
 </code></pre>
+<h2>Using ACE with JavaScript frameworks</h2>
+<h3>Angular</h3>
+<p>The following example shows how ACE components can be used with Angular.</p>
+<p>The example demonstrates:</p>
+<ul>
+<li>Passing data from a parent component to an ACE Accordion component via <code>@Input</code>.</li>
+<li>Using <code>@HostListener</code> in the parent component to listen for a custom event dispatched by Accordion, then conditionally disabling a button in a parent component.</li>
+<li>Using a reference variable and <code>@ViewChild</code> to dispatch a custom event on Accordion from a parent component.</li>
+</ul>
+<p>Starting with a fresh project, created using the Angular CLI command <code>ng new</code>, ACE was installed using <code>npm i @potato/ace</code> before the following changes were made.</p>
+<p><em><strong>src/app/accordion/accordion.component.html</strong></em></p>
+<pre><code class="language-html">&lt;ace-accordion&gt;
+  &lt;ng-container *ngFor=&quot;let panel of content&quot;&gt;
+    &lt;h3&gt;
+      &lt;button&gt;{{panel.trigger}}&lt;/button&gt;
+    &lt;/h3&gt;
+    &lt;div&gt;
+      &lt;p&gt;{{panel.content}}&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/ng-container&gt;
+&lt;/ace-accordion&gt;
+</code></pre>
+<p><em><strong>src/app/accordion/accordion.component.ts</strong></em></p>
+<pre><code class="language-ts">import { Component, Input } from '@angular/core';
+
+import '@potato/ace/components/accordion/accordion';
+
+export interface AccordionContent {
+  content: string;
+  trigger: string;
+}
+
+@Component({
+  selector: 'app-accordion',
+  templateUrl: './accordion.component.html',
+  styleUrls: ['./accordion.component.css']
+})
+export class AccordionComponent {
+  @Input()
+  content: Array&lt;AccordionContent&gt; = [];
+}
+</code></pre>
+<p><em><strong>src/app/accordion/accordion.component.css</strong></em></p>
+<pre><code class="language-css">@import '~@potato/ace/components/accordion/ace-accordion.css';
+</code></pre>
+<p><em><strong>src/app/app.component.html</strong></em></p>
+<pre><code class="language-html">&lt;app-accordion #accordion [content]=&quot;accordionContent&quot;&gt;&lt;/app-accordion&gt;
+
+&lt;button [disabled]=&quot;panelsCollapsed&quot; (click)=&quot;collapseAll()&quot;&gt;
+  Collapse all
+&lt;/button&gt;
+</code></pre>
+<p><em><strong>src/app/app.component.ts</strong></em></p>
+<pre><code class="language-ts">import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AccordionContent } from './accordion/accordion.component';
+import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements AfterViewInit {
+  accordionContent: Array&lt;AccordionContent&gt; = [
+    {
+      content: 'Panel 1 content',
+      trigger: 'Panel 1 trigger',
+    },
+    {
+      content: 'Panel 2 content',
+      trigger: 'Panel 2 trigger',
+    },
+    {
+      content: 'Panel 3 content',
+      trigger: 'Panel 3 trigger',
+    },
+  ];
+  aceAccordionEl: HTMLElement | null = null;
+  panelsCollapsed = true;
+
+  // @ViewChild and ngAfterViewInit used to get reference to Accordion DOM element in accordion.component.html, to dispatch custom event on it
+  @ViewChild('accordion', {read: ElementRef})
+  accordion!: ElementRef;
+
+  // @HostListener used to add Accordion &quot;changed&quot; event listener
+  @HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+  onPanelChange(): void {
+    this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+  }
+
+  ngAfterViewInit() {
+    this.aceAccordionEl = this.accordion.nativeElement.firstElementChild;
+  }
+
+	// Collapse Accordion's panels using it's &quot;hide panels&quot; custom event
+  collapseAll() {
+    this.aceAccordionEl?.dispatchEvent(
+      new CustomEvent(EVENTS.IN.HIDE_PANELS)
+    );
+  }
+}
+</code></pre>
+<p><em><strong>src/app/app.module.ts</strong></em></p>
+<pre><code class="language-ts">import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { AccordionComponent } from './accordion/accordion.component';
+
+@NgModule({
+  declarations: [
+    AccordionComponent,
+    AppComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+</code></pre>
+<p><em><strong>tsconfig.app.json</strong></em></p>
+<pre><code class="language-json">{
+  &quot;extends&quot;: &quot;./tsconfig.json&quot;,
+  &quot;compilerOptions&quot;: {
+    &quot;outDir&quot;: &quot;./out-tsc/app&quot;,
+    &quot;types&quot;: []
+  },
+  &quot;files&quot;: [
+    &quot;src/main.ts&quot;,
+    &quot;src/polyfills.ts&quot;,
+    &quot;./node_modules/@potato/ace/components/accordion/accordion.ts&quot;,
+  ],
+  &quot;include&quot;: [
+    &quot;src/**/*.d.ts&quot;
+  ]
+}
+</code></pre>
+<h4>Importing ACE JavaScript component files</h4>
+<p>In the event that an ACE component's TypeScript file cannot be used, e.g. if TypeScript compilation errors occur due to specific compiler options used in a project, the recommended approach is to instead use the ACE component's JavaScript file.</p>
+<p>This can be achieved by following the example above with the following overrides.</p>
+<p><em><strong>tsconfig.app.json</strong></em></p>
+<p>Replace contents with</p>
+<pre><code class="language-json">{
+  &quot;extends&quot;: &quot;./tsconfig.json&quot;,
+  &quot;compilerOptions&quot;: {
+    &quot;outDir&quot;: &quot;./out-tsc/app&quot;,
+    &quot;types&quot;: [&quot;node&quot;]
+  },
+  &quot;files&quot;: [
+    &quot;src/main.ts&quot;,
+    &quot;src/polyfills.ts&quot;
+  ],
+  &quot;include&quot;: [
+    &quot;src/**/*.d.ts&quot;
+  ]
+}
+</code></pre>
+<p><em><strong>src/app/app.component.ts</strong></em></p>
+<p>Replace</p>
+<pre><code class="language-ts">import '@potato/ace/components/accordion/accordion';
+</code></pre>
+<p>with</p>
+<pre><code class="language-ts">require('@potato/ace/components/accordion/accordion.js');
+</code></pre>
+<p><em><strong>src/app/app.component.ts</strong></em></p>
+<p>Replace</p>
+<pre><code class="language-ts">import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
+</code></pre>
+<p>with</p>
+<pre><code class="language-ts">const { ATTRS, EVENTS } = require('@potato/ace/components/accordion/accordion.js');
+</code></pre>
+<p>then replace</p>
+<pre><code class="language-ts">@HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+</code></pre>
+<p>with</p>
+<pre><code class="language-ts">@HostListener('window:ace-accordion-panel-visibility-changed', ['$event.detail'])
+</code></pre>
