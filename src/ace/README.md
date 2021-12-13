@@ -56,6 +56,183 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 
 ## Using ACE with JavaScript frameworks
 
+### React
+
+The following example shows how ACE components can be used with React. More general information about how to use web components with React can be found in [React's Web Components guide](https://reactjs.org/docs/web-components.html).
+
+The example demonstrates:
+
+- Passing data from a parent component to an ACE Accordion component via `props`.
+- Listening for a custom event dispatched by Accordion, then using `useState` and `useEffect` to conditionally disable a button in a parent component.
+- Using `useRef` & `forwardRef` to dispatch a custom event on Accordion from a parent component.
+
+Starting with a fresh project, created using `npx create-react-app`, ACE was installed using `npm i @potato/ace` before the following changes were made.
+
+***src/Accordion.jsx***
+
+```jsx
+import React, {forwardRef} from 'react';
+
+import '@potato/ace/components/accordion/accordion';
+
+// forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
+export const Accordion = forwardRef(({content}, ref) => {
+	return (
+		<ace-accordion ref={ref}>
+			{content.map((panel, index) => {
+				return <React.Fragment key={index}>
+					<h3>
+						<button>{panel.trigger}</button>
+					</h3>
+					<div>
+						<p>{panel.content}</p>
+					</div>
+				</React.Fragment>
+			})}
+		</ace-accordion>
+	);
+});
+```
+
+***src/App.js***
+
+```jsx
+import {useEffect, useRef, useState} from 'react';
+
+import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
+import {Accordion} from './Accordion';
+import './App.css';
+
+const accordionContent = [
+	{
+		content: 'Panel 1 content',
+		trigger: 'Panel 1 trigger',
+	},
+	{
+		content: 'Panel 2 content',
+		trigger: 'Panel 2 trigger',
+	},
+	{
+		content: 'Panel 3 content',
+		trigger: 'Panel 3 trigger',
+	},
+];
+
+function App() {
+	// useRef used to reference Accordion DOM element in Accordion.jsx, to dispatch custom event on it
+	const accordionRef = useRef(null);
+	const [disableCollapseAllBtn, setDisableCollapseAllBtn] = useState(true);
+
+	// Accordion "changed" event handler that disables "Collapse all" button if all panels are already collaped
+	const handleAccordionPanelStateChange = () => {
+		const panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+		setDisableCollapseAllBtn(panelsCollapsed);
+	}
+
+	// useEffect used to add Accordion's "changed" event listener
+	useEffect(() => {
+		window.addEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+		return () => window.removeEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+	}, []);
+
+	// Collapse Accordion's panels using its "hide panels" custom event
+	const collapseAll = () => accordionRef.current.dispatchEvent(
+		new CustomEvent(EVENTS.IN.HIDE_PANELS)
+	);
+
+	return (
+		<>
+			<Accordion content={accordionContent} ref={accordionRef} />
+			<button	disabled={disableCollapseAllBtn} onClick={collapseAll} >
+				Collapse all
+			</button>
+		</>
+	);
+}
+
+export default App;
+```
+
+***src/App.css***
+
+```css
+@import '~@potato/ace/components/accordion/ace-accordion.css';
+```
+
+
+#### React with TypeScript
+
+ACE components can also be used in React projects that use TypeScript.
+
+For example, to use ACE Accordion in a TypeScript React project follow the previous instructions then make the following changes.
+
+***src/Accordion.jsx***
+
+Rename _Accordion_***.jsx*** to _Accordion_***.tsx***, then add this import
+
+```tsx
+import {AccordionContent} from './App';
+```
+
+then replace
+
+```tsx
+export const Accordion = forwardRef(({content}, ref) => {
+```
+
+with
+
+```tsx
+export const Accordion = forwardRef((props: {content:Array<AccordionContent>}, ref) => {
+```
+
+and replace
+
+```tsx
+{content.map((panel, index) => {
+```
+
+with 
+
+```tsx
+{props.content.map((panel: AccordionContent, index: number) => {
+```
+
+and finally add this at the end of the file
+
+```tsx
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'ace-accordion': any;
+    }
+  }
+}
+```
+
+***src/App.tsx***
+
+Replace
+
+```tsx
+const accordionRef = useRef(null);
+```
+
+with
+
+```tsx
+const accordionRef = useRef<any>(null);
+```
+
+and add this at the end of the file
+
+```tsx
+export interface AccordionContent {
+	content: string;
+	trigger: string;
+}
+```
+
 ### Angular
 
 The following example shows how ACE components can be used with Angular.
