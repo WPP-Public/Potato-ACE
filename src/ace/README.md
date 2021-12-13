@@ -56,6 +56,413 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 
 ## Using ACE with JavaScript frameworks
 
+### React
+
+The following example shows how ACE components can be used with React. More general information about how to use web components with React can be found in [React's Web Components guide](https://reactjs.org/docs/web-components.html).
+
+The example demonstrates:
+
+- Passing data from a parent component to an ACE Accordion component via `props`.
+- Listening for a custom event dispatched by Accordion, then using `useState` and `useEffect` to conditionally disable a button in a parent component.
+- Using `useRef` & `forwardRef` to dispatch a custom event on Accordion from a parent component.
+
+Starting with a fresh project, created using `npx create-react-app`, ACE was installed using `npm i @potato/ace` before the following changes were made.
+
+***src/Accordion.jsx***
+
+```jsx
+import React, {forwardRef} from 'react';
+
+import '@potato/ace/components/accordion/accordion';
+
+// forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
+export const Accordion = forwardRef(({content}, ref) => {
+	return (
+		<ace-accordion ref={ref}>
+			{content.map((panel, index) => {
+				return <React.Fragment key={index}>
+					<h3>
+						<button>{panel.trigger}</button>
+					</h3>
+					<div>
+						<p>{panel.content}</p>
+					</div>
+				</React.Fragment>
+			})}
+		</ace-accordion>
+	);
+});
+```
+
+***src/App.js***
+
+```jsx
+import {useEffect, useRef, useState} from 'react';
+
+import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
+import {Accordion} from './Accordion';
+import './App.css';
+
+const accordionContent = [
+	{
+		content: 'Panel 1 content',
+		trigger: 'Panel 1 trigger',
+	},
+	{
+		content: 'Panel 2 content',
+		trigger: 'Panel 2 trigger',
+	},
+	{
+		content: 'Panel 3 content',
+		trigger: 'Panel 3 trigger',
+	},
+];
+
+function App() {
+	// useRef used to reference Accordion DOM element in Accordion.jsx, to dispatch custom event on it
+	const accordionRef = useRef(null);
+	const [disableCollapseAllBtn, setDisableCollapseAllBtn] = useState(true);
+
+	// Accordion "changed" event handler that disables "Collapse all" button if all panels are already collaped
+	const handleAccordionPanelStateChange = () => {
+		const panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+		setDisableCollapseAllBtn(panelsCollapsed);
+	}
+
+	// useEffect used to add Accordion's "changed" event listener
+	useEffect(() => {
+		window.addEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+		return () => window.removeEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+	}, []);
+
+	// Collapse Accordion's panels using its "hide panels" custom event
+	const collapseAll = () => accordionRef.current.dispatchEvent(
+		new CustomEvent(EVENTS.IN.HIDE_PANELS)
+	);
+
+	return (
+		<>
+			<Accordion content={accordionContent} ref={accordionRef} />
+			<button	disabled={disableCollapseAllBtn} onClick={collapseAll} >
+				Collapse all
+			</button>
+		</>
+	);
+}
+
+export default App;
+```
+
+***src/App.css***
+
+```css
+@import '~@potato/ace/components/accordion/ace-accordion.css';
+```
+
+
+#### React with TypeScript
+
+ACE components can also be used in React projects that use TypeScript.
+
+For example, to use ACE Accordion in a TypeScript React project follow the previous instructions then make the following changes.
+
+***src/Accordion.jsx***
+
+Rename _Accordion_***.jsx*** to _Accordion_***.tsx***, then add this import
+
+```tsx
+import {AccordionContent} from './App';
+```
+
+then replace
+
+```tsx
+export const Accordion = forwardRef(({content}, ref) => {
+```
+
+with
+
+```tsx
+export const Accordion = forwardRef((props: {content:Array<AccordionContent>}, ref) => {
+```
+
+and replace
+
+```tsx
+{content.map((panel, index) => {
+```
+
+with 
+
+```tsx
+{props.content.map((panel: AccordionContent, index: number) => {
+```
+
+and finally add this at the end of the file
+
+```tsx
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'ace-accordion': any;
+    }
+  }
+}
+```
+
+***src/App.tsx***
+
+Replace
+
+```tsx
+const accordionRef = useRef(null);
+```
+
+with
+
+```tsx
+const accordionRef = useRef<any>(null);
+```
+
+and add this at the end of the file
+
+```tsx
+export interface AccordionContent {
+	content: string;
+	trigger: string;
+}
+```
+
+### Angular
+
+The following example shows how ACE components can be used with Angular.
+
+The example demonstrates:
+
+- Passing data from a parent component to an ACE Accordion component via `@Input`.
+- Using `@HostListener` in the parent component to listen for a custom event dispatched by Accordion, then conditionally disabling a button in a parent component.
+- Using a reference variable and `@ViewChild` to dispatch a custom event on Accordion from a parent component.
+
+Starting with a fresh project, created using the Angular CLI command `ng new`, ACE was installed using `npm i @potato/ace` before the following changes were made.
+
+***src/app/accordion/accordion.component.html***
+
+```html
+<ace-accordion>
+  <ng-container *ngFor="let panel of content">
+    <h3>
+      <button>{{panel.trigger}}</button>
+    </h3>
+    <div>
+      <p>{{panel.content}}</p>
+    </div>
+  </ng-container>
+</ace-accordion>
+```
+
+***src/app/accordion/accordion.component.ts***
+
+```ts
+import { Component, Input } from '@angular/core';
+
+import '@potato/ace/components/accordion/accordion';
+
+export interface AccordionContent {
+  content: string;
+  trigger: string;
+}
+
+@Component({
+  selector: 'app-accordion',
+  templateUrl: './accordion.component.html',
+  styleUrls: ['./accordion.component.css']
+})
+export class AccordionComponent {
+  @Input()
+  content: Array<AccordionContent> = [];
+}
+```
+
+***src/app/accordion/accordion.component.css***
+
+```css
+@import '~@potato/ace/components/accordion/ace-accordion.css';
+```
+
+***src/app/app.component.html***
+
+```html
+<app-accordion #accordion [content]="accordionContent"></app-accordion>
+
+<button [disabled]="panelsCollapsed" (click)="collapseAll()">
+  Collapse all
+</button>
+```
+
+***src/app/app.component.ts***
+
+```ts
+import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { AccordionContent } from './accordion/accordion.component';
+import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent implements AfterViewInit {
+  accordionContent: Array<AccordionContent> = [
+    {
+      content: 'Panel 1 content',
+      trigger: 'Panel 1 trigger',
+    },
+    {
+      content: 'Panel 2 content',
+      trigger: 'Panel 2 trigger',
+    },
+    {
+      content: 'Panel 3 content',
+      trigger: 'Panel 3 trigger',
+    },
+  ];
+  aceAccordionEl: HTMLElement | null = null;
+  panelsCollapsed = true;
+
+  // @ViewChild and ngAfterViewInit used to get reference to Accordion DOM element in accordion.component.html, to dispatch custom event on it
+  @ViewChild('accordion', {read: ElementRef})
+  accordion!: ElementRef;
+
+  // @HostListener used to add Accordion "changed" event listener
+  @HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+  onPanelChange(): void {
+    this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+  }
+
+  ngAfterViewInit() {
+    this.aceAccordionEl = this.accordion.nativeElement.firstElementChild;
+  }
+
+	// Collapse Accordion's panels using it's "hide panels" custom event
+  collapseAll() {
+    this.aceAccordionEl?.dispatchEvent(
+      new CustomEvent(EVENTS.IN.HIDE_PANELS)
+    );
+  }
+}
+```
+
+***src/app/app.module.ts***
+
+```ts
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+
+import { AppComponent } from './app.component';
+import { AccordionComponent } from './accordion/accordion.component';
+
+@NgModule({
+  declarations: [
+    AccordionComponent,
+    AppComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+```
+
+***tsconfig.app.json***
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": []
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts",
+    "./node_modules/@potato/ace/components/accordion/accordion.ts",
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
+```
+
+#### Importing ACE JavaScript component files
+
+In the event that an ACE component's TypeScript file cannot be used, e.g. if TypeScript compilation errors occur due to specific compiler options used in a project, the recommended approach is to instead use the ACE component's JavaScript file.
+
+This can be achieved by following the example above with the following overrides.
+
+***tsconfig.app.json***
+
+Replace contents with
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/app",
+    "types": ["node"]
+  },
+  "files": [
+    "src/main.ts",
+    "src/polyfills.ts"
+  ],
+  "include": [
+    "src/**/*.d.ts"
+  ]
+}
+```
+
+***src/app/app.component.ts***
+
+Replace
+
+```ts
+import '@potato/ace/components/accordion/accordion';
+```
+
+with
+
+```ts
+require('@potato/ace/components/accordion/accordion.js');
+```
+
+***src/app/app.component.ts***
+
+Replace
+
+```ts
+import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
+```
+
+ with
+
+```ts
+const { ATTRS, EVENTS } = require('@potato/ace/components/accordion/accordion.js');
+```
+
+then replace
+
+```ts
+@HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+```
+
+ with
+
+```ts
+@HostListener('window:ace-accordion-panel-visibility-changed', ['$event.detail'])
+```
+
 ### Vue
 
 The following example shows how ACE components can be used with Vue (v3+). More general information about how to use web components with Vue can be found in [Vue's Web Components guide](https://v3.vuejs.org/guide/web-components.html#skipping-component-resolution).

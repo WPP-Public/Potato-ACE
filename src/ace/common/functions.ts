@@ -125,7 +125,7 @@ export const warnIfElHasNoAriaLabel = (element: HTMLElement, elementName: string
 		const labelEl = document.getElementById(elementLabelledById);
 		if (!labelEl) {
 			console.warn(`${DISPLAY_NAME}: ${elementName} with ID ${elementWithId.id} has aria-labelledby attribute set to an element that does not exist.`);
-		} else if (!labelEl.textContent || labelEl.textContent.length) {
+		} else if (!labelEl.textContent || !labelEl.textContent.length) {
 			console.warn(`${DISPLAY_NAME}: ${elementName} with ID ${elementWithId.id} has aria-labelledby attribute set to an element with no text content.`);
 		}
 	} else if (!elementHasLabel) {

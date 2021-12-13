@@ -85,7 +85,6 @@ export default class Modal extends HTMLElement {
 
 		// Determine if Modal instance can use HTML inert attribute (browser supports it and Modal is a child of body)
 		this.canUseInert = BROWSER_SUPPORTS_INERT && this.parentElement === document.body;
-		console.log(this.canUseInert);
 
 
 		/* GET DOM ELEMENTS */
