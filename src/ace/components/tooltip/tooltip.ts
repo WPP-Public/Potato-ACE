@@ -70,6 +70,7 @@ export default class Tooltip extends HTMLElement {
 		if (!this.targetEl) {
 			return;
 		}
+
 		// If target is not focusable then tooltip is not accessible to keyboard users
 		if (
 			!this.targetEl.closest(FOCUSABLE_ELEMENTS_SELECTOR) &&
@@ -106,6 +107,7 @@ export default class Tooltip extends HTMLElement {
 
 
 		/* INITIALISATION */
+		handleOverflow(this);
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
 			'detail': {
 				'id': this.id,
