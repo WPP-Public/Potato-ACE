@@ -55,7 +55,7 @@
 
 	[ace-accordion-panel-visible] {
 		@media (prefers-reduced-motion: no-preference) {
-			max-height: 245px;
+			max-height: 300px;
 			transition: max-height $trans-duration ease-in;
 			visibility: visible;
 		}
