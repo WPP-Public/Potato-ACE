@@ -301,7 +301,8 @@ An example of how Listbox can be styled, with the applied CSS shown below.
 		border-radius: 4px;
 		height: 225px;
 		margin-top: 10px;
-		width: 300px;
+		max-width: 300px;
+		width: 100%;
 
 		&:focus {
 			outline-color: #41354d;
