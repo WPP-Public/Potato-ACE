@@ -1,6 +1,8 @@
 # Toast
 
-A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use the ACE [Modal component](/modal) instead.  
+A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use the ACE [Modal component](/modal) instead.
+
+Note that when using multiple Toasts they occupy the same fixed position at the bottom of the viewport window. Developers should therefore add a way of dealing with multiple Toasts appearing at the same time if this is a possibility. An example of how this can be achieved using JavaScript is shown in the examples section below.
 
 Toast conforms to the [W3C WAI-ARIA authoring practices](http://w3.org/WAI/WCAG21/Techniques/aria/ARIA22.html).
 
@@ -151,9 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 ```
 
-### Multiple Toasts at the same time
+### Multiple Toasts
 
-All Toasts occupy the same fixed position at the bottom of the viewport window. Developers should therefore add a way of dealing with multiple Toasts appearing at the same time if this is a possibility. An example of how this can be achieved using JavaScript is shown below.
+This example demonstrates how JavaScript can be used to deal with multiple toasts appearing at the same time.
 
 ```html
 <button id="show-1st-toast-btn">Show first Toast</button>
