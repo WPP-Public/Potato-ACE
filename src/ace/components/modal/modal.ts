@@ -1,6 +1,6 @@
 /* IMPORTS */
-import {BROWSER_SUPPORTS_INERT, FOCUSABLE_ELEMENTS_SELECTOR, KEYS, NAME} from '../../common/constants.js';
-import {autoID, isInteractable, keyPressedMatches, warnIfElHasNoAriaLabel} from '../../common/functions.js';
+import {BROWSER_SUPPORTS_INERT, KEYS, NAME} from '../../common/constants.js';
+import {autoID, keyPressedMatches, warnIfElHasNoAriaLabel} from '../../common/functions.js';
 import FocusTrap from '../../common/focus-trap.js';
 
 
@@ -33,7 +33,6 @@ export const EVENTS = {
 export default class Modal extends HTMLElement {
 	private backdropEl: HTMLElement | null = null;
 	private canUseInert = false;
-	private firstInteractableDescendant: HTMLElement | undefined;
 	private focusTrap: FocusTrap | undefined;
 	private inertedEls: Array<Element> = [];
 	private initialised = false;
@@ -111,10 +110,11 @@ export default class Modal extends HTMLElement {
 
 
 		/* SET DOM DATA */
+		this.setAttribute('aria-modal', 'true');
 		if (this.getAttribute('role') !== 'alertdialog') {
 			this.setAttribute('role', 'dialog');
 		}
-		this.setAttribute('aria-modal', 'true');
+		this.setAttribute('tabindex', '-1');
 
 
 		/* ADD EVENT LISTENERS */
@@ -129,13 +129,9 @@ export default class Modal extends HTMLElement {
 		warnIfElHasNoAriaLabel(this, 'Modal');
 
 
-		// If HTML attribute inert can be used (supported by browser and Modal is child of body) use it to trap focus, else use FocusTrap
-		if (this.canUseInert) {
-			this.firstInteractableDescendant = ([...this.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR)] as Array<HTMLElement>)
-				.find(isInteractable);
-		} else {
+		// If HTML attribute inert can't be used (not supported by browser or Modal is not child of body) use FocusTrap to trap focus
+		if (!this.canUseInert) {
 			this.focusTrap = new FocusTrap(this);
-			this.firstInteractableDescendant = this.focusTrap.interactableDescendants[0];
 		}
 
 		if (this.hasAttribute(ATTRS.VISIBLE)) {
@@ -183,7 +179,6 @@ export default class Modal extends HTMLElement {
 			return;
 		}
 		this.focusTrap.getInteractableDescendants();
-		this.firstInteractableDescendant = this.focusTrap.interactableDescendants[0];
 	}
 
 
@@ -238,7 +233,7 @@ export default class Modal extends HTMLElement {
 			});
 		}
 
-		this.firstInteractableDescendant?.focus();
+		this.focus();
 	}
 }
 
