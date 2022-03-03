@@ -167,37 +167,37 @@ Each example contains a live demo and the HTML code that produced it. The code s
 
 Examples of simple Tooltips for:
 
-1. A target link with text content with the Tooltip providing suplimentary information.
-1. A target button with attribute `aria-label` with the Tooltip providing suplimentary information.
-1. A target button with attribute `aria-labelledby` with the Tooltip providing suplimentary information.
-1. A target button without attributes `aria-label` nor `aria-labelledby`, and without text content, with the Tooltip acting as a label.
+1. A button without text content and without attributes `aria-label` and `aria-labelledby`, with a Tooltip acting as a primary label.
+1. A link with text content and a Tooltip providing supplementary information.
+1. A button with attribute `aria-label` and a Tooltip providing supplementary information.
+1. A button with attribute `aria-labelledby` and a Tooltip providing supplementary information.
 
 ```html
+<button>
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
+	<ace-tooltip>Tooltip text</ace-tooltip>
+</button>
+
+<hr>
+
 <a href="#">
 	Tooltip target
-	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
+	<ace-tooltip>This will open a new window</ace-tooltip>
 </a>
 
 <hr>
 
-<button aria-label="Tooltip target label">
+<button aria-label="Copy">
 	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
-	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
+	<ace-tooltip>Copy to clipboard</ace-tooltip>
 </button>
 
 <hr>
 
-<label id="tooltip-target-label">Tooltip target label</label><br>
+<label id="tooltip-target-label">Copy</label><br>
 <button aria-labelledby="tooltip-target-label">
 	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
-	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
-</button>
-
-<hr>
-
-<button>
-	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
-	<ace-tooltip>Tooltip acting as target label</ace-tooltip>
+	<ace-tooltip>Copy to clipboard</ace-tooltip>
 </button>
 ```
 
