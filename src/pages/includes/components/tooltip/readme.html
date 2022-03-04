@@ -109,57 +109,57 @@ ace-tooltip {
 <h3>Simple Tooltips</h3>
 <p>Examples of simple Tooltips for:</p>
 <ol>
-<li>A target link with text content with the Tooltip providing suplimentary information.</li>
-<li>A target button with attribute <code>aria-label</code> with the Tooltip providing suplimentary information.</li>
-<li>A target button with attribute <code>aria-labelledby</code> with the Tooltip providing suplimentary information.</li>
-<li>A target button without attributes <code>aria-label</code> nor <code>aria-labelledby</code>, and without text content, with the Tooltip acting as a label.</li>
+<li>A button without text content and without attributes <code>aria-label</code> and <code>aria-labelledby</code>, with a Tooltip acting as a primary label.</li>
+<li>A link with text content and a Tooltip providing supplementary information.</li>
+<li>A button with attribute <code>aria-label</code> and a Tooltip providing supplementary information.</li>
+<li>A button with attribute <code>aria-labelledby</code> and a Tooltip providing supplementary information.</li>
 </ol>
-<div class="example-block"><a href="#">
+<div class="example-block"><button>
+	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
+	<ace-tooltip>Tooltip text</ace-tooltip>
+</button>
+<hr>
+<a href="#">
 	Tooltip target
-	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
+	<ace-tooltip>This will open a new window</ace-tooltip>
 </a>
 <hr>
-<button aria-label="Tooltip target label">
+<button aria-label="Copy">
 	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
-	<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
+	<ace-tooltip>Copy to clipboard</ace-tooltip>
 </button>
 <hr>
-<p><label id="tooltip-target-label">Tooltip target label</label><br>
+<p><label id="tooltip-target-label">Copy</label><br>
 <button aria-labelledby="tooltip-target-label">
 <img src="/img/clipboard.svg" aria-hidden="true" width="24px">
-<ace-tooltip>Tooltip with supplementary text</ace-tooltip>
+<ace-tooltip>Copy to clipboard</ace-tooltip>
 </button></p>
-<hr>
-<button>
-	<img src="/img/clipboard.svg" aria-hidden="true" width="24px">
-	<ace-tooltip>Tooltip acting as target label</ace-tooltip>
-</button>
 </div>
-<pre><code class="language-html">&lt;a href=&quot;#&quot;&gt;
+<pre><code class="language-html">&lt;button&gt;
+	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot; width=&quot;24px&quot;&gt;
+	&lt;ace-tooltip&gt;Tooltip text&lt;/ace-tooltip&gt;
+&lt;/button&gt;
+
+&lt;hr&gt;
+
+&lt;a href=&quot;#&quot;&gt;
 	Tooltip target
-	&lt;ace-tooltip&gt;Tooltip with supplementary text&lt;/ace-tooltip&gt;
+	&lt;ace-tooltip&gt;This will open a new window&lt;/ace-tooltip&gt;
 &lt;/a&gt;
 
 &lt;hr&gt;
 
-&lt;button aria-label=&quot;Tooltip target label&quot;&gt;
+&lt;button aria-label=&quot;Copy&quot;&gt;
 	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot; width=&quot;24px&quot;&gt;
-	&lt;ace-tooltip&gt;Tooltip with supplementary text&lt;/ace-tooltip&gt;
+	&lt;ace-tooltip&gt;Copy to clipboard&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 
 &lt;hr&gt;
 
-&lt;label id=&quot;tooltip-target-label&quot;&gt;Tooltip target label&lt;/label&gt;&lt;br&gt;
+&lt;label id=&quot;tooltip-target-label&quot;&gt;Copy&lt;/label&gt;&lt;br&gt;
 &lt;button aria-labelledby=&quot;tooltip-target-label&quot;&gt;
 	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot; width=&quot;24px&quot;&gt;
-	&lt;ace-tooltip&gt;Tooltip with supplementary text&lt;/ace-tooltip&gt;
-&lt;/button&gt;
-
-&lt;hr&gt;
-
-&lt;button&gt;
-	&lt;img src=&quot;/img/clipboard.svg&quot; aria-hidden=&quot;true&quot; width=&quot;24px&quot;&gt;
-	&lt;ace-tooltip&gt;Tooltip acting as target label&lt;/ace-tooltip&gt;
+	&lt;ace-tooltip&gt;Copy to clipboard&lt;/ace-tooltip&gt;
 &lt;/button&gt;
 </code></pre>
 <h3>Non-wrapping Tooltips</h3>
