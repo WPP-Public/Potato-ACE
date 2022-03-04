@@ -4,7 +4,10 @@
 // VARIABLES
 $ace-tooltip-base-transform: translateX(-50%) !default;
 $ace-tooltip-bg-color: #000 !default;
+$ace-tooltip-font-size: 14px !default;
+$ace-tooltip-font-weight: 700 !default;
 $ace-tooltip-gap: 10px !default;
+$ace-tooltip-max-width: 300px !default;
 $ace-tooltip-padding: 4px 8px !default;
 $ace-tooltip-text-color: #fff !default;
 
@@ -17,14 +20,18 @@ $ace-tooltip-text-color: #fff !default;
 ace-tooltip {
 	background-color: $ace-tooltip-bg-color;
 	color: $ace-tooltip-text-color;
+	font-size: $ace-tooltip-font-size;
+	font-weight: $ace-tooltip-font-weight;
 	left: 50%;
 	margin-bottom: $ace-tooltip-gap;
 	margin-top: $ace-tooltip-gap;
+	max-width: $ace-tooltip-max-width;
 	padding: $ace-tooltip-padding;
 	pointer-events: none;
 	position: absolute;
 	top: 100%;
 	transform: $ace-tooltip-base-transform;
+	width: max-content;
 	z-index: $ace-tooltip-list-z-index;
 
 	&:not([ace-tooltip-visible]) {
@@ -50,8 +57,4 @@ ace-tooltip {
 		left: 0;
 		right: initial;
 	}
-}
-
-[ace-tooltip-nowrap] {
-	white-space: nowrap;
 }

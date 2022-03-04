@@ -40,7 +40,9 @@ Tooltips appear after a short delay, the default value of which is 1 second, how
 
 ## Usage
 
-Tooltips are initially hidden and become visible when the target receives keyboard focus, the mouse hovers over the target, a user touches the target on a touch screen device for a short period of time, or due to a dispatched custom event. They are hidden again once the target loses keyboard focus, the mouse pointer leaves the target, <kbd>Escape</kbd> is pressed while the target is focused or due to a dispatched custom event. Tooltips can be disabled entrely by adding the `disabled` attribute to them, preventing them from becoming visible. 
+Tooltips are initially hidden and become visible when the target receives keyboard focus, the mouse hovers over the target, a user touches the target on a touch screen device for a short period of time, or due to a dispatched custom event. They are hidden again once the target loses keyboard focus, the mouse pointer leaves the target, <kbd>Escape</kbd> is pressed while the target is focused or due to a dispatched custom event. Tooltips can be disabled entrely by adding the `disabled` attribute to them, preventing them from becoming visible.
+
+Each Tooltip is aware of it's position within the window and ensures that it is fully visible in the viewport. A Tooltip will hence appear aligned to the bottom center of the target if there is enough space, otherwise it will appear above and/or aligned to the right edge or left as necessary. An example demonstrating this can be seen in the **Examples** section.
 
 Note that the keydown event for <kbd>Escape</kbd> is prevented from bubbling using [Event.stopPropagation](https://developer.mozilla.org/en-US/docs/Web/API/Event/stopPropagation) to prevent undesired side effects such as closing a Modal the Tooltip target is in.
 
@@ -57,7 +59,10 @@ The following SASS is applied to Tooltip. The SASS variables use `!default` so c
 // VARIABLES
 $ace-tooltip-base-transform: translateX(-50%) !default;
 $ace-tooltip-bg-color: #000 !default;
+$ace-tooltip-font-size: 14px !default;
+$ace-tooltip-font-weight: 700 !default;
 $ace-tooltip-gap: 10px !default;
+$ace-tooltip-max-width: 300px !default;
 $ace-tooltip-padding: 4px 8px !default;
 $ace-tooltip-text-color: #fff !default;
 
@@ -70,14 +75,18 @@ $ace-tooltip-text-color: #fff !default;
 ace-tooltip {
 	background-color: $ace-tooltip-bg-color;
 	color: $ace-tooltip-text-color;
+	font-size: $ace-tooltip-font-size;
+	font-weight: $ace-tooltip-font-weight;
 	left: 50%;
 	margin-bottom: $ace-tooltip-gap;
 	margin-top: $ace-tooltip-gap;
+	max-width: $ace-tooltip-max-width;
 	padding: $ace-tooltip-padding;
 	pointer-events: none;
 	position: absolute;
 	top: 100%;
 	transform: $ace-tooltip-base-transform;
+	width: max-content;
 	z-index: $ace-tooltip-list-z-index;
 
 	&:not([ace-tooltip-visible]) {
@@ -103,10 +112,6 @@ ace-tooltip {
 		left: 0;
 		right: initial;
 	}
-}
-
-[ace-tooltip-nowrap] {
-	white-space: nowrap;
 }
 ```
 
@@ -202,26 +207,23 @@ Examples of simple Tooltips for:
 ```
 
 
-### Non-wrapping Tooltips
+### Automatically positioned Tooltips
 
-These Tooltips have attribute `ace-tooltip-nowrap` that keeps their text on a single line. They are also wide enough to overflow outside the viewport if centered, to demonstrate how Tooltips automatically avoid this by aligning themselves to the left or right edge of their target as appropriate. To view this example properly use a viewport width between 720px and 1023px.
+These Tooltips demonstrate how Tooltips are automatically aligned avoid them overflowing out of the viewport. To view this example properly use a viewport width between 720px and 1023px.
 
 ```html
 <div style="display: flex; justify-content: space-between;">
 	<button>
 		Tooltip target
-		<ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
-			handling works</ace-tooltip>
+		<ace-tooltip>
+			A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works
+		</ace-tooltip>
 	</button>
 	<button>
 		Tooltip target
-		<ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
-			handling works</ace-tooltip>
-	</button>
-	<button>
-		Tooltip target
-		<ace-tooltip ace-tooltip-nowrap>A wide Tooltip with non-wrapping text that demonstrates how automatic overflow
-			handling works</ace-tooltip>
+		<ace-tooltip>
+			A wide Tooltip with non-wrapping text that demonstrates how automatic overflow handling works
+		</ace-tooltip>
 	</button>
 </div>
 ```
