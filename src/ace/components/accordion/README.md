@@ -54,6 +54,10 @@ The following SASS is applied to Accordion.
 
 
 ```scss
+[ace-accordion-trigger] {
+	width: 100%;
+}
+
 [ace-accordion-panel]:not([ace-accordion-panel-visible]) {
 	display: none;
 }
@@ -468,7 +472,7 @@ An example of how Accordion can be styled to resemble a commonly used design. Cu
 
 	[ace-accordion-panel-visible] {
 		@media (prefers-reduced-motion: no-preference) {
-			max-height: 245px;
+			max-height: 300px;
 			transition: max-height $trans-duration ease-in;
 			visibility: visible;
 		}

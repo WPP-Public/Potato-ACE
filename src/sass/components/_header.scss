@@ -51,9 +51,14 @@ $z-index: 2;
 	}
 
 	&__skip {
-		margin-right: $buffer-xs;
+		margin: 0 4px;
 		padding: 4px;
+		text-align: center;
 		transform: translateY(-200%);
+
+		@include mq($until: tablet) {
+			font-size: 12px;
+		}
 
 		&:active,
 		&:focus {
@@ -71,6 +76,7 @@ $z-index: 2;
 		@include icon-btn(50px, '../img/menu.svg');
 		@include overlayed-pseudo($type: 'before');
 
+		flex-shrink: 0;
 		margin-left: $buffer-xs;
 
 		&::before {

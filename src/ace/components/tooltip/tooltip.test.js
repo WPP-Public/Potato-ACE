@@ -44,13 +44,12 @@ context(`Tooltip`, () => {
 
 		it(`Tooltip should initialise correctly`, () => tooltipInitChecks());
 
-
-		it(`Content of Tooltip for target with text content should be treated as supplementary information`, () => {
-			cy.get('@tooltipTarget').should('have.attr', 'aria-describedby', TOOLTIP_ID);
+		it(`Content of Tooltip for target with no text nor label nor aria-labelledby should be treated as primary label`, () => {
+			cy.get('@tooltipTarget').should('have.attr', 'aria-labelledby', TOOLTIP_ID);
 		});
 
 
-		it(`Content of Tooltip for target with aria-label should be treated as supplementary information`, () => {
+		it(`Content of Tooltip for target with text content should be treated as supplementary information`, () => {
 			const TOOLTIP_ID = `${TOOLTIP}-2`;
 
 			cy.get(`#${TOOLTIP_ID}`)
@@ -59,7 +58,7 @@ context(`Tooltip`, () => {
 		});
 
 
-		it(`Content of Tooltip for target with aria-labelledby should be treated as supplementary information`, () => {
+		it(`Content of Tooltip for target with aria-label should be treated as supplementary information`, () => {
 			const TOOLTIP_ID = `${TOOLTIP}-3`;
 
 			cy.get(`#${TOOLTIP_ID}`)
@@ -68,12 +67,12 @@ context(`Tooltip`, () => {
 		});
 
 
-		it(`Content of Tooltip for target with no text nor label should be treated as primary label`, () => {
+		it(`Content of Tooltip for target with aria-labelledby should be treated as supplementary information`, () => {
 			const TOOLTIP_ID = `${TOOLTIP}-4`;
 
 			cy.get(`#${TOOLTIP_ID}`)
 				.parent()
-				.should('have.attr', 'aria-labelledby', TOOLTIP_ID);
+				.should('have.attr', 'aria-describedby', TOOLTIP_ID);
 		});
 
 

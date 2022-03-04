@@ -343,7 +343,7 @@ export default class List {
 			this.optionEls[index].scrollIntoView({
 				behaviour: 'smooth',
 				block: 'nearest',
-				inline: 'start',
+				inline: 'nearest',
 			} as ScrollIntoViewOptions);
 		}
 	}

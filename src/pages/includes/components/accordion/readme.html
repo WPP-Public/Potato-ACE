@@ -24,7 +24,11 @@
 <p>In order to implement animations without hindering accessibility developers must hide non-visible panels from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration <code>display: none</code> or <code>visibility: hidden</code> to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"><code>prefers-reduced-motion</code> media query</a> as demonstrated in the example.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to Accordion.</p>
-<pre><code class="language-scss">[ace-accordion-panel]:not([ace-accordion-panel-visible]) {
+<pre><code class="language-scss">[ace-accordion-trigger] {
+	width: 100%;
+}
+
+[ace-accordion-panel]:not([ace-accordion-panel-visible]) {
 	display: none;
 }
 </code></pre>
@@ -537,7 +541,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
 	[ace-accordion-panel-visible] {
 		@media (prefers-reduced-motion: no-preference) {
-			max-height: 245px;
+			max-height: 300px;
 			transition: max-height $trans-duration ease-in;
 			visibility: visible;
 		}

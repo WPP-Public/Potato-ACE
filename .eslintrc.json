@@ -36,6 +36,7 @@
 				"max": 3
 			}
 		],
+		"no-debugger": "warn",
 		"no-unused-vars": [
 			"warn"
 		],

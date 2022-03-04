@@ -1,5 +1,6 @@
 <h1>Toast</h1>
 <p>A Toast is a component that is used to convey an important message to the user for a short period of time. Toasts do not require user input and disappear after a set period of time. For messages that require user input use the ACE <a href="/modal">Modal component</a> instead.</p>
+<p>Note that when using multiple Toasts they occupy the same fixed position at the bottom of the viewport window. Developers should therefore add a way of dealing with multiple Toasts appearing at the same time if this is a possibility. An example of how this can be achieved using JavaScript is shown in the examples section below.</p>
 <p>Toast conforms to the <a href="http://w3.org/WAI/WCAG21/Techniques/aria/ARIA22.html">W3C WAI-ARIA authoring practices</a>.</p>
 <h2>Setup</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
@@ -111,8 +112,8 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	showSecondToastBtn.addEventListener('click', () =&gt; secondToastEl.setAttribute(ATTRS.VISIBLE, ''));
 });
 </code></pre>
-<h3>Multiple Toasts at the same time</h3>
-<p>All Toasts occupy the same fixed position at the bottom of the viewport window. Developers should therefore add a way of dealing with multiple Toasts appearing at the same time if this is a possibility. An example of how this can be achieved using JavaScript is shown below.</p>
+<h3>Multiple Toasts</h3>
+<p>This example demonstrates how JavaScript can be used to deal with multiple toasts appearing at the same time.</p>
 <div class="example-block"><button id="show-1st-toast-btn">Show first Toast</button>
 <button id="show-2nd-toast-btn">Show second Toast</button>
 <button id="show-3rd-toast-btn">Show third Toast</button>
