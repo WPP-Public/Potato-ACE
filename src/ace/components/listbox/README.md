@@ -256,31 +256,31 @@ An example of how Listbox can be styled, with the applied CSS shown below.
 	<label id="styled-listbox-label" class="styled-listbox__label">Choose an Avenger:</label>
 	<ul aria-labelledby="styled-listbox-label" class="styled-listbox__list">
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Iron Man
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Nick Fury
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Hulk
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Thor
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Captain America
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Black Widow
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Scarlet Witch
 		</li>
 	</ul>
@@ -301,7 +301,8 @@ An example of how Listbox can be styled, with the applied CSS shown below.
 		border-radius: 4px;
 		height: 225px;
 		margin-top: 10px;
-		width: 300px;
+		max-width: 300px;
+		width: 100%;
 
 		&:focus {
 			outline-color: #41354d;

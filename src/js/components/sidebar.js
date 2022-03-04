@@ -69,8 +69,11 @@ export default class Sidebar extends HTMLElement {
 	animEndHandler() {
 		if (this.hasAttribute(ATTRS.SIDEBAR_VISIBLE)) {
 			this.focusTrap.focusableDescendants[0].focus();
-		} else {
-			this.style.visibility = '';
+			return;
+		}
+
+		this.style.visibility = '';
+		if (this.contains(document.activeElement)) {
 			this.sidebarBtn.focus();
 		}
 	}

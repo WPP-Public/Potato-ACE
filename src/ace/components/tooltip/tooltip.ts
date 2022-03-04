@@ -70,12 +70,13 @@ export default class Tooltip extends HTMLElement {
 		if (!this.targetEl) {
 			return;
 		}
+
 		// If target is not focusable then tooltip is not accessible to keyboard users
 		if (
 			!this.targetEl.closest(FOCUSABLE_ELEMENTS_SELECTOR) &&
 			(this.targetEl.getAttribute('tabindex') && parseInt(this.targetEl.getAttribute('tabindex') as string) <= 0)
 		) {
-			console.error(`${DISPLAY_NAME}: The target of Tooltip with ID ${this.id} is not a focusable element which means the tooltip is inaccessible to keyboard users.`);
+			console.error(`${DISPLAY_NAME}: The target of Tooltip with ID ${this.id} is not a focusable element which means the tooltip is inaccessible to keyboard users. Try adding a 'tabindex="0"'.`);
 			return;
 		}
 
@@ -106,6 +107,7 @@ export default class Tooltip extends HTMLElement {
 
 
 		/* INITIALISATION */
+		handleOverflow(this);
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {
 			'detail': {
 				'id': this.id,

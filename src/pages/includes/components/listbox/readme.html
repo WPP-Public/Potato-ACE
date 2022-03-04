@@ -249,31 +249,31 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	<label id="styled-listbox-label" class="styled-listbox__label">Choose an Avenger:</label>
 	<ul aria-labelledby="styled-listbox-label" class="styled-listbox__list">
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Iron Man
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Nick Fury
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Hulk
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Thor
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Captain America
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Black Widow
 		</li>
 		<li class="styled-listbox__option">
-			<img alt="Potato logo" class="styled-listbox__img" src="/img/logo.svg">
+			<img class="styled-listbox__img" role="presentation" src="/img/logo.svg">
 			Scarlet Witch
 		</li>
 	</ul>
@@ -283,31 +283,31 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	&lt;label id=&quot;styled-listbox-label&quot; class=&quot;styled-listbox__label&quot;&gt;Choose an Avenger:&lt;/label&gt;
 	&lt;ul aria-labelledby=&quot;styled-listbox-label&quot; class=&quot;styled-listbox__list&quot;&gt;
 		&lt;li class=&quot;styled-listbox__option&quot;&gt;
-			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			&lt;img class=&quot;styled-listbox__img&quot; role=&quot;presentation&quot; src=&quot;/img/logo.svg&quot;&gt;
 			Iron Man
 		&lt;/li&gt;
 		&lt;li class=&quot;styled-listbox__option&quot;&gt;
-			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			&lt;img class=&quot;styled-listbox__img&quot; role=&quot;presentation&quot; src=&quot;/img/logo.svg&quot;&gt;
 			Nick Fury
 		&lt;/li&gt;
 		&lt;li class=&quot;styled-listbox__option&quot;&gt;
-			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			&lt;img class=&quot;styled-listbox__img&quot; role=&quot;presentation&quot; src=&quot;/img/logo.svg&quot;&gt;
 			Hulk
 		&lt;/li&gt;
 		&lt;li class=&quot;styled-listbox__option&quot;&gt;
-			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			&lt;img class=&quot;styled-listbox__img&quot; role=&quot;presentation&quot; src=&quot;/img/logo.svg&quot;&gt;
 			Thor
 		&lt;/li&gt;
 		&lt;li class=&quot;styled-listbox__option&quot;&gt;
-			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			&lt;img class=&quot;styled-listbox__img&quot; role=&quot;presentation&quot; src=&quot;/img/logo.svg&quot;&gt;
 			Captain America
 		&lt;/li&gt;
 		&lt;li class=&quot;styled-listbox__option&quot;&gt;
-			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			&lt;img class=&quot;styled-listbox__img&quot; role=&quot;presentation&quot; src=&quot;/img/logo.svg&quot;&gt;
 			Black Widow
 		&lt;/li&gt;
 		&lt;li class=&quot;styled-listbox__option&quot;&gt;
-			&lt;img alt=&quot;Potato logo&quot; class=&quot;styled-listbox__img&quot; src=&quot;/img/logo.svg&quot;&gt;
+			&lt;img class=&quot;styled-listbox__img&quot; role=&quot;presentation&quot; src=&quot;/img/logo.svg&quot;&gt;
 			Scarlet Witch
 		&lt;/li&gt;
 	&lt;/ul&gt;
@@ -326,7 +326,8 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		border-radius: 4px;
 		height: 225px;
 		margin-top: 10px;
-		width: 300px;
+		max-width: 300px;
+		width: 100%;
 
 		&amp;:focus {
 			outline-color: #41354d;

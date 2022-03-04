@@ -1,3 +1,7 @@
+[ace-accordion-trigger] {
+  width: 100%;
+}
+
 [ace-accordion-panel]:not([ace-accordion-panel-visible]) {
   display: none;
 }
