@@ -29,7 +29,8 @@ ace-modal {
 	}
 
 	&:not([ace-modal-visible]) {
-		display: none;
+		// Using 'display: none' prevents VoiceOver from being able to focus within the modal
+		visibility: hidden;
 	}
 }
 
