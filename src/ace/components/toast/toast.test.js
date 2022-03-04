@@ -8,9 +8,17 @@ const IDS = {
 	SIMPLE_TOAST_BTN: 'simple-toast-btn',
 };
 
+const getEls = (id) => {
+	return cy.get(`#${id}`)
+		.as('toast')
+		.find(`[${ATTRS.INNER}]`)
+		.as('toastInner');
+};
+
+
 
 const toastInitChecks = () => {
-	return cy.get('@toast')
+	return cy.get('@toastInner')
 		.should('have.attr', 'aria-live', 'polite')
 		.and('have.attr', 'role', 'status');
 };
@@ -31,7 +39,7 @@ context(`Toast`, () => {
 		const TOAST_ID = IDS.SIMPLE_TOAST;
 
 
-		beforeEach(() => cy.get(`#${TOAST_ID}`).as('toast'));
+		beforeEach(() => getEls(TOAST_ID));
 
 
 		it(`Should initialise correctly`, () => toastInitChecks());
@@ -76,11 +84,10 @@ context(`Toast`, () => {
 	});
 
 
-	context(`Long delay time Toast`, () => {
+	context(`Long show time Toast`, () => {
 		const TOAST_ID = IDS.LONG_SHOW_TIME_TOAST;
 
-
-		beforeEach(() => cy.get(`#${TOAST_ID}`).as('toast'));
+		beforeEach(() => getEls(TOAST_ID));
 
 
 		it(`Should initialise correctly`, () => toastInitChecks());
