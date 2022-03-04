@@ -96,8 +96,8 @@ function App() {
 
 	// useEffect used to add Accordion's &quot;changed&quot; event listener
 	useEffect(() =&gt; {
-		window.addEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
-		return () =&gt; window.removeEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+		window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
+		return () =&gt; window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
 	}, []);
 
 	// Collapse Accordion's panels using its &quot;hide panels&quot; custom event
@@ -245,7 +245,7 @@ export class AppComponent implements AfterViewInit {
   accordion!: ElementRef;
 
   // @HostListener used to add Accordion &quot;changed&quot; event listener
-  @HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+  @HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
   onPanelChange(): void {
     this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
   }
@@ -335,7 +335,7 @@ export class AppModule { }
 <pre><code class="language-ts">const { ATTRS, EVENTS } = require('@potato/ace/components/accordion/accordion.js');
 </code></pre>
 <p>then replace</p>
-<pre><code class="language-ts">@HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+<pre><code class="language-ts">@HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
 </code></pre>
 <p>with</p>
 <pre><code class="language-ts">@HostListener('window:ace-accordion-panel-visibility-changed', ['$event.detail'])
@@ -426,10 +426,10 @@ export default {
     }
   },
   created () {
-    window.addEventListener(EVENTS.OUT.CHANGED, this.onPanelChange);
+    window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
   },
   unmounted () {
-    window.removeEventListener(EVENTS.OUT.CHANGED, this.onPanelChange);
+    window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
   },
   methods: {
     collapseAll() {

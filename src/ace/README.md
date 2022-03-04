@@ -131,8 +131,8 @@ function App() {
 
 	// useEffect used to add Accordion's "changed" event listener
 	useEffect(() => {
-		window.addEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
-		return () => window.removeEventListener(EVENTS.OUT.CHANGED, handleAccordionPanelStateChange);
+		window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
+		return () => window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
 	}, []);
 
 	// Collapse Accordion's panels using its "hide panels" custom event
@@ -334,7 +334,7 @@ export class AppComponent implements AfterViewInit {
   accordion!: ElementRef;
 
   // @HostListener used to add Accordion "changed" event listener
-  @HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+  @HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
   onPanelChange(): void {
     this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
   }
@@ -454,7 +454,7 @@ const { ATTRS, EVENTS } = require('@potato/ace/components/accordion/accordion.js
 then replace
 
 ```ts
-@HostListener(`window:${EVENTS.OUT.CHANGED}`, ['$event.detail'])
+@HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
 ```
 
  with
@@ -557,10 +557,10 @@ export default {
     }
   },
   created () {
-    window.addEventListener(EVENTS.OUT.CHANGED, this.onPanelChange);
+    window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
   },
   unmounted () {
-    window.removeEventListener(EVENTS.OUT.CHANGED, this.onPanelChange);
+    window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
   },
   methods: {
     collapseAll() {
