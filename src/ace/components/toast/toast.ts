@@ -9,6 +9,7 @@ export const TOAST = `${NAME}-toast`;
 
 /* CONSTANTS */
 export const ATTRS = {
+	INNER: `${TOAST}-inner`,
 	SHOW_TIME: `${TOAST}-show-time`,
 	VISIBLE: `${TOAST}-visible`,
 };
@@ -30,6 +31,7 @@ export default class Toast extends HTMLElement {
 	private initialised = false;
 	private showTime = DEFAULT_SHOW_TIME;
 	private showTimeout: number | undefined;
+	private innerEl!: Element | null;
 
 
 	constructor() {
@@ -74,6 +76,14 @@ export default class Toast extends HTMLElement {
 
 
 		/* GET DOM ELEMENTS */
+		this.innerEl = this.querySelector(`[${ATTRS.INNER}]`);
+
+		if (!this.innerEl) {
+			this.innerEl = document.createElement('div');
+			this.innerEl.setAttribute(ATTRS.INNER, '');
+			this.innerEl.append(...this.childNodes);
+			this.append(this.innerEl);
+		}
 
 
 		/* GET DOM DATA */
@@ -84,8 +94,8 @@ export default class Toast extends HTMLElement {
 
 
 		/* SET DOM DATA */
-		this.setAttribute('role', 'status');
-		this.setAttribute('aria-live', 'polite');
+		this.innerEl.setAttribute('aria-live', 'polite');
+		this.innerEl.setAttribute('role', 'status');
 
 
 		/* ADD EVENT LISTENERS */
