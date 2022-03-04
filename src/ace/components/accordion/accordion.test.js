@@ -126,7 +126,7 @@ context(`Accordion`, () => {
 				'panelVisible': true,
 			};
 
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, expectedDetail)
 				.get('@accordionTriggers')
 				.eq(panelIndex)
 				.should('have.attr', 'aria-expanded', 'false')
@@ -140,7 +140,7 @@ context(`Accordion`, () => {
 				'panelVisible': false,
 			};
 
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, expectedDetail)
 				.get('@accordionTriggers')
 				.eq(panelIndex)
 				.click()
@@ -174,7 +174,7 @@ context(`Accordion`, () => {
 				'panelVisible': true,
 			};
 
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, expectedDetail)
 				.get('@accordionTriggers')
 				.eq(panelIndex)
 				.should('have.attr', 'aria-expanded', 'false')
@@ -188,7 +188,7 @@ context(`Accordion`, () => {
 				'panelVisible': false,
 			};
 
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, expectedDetail)
 				.get('@accordionTriggers')
 				.eq(panelIndex)
 				.click()
@@ -237,7 +237,7 @@ context(`Accordion`, () => {
 				'panelVisible': true,
 			};
 
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, expectedDetail)
 				.get(`#${IDS.PANEL_NUMBER_INPUT}`)
 				.type(panelIndex + 1)
 				.get('@showPanelBtn')
@@ -251,7 +251,7 @@ context(`Accordion`, () => {
 				'panelNumber': panelIndex + 1,
 				'panelVisible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, expectedDetail)
 				.get('@hidePanelBtn')
 				.click();
 			checkPanelNotVisible(panelIndex);
@@ -263,7 +263,7 @@ context(`Accordion`, () => {
 				'panelNumber': panelIndex + 1,
 				'panelVisible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, expectedDetail)
 				.get('@togglePanelBtn')
 				.click();
 			checkPanelVisible(panelIndex);

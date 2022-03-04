@@ -32,7 +32,7 @@ export const EVENTS = {
 		UPDATE: `${ACCORDION}-update`,
 	},
 	OUT: {
-		CHANGED: `${ACCORDION}-changed`,
+		PANEL_VISIBILITY_CHANGED: `${ACCORDION}-panel-visibility-changed`,
 		READY: `${ACCORDION}-ready`,
 	},
 };
@@ -195,7 +195,7 @@ export default class Accordion extends HTMLElement {
 
 		this.triggerEls[panelIndex].setAttribute('aria-expanded', 'false');
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'panelNumber': panelIndex + 1,
@@ -330,7 +330,7 @@ export default class Accordion extends HTMLElement {
 			});
 		}
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'panelNumber': panelIndex + 1,
