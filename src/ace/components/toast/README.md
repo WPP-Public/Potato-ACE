@@ -31,7 +31,7 @@ import '<path-to-node_modules>/@potato/ace/components/toast/toast';
 
 For convenience the ES6 class is exported as `Toast` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Toast is instantiated within each `<ace-toast>` element and an ID `ace-toast-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-toast-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Toast is instantiated within each `<ace-toast>` element and an ID `ace-toast-<n>` is added for any instance without one, where `<n>` is a unique integer. If the instance of Toast doesn't have a child with attribute `ace-toast-inner`, a child `div` is created, given this attribute and all other children of the Toast instance are moved into it. Once instantiation is complete a custom event `ace-toast-ready` is dispatched on `window`. See the **Custom events** section below for more details.
 
 ## Usage
 
