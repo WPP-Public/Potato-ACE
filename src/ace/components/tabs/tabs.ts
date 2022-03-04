@@ -41,8 +41,8 @@ export const EVENTS = {
 		UPDATE: `${TABS}-update`
 	},
 	OUT: {
-		CHANGED: `${TAB}-changed`,
 		READY: `${TABS}-ready`,
+		SELECTED_TAB_CHANGED: `${TAB}-selected-tab-changed`,
 	}
 };
 
@@ -348,7 +348,7 @@ export default class Tabs extends HTMLElement {
 
 		tabToSelectEl.focus();
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.SELECTED_TAB_CHANGED, {
 			'detail': {
 				'currentlySelectedTab': {
 					'id': tabToSelectEl.id,

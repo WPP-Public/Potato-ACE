@@ -107,9 +107,9 @@ This event is dispatched when Toast finishes initialising. The event name is ava
 
 #### Changed
 
-`ace-toast-changed`
+`ace-toast-visibility-changed`
 
-This event is dispatched when Toast visibility changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
+This event is dispatched when Toast visibility changes. The event name is available as `EVENTS.OUT.VISIBILITY_CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {

@@ -114,9 +114,9 @@ This event is dispatched when Carousel finishes initialising just after page loa
 }
 ```
 
-#### Changed
+#### Selected slide changed
 
-`ace-carousel-slide-changed`
+`ace-carousel-selected-slide-changed`
 
 This event is dispatched when the displayed slide is changed. The event name is available as `EVENTS.OUT.SELECTED_SLIDE_CHANGED` and its `detail` property is composed as follows:
 

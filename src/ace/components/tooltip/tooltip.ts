@@ -21,8 +21,8 @@ export const EVENTS = {
 		SHOW: `${TOOLTIP}-show`,
 	},
 	OUT: {
-		CHANGED: `${TOOLTIP}-changed`,
 		READY: `${TOOLTIP}-ready`,
+		VISIBILITY_CHANGED: `${TOOLTIP}-visibility-changed`,
 	},
 };
 
@@ -137,7 +137,7 @@ export default class Tooltip extends HTMLElement {
 		clearTimeout(this.showTimeout);
 		this.removeAttribute(ATTRS.VISIBLE);
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': false,
@@ -175,7 +175,7 @@ export default class Tooltip extends HTMLElement {
 		handleOverflow(this);
 		this.showTimeout = window.setTimeout(() => this.setAttribute(ATTRS.VISIBLE, ''), this.delay);
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': true,

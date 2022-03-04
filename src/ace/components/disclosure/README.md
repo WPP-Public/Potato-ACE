@@ -70,11 +70,11 @@ This event is dispatched when Disclosure finishes initialising. The event name i
 ```
 
 
-#### Changed
+#### Visibility changed
 
-`ace-disclosure-changed`
+`ace-disclosure-visibility-changed`
 
-This event is dispatched when Disclosure's visibility changes. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
+This event is dispatched when Disclosure's visibility changes. The event name is available as `EVENTS.OUT.VISIBILITY_CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
