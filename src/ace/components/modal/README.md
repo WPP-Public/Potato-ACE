@@ -48,7 +48,7 @@ Visible Modals prevent users from interacting with content outside of it by eith
 
 ## Alert Modals
 
-Modals can be used as alert dialogs that interrupt the user's workflow to communicate an important message and acquire a response. Examples include action confirmation prompts and error message confirmations. To create an alert Modal simply set its `role` attribute to `alertdialog` which enables assistive technologies and browsers to distinguish alert dialogs from other dialogs so they have the option of giving alert dialogs special treatment, such as playing a system alert sound.
+Modals can be used as alert dialogs that interrupt the user's workflow to communicate an important message and acquire a response. Examples include action confirmation prompts and error message confirmations. To create an alert Modal simply set its `role` attribute to `alertdialog`. This enables assistive technologies and browsers to distinguish alert dialogs from other dialogs so they have the option of giving alert dialogs special treatment, such as playing a system alert sound. Modals with `role="alertdialog"` will not be given `role="dialog"` during initialisation.
 
 ## Styles
 
@@ -86,7 +86,8 @@ ace-modal {
 	}
 
 	&:not([ace-modal-visible]) {
-		display: none;
+		// Using 'display: none' prevents VoiceOver from being able to focus within the modal
+		visibility: hidden;
 	}
 }
 
