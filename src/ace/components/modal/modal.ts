@@ -23,8 +23,8 @@ export const EVENTS = {
 		UPDATE_FOCUS_TRAP: `${MODAL}-update-focus-trap`,
 	},
 	OUT: {
-		CHANGED: `${MODAL}-changed`,
 		READY: `${MODAL}-ready`,
+		VISIBILITY_CHANGED: `${MODAL}-visibility-changed`,
 	},
 };
 
@@ -69,7 +69,7 @@ export default class Modal extends HTMLElement {
 			this.hide();
 		}
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': show,

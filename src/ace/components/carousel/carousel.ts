@@ -53,7 +53,7 @@ export const EVENTS = {
 		AUTO_SLIDE_SHOW_STARTED: `${CAROUSEL}-auto-slide-show-started`,
 		AUTO_SLIDE_SHOW_STOPPED: `${CAROUSEL}-auto-slide-show-stopped`,
 		READY: `${CAROUSEL}-ready`,
-		SELECTED_SLIDE_CHANGED: `${CAROUSEL}-slide-changed`,
+		SELECTED_SLIDE_CHANGED: `${CAROUSEL}-selected-slide-changed`,
 	}
 };
 

@@ -136,11 +136,11 @@ This event is dispatched when Modal finishes initialising. The event name is ava
 }
 ```
 
-#### Changed
+#### Visibility changed
 
-`ace-modal-changed`
+`ace-modal-visibility-changed`
 
-This event is dispatched when Modal finishes initialising. The event name is available as `EVENTS.OUT.CHANGED` and its `detail` property is composed as follows:
+This event is dispatched when Modal finishes initialising. The event name is available as `EVENTS.OUT.VISIBILITY_CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', () => {
 ```
 
 ### Modal that triggers another Modal
-Example of a Modal that has a trigger for another Modal and makes use of the `ace-modal-changed` custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its `ace-modal-changed` custom event is dispatched, the first Modal is shown again.
+Example of a Modal that has a trigger for another Modal and makes use of the `ace-modal-visibility-changed` custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its `ace-modal-visibility-changed` custom event is dispatched, the first Modal is shown again.
 
 The JavaScript used by this example is shown below.
 
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const otherModalTrigger = modalEl.querySelector(`[ace-modal-trigger-for="${OTHER_MODAL_ID}"]`);
   otherModalTrigger.addEventListener('click', () => otherModalTriggerClicked = true);
 
-  window.addEventListener(EVENTS.OUT.CHANGED, (e) => {
+  window.addEventListener(EVENTS.OUT.VISIBILITY_CHANGED, (e) => {
     if (!e.detail || e.detail.id !== OTHER_MODAL_ID || e.detail.visible || !otherModalTriggerClicked) {
       return;
     }

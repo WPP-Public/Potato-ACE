@@ -93,9 +93,9 @@ ace-modal {
   'id': // ID of Modal [string]
 }
 </code></pre>
-<h4>Changed</h4>
-<p><code>ace-modal-changed</code></p>
-<p>This event is dispatched when Modal finishes initialising. The event name is available as <code>EVENTS.OUT.CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
+<h4>Visibility changed</h4>
+<p><code>ace-modal-visibility-changed</code></p>
+<p>This event is dispatched when Modal finishes initialising. The event name is available as <code>EVENTS.OUT.VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Modal [string]
   'visible': // Whether the Modal is visible or not [boolean]
@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 });
 </code></pre>
 <h3>Modal that triggers another Modal</h3>
-<p>Example of a Modal that has a trigger for another Modal and makes use of the <code>ace-modal-changed</code> custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its <code>ace-modal-changed</code> custom event is dispatched, the first Modal is shown again.</p>
+<p>Example of a Modal that has a trigger for another Modal and makes use of the <code>ace-modal-visibility-changed</code> custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its <code>ace-modal-visibility-changed</code> custom event is dispatched, the first Modal is shown again.</p>
 <p>The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button ace-modal-trigger-for="modal-from-modal">
   Second Modal's trigger
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
   const otherModalTrigger = modalEl.querySelector(`[ace-modal-trigger-for=&quot;${OTHER_MODAL_ID}&quot;]`);
   otherModalTrigger.addEventListener('click', () =&gt; otherModalTriggerClicked = true);
 
-  window.addEventListener(EVENTS.OUT.CHANGED, (e) =&gt; {
+  window.addEventListener(EVENTS.OUT.VISIBILITY_CHANGED, (e) =&gt; {
     if (!e.detail || e.detail.id !== OTHER_MODAL_ID || e.detail.visible || !otherModalTriggerClicked) {
       return;
     }

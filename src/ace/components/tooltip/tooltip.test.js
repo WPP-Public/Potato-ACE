@@ -81,7 +81,7 @@ context(`Tooltip`, () => {
 				'id': TOOLTIP_ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@tooltipTarget')
 				.focus()
 				.wait(DEFAULT_DELAY)
@@ -92,7 +92,7 @@ context(`Tooltip`, () => {
 				'id': TOOLTIP_ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@tooltipTarget')
 				.blur()
 				.get('@tooltip')
@@ -105,7 +105,7 @@ context(`Tooltip`, () => {
 				'id': TOOLTIP_ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@tooltipTarget')
 				.trigger('mouseenter')
 				.wait(DEFAULT_DELAY)
@@ -116,7 +116,7 @@ context(`Tooltip`, () => {
 				'id': TOOLTIP_ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@tooltipTarget')
 				.trigger('mouseleave')
 				.get('@tooltip')
@@ -129,7 +129,7 @@ context(`Tooltip`, () => {
 				'id': TOOLTIP_ID,
 				'visible': true,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@tooltipTarget')
 				.focus()
 				.wait(DEFAULT_DELAY);
@@ -138,7 +138,7 @@ context(`Tooltip`, () => {
 				'id': TOOLTIP_ID,
 				'visible': false,
 			};
-			cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+			cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 				.get('@tooltipTarget')
 				.type('{esc}')
 				.get('@tooltip')
@@ -182,7 +182,7 @@ context(`Tooltip`, () => {
 			'id': TOOLTIP_ID,
 			'visible': true,
 		};
-		cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+		cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 			.get(`#${IDS.SHOW_TOOLTIP_BTN}`)
 			.click()
 			.wait(DEFAULT_DELAY);
@@ -191,7 +191,7 @@ context(`Tooltip`, () => {
 			'id': TOOLTIP_ID,
 			'visible': false,
 		};
-		cy.addCustomEventListener(EVENTS.OUT.CHANGED, expectedDetail)
+		cy.addCustomEventListener(EVENTS.OUT.VISIBILITY_CHANGED, expectedDetail)
 			.get('@tooltip')
 			.should('have.attr', ATTRS.VISIBLE, '')
 			.get(`#${IDS.HIDE_TOOLTIP_BTN}`)

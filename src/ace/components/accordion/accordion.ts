@@ -32,7 +32,7 @@ export const EVENTS = {
 		UPDATE: `${ACCORDION}-update`,
 	},
 	OUT: {
-		CHANGED: `${ACCORDION}-panel-visibility-changed`,
+		CHANGED: `${ACCORDION}-changed`,
 		READY: `${ACCORDION}-ready`,
 	},
 };

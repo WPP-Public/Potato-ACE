@@ -21,8 +21,8 @@ export const EVENTS = {
 		TOGGLE: `${DISCLOSURE}-toggle`,
 	},
 	OUT: {
-		CHANGED: `${DISCLOSURE}-changed`,
 		READY: `${DISCLOSURE}-ready`,
+		VISIBILITY_CHANGED: `${DISCLOSURE}-visibility-changed`,
 	},
 };
 
@@ -55,7 +55,7 @@ export default class Disclosure extends HTMLElement {
 		const disclosureVisible = newValue === '';
 		this.triggerEls?.forEach(triggerEl => triggerEl.setAttribute('aria-expanded', disclosureVisible.toString()));
 
-		window.dispatchEvent(new CustomEvent(EVENTS.OUT.CHANGED, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.VISIBILITY_CHANGED, {
 			'detail': {
 				'id': this.id,
 				'visible': disclosureVisible,

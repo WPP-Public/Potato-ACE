@@ -103,10 +103,10 @@ $ace-tabs-panel-padding: 16px !default;
   'id': // ID of Tabs [string]
 }
 </code></pre>
-<h4>Tab changed</h4>
-<p><code>ace-tabs-tab-changed</code></p>
-<p>This event is dispatched when the selected tab changes. Listening for this event can be useful for timing and triggering animations on Tabs.</p>
-<p>The event <code>detail</code> property is composed as follows:</p>
+<h4>Selected tab changed</h4>
+<p><code>ace-tabs-selected-tab-changed</code></p>
+<p>This event is dispatched when the selected tab changes. Listening for this event can be useful for timing and triggering animations on Tabs.
+The event name is available as <code>EVENTS.OUT.SELECTED_TAB_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of Tabs [string]
   'currentlySelectedTab': {

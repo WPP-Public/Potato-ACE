@@ -147,13 +147,12 @@ This event is dispatched when Tabs finishes initialising just after page load, a
 ```
 
 
-#### Tab changed
+#### Selected tab changed
 
-`ace-tabs-tab-changed`
+`ace-tabs-selected-tab-changed`
 
 This event is dispatched when the selected tab changes. Listening for this event can be useful for timing and triggering animations on Tabs.
-
-The event `detail` property is composed as follows:
+The event name is available as `EVENTS.OUT.SELECTED_TAB_CHANGED` and its `detail` property is composed as follows:
 
 ```js
 'detail': {
