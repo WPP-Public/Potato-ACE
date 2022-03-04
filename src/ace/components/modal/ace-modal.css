@@ -20,7 +20,7 @@ ace-modal {
   }
 }
 ace-modal:not([ace-modal-visible]) {
-  display: none;
+  visibility: hidden;
 }
 
 [ace-modal-is-visible] {

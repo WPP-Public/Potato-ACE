@@ -42,7 +42,7 @@ const checkModalState = (visible) => {
 		.get('@modalBackdrop')
 		.should(`${visible ? '' : 'not.'}have.attr`, ATTRS.IS_VISIBLE);
 	if (visible) {
-		cy.get('@modalHideBtn').should(`have.focus`);
+		cy.get('@modal').should(`have.focus`);
 	}
 };
 
