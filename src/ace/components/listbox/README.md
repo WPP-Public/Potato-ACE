@@ -29,9 +29,9 @@ import '<path-to-node_modules>/@potato/ace/components/listbox/listbox';
 
 For convenience the ES6 class is exported as `Listbox` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Listbox is instantiated within each `<ace-listbox>` element and an ID `ace-listbox-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Listbox is instantiated within each `<ace-listbox>` element and an ID `ace-listbox-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-listbox-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
-Listbox must have a descendant list and will use a `<ul>` or `<ol>` with attribute `ace-listbox-list`. If no descendant has this attribute then the first decendant `<ul>` or `<ol>` will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using `aria-label` or `aria-labelledby`. The list can be empty upon instantiation and options can be dynamically added or removed as long as custom event `ace-listbox-update-options` is dispatched on the Listbox instance afterwards.
+Listbox must have a descendant list and will use a `<ul>` or `<ol>` with attribute `ace-listbox-list`. If no descendant has this attribute then the first decendant `<ul>` or `<ol>` will be used and given this attribute. It is strongly recommended that the list element be provided with an accessible label using `aria-label` or `aria-labelledby`. The list can be empty upon instantiation and options can be dynamically added or removed as long as custom event `ace-listbox-update-options` is dispatched to the Listbox instance afterwards.
 
 There are two main types of Listboxes, single-select and multi-select. Single-select Listboxes allow selection of only a single option at a time and are instantiated by default. Multi-select Listboxes allow selection of multiple options and are instantiated in Listboxes with attribute `ace-listbox-multiselect`.
 
@@ -97,7 +97,7 @@ Listbox uses the following custom events, the names of which are available in it
 
 ### Dispatched event
 
-The following event is dispatched on `window` by Listbox.
+The following event is dispatched to `window` by Listbox.
 
 #### Ready
 
@@ -107,21 +107,27 @@ This event is dispatched when Listbox finishes initialising just after page load
 
 ```js
 'detail': {
-  'id': // ID of Listbox [string]
+	'id': // ID of Listbox [string]
 }
 ```
 
 
 ### Listened for event
 
-Listbox listens for the following event, which should be dispatched on the specific `ace-listbox` element.
+Listbox listens for the following event that should be dispatched to `window`.
 
 
 #### Update options
 
 `ace-listbox-update-options`
 
-This event should be dispatched when options are added to or removed from the list and causes Listbox to initialise them and then dispatch the `ace-listbox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+This event should be dispatched when options are added to or removed from the list and causes Listbox to initialise them and then dispatch the `ace-listbox-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS` and its `detail` property should be composed as follows:
+
+```js
+'detail': {
+	'id': // ID of target Listbox [string]
+}
+```
 
 
 ## Examples
@@ -223,9 +229,13 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 import { EVENTS } from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+	const LISTBOX_ID = 'custom-events-listbox';
 	const listboxEl = document.getElementById('custom-events-listbox');
 
-	const updateOptions = () => listboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () => window.dispatchEvent(new CustomEvent(
+		EVENTS.IN.UPDATE_OPTIONS,
+		{'detail': {'id': LISTBOX_ID}},
+	));
 
 	document.getElementById('add-option')
 		.addEventListener('click', () => {
