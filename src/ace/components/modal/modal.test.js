@@ -51,7 +51,7 @@ context(`Modal`, () => {
 	before(() => {
 		cy.visit(`/modal`);
 		// The ACE header in some cases prevents cypress from focusing on buttons
-		cy.get('header.header').invoke('attr', 'style', 'display: none');
+		// cy.get('header.header').invoke('attr', 'style', 'display: none');
 	});
 
 

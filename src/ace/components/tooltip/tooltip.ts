@@ -26,7 +26,7 @@ export const EVENTS = {
 	},
 };
 
-export const DEFAULT_DELAY = 1000;
+export const DEFAULT_DELAY = 750;
 
 
 /* CLASS */
@@ -42,6 +42,7 @@ export default class Tooltip extends HTMLElement {
 
 
 		/* CLASS METHOD BINDINGS */
+		this.customEventsHander = this.customEventsHander.bind(this);
 		this.hide = this.hide.bind(this);
 		this.keydownHandler = this.keydownHandler.bind(this);
 		this.show = this.show.bind(this);
@@ -102,8 +103,8 @@ export default class Tooltip extends HTMLElement {
 		this.targetEl.addEventListener('keydown', this.keydownHandler);
 		this.targetEl.addEventListener('mouseenter', this.show);
 		this.targetEl.addEventListener('mouseleave', this.hide);
-		this.addEventListener(EVENTS.IN.HIDE, this.hide);
-		this.addEventListener(EVENTS.IN.SHOW, this.show);
+		window.addEventListener(EVENTS.IN.HIDE, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SHOW, this.customEventsHander);
 
 
 		/* INITIALISATION */
@@ -125,8 +126,29 @@ export default class Tooltip extends HTMLElement {
 		this.targetEl?.removeEventListener('keydown', this.keydownHandler);
 		this.targetEl?.removeEventListener('mouseenter', this.show);
 		this.targetEl?.removeEventListener('mouseleave', this.hide);
-		this.removeEventListener(EVENTS.IN.HIDE, this.hide);
-		this.removeEventListener(EVENTS.IN.SHOW, this.show);
+		window.removeEventListener(EVENTS.IN.HIDE, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SHOW, this.customEventsHander);
+	}
+
+
+	/*
+		Handler for incoming custom events
+	*/
+	private customEventsHander(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
+		switch (e.type) {
+			case EVENTS.IN.HIDE: {
+				this.hide();
+				break;
+			}
+			case EVENTS.IN.SHOW:
+				this.show();
+				break;
+		}
 	}
 
 

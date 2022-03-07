@@ -29,9 +29,9 @@ import '<path-to-node_modules>/@potato/ace/components/menu/menu';
 
 For convenience the ES6 class is exported as `Menu` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Menu is instantiated within each `<ace-menu>` element and an ID `ace-menu-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-menu-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Menu is instantiated within each `<ace-menu>` element and an ID `ace-menu-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-menu-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
-Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-menu-update-options` is dispatched on the Menu instance afterwards.
+Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant `<ul>` for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event `ace-menu-update-options` is dispatched to the Menu instance afterwards.
 
 
 ## Usage
@@ -115,7 +115,7 @@ Menu uses the following custom events, the names of which are available in its e
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Menu.
+The following events are dispatched to `window` by Menu.
 
 
 #### Ready
@@ -126,7 +126,7 @@ This event is dispatched when Menu finishes initialising just after page load, a
 
 ```js
 'detail': {
-  'id': // ID of Menu [string]
+	'id': // ID of Menu [string]
 }
 ```
 
@@ -139,26 +139,31 @@ This event is dispatched when an option is chosen by the user. The event name is
 
 ```js
 'detail': {
-  'id': // ID of Menu [string],
-  'chosenOption': {
-    'id': // ID of chosen option [string],
-    'index': // Index of chosen option [number]
-  },
+	'id': // ID of Menu [string],
+	'chosenOption': {
+		'id': // ID of chosen option [string],
+		'index': // Index of chosen option [number]
+	},
 }
 ```
 
 
 ### Listened for event
 
-Menu listens for the following event, which should be dispatched on the specific `ace-menu` element.
+Menu listens for the following event that should be dispatched to `window`.
 
 
 #### Update options
 
 `ace-menu-update-options`
 
-This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the `ace-menu-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS`.
+This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the `ace-menu-ready` event. The event name is available as `EVENTS.IN.UPDATE_OPTIONS` and its `detail` property should be composed as follows:
 
+```js
+'detail': {
+	'id': // ID of target Menu [string]
+}
+```
 
 ## Examples
 
@@ -202,10 +207,14 @@ In this example the Menu instantiates with an empty `<ul>` that can be populated
 import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const menuEl = document.getElementById('custom-events-menu');
+	const MENU_ID = 'custom-events-menu';
+	const menuEl = document.getElementById(MENU_ID);
 	const menuListEl = menuEl.querySelector('ul');
 
-	const updateOptions = () => menuEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+	const updateOptions = () => window.dispatchEvent(new CustomEvent(
+		EVENTS.IN.UPDATE_OPTIONS,
+		{'detail': {'id': MENU_ID}}
+	));
 
 	document.getElementById('add-option').addEventListener('click', () => {
 		const optionEl = document.createElement('li');

@@ -102,7 +102,7 @@ export default class Listbox extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 
 
 		/* INITIALISATION */
@@ -119,7 +119,7 @@ export default class Listbox extends HTMLElement {
 		this.list?.destroy();
 
 		/* REMOVE EVENT LISTENERS */
-		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 	}
 
 
@@ -159,7 +159,12 @@ export default class Listbox extends HTMLElement {
 	/*
 		Custom event handler for updating options
 	*/
-	private updateOptionsHandler(): void {
+	private updateOptionsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		this.list?.initOptionEls();
 
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.READY, {

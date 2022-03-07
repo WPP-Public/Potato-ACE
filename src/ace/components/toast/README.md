@@ -31,7 +31,7 @@ import '<path-to-node_modules>/@potato/ace/components/toast/toast';
 
 For convenience the ES6 class is exported as `Toast` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Toast is instantiated within each `<ace-toast>` element and an ID `ace-toast-<n>` is added for any instance without one, where `<n>` is a unique integer. If the instance of Toast doesn't have a child with attribute `ace-toast-inner`, a child `div` is created, given this attribute and all other children of the Toast instance are moved into it. Once instantiation is complete a custom event `ace-toast-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Toast is instantiated within each `<ace-toast>` element and an ID `ace-toast-<n>` is added for any instance without one, where `<n>` is a unique integer. If the instance of Toast doesn't have a child with attribute `ace-toast-inner`, a child `div` is created, given this attribute and all other children of the Toast instance are moved into it. Once instantiation is complete a custom event `ace-toast-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
 ## Usage
 
@@ -91,7 +91,7 @@ Toast uses the following custom events, the names of which are available in its 
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Toast.
+The following events are dispatched to `window` by Toast.
 
 #### Ready
 
@@ -101,7 +101,7 @@ This event is dispatched when Toast finishes initialising. The event name is ava
 
 ```js
 'detail': {
-  'id': // ID of Toast [string]
+	'id': // ID of Toast [string]
 }
 ```
 
@@ -113,8 +113,8 @@ This event is dispatched when Toast visibility changes. The event name is availa
 
 ```js
 'detail': {
-  'id': // ID of Toast [string]
-  'visible': // Whether Toast is visible or not [boolean]
+	'id': // ID of Toast [string]
+	'visible': // Whether Toast is visible or not [boolean]
 }
 ```
 

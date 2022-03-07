@@ -13,7 +13,7 @@
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/tooltip/tooltip';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Tooltip</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Tooltip is instantiated within each <code>&lt;ace-tooltip&gt;</code> element and an ID <code>ace-tooltip-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-tooltip-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Tooltip is instantiated within each <code>&lt;ace-tooltip&gt;</code> element and an ID <code>ace-tooltip-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-tooltip-ready</code> is dispatched to <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Tooltip must be a child of its target element and will add attribute <code>ace-tooltip-target</code> to it as well as set the value of its <code>aria-labelledby</code> or <code>aria-describedby</code> to the Tooltip's ID based on whether the Tooltip contains primary or supplementary information. Tooltip content is considered primary information if its target does not have attributes <code>aria-label</code> nor <code>aria-labelledby</code>, nor text content, thus the value of the target element's <code>aria-labelledby</code> attribute is set to the Tooltip ID. Otherwise the Tooltip content is considered suplimentary information and its ID is set as the value of the target element's <code>aria-describedby</code> attribute instead.</p>
 <p>A Tooltip can only be added to a target element that can receive keyboard focus, otherwise it would be inaccessible to keyboard users. Furthermore, Tooltips can not be used with elements that have the HTML <code>disabled</code> attribute as they are not focusable nor do they fire the mouse events needed to show and hide them upon hover. If the Tooltip's purpose is to explain why an element is disabled then developers are strongly advised to use a different technique to convey this information to the user. If however this is an unavoidable requirement it is advised that the <code>disabled</code> attribute not be used and instead the target should be styled using CSS to look disabled, while explaining in the Tooltip text that the target is disabled and why. See the <strong>Disabled Tooltip target</strong> example below for a demo of this.</p>
 <p>Tooltips appear after a short delay, the default value of which is 1 second, however developers can provide a custom delay time in milliseconds as the value of attribute <code>ace-tooltip-delay</code>. To prevent the text content of a Tooltip from wrapping onto multiple lines the attribute <code>ace-tooltip-nowrap</code> can be added to it. Wide Tooltips with long text strings prevent themselved from overflowing outside the viewport by aligning themselves to the left or right edge of their target as appropriate. See the <strong>Non-wrapping Toooltips</strong> example below for a demo of this. If there is no space in the viewport below a Tooltip's target it will appear above it.</p>
@@ -87,27 +87,31 @@ ace-tooltip {
 <h2>Custom events</h2>
 <p>Tooltip uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Tooltip.</p>
+<p>The following events are dispatched to <code>window</code> by Tooltip.</p>
 <h4>Ready</h4>
 <p><code>ace-tooltip-ready</code></p>
 <p>This event is dispatched when Tooltip finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Tooltip [string]
+	'id': // ID of Tooltip [string]
 }
 </code></pre>
 <h4>Changed</h4>
 <p><code>ace-tooltip-visibility-changed</code></p>
 <p>This event is dispatched when Tooltip visibility changes. The event name is available as <code>EVENTS.OUT.VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Tooltip [string]
-  'visible': // Whether the Tooltip is visible or not [boolean]
+	'id': // ID of Tooltip [string]
+	'visible': // Whether the Tooltip is visible or not [boolean]
 }
 </code></pre>
 <h3>Listened for events</h3>
-<p>Tooltip listens for the following events, which should be dispatched on the specific <code>ace-tooltip</code> element.</p>
+<p>Tooltip listens for the following events that should be dispatched to <code>window</code>.</p>
 <h4>Show and hide</h4>
 <p><code>ace-tooltip-show</code> &amp; <code>ace-tooltip-hide</code></p>
-<p>These events should be dispatched to show and hide the Tooltip. The event names are available as <code>EVENTS.IN.SHOW</code> and <code>EVENTS.IN.HIDE</code>:</p>
+<p>These events should be dispatched to show and hide the Tooltip. The event names are available as <code>EVENTS.IN.SHOW</code> and <code>EVENTS.IN.HIDE</code> and their <code>detail</code> properties should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+  'id': // ID of target Tooltip [string]
+}
+</code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Tooltips</h3>
@@ -262,12 +266,15 @@ ace-tooltip {
 <pre><code class="language-js">import { EVENTS } from '/ace/components/tooltip/tooltip.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const tooltipEl = document.getElementById('custom-events-tooltip');
+	const TOOLTIP_ID = 'custom-events-tooltip';
 
 	window.addEventListener('click', (e) =&gt; {
 		const targetId = e.target.id;
 		if (targetId === 'show-tooltip-btn' || targetId === 'hide-tooltip-btn') {
-			tooltipEl.dispatchEvent(new CustomEvent(EVENTS.IN[`${targetId === 'show-tooltip-btn' ? 'SHOW' : 'HIDE'}`]));
+			window.dispatchEvent(new CustomEvent(
+				EVENTS.IN[`${targetId === 'show-tooltip-btn' ? 'SHOW' : 'HIDE'}`],
+				{'detail': {'id': TOOLTIP_ID}},
+			));
 		}
 	});
 });

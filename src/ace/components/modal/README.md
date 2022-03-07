@@ -29,7 +29,7 @@ import '<path-to-node_modules>/@potato/ace/components/modal/modal';
 
 For convenience the ES6 class is exported as `Modal` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Modal is instantiated within each `<ace-modal>` element and an ID `ace-modal-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-modal-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Modal is instantiated within each `<ace-modal>` element and an ID `ace-modal-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-modal-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
 Visible Modals take up the full screen on mobile, and have a fixed width and height for all other devices as well as a backdrop that overlays site content outside the Modal, visually obscuring it. Modal uses any element on the page with attribute `ace-modal-backdrop` as the backdrop. If no element has this attribute then an `<div>` element will be appended to `body` and given this attribute.
 
@@ -121,7 +121,7 @@ Modal uses the following custom events, the names of which are available in its 
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Modal.
+The following events are dispatched to `window` by Modal.
 
 
 #### Ready
@@ -132,7 +132,7 @@ This event is dispatched when Modal finishes initialising. The event name is ava
 
 ```js
 'detail': {
-  'id': // ID of Modal [string]
+	'id': // ID of Modal [string]
 }
 ```
 
@@ -144,27 +144,33 @@ This event is dispatched when Modal finishes initialising. The event name is ava
 
 ```js
 'detail': {
-  'id': // ID of Modal [string]
-  'visible': // Whether the Modal is visible or not [boolean]
+	'id': // ID of Modal [string]
+	'visible': // Whether the Modal is visible or not [boolean]
 }
 ```
 
 
 ### Listened for event
 
-Modal listens for the following event, which should be dispatched on the specific `ace-modal` element.
-
+Modal listens for the following event that should be dispatched to `window`.
 #### Update focus trap
 
 `ace-disclosure-update-focus-trap`
 
-This event should be dispatched when an element is dynamically added to the Modal as its first or last focusable descendant and updates the focus trap accordingly. The event name is available as `EVENTS.IN.UPDATE_FOCUS_TRAP`.
+This event should be dispatched when an element is dynamically added to the Modal as its first or last focusable descendant and updates the focus trap accordingly. The event name is available as `EVENTS.IN.UPDATE_FOCUS_TRAP` and its `detail` property should be composed as follows:
+
+```js
+'detail': {
+	'id': // ID of target Modal [string]
+}
+```
 
 ## Examples
 
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
 ### Simple Modal
+
 Example of a simple modal with two triggers that is shown on page load. The example also demonstrates how the focus trap and the `ace-disclosure-update-focus-trap` custom event work. After triggering the Modal, use **Toggle disabled button** button to toggle the disabled state of the disabled button, and notice that the mutation observer updates the focus trap. Next use the **Add link to Modal** and **Remove link from Modal** buttons to add and remove links and dispatch the custom event, and notice how the focus trap is again updated.
 
 The JavaScript used by this example is shown below.
@@ -174,16 +180,13 @@ The JavaScript used by this example is shown below.
 <button ace-modal-trigger-for="simple-modal">Modal trigger 2</button>
 
 <ace-modal aria-label="Example Modal" id="simple-modal" ace-modal-visible>
-  <h3>Modal heading</h3>
-  <p>This modal was shown on page load because it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
-  <img src="/img/logo.svg" height="100px" alt="Potato logo"/>
-
-  <button id="toggle-disabled-btn-btn">Toggle disabled button</button>
-
-  <button id="add-link-btn">Add link to Modal</button>
-  <button id="remove-link-btn">Remove link from Modal</button>
-
-  <button id="disabled-btn" disabled>Disabled Button</button>
+	<h3>Modal heading</h3>
+	<p>This modal was shown on page load because it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
+	<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
+	<button id="toggle-disabled-btn-btn">Toggle disabled button</button>
+	<button id="add-link-btn">Add link to Modal</button>
+	<button id="remove-link-btn">Remove link from Modal</button>
+	<button id="disabled-btn" disabled>Disabled Button</button>
 </ace-modal>
 ```
 
@@ -191,36 +194,40 @@ The JavaScript used by this example is shown below.
 import {EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const modalEl = document.getElementById('simple-modal');
-  const disabledBtn = document.getElementById('disabled-btn');
+	const MODAL_ID = 'simple-modal';
+	const modalEl = document.getElementById(MODAL_ID);
+	const disabledBtn = document.getElementById('disabled-btn');
 
-  modalEl.addEventListener('click', (e) => {
-    const targetId = e.target.id;
-    const toggleDisabledBtnBtnClicked = targetId === 'toggle-disabled-btn-btn';
-    if (toggleDisabledBtnBtnClicked) {
-      disabledBtn.disabled = !disabledBtn.disabled;
-      return;
-    }
+	modalEl.addEventListener('click', (e) => {
+		const targetId = e.target.id;
+		const toggleDisabledBtnBtnClicked = targetId === 'toggle-disabled-btn-btn';
+		if (toggleDisabledBtnBtnClicked) {
+			disabledBtn.disabled = !disabledBtn.disabled;
+			return;
+		}
 
-    const addLinkBtnClicked = targetId === 'add-link-btn';
-    if (addLinkBtnClicked) {
-      const linkEl = document.createElement('a');
-      linkEl.href = '#';
-      linkEl.textContent = 'Dummy link';
-      const pEl = document.createElement('p');
-      pEl.appendChild(linkEl);
-      modalEl.appendChild(pEl);
-    }
+		const addLinkBtnClicked = targetId === 'add-link-btn';
+		if (addLinkBtnClicked) {
+			const linkEl = document.createElement('a');
+			linkEl.href = '#';
+			linkEl.textContent = 'Dummy link';
+			const pEl = document.createElement('p');
+			pEl.appendChild(linkEl);
+			modalEl.appendChild(pEl);
+		}
 
-    const removeLinkBtnClicked = targetId === 'remove-link-btn';
-    if (removeLinkBtnClicked) {
-      const linkEl = modalEl.querySelector('a');
-      if (linkEl) {
-        linkEl.remove();
-      }
-    }
-    modalEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_FOCUS_TRAP));
-  });
+		const removeLinkBtnClicked = targetId === 'remove-link-btn';
+		if (removeLinkBtnClicked) {
+			const linkEl = modalEl.querySelector('a');
+			if (linkEl) {
+				linkEl.remove();
+			}
+		}
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.UPDATE_FOCUS_TRAP,
+			{'detail': {'id': MODAL_ID}},
+		));
+	});
 });
 ```
 
@@ -231,17 +238,15 @@ The JavaScript used by this example is shown below.
 
 ```html
 <button ace-modal-trigger-for="modal-from-modal">
-  Second Modal's trigger
+	Second Modal's trigger
 </button>
 
 <ace-modal aria-label="Example of Modal that shows another Modal" id="modal-from-modal">
-  <button ace-modal-hide-modal-btn aria-label="Exit modal">&#x2715;</button>
-
-  <h3>Second Modal</h3>
-  <p>Second Modal</p>
-  <img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-
-  <button ace-modal-trigger-for="simple-modal">Show first modal</button>
+	<button ace-modal-hide-modal-btn aria-label="Exit modal">&#x2715;</button>
+	<h3>Second Modal</h3>
+	<p>Second Modal</p>
+	<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
+	<button ace-modal-trigger-for="simple-modal">Show first modal</button>
 </ace-modal>
 ```
 
@@ -249,20 +254,20 @@ The JavaScript used by this example is shown below.
 import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const OTHER_MODAL_ID = 'simple-modal';
-  const modalEl = document.getElementById('modal-from-modal');
-  let otherModalTriggerClicked;
+	const OTHER_MODAL_ID = 'simple-modal';
+	const modalEl = document.getElementById('modal-from-modal');
+	let otherModalTriggerClicked;
 
-  // If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden
-  const otherModalTrigger = modalEl.querySelector(`[ace-modal-trigger-for="${OTHER_MODAL_ID}"]`);
-  otherModalTrigger.addEventListener('click', () => otherModalTriggerClicked = true);
+	// If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden
+	const otherModalTrigger = modalEl.querySelector(`[ace-modal-trigger-for="${OTHER_MODAL_ID}"]`);
+	otherModalTrigger.addEventListener('click', () => otherModalTriggerClicked = true);
 
-  window.addEventListener(EVENTS.OUT.VISIBILITY_CHANGED, (e) => {
-    if (!e.detail || e.detail.id !== OTHER_MODAL_ID || e.detail.visible || !otherModalTriggerClicked) {
-      return;
-    }
-    otherModalTriggerClicked = false;
-    modalEl.setAttribute(ATTRS.VISIBLE, '');
-  });
+	window.addEventListener(EVENTS.OUT.VISIBILITY_CHANGED, (e) => {
+		if (!e.detail || e.detail.id !== OTHER_MODAL_ID || e.detail.visible || !otherModalTriggerClicked) {
+			return;
+		}
+		otherModalTriggerClicked = false;
+		modalEl.setAttribute(ATTRS.VISIBLE, '');
+	});
 });
 ```

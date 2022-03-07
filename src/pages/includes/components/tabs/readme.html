@@ -13,13 +13,13 @@
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/tabs/tabs';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Tabs</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Tabs is instantiated within each <code>&lt;ace-tabs&gt;</code> element and an ID <code>ace-tabs-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-tabs-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Tabs is instantiated within each <code>&lt;ace-tabs&gt;</code> element and an ID <code>ace-tabs-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-tabs-ready</code> is dispatched to <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <p>The buttons that display the panels, known as tabs, must be nested within a tablist element with attribute <code>ace-tabs-tablist</code>. If no descendant has this attribute then the first child <code>&lt;div&gt;</code> will be used and given this attribute. It is strongly recommended that this tablist element be provided with an accessible label using <code>aria-label</code> or <code>aria-labelledby</code>. The word &quot;tablist&quot; should not be included in the label as Tabs has <code>role=&quot;tablist&quot;</code> which is read out by screen readers.</p>
 <p>Tabs must also have the same number of panel elements as tabs. Tabs will use any descendant with attribute <code>ace-tabs-panel</code>. If no descendants have this attribute then all child elements except the first, which should be the tablist, will be used and given this attribute.</p>
 <h2>Usage</h2>
 <p>The displayed panel of Tabs can be changed using the tab buttons, keyboard keys or custom events; or by changing the value of its attribute <code>ace-tabs-selected-tab</code> to the panel's number, e.g. <code>2</code> will display the second panel and <code>3</code> the third. This attribute can be set before instantiation to display a specific panel on page load, but if omitted Tabs will add it and set its value to <code>1</code> thereby displaying the first panel. The attribute's value is also dynamically updated when the displayed panel is changed using the other methods.</p>
 <p>When a tab is focused, pressing <kbd>←</kbd> or <kbd>→</kbd> (<kbd>↑</kbd> or <kbd>↓</kbd> for vertical Tabs) will select the previous or next tab in the list respectively, while pressing <kbd>Home</kbd> or <kbd>End</kbd> will select the first or last tab respectively.</p>
-<p>Tabs can be added or removed dynamically as long as custom event <code>ace-tabs-update</code> is dispatched on the Tabs component afterwards.</p>
+<p>Tabs can be added or removed dynamically as long as custom event <code>ace-tabs-update</code> is dispatched to the Tabs component afterwards.</p>
 <p>Giving the Tabs the attribute <code>ace-tabs-infinite</code> allows infinite rotation through panels, where pressing <kbd>←</kbd> (or <kbd>↑</kbd> for vertical Tabs) with the first panel displayed will display the last, and pressing <kbd>→</kbd> (or <kbd>↓</kbd> in vertical Tabs) with the last panel displayed will display the first. Giving the Tabs the attribute <code>ace-tabs-vertical</code> stacks the tabs vertically and makes <kbd>↑</kbd> and <kbd>↓</kbd> change the displayed panel, rather than <kbd>←</kbd> or <kbd>→</kbd>. These two attributes are observed attributes that can be added or removed to dynamically enable or disable their respective behaviour.</p>
 <p>Tabs can be given the attribute <code>ace-tabs-manual</code> which will cause the arrow keys to change the focused tab without changing the displayed panel. For these Tabs the focused tab's corresponding panel can be displayed manually by pressing <kbd>Space</kbd> or <kbd>Enter</kbd>.</p>
 <p>Tabs with the attribute <code>ace-tabs-deep-linked</code> are deep-linked meaning that whenever the displayed panel changes, the page URL is dynamically updated to include a search parameter with key and value equal to the Tabs ID and the displayed panel respectively. Deep linking works with multiple Tabs components, each adding a search parameter to the URL. When a page is loaded if the URL contains a search parameter for a deep-linked Tabs component, the panel whose number matched the search parameter value is displayed. This is a useful feature for sharing pages with specific tabs diplayed.</p>
@@ -95,12 +95,12 @@ $ace-tabs-panel-padding: 16px !default;
 <h2>Custom events</h2>
 <p>Tabs uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Tabs.</p>
+<p>The following events are dispatched to <code>window</code> by Tabs.</p>
 <h4>Ready</h4>
 <p><code>ace-tabs-ready</code></p>
 <p>This event is dispatched when Tabs finishes initialising just after page load, and after dynamically added descendants are initialised in response to the <code>ace-tabs-update</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Tabs [string]
+	'id': // ID of Tabs [string]
 }
 </code></pre>
 <h4>Selected tab changed</h4>
@@ -108,28 +108,40 @@ $ace-tabs-panel-padding: 16px !default;
 <p>This event is dispatched when the selected tab changes. Listening for this event can be useful for timing and triggering animations on Tabs.
 The event name is available as <code>EVENTS.OUT.SELECTED_TAB_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Tabs [string]
-  'currentlySelectedTab': {
-    'id': // Currently selected tab ID [string]
-    'number': // Currently selected tab number [number]
-  },
-  'previouslySelectedTab': {
-    'id': // Previously selected tab ID [string]
-    'number': // Previously selected tab number [number]
-  }
+	'id': // ID of Tabs [string]
+	'currentlySelectedTab': {
+		'id': // Currently selected tab ID [string]
+		'number': // Currently selected tab number [number]
+	},
+	'previouslySelectedTab': {
+		'id': // Previously selected tab ID [string]
+		'number': // Previously selected tab number [number]
+	}
 }
 </code></pre>
 <h3>Listened for events</h3>
-<p>Tabs listens for the following events, which should be dispatched on the specific <code>ace-tabs</code> element.</p>
+<p>Tabs listens for the following events that should be dispatched to <code>window</code>.</p>
 <h4>Previous tab</h4>
 <p><code>ace-tabs-set-prev-tab</code></p>
-<p>This event should be dispatched to select the previous tab, or the last tab if the first tab is selected and Tabs has attribute <code>ace-tabs-infinite</code>. The event name is available as <code>EVENTS.IN.SET_PREV_TAB</code>.</p>
+<p>This event should be dispatched to select the previous tab, or the last tab if the first tab is selected and Tabs has attribute <code>ace-tabs-infinite</code>. The event name is available as <code>EVENTS.IN.SET_PREV_TAB</code> and its <code>detail</code> property should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+	'id': // ID of target Tabs [string]
+}
+</code></pre>
 <h4>Next tab</h4>
 <p><code>ace-tabs-set-next-tab</code></p>
-<p>This event should be dispatched to select the next tab, or the first tab if the last tab is selected and Tabs has attribute <code>ace-tabs-infinite</code>. The event name is available as <code>EVENTS.IN.SET_NEXT_TAB</code>.</p>
+<p>This event should be dispatched to select the next tab, or the first tab if the last tab is selected and Tabs has attribute <code>ace-tabs-infinite</code>. The event name is available as <code>EVENTS.IN.SET_NEXT_TAB</code> and its <code>detail</code> property should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+	'id': // ID of target Tabs [string]
+}
+</code></pre>
 <h4>Update tabs</h4>
 <p><code>ace-tabs-update</code></p>
-<p>This event should be dispatched when tabs are added or removed and causes Tabs to initialise them and then dispatch the <code>ace-tabs-ready</code> event.tgabs The event name is available as <code>EVENTS.IN.UPDATE</code>.</p>
+<p>This event should be dispatched when tabs are added or removed and causes Tabs to initialise them and then dispatch the <code>ace-tabs-ready</code> event.tgabs The event name is available as <code>EVENTS.IN.UPDATE</code> and its <code>detail</code> property should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+	'id': // ID of target Tabs [string]
+}
+</code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Tabs</h3>
@@ -491,7 +503,8 @@ The event name is available as <code>EVENTS.OUT.SELECTED_TAB_CHANGED</code> and 
 <pre><code class="language-js">import { ATTRS, EVENTS } from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const tabsEl = document.getElementById('custom-events-tabs');
+	const TABS_ID = 'custom-events-tabs';
+	const tabsEl = document.getElementById(TABS_ID);
 	const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
 	const addTab = () =&gt; {
@@ -522,7 +535,10 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 			case 'prev-tab-btn':
 			case 'next-tab-btn': {
 				const event = EVENTS.IN[`SET_${targetId === 'prev-tab-btn' ? 'PREV' : 'NEXT'}_TAB`];
-				tabsEl.dispatchEvent(new CustomEvent(event));
+				window.dispatchEvent(new CustomEvent(
+					event,
+					{'detail': {'id': TABS_ID}},
+				));
 				break;
 			}
 			case 'add-tab-btn':
@@ -532,7 +548,10 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 				} else {
 					removeTab();
 				}
-				tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(
+					EVENTS.IN.UPDATE,
+					{'detail': {'id': TABS_ID}},
+				));
 				break;
 		}
 	});

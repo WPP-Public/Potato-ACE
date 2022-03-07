@@ -1,17 +1,17 @@
 # Project set-up
 
 1. Use node.js v14.15.4 using
-    ```
-    nvm install 14.15.4
-    ```
+	```
+	nvm install 14.15.4
+	```
 2. Install gulp cli globally using
-    ```
-    npm i -g gulp-cli
-    ```
+	```
+	npm i -g gulp-cli
+	```
 3. Install dependencies using
-    ```
-    npm i
-    ```
+	```
+	npm i
+	```
 
 
 # Development
@@ -28,46 +28,46 @@ which will launch a browsersync server on port [3000](http://localhost:3000)
 To create a new component:
 
 1. Run `npm run new-comp` with the component's display name and an optional, space-separated list of aliases or other names the component may be known as (e.g. **Dialog** is an alias of **Modal**). For example running:
-    ```sh
-    npm run new-comp "Component Name" "Alias 1" "Alias 2" ...
-    ```
-    will add an entry for the component in *./src/ace/components/components.json* and generate the necessary core files in the *./src/ace/components/component-name/* directory.
+	```sh
+	npm run new-comp "Component Name" "Alias 1" "Alias 2" ...
+	```
+	will add an entry for the component in *./src/ace/components/components.json* and generate the necessary core files in the *./src/ace/components/component-name/* directory.
   
 2. Import the component into *./src/sass/styles.scss* maintaining alphabetical order using
-    ```scss
-    @import '../ace/components/<component-name>/<component-name>';
-    ```
+	```scss
+	@import '../ace/components/<component-name>/<component-name>';
+	```
   
 3. Follow the instructions in the newly created files to add content appropriately.
 
 4. Add examples bearing in mind the following:
-    - A component must have at least one example
-    - Each example must have a HTML file named using the example number e.g. *1.html* for the first example, *2.html* for the second.
-    - Examples can optionally also have one *.scss* file and/or one *.js* file also named with the examaple number e.g. *1.scss* and *1.js* for the first example, *2.scss* and *2.js* for the second etc.
+	- A component must have at least one example
+	- Each example must have a HTML file named using the example number e.g. *1.html* for the first example, *2.html* for the second.
+	- Examples can optionally also have one *.scss* file and/or one *.js* file also named with the examaple number e.g. *1.scss* and *1.js* for the first example, *2.scss* and *2.js* for the second etc.
 
 5. Once done, create an *.mp4* video to show the component in action. To achieve consistent results use a machine running Mac OS X and the following guidelines:
-    - Use Chrome browser
-    - Set the browser width to minimum unless the component changes visually on mobile 
-    - Use Mac OS built in screen recorder:
-        - Use the **Record Selected Portion** mode
-        - Under **Options** > **Options** make sure **Show Mouse Clicks** is ticked
-        - Under **Options** > **Microphone** make sure **None** is ticked
-        - Set the portion size to be a square. If using the minimum browser width use 420px x 420px.
-        - Make sure the component is completely surrounded by whitespace within the portion square. Add padding to it's `example-block` element if necessary.
-    - Use the most simple variant of the component
-    - For smoother video looping have the component start and end the video in it's initial state.
-    - Save the file as *\<component-name>.mov*
-    - Make sure video is as short as possible with a maximum length of 15 seconds
-    - Install ffmpeg. This can be done using brew
-      ```sh
-      brew install ffmpeg
-      ```
-    - Convert the mov file to mp4 using ffmpeg and the following command, replacing `<component-name>` with the component name
-      ```sh
-      COMPONENT=<component-name>
-      ffmpeg -i $COMPONENT.mov -vcodec h264 -acodec mp2 $COMPONENT.mp4
-      ```
-    - Add the mp4 file to a directory named *media* in the component directory
+	- Use Chrome browser
+	- Set the browser width to minimum unless the component changes visually on mobile 
+	- Use Mac OS built in screen recorder:
+		- Use the **Record Selected Portion** mode
+		- Under **Options** > **Options** make sure **Show Mouse Clicks** is ticked
+		- Under **Options** > **Microphone** make sure **None** is ticked
+		- Set the portion size to be a square. If using the minimum browser width use 420px x 420px.
+		- Make sure the component is completely surrounded by whitespace within the portion square. Add padding to it's `example-block` element if necessary.
+	- Use the most simple variant of the component
+	- For smoother video looping have the component start and end the video in it's initial state.
+	- Save the file as *\<component-name>.mov*
+	- Make sure video is as short as possible with a maximum length of 15 seconds
+	- Install ffmpeg. This can be done using brew
+	  ```sh
+	  brew install ffmpeg
+	  ```
+	- Convert the mov file to mp4 using ffmpeg and the following command, replacing `<component-name>` with the component name
+	  ```sh
+	  COMPONENT=<component-name>
+	  ffmpeg -i $COMPONENT.mov -vcodec h264 -acodec mp2 $COMPONENT.mp4
+	  ```
+	- Add the mp4 file to a directory named *media* in the component directory
 
 
 # Documentation engine

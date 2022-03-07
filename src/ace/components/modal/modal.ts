@@ -121,7 +121,7 @@ export default class Modal extends HTMLElement {
 		this.addEventListener('click', this.clickHandler);
 		this.addEventListener('keydown', this.keydownHandler);
 		if (!this.canUseInert) {
-			this.addEventListener(EVENTS.IN.UPDATE_FOCUS_TRAP, this.customEventsHandler);
+			window.addEventListener(EVENTS.IN.UPDATE_FOCUS_TRAP, this.customEventsHandler);
 		}
 
 
@@ -153,7 +153,7 @@ export default class Modal extends HTMLElement {
 		/* REMOVE EVENT LISTENERS */
 		this.removeEventListener('click', this.clickHandler);
 		if (!this.canUseInert) {
-			this.removeEventListener(EVENTS.IN.UPDATE_FOCUS_TRAP, this.customEventsHandler);
+			window.removeEventListener(EVENTS.IN.UPDATE_FOCUS_TRAP, this.customEventsHandler);
 		}
 	}
 
@@ -174,10 +174,12 @@ export default class Modal extends HTMLElement {
 	/*
 		Handle custom events
 	*/
-	private customEventsHandler(): void {
-		if (!this.focusTrap) {
+	private customEventsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id || !this.focusTrap) {
 			return;
 		}
+
 		this.focusTrap.getInteractableDescendants();
 	}
 

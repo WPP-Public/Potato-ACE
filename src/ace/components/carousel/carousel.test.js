@@ -538,7 +538,7 @@ context(`Carousel`, () => {
 			});
 
 
-			it(`Should toggle automatic slide show when custom events dispatched`, () => {
+			it  (`Should toggle automatic slide show when custom events dispatched`, () => {
 				cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, { 'id': CAROUSEL_ID })
 					.get(`#${IDS.STOP_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN}`)
 					.click()

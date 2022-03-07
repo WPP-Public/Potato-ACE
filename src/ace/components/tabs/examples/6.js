@@ -1,7 +1,8 @@
 import { ATTRS, EVENTS } from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const tabsEl = document.getElementById('custom-events-tabs');
+	const TABS_ID = 'custom-events-tabs';
+	const tabsEl = document.getElementById(TABS_ID);
 	const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 
 	const addTab = () => {
@@ -32,7 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'prev-tab-btn':
 			case 'next-tab-btn': {
 				const event = EVENTS.IN[`SET_${targetId === 'prev-tab-btn' ? 'PREV' : 'NEXT'}_TAB`];
-				tabsEl.dispatchEvent(new CustomEvent(event));
+				window.dispatchEvent(new CustomEvent(
+					event,
+					{'detail': {'id': TABS_ID}},
+				));
 				break;
 			}
 			case 'add-tab-btn':
@@ -42,7 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				} else {
 					removeTab();
 				}
-				tabsEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(
+					EVENTS.IN.UPDATE,
+					{'detail': {'id': TABS_ID}},
+				));
 				break;
 		}
 	});

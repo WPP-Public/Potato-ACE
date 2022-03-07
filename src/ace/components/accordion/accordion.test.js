@@ -4,12 +4,12 @@ import {ACCORDION, ATTRS, EVENTS} from './accordion';
 const IDS = {
 	APPEND_PANEL_BTN: 'append-panel-btn',
 	CUSTOM_EVENTS_ACCORDION: 'custom-events-accordion',
-	HIDE_PANELS_BTN: 'hide-panels-btn',
+	HIDE_ALL_PANELS_BTN: 'hide-panels-btn',
 	HIDE_PANEL_BTN: 'hide-panel-btn',
 	ONE_VISIBLE_PANEL_ACCORDION: 'one-visible-panel-accordion',
 	PANEL_NUMBER_INPUT: 'panel-number',
 	REMOVE_PANEL_BTN: 'remove-panel-btn',
-	SHOW_PANELS_BTN: 'show-panels-btn',
+	SHOW_ALL_PANELS_BTN: 'show-panels-btn',
 	SHOW_PANEL_BTN: 'show-panel-btn',
 	SIMPLE_ACCORDION: `${ACCORDION}-1`,
 	TOGGLE_PANEL_BTN: 'toggle-panel-btn',
@@ -217,12 +217,12 @@ context(`Accordion`, () => {
 		it(`Should initialise correctly`, () => accordionInitChecks());
 
 
-		it(`Should show and hide all panels when ${EVENTS.IN.SHOW_PANELS} & ${EVENTS.IN.HIDE_PANELS} custom events dispatched`, () => {
-			cy.get(`#${IDS.SHOW_PANELS_BTN}`)
+		it(`Should show and hide all panels when ${EVENTS.IN.SHOW_ALL_PANELS} & ${EVENTS.IN.HIDE_ALL_PANELS} custom events dispatched`, () => {
+			cy.get(`#${IDS.SHOW_ALL_PANELS_BTN}`)
 				.click()
 				.get('@accordionTriggers')
 				.each(($trigger, index) => checkPanelVisible(index))
-				.get(`#${IDS.HIDE_PANELS_BTN}`)
+				.get(`#${IDS.HIDE_ALL_PANELS_BTN}`)
 				.click()
 				.get('@accordionTriggers')
 				.each(($trigger, index) => checkPanelNotVisible(index));

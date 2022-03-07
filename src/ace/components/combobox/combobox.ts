@@ -132,16 +132,16 @@ export default class Combobox extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
-		this.addEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
-		this.addEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
-		this.addEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
 		this.inputEl.addEventListener('focus', this.focusHandler);
 		this.inputEl.addEventListener('blur', this.focusHandler);
 		this.inputEl.addEventListener('keydown', this.keydownHandler);
 		this.inputEl.addEventListener('input', this.inputHandler);
 		this.listEl.addEventListener('click', this.clickHandler);
 		this.listEl.addEventListener('mousedown', this.mousedownHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
+		window.addEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
 
 
 		/* INITIALISATION */
@@ -163,16 +163,16 @@ export default class Combobox extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
-		this.removeEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
-		this.removeEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
-		this.removeEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
 		this.inputEl?.removeEventListener('focus', this.focusHandler);
 		this.inputEl?.removeEventListener('blur', this.focusHandler);
 		this.inputEl?.removeEventListener('keydown', this.keydownHandler);
 		this.inputEl?.removeEventListener('input', this.inputHandler);
 		this.listEl?.removeEventListener('click', this.clickHandler);
 		this.listEl?.removeEventListener('mousedown', this.mousedownHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.HIDE_LIST, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.SHOW_LIST, this.customEventsHandler);
+		window.removeEventListener(EVENTS.IN.SELECT_OPTION, this.customEventsHandler);
 	}
 
 
@@ -308,13 +308,17 @@ export default class Combobox extends HTMLElement {
 		Prevent inputEl blur event from triggering when list or a descendant of it is clicked
 	*/
 	private customEventsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		switch (e.type) {
 			case EVENTS.IN.HIDE_LIST:
 				this.hideList();
 				break;
 			case EVENTS.IN.SELECT_OPTION: {
-				const detail = (e as CustomEvent)['detail'];
-				if (!detail || !detail['optionId']) {
+				if (!detail['optionId']) {
 					return;
 				}
 				const optionEl = this.listEl?.querySelector(`#${detail['optionId']}`) as HTMLLIElement;
