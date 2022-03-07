@@ -1,7 +1,8 @@
 import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const comboboxEl = document.getElementById('custom-events-combobox');
+	const COMBOBOX_ID = 'custom-events-combobox';
+	const comboboxEl = document.getElementById(COMBOBOX_ID);
 	const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
 	const selectOptionForm = document.getElementById('select-option-form');
 
@@ -13,13 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
 					newOption.textContent = 'New Option';
 					comboboxListEl.appendChild(newOption);
 				}
-				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {'detail': {'id': COMBOBOX_ID}}));
 				break;
 			case 'show-list-btn':
-				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST, {'detail': {'id': COMBOBOX_ID}}));
 				break;
 			case 'hide-list-btn':
-				comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST, {'detail': {'id': COMBOBOX_ID}}));
 				break;
 		}
 	});
@@ -31,9 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!option) {
 			return;
 		}
-		comboboxEl.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
-			detail: {
-				optionId: option.id,
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
+			'detail': {
+				'id': COMBOBOX_ID,
+				'optionId': option.id,
 			}
 		}));
 	});
