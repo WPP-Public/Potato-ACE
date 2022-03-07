@@ -437,13 +437,22 @@ document.addEventListener('DOMContentLoaded', () => {
 					newOption.textContent = 'New Option';
 					comboboxListEl.appendChild(newOption);
 				}
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {'detail': {'id': COMBOBOX_ID}}));
+				window.dispatchEvent(new CustomEvent(
+						EVENTS.IN.UPDATE_OPTIONS,
+						{'detail': {'id': COMBOBOX_ID}},
+					));
 				break;
 			case 'show-list-btn':
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST, {'detail': {'id': COMBOBOX_ID}}));
+				window.dispatchEvent(new CustomEvent(
+						EVENTS.IN.SHOW_LIST,
+						{'detail': {'id': COMBOBOX_ID}},
+					));
 				break;
 			case 'hide-list-btn':
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST, {'detail': {'id': COMBOBOX_ID}}));
+				window.dispatchEvent(new CustomEvent(
+						EVENTS.IN.HIDE_LIST,
+						{'detail': {'id': COMBOBOX_ID}},
+					));
 				break;
 		}
 	});
@@ -455,12 +464,15 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!option) {
 			return;
 		}
-		window.dispatchEvent(new CustomEvent(EVENTS.IN.SELECT_OPTION, {
-			'detail': {
-				'id': COMBOBOX_ID,
-				'optionId': option.id,
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.SELECT_OPTION,
+			{
+				'detail': {
+					'id': COMBOBOX_ID,
+					'optionId': option.id,
+				}
 			}
-		}));
+		));
 	});
 });
 ```
@@ -546,7 +558,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			comboboxListEl.appendChild(resultOption);
 		});
 		// Update combobox options
-		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_OPTIONS, {'detail': {'id': COMBOBOX_ID}}));
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.UPDATE_OPTIONS,
+			{'detail': {'id': COMBOBOX_ID}},
+		));
 		searching = false;
 	});
 
@@ -555,7 +570,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (comboboxListEl.childNodes.length === 0) {
 			return;
 		}
-		window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST, {'detail': {'id': COMBOBOX_ID}}));
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.SHOW_LIST,
+			{'detail': {'id': COMBOBOX_ID}},
+		));
 	});
 
 	// Show results list when options intialised
@@ -564,7 +582,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (!detail || !detail['id'] || detail['id'] !== COMBOBOX_ID) {
 			return;
 		}
-		window.dispatchEvent(new CustomEvent(EVENTS.IN.SHOW_LIST, {'detail': {'id': COMBOBOX_ID}}));
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.SHOW_LIST,
+			{'detail': {'id': COMBOBOX_ID}},
+		));
 	});
 
 	// Listen for chosen options
@@ -577,7 +598,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		chosenResultEl.textContent = `Option with ID '${detail['chosenOptionId']}' chosen.`;
 
 		// Hide list
-		window.dispatchEvent(new CustomEvent(EVENTS.IN.HIDE_LIST, {'detail': {'id': COMBOBOX_ID}}));
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.HIDE_LIST,
+			{'detail': {'id': COMBOBOX_ID}},
+		));
 	});
 
 	// Show list when clicking on input if list has options

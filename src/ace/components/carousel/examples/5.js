@@ -9,7 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'start-auto-slide-show-custom-event-btn':
 			case 'stop-auto-slide-show-custom-event-btn': {
 				const event = EVENTS.IN[`${targetId === 'start-auto-slide-show-custom-event-btn' ? 'START' : 'STOP'}_AUTO_SLIDE_SHOW`];
-				window.dispatchEvent(new CustomEvent(event, {'detail': {'id': CAROUSEL_ID}}));
+				window.dispatchEvent(new CustomEvent(
+					event,
+					{'detail': {'id': CAROUSEL_ID}},
+				));
 				break;
 			}
 		}

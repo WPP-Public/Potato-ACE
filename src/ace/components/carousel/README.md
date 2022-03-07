@@ -281,7 +281,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		newSlideEl.appendChild(headingEl);
 		newSlideEl.appendChild(p);
 		slidesWrapper.appendChild(newSlideEl);
-		window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES, {'detail': {'id': CAROUSEL_ID}}));
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.UPDATE_SLIDES,
+			{'detail': {'id': CAROUSEL_ID}},
+		));
 	};
 
 	window.addEventListener('click', (e) => {
@@ -290,7 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'prev-slide-btn':
 			case 'next-slide-btn': {
 				const event = EVENTS.IN[`SET_${targetId === 'prev-slide-btn' ? 'PREV' : 'NEXT'}_SLIDE`];
-				window.dispatchEvent(new CustomEvent(event, {'detail': {'id': CAROUSEL_ID}}));
+				window.dispatchEvent(new CustomEvent(
+					event,
+					{'detail': {'id': CAROUSEL_ID}},
+				));
 				break;
 			}
 			case 'add-slide-btn':
@@ -300,7 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				} else {
 					slidesWrapper.removeChild(slidesWrapper.lastElementChild);
 				}
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES, {'detail': {'id': CAROUSEL_ID}}));
+				window.dispatchEvent(new CustomEvent(
+					EVENTS.IN.UPDATE_SLIDES,
+					{'detail': {'id': CAROUSEL_ID}},
+				));
 				break;
 		}
 	});
@@ -409,7 +418,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'start-auto-slide-show-custom-event-btn':
 			case 'stop-auto-slide-show-custom-event-btn': {
 				const event = EVENTS.IN[`${targetId === 'start-auto-slide-show-custom-event-btn' ? 'START' : 'STOP'}_AUTO_SLIDE_SHOW`];
-				window.dispatchEvent(new CustomEvent(event, {'detail': {'id': CAROUSEL_ID}}));
+				window.dispatchEvent(new CustomEvent(
+					event,
+					{'detail': {'id': CAROUSEL_ID}},
+				));
 				break;
 			}
 		}

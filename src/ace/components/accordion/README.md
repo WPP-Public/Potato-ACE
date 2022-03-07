@@ -317,18 +317,24 @@ document.addEventListener('DOMContentLoaded', () => {
 				} else {
 					customEvent = EVENTS.IN[`${targetId === 'hide-panel-btn' ? 'HIDE' : 'SHOW'}_PANEL`];
 				}
-				window.dispatchEvent(new CustomEvent(customEvent, {
-					'detail': {
-						'id': ACCORDION_ID,
-						'panelNumber': panelNumber,
+				window.dispatchEvent(new CustomEvent(
+					customEvent,
+					{
+						'detail': {
+							'id': ACCORDION_ID,
+							'panelNumber': panelNumber,
+						}
 					}
-				}));
+				));
 				break;
 			}
 			case 'show-panels-btn':
 			case 'hide-panels-btn': {
 				const customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_ALL_PANELS`];
-				window.dispatchEvent(new CustomEvent(customEvent, {'detail': {'id': ACCORDION_ID}}));
+				window.dispatchEvent(new CustomEvent(
+					customEvent,
+					{'detail': {'id': ACCORDION_ID}},
+				));
 				break;
 			}
 			case 'append-panel-btn': {
@@ -346,7 +352,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				accordionEl.append(newHeaderEl);
 				accordionEl.append(newPanelEl);
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
+				window.dispatchEvent(new CustomEvent(
+					EVENTS.IN.UPDATE,
+					{'detail': {'id': ACCORDION_ID}},
+				));
 				break;
 			}
 			case 'remove-panel-btn': {
@@ -354,7 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				const panelEl = accordionEl.querySelector(`[${ATTRS.PANEL}]`);
 				accordionEl.removeChild(headerEl);
 				accordionEl.removeChild(panelEl);
-				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
+				window.dispatchEvent(new CustomEvent(
+					EVENTS.IN.UPDATE,
+					{'detail': {'id': ACCORDION_ID}},
+				));
 				break;
 			}
 		}
