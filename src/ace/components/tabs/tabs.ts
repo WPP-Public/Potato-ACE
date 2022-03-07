@@ -135,11 +135,11 @@ export default class Tabs extends HTMLElement {
 
 
 		/* ADD EVENT LISTENERS */
-		this.addEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
 		this.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
 		this.tablistEl.addEventListener('click', this.clickHandler);
 		this.tablistEl.addEventListener('keydown', this.keydownHandler);
+		window.addEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
 
 
 		/* INITIALISATION */
@@ -157,10 +157,10 @@ export default class Tabs extends HTMLElement {
 
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
-		this.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
 		this.tablistEl?.removeEventListener('click', this.clickHandler);
 		this.tablistEl?.removeEventListener('keydown', this.keydownHandler);
+		window.removeEventListener(EVENTS.IN.SET_NEXT_TAB, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SET_PREV_TAB, this.customEventsHander);
 	}
 
 
@@ -181,6 +181,11 @@ export default class Tabs extends HTMLElement {
 		Handler for incoming custom events
 	*/
 	private customEventsHander(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		switch (e.type) {
 			case EVENTS.IN.SET_PREV_TAB:
 			case EVENTS.IN.SET_NEXT_TAB: {
