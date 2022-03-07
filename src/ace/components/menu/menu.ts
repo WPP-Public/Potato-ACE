@@ -91,7 +91,7 @@ export default class Menu extends HTMLElement {
 		this.addEventListener('click', this.clickHandler);
 		this.addEventListener('focusout', this.focusOutHandler);
 		this.addEventListener('keydown', this.keydownHandler);
-		this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 
 
 		/* INITIALISATION */
@@ -116,7 +116,7 @@ export default class Menu extends HTMLElement {
 		this.removeEventListener('click', this.clickHandler);
 		this.removeEventListener('focusout', this.focusOutHandler);
 		this.removeEventListener('keydown', this.keydownHandler);
-		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 	}
 
 
@@ -266,10 +266,12 @@ export default class Menu extends HTMLElement {
 	/*
 		Update options custom event handler
 	*/
-	private updateOptionsHandler(): void {
-		if (!this.list || !this.listEl) {
+	private updateOptionsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id || !this.list || !this.listEl) {
 			return;
 		}
+
 		this.list.initOptionEls();
 		this.listEl.querySelectorAll('a').forEach((link) => link.setAttribute('tabindex', '-1'));
 
