@@ -29,7 +29,7 @@ import '<path-to-node_modules>/@potato/ace/components/disclosure/disclosure';
 
 For convenience the ES6 class is exported as `Disclosure` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Disclosure is instantiated within each `<ace-disclosure>` element and an ID `ace-disclosure-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Disclosure is instantiated within each `<ace-disclosure>` element and an ID `ace-disclosure-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-disclosure-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
 ## Usage
 
@@ -55,7 +55,7 @@ Disclosure uses the following custom events, the names of which are available in
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Disclosure.
+The following events are dispatched to `window` by Disclosure.
 
 #### Ready
 
@@ -65,7 +65,7 @@ This event is dispatched when Disclosure finishes initialising. The event name i
 
 ```js
 'detail': {
-  'id': // ID of Disclosure [string]
+	'id': // ID of Disclosure [string]
 }
 ```
 
@@ -78,21 +78,27 @@ This event is dispatched when Disclosure's visibility changes. The event name is
 
 ```js
 'detail': {
-  'id': // ID of Disclosure [string]
-  'visible': // Whether the Disclosure is visible or not [boolean]
+	'id': // ID of Disclosure [string]
+	'visible': // Whether the Disclosure is visible or not [boolean]
 }
 ```
 
 ### Listened for event
 
-Disclosure listens for the following event, which should be dispatched on the specific `ace-disclosure` element.
+Disclosure listens for the following event that should be dispatched to `window`.
 
 
 #### Toggle
 
 `ace-disclosure-toggle`
 
-This event should be dispatched to toggle the visibility of the Disclosure and the event name is available as `EVENTS.IN.TOGGLE`.
+This event should be dispatched to toggle the visibility of the Disclosure. The event name is available as `EVENTS.IN.TOGGLE` and its `detail` property should be composed as follows:
+
+```js
+'detail': {
+	'id': // ID of target Disclosure [string]
+}
+```
 
 
 ## Examples
@@ -163,11 +169,10 @@ The button in this example is **not** a trigger button but instead is a button t
 import { EVENTS } from '/ace/components/disclosure/disclosure.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const disclosureEl = document.getElementById('custom-events-disclosure');
 	const customEventBtn = document.getElementById('toggle-custom-event-btn');
 
 	customEventBtn.addEventListener('click', () => {
-		disclosureEl.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE));
+		window.dispatchEvent(new CustomEvent(EVENTS.IN.TOGGLE, {'detail': {'id': 'custom-events-disclosure'}}));
 	});
 });
 ```
