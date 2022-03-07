@@ -1,23 +1,25 @@
 import {ATTRS, EVENTS} from '/ace/components/accordion/accordion.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const accordionEl = document.getElementById('custom-events-accordion');
+	const ACCORDION_ID = 'custom-events-accordion';
+	const accordionEl = document.getElementById(ACCORDION_ID);
 
 	window.addEventListener('click', (e) => {
-		let customEvent;
 		const targetId = e.target.id;
 		switch(targetId) {
 			case 'hide-panel-btn':
 			case 'show-panel-btn':
 			case 'toggle-panel-btn': {
+				let customEvent;
 				const panelNumber = document.getElementById('panel-number').value;
 				if (targetId === 'toggle-panel-btn') {
 					customEvent = EVENTS.IN.TOGGLE_PANEL;
 				} else {
 					customEvent = EVENTS.IN[`${targetId === 'hide-panel-btn' ? 'HIDE' : 'SHOW'}_PANEL`];
 				}
-				accordionEl.dispatchEvent(new CustomEvent(customEvent, {
+				window.dispatchEvent(new CustomEvent(customEvent, {
 					'detail': {
+						'id': ACCORDION_ID,
 						'panelNumber': panelNumber,
 					}
 				}));
@@ -25,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 			case 'show-panels-btn':
 			case 'hide-panels-btn': {
-				customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_PANELS`];
-				accordionEl.dispatchEvent(new CustomEvent(customEvent));
+				const customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_ALL_PANELS`];
+				window.dispatchEvent(new CustomEvent(customEvent, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 			case 'append-panel-btn': {
@@ -44,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				accordionEl.append(newHeaderEl);
 				accordionEl.append(newPanelEl);
-				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 			case 'remove-panel-btn': {
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				const panelEl = accordionEl.querySelector(`[${ATTRS.PANEL}]`);
 				accordionEl.removeChild(headerEl);
 				accordionEl.removeChild(panelEl);
-				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 		}

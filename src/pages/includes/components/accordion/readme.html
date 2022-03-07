@@ -13,7 +13,7 @@
 <pre><code class="language-js">import '&lt;path-to-node_modules&gt;/@potato/ace/components/accordion/accordion';
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Accordion</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
-<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Accordion is instantiated within each <code>&lt;ace-accordion&gt;</code> element and an ID <code>ace-accordion-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-accordion-ready</code> is dispatched on <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
+<p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Accordion is instantiated within each <code>&lt;ace-accordion&gt;</code> element and an ID <code>ace-accordion-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-accordion-ready</code> is dispatched to <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <p>For each section of content Accordion requires a descendant <strong>panel</strong> and a corresponding descendant <strong>header</strong> that in turn contains a child <strong>trigger</strong>. The number of headers, triggers and panels must be the same. Having said this, Accordions can be initalised with none of these, which can instead be added later and initialised by dispatching a custom event. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Accordion headers must be HTML heading elements, i.e. <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>, <code>&lt;h4&gt;</code>, <code>&lt;h5&gt;</code> or<code>&lt;h6&gt;</code> and of the same type, e.g. all <code>&lt;h3&gt;</code>. Accordion will use all heading elements with attribute <code>ace-accordion-header</code> as long as they are of the same type. If no descendant heading elements have this attribute then all descendant heading elements will be used as headers, as long as they are of the same type, and given this attribute.</p>
 <p>Each header must have only a single child element that must also be a <code>&lt;button&gt;</code>, which will be used as the trigger and given the attribute <code>ace-accordion-trigger</code>. Accordion must have a corresponding panel for each trigger element and will use any descendants with attribute <code>ace-accordion-panel</code>. If no descendants have this attribute then all non-heading child elements will be used as panels and given this attribute.</p>
@@ -35,38 +35,47 @@
 <h2>Custom events</h2>
 <p>Accordion uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
 <h3>Dispatched events</h3>
-<p>The following events are dispatched on <code>window</code> by Accordion.</p>
+<p>The following events are dispatched to <code>window</code> by Accordion.</p>
 <h4>Ready</h4>
 <p><code>ace-accordion-ready</code></p>
 <p>This event is dispatched when Accordion finishes initialising just after page load, and after dynamically added descendants are initialised in response to the <code>ace-accordion-update</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Accordion [string]
+	'id': // ID of Accordion [string]
 }
 </code></pre>
 <h4>Panel visibility changed</h4>
 <p><code>ace-accordion-panel-visibility-changed</code></p>
 <p>This event is dispatched when a panel's visiblity changes. The event name is available as <code>EVENTS.OUT.PANEL_VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'id': // ID of Accordion [string]
-  'panelNumber': // The number of the panel that changed [number]
-  'panelVisible': // Whether the panel is now visible or not [boolean]  
+	'id': // ID of Accordion [string]
+	'panelNumber': // The number of the panel that changed [number]
+	'panelVisible': // Whether the panel is now visible or not [boolean]
 }
 </code></pre>
 <h3>Listened for events</h3>
-<p>Accordion listens for the following events, which should be dispatched on the specific <code>ace-accordion</code> element.</p>
+<p>Accordion listens for the following events that should be dispatched to <code>window</code>.</p>
 <h4>Show, hide and toggle panel</h4>
 <p><code>ace-accordion-show-panel</code>, <code>ace-accordion-hide-panel</code> &amp; <code>ace-accordion-toggle-panel</code></p>
-<p>These events should be dispatched to show, hide and toggle the visibility of a panel. The event names are available as <code>EVENTS.IN.SHOW_PANEL</code>, <code>EVENTS.IN.HIDE_PANEL</code> and <code>EVENTS.IN.TOGGLE_PANEL</code>,  and their <code>detail</code> properties should be composed as follows:</p>
+<p>These events should be dispatched to show, hide and toggle the visibility of a panel. The event names are available as <code>EVENTS.IN.SHOW_PANEL</code>, <code>EVENTS.IN.HIDE_PANEL</code> and <code>EVENTS.IN.TOGGLE_PANEL</code>, and their <code>detail</code> properties should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
-  'panelNumber': // The number of the panel to change the visibility of [number]
+	'id': // ID of target Accordion [string]
+	'panelNumber': // The number of the panel to change the visibility of [number]
 }
 </code></pre>
 <h4>Show and hide all panels</h4>
-<p><code>ace-accordion-show-panels</code> &amp;  <code>ace-accordion-hide-panels</code></p>
-<p>These events should be dispatched to show and hide all panels. The event names are available as <code>EVENTS.IN.SHOW_PANELS</code> and  <code>EVENTS.IN.HIDE_PANELS</code>.</p>
+<p><code>ace-accordion-show-all-panels</code> &amp; <code>ace-accordion-hide-all-panels</code></p>
+<p>These events should be dispatched to show and hide all panels. The event names are available as <code>EVENTS.IN.SHOW_ALL_PANELS</code> and <code>EVENTS.IN.HIDE_ALL_PANELS</code> and their <code>detail</code> properties should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+	'id': // ID of target Accordion [string]
+}
+</code></pre>
 <h4>Update</h4>
 <p><code>ace-accordion-update</code></p>
-<p>This event should be dispatched when headers, triggers and panels are added or removed and causes Accordion to initialise them and then dispatch the <code>ace-accordion-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE</code>.</p>
+<p>This event should be dispatched when headers, triggers and panels are added or removed and causes Accordion to initialise them and then dispatch the <code>ace-accordion-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE</code> and its <code>detail</code> property should be composed as follows:</p>
+<pre><code class="language-js">'detail': {
+	'id': // ID of target Accordion [string]
+}
+</code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
 <h3>Simple Accordion</h3>
@@ -113,7 +122,7 @@
 	&lt;/div&gt;
 &lt;/ace-accordion&gt;
 </code></pre>
-<h3>One visible panel Accordion with initially visible second panel</h3>
+<h3>Accordion with initially visible second panel and one panel visible at a time</h3>
 <p>This Accordion will show the second panel upon page load as it has the attribute <code>ace-accordion-panel-visible</code> with value <code>true</code>. The Accordion also has the attribute <code>ace-accordion-one-visible-panel</code> so only one panel is visible at a time and showing a panel will hide the currently visible panel.</p>
 <div class="example-block"><ace-accordion ace-accordion-one-visible-panel id="one-visible-panel-accordion">
 	<h3>
@@ -305,23 +314,25 @@
 <pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/accordion/accordion.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const accordionEl = document.getElementById('custom-events-accordion');
+	const ACCORDION_ID = 'custom-events-accordion';
+	const accordionEl = document.getElementById(ACCORDION_ID);
 
 	window.addEventListener('click', (e) =&gt; {
-		let customEvent;
 		const targetId = e.target.id;
 		switch(targetId) {
 			case 'hide-panel-btn':
 			case 'show-panel-btn':
 			case 'toggle-panel-btn': {
+				let customEvent;
 				const panelNumber = document.getElementById('panel-number').value;
 				if (targetId === 'toggle-panel-btn') {
 					customEvent = EVENTS.IN.TOGGLE_PANEL;
 				} else {
 					customEvent = EVENTS.IN[`${targetId === 'hide-panel-btn' ? 'HIDE' : 'SHOW'}_PANEL`];
 				}
-				accordionEl.dispatchEvent(new CustomEvent(customEvent, {
+				window.dispatchEvent(new CustomEvent(customEvent, {
 					'detail': {
+						'id': ACCORDION_ID,
 						'panelNumber': panelNumber,
 					}
 				}));
@@ -329,8 +340,8 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 			}
 			case 'show-panels-btn':
 			case 'hide-panels-btn': {
-				customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_PANELS`];
-				accordionEl.dispatchEvent(new CustomEvent(customEvent));
+				const customEvent = EVENTS.IN[`${targetId === 'hide-panels-btn' ? 'HIDE' : 'SHOW'}_ALL_PANELS`];
+				window.dispatchEvent(new CustomEvent(customEvent, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 			case 'append-panel-btn': {
@@ -348,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 
 				accordionEl.append(newHeaderEl);
 				accordionEl.append(newPanelEl);
-				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 			case 'remove-panel-btn': {
@@ -356,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 				const panelEl = accordionEl.querySelector(`[${ATTRS.PANEL}]`);
 				accordionEl.removeChild(headerEl);
 				accordionEl.removeChild(panelEl);
-				accordionEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE));
+				window.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE, {'detail': {'id': ACCORDION_ID}}));
 				break;
 			}
 		}
