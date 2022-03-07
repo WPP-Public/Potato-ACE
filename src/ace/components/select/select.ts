@@ -143,7 +143,7 @@ export default class Select extends HTMLElement {
 		this.listEl.addEventListener('blur', this.blurHandler);
 		this.addEventListener('click', this.clickHandler);
 		this.addEventListener('keydown', this.keydownHandler);
-		this.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.addEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 
 
 		/* INITIALISATION */
@@ -168,7 +168,7 @@ export default class Select extends HTMLElement {
 		this.listEl?.removeEventListener('blur', this.blurHandler);
 		this.removeEventListener('click', this.clickHandler);
 		this.removeEventListener('keydown', this.keydownHandler);
-		this.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
+		window.removeEventListener(EVENTS.IN.UPDATE_OPTIONS, this.updateOptionsHandler);
 	}
 
 
@@ -337,10 +337,12 @@ export default class Select extends HTMLElement {
 	/*
 		Update options custom event handler
 	*/
-	private updateOptionsHandler(): void {
-		if (!this.list) {
+	private updateOptionsHandler(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id || !this.list) {
 			return;
 		}
+
 		this.list.initOptionEls();
 		if (!this.list.lastSelectedOptionIndex && this.list.lastSelectedOptionIndex !== 0) {
 			this.list.selectOption(0);

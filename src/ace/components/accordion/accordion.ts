@@ -24,10 +24,10 @@ export const ATTRS = {
 // Add names of any custom events used, prefixed with ACCORDION
 export const EVENTS = {
 	IN: {
+		HIDE_ALL_PANELS: `${ACCORDION}-hide-all-panels`,
 		HIDE_PANEL: `${ACCORDION}-hide-panel`,
-		HIDE_PANELS: `${ACCORDION}-hide-panels`,
+		SHOW_ALL_PANELS: `${ACCORDION}-show-all-panels`,
 		SHOW_PANEL: `${ACCORDION}-show-panel`,
-		SHOW_PANELS: `${ACCORDION}-show-panels`,
 		TOGGLE_PANEL: `${ACCORDION}-toggle-panel`,
 		UPDATE: `${ACCORDION}-update`,
 	},
@@ -78,12 +78,12 @@ export default class Accordion extends HTMLElement {
 
 		/* ADD EVENT LISTENERS */
 		this.addEventListener('click', this.clickHandler);
-		this.addEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
-		this.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.HIDE_ALL_PANELS, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.SHOW_ALL_PANELS, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
+		window.addEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
 
 
 		/* INITIALISATION */
@@ -113,12 +113,12 @@ export default class Accordion extends HTMLElement {
 	public disconnectedCallback(): void {
 		/* REMOVE EVENT LISTENERS */
 		this.removeEventListener('click', this.clickHandler);
-		this.removeEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.HIDE_PANELS, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.SHOW_PANELS, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
-		this.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.HIDE_PANEL, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.HIDE_ALL_PANELS, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SHOW_PANEL, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.SHOW_ALL_PANELS, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.TOGGLE_PANEL, this.customEventsHander);
+		window.removeEventListener(EVENTS.IN.UPDATE, this.customEventsHander);
 	}
 
 
@@ -144,11 +144,15 @@ export default class Accordion extends HTMLElement {
 		Handler for incoming custom events
 	*/
 	private customEventsHander(e: Event): void {
+		const detail = (e as CustomEvent)['detail'];
+		if (!detail || detail['id'] !== this.id) {
+			return;
+		}
+
 		switch (e.type) {
 			case EVENTS.IN.HIDE_PANEL:
 			case EVENTS.IN.SHOW_PANEL:
 			case EVENTS.IN.TOGGLE_PANEL: {
-				const detail = (e as CustomEvent)['detail'];
 				if (!detail || !detail['panelNumber']) {
 					return;
 				}
@@ -162,10 +166,10 @@ export default class Accordion extends HTMLElement {
 				}
 				break;
 			}
-			case EVENTS.IN.HIDE_PANELS:
-			case EVENTS.IN.SHOW_PANELS:
+			case EVENTS.IN.HIDE_ALL_PANELS:
+			case EVENTS.IN.SHOW_ALL_PANELS:
 				this.panelEls?.forEach((_, index) => {
-					if (e.type === EVENTS.IN.HIDE_PANELS) {
+					if (e.type === EVENTS.IN.HIDE_ALL_PANELS) {
 						this.hidePanel(index);
 					} else {
 						this.showPanel(index);

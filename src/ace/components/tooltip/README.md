@@ -29,7 +29,7 @@ import '<path-to-node_modules>/@potato/ace/components/tooltip/tooltip';
 
 For convenience the ES6 class is exported as `Tooltip` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Tooltip is instantiated within each `<ace-tooltip>` element and an ID `ace-tooltip-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-tooltip-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Tooltip is instantiated within each `<ace-tooltip>` element and an ID `ace-tooltip-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-tooltip-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
 Tooltip must be a child of its target element and will add attribute `ace-tooltip-target` to it as well as set the value of its `aria-labelledby` or `aria-describedby` to the Tooltip's ID based on whether the Tooltip contains primary or supplementary information. Tooltip content is considered primary information if its target does not have attributes `aria-label` nor `aria-labelledby`, nor text content, thus the value of the target element's `aria-labelledby` attribute is set to the Tooltip ID. Otherwise the Tooltip content is considered suplimentary information and its ID is set as the value of the target element's `aria-describedby` attribute instead.
 
@@ -123,7 +123,7 @@ Tooltip uses the following custom events, the names of which are available in it
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Tooltip.
+The following events are dispatched to `window` by Tooltip.
 
 
 #### Ready
@@ -134,7 +134,7 @@ This event is dispatched when Tooltip finishes initialising. The event name is a
 
 ```js
 'detail': {
-  'id': // ID of Tooltip [string]
+	'id': // ID of Tooltip [string]
 }
 ```
 
@@ -146,21 +146,27 @@ This event is dispatched when Tooltip visibility changes. The event name is avai
 
 ```js
 'detail': {
-  'id': // ID of Tooltip [string]
-  'visible': // Whether the Tooltip is visible or not [boolean]
+	'id': // ID of Tooltip [string]
+	'visible': // Whether the Tooltip is visible or not [boolean]
 }
 ```
 
 
 ### Listened for events
 
-Tooltip listens for the following events, which should be dispatched on the specific `ace-tooltip` element.
+Tooltip listens for the following events that should be dispatched to `window`.
 
 #### Show and hide
 
 `ace-tooltip-show` & `ace-tooltip-hide` 
 
-These events should be dispatched to show and hide the Tooltip. The event names are available as `EVENTS.IN.SHOW` and `EVENTS.IN.HIDE`:
+These events should be dispatched to show and hide the Tooltip. The event names are available as `EVENTS.IN.SHOW` and `EVENTS.IN.HIDE` and their `detail` properties should be composed as follows:
+
+```js
+'detail': {
+  'id': // ID of target Tooltip [string]
+}
+```
 
 
 ## Examples
@@ -287,12 +293,15 @@ The first two buttons in this example dispatch the `ace-tooltip-show` and `ace-t
 import { EVENTS } from '/ace/components/tooltip/tooltip.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const tooltipEl = document.getElementById('custom-events-tooltip');
+	const TOOLTIP_ID = 'custom-events-tooltip';
 
 	window.addEventListener('click', (e) => {
 		const targetId = e.target.id;
 		if (targetId === 'show-tooltip-btn' || targetId === 'hide-tooltip-btn') {
-			tooltipEl.dispatchEvent(new CustomEvent(EVENTS.IN[`${targetId === 'show-tooltip-btn' ? 'SHOW' : 'HIDE'}`]));
+			window.dispatchEvent(new CustomEvent(
+				EVENTS.IN[`${targetId === 'show-tooltip-btn' ? 'SHOW' : 'HIDE'}`],
+				{'detail': {'id': TOOLTIP_ID}},
+			));
 		}
 	});
 });

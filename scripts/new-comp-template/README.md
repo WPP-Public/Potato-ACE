@@ -31,7 +31,7 @@ import '<path-to-node_modules>/@potato/ace/components/template/template';
 
 For convenience the ES6 class is exported as `Template` <!-- TODO: If no ATTRS are exported, remove following sentence --> and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Template is instantiated within each `<ace-template>` element and an ID `ace-template-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-template-ready` is dispatched on `window`. See the **Custom events** section below for more details.
+After the event `DOMContentLoaded` is fired on `document` an instance of Template is instantiated within each `<ace-template>` element and an ID `ace-template-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-template-ready` is dispatched to `window`. See the **Custom events** section below for more details.
 
 <!-- EXPLAIN THE REQUIRED AND RECOMMENDED ATTRIBUTES AND ELEMENTS TO BE PROVIDED BY DEVELOPERS BEFORE INSTANTIATION. STARTING FROM THE COMPONENT ITSELF AND FOLLOWING THE HIERARCHY DESCRIBE: -->
 
@@ -39,7 +39,7 @@ After the event `DOMContentLoaded` is fired on `document` an instance of Templat
 
 > Template must have a descendant button to \_\_\_\_\_, and will use a descendant `<button>` with attribute `ace-template-btn`. If no descendant has this attribute then the first decendant `<button>` will be used and given this attribute.
 
-<!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or  or `aria-labelledby`. -->
+<!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or `aria-labelledby`. -->
 
 > It is strongly recommended that Template be provided with an accessible label using either `aria-label` or `aria-labelledby`.
 
@@ -67,7 +67,7 @@ Template uses the following custom events, the names of which are available in i
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Template.
+The following events are dispatched to `window` by Template.
 
 
 #### Ready
@@ -78,14 +78,14 @@ This event is dispatched when Template finishes initialising. The event name is 
 
 ```js
 'detail': {
-  'id': // ID of Template [string]
+	'id': // ID of Template [string]
 }
 ```
 
 
 ### Listened for events
 
-Template listens for the following events, which should be dispatched on the specific `ace-template` element.
+Template listens for the following events that should be dispatched to `window`.
 
 
 <!-- TODO: Replace 'Event name' with a descriptive name -->
@@ -95,14 +95,15 @@ Template listens for the following events, which should be dispatched on the spe
 `ace-template-event-name`
 
 <!-- DESCRIBE EVENT HERE AND SPECIFY IF ITS DISPATCHED OR LISTENED FOR -->
-This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as  <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
+This event should be dispatched to <!-- TODO: Describe what the event causes the instance to do -->. The event name is available as <!-- TODO: Replace <EVENT-NAME> with correct value -->`EVENTS.IN.<EVENT-NAME>`
 
 <!-- TODO: If detail property used add the following and describe each of its properties --> 
 and its `detail` property should be composed as follows:
 
 ```js
 'detail': {
-  'prop': // Description of prop [prop type (string/boolean etc.)]
+	'id': // ID of target Template [string]
+	'prop': // Description of prop [prop type (string/boolean etc.)]
 }
 ```
 

@@ -137,7 +137,7 @@ function App() {
 
 	// Collapse Accordion's panels using its "hide panels" custom event
 	const collapseAll = () => accordionRef.current.dispatchEvent(
-		new CustomEvent(EVENTS.IN.HIDE_PANELS)
+		new CustomEvent(EVENTS.IN.HIDE_ALL_PANELS)
 	);
 
 	return (
@@ -202,11 +202,11 @@ and finally add this at the end of the file
 
 ```tsx
 declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'ace-accordion': any;
-    }
-  }
+	namespace JSX {
+		interface IntrinsicElements {
+			'ace-accordion': any;
+		}
+	}
 }
 ```
 
@@ -249,14 +249,14 @@ Starting with a fresh project, created using the Angular CLI command `ng new`, A
 
 ```html
 <ace-accordion>
-  <ng-container *ngFor="let panel of content">
-    <h3>
-      <button>{{panel.trigger}}</button>
-    </h3>
-    <div>
-      <p>{{panel.content}}</p>
-    </div>
-  </ng-container>
+	<ng-container *ngFor="let panel of content">
+		<h3>
+			<button>{{panel.trigger}}</button>
+		</h3>
+		<div>
+			<p>{{panel.content}}</p>
+		</div>
+	</ng-container>
 </ace-accordion>
 ```
 
@@ -268,18 +268,18 @@ import { Component, Input } from '@angular/core';
 import '@potato/ace/components/accordion/accordion';
 
 export interface AccordionContent {
-  content: string;
-  trigger: string;
+	content: string;
+	trigger: string;
 }
 
 @Component({
-  selector: 'app-accordion',
-  templateUrl: './accordion.component.html',
-  styleUrls: ['./accordion.component.css']
+	selector: 'app-accordion',
+	templateUrl: './accordion.component.html',
+	styleUrls: ['./accordion.component.css']
 })
 export class AccordionComponent {
-  @Input()
-  content: Array<AccordionContent> = [];
+	@Input()
+	content: Array<AccordionContent> = [];
 }
 ```
 
@@ -295,7 +295,7 @@ export class AccordionComponent {
 <app-accordion #accordion [content]="accordionContent"></app-accordion>
 
 <button [disabled]="panelsCollapsed" (click)="collapseAll()">
-  Collapse all
+	Collapse all
 </button>
 ```
 
@@ -307,48 +307,48 @@ import { AccordionContent } from './accordion/accordion.component';
 import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  accordionContent: Array<AccordionContent> = [
-    {
-      content: 'Panel 1 content',
-      trigger: 'Panel 1 trigger',
-    },
-    {
-      content: 'Panel 2 content',
-      trigger: 'Panel 2 trigger',
-    },
-    {
-      content: 'Panel 3 content',
-      trigger: 'Panel 3 trigger',
-    },
-  ];
-  aceAccordionEl: HTMLElement | null = null;
-  panelsCollapsed = true;
+	accordionContent: Array<AccordionContent> = [
+		{
+			content: 'Panel 1 content',
+			trigger: 'Panel 1 trigger',
+		},
+		{
+			content: 'Panel 2 content',
+			trigger: 'Panel 2 trigger',
+		},
+		{
+			content: 'Panel 3 content',
+			trigger: 'Panel 3 trigger',
+		},
+	];
+	aceAccordionEl: HTMLElement | null = null;
+	panelsCollapsed = true;
 
-  // @ViewChild and ngAfterViewInit used to get reference to Accordion DOM element in accordion.component.html, to dispatch custom event on it
-  @ViewChild('accordion', {read: ElementRef})
-  accordion!: ElementRef;
+	// @ViewChild and ngAfterViewInit used to get reference to Accordion DOM element in accordion.component.html, to dispatch custom event on it
+	@ViewChild('accordion', {read: ElementRef})
+	accordion!: ElementRef;
 
-  // @HostListener used to add Accordion "changed" event listener
-  @HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
-  onPanelChange(): void {
-    this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
-  }
+	// @HostListener used to add Accordion "changed" event listener
+	@HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
+	onPanelChange(): void {
+		this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+	}
 
-  ngAfterViewInit() {
-    this.aceAccordionEl = this.accordion.nativeElement.firstElementChild;
-  }
+	ngAfterViewInit() {
+		this.aceAccordionEl = this.accordion.nativeElement.firstElementChild;
+	}
 
 	// Collapse Accordion's panels using it's "hide panels" custom event
-  collapseAll() {
-    this.aceAccordionEl?.dispatchEvent(
-      new CustomEvent(EVENTS.IN.HIDE_PANELS)
-    );
-  }
+	collapseAll() {
+		this.aceAccordionEl?.dispatchEvent(
+			new CustomEvent(EVENTS.IN.HIDE_ALL_PANELS)
+		);
+	}
 }
 ```
 
@@ -362,16 +362,16 @@ import { AppComponent } from './app.component';
 import { AccordionComponent } from './accordion/accordion.component';
 
 @NgModule({
-  declarations: [
-    AccordionComponent,
-    AppComponent
-  ],
-  imports: [
-    BrowserModule
-  ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [],
-  bootstrap: [AppComponent]
+	declarations: [
+		AccordionComponent,
+		AppComponent
+	],
+	imports: [
+		BrowserModule
+	],
+	schemas: [CUSTOM_ELEMENTS_SCHEMA],
+	providers: [],
+	bootstrap: [AppComponent]
 })
 export class AppModule { }
 ```
@@ -380,19 +380,19 @@ export class AppModule { }
 
 ```json
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": []
-  },
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts",
-    "./node_modules/@potato/ace/components/accordion/accordion.ts",
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./out-tsc/app",
+		"types": []
+	},
+	"files": [
+		"src/main.ts",
+		"src/polyfills.ts",
+		"./node_modules/@potato/ace/components/accordion/accordion.ts",
+	],
+	"include": [
+		"src/**/*.d.ts"
+	]
 }
 ```
 
@@ -408,18 +408,18 @@ Replace contents with
 
 ```json
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "outDir": "./out-tsc/app",
-    "types": ["node"]
-  },
-  "files": [
-    "src/main.ts",
-    "src/polyfills.ts"
-  ],
-  "include": [
-    "src/**/*.d.ts"
-  ]
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./out-tsc/app",
+		"types": ["node"]
+	},
+	"files": [
+		"src/main.ts",
+		"src/polyfills.ts"
+	],
+	"include": [
+		"src/**/*.d.ts"
+	]
 }
 ```
 
@@ -496,16 +496,16 @@ Starting with a fresh project, created using the Vue CLI and `vue create`, ACE w
 import {EVENTS} from '@potato/ace/components/accordion/accordion';
 
 export default {
-  name: 'Accordion',
-  props: {
-    content: Array
-  },
+	name: 'Accordion',
+	props: {
+		content: Array
+	},
 	methods: {
 		collapseAll() {
 			this.$refs.accordion.dispatchEvent(
-				new CustomEvent(EVENTS.IN.HIDE_PANELS)
+				new CustomEvent(EVENTS.IN.HIDE_ALL_PANELS)
 			);
-    }
+		}
 	}
 }
 </script>
@@ -520,11 +520,11 @@ export default {
 
 ```html
 <template>
-  <Accordion :content="accordionContent" ref="mainAccordion"/>
+	<Accordion :content="accordionContent" ref="mainAccordion"/>
 
-  <button :disabled="panelsCollapsed" @click="collapseAll">
-    Collapse all
-  </button>
+	<button :disabled="panelsCollapsed" @click="collapseAll">
+		Collapse all
+	</button>
 </template>
 
 
@@ -533,43 +533,43 @@ import Accordion from './components/Accordion.vue';
 import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
 
 export default {
-  name: 'App',
-  components: {
-    Accordion
-  },
-  data() {
-    return {
-      accordionContent: [
-        {
-          content: 'Panel 1 content',
-          trigger: 'Panel 1 trigger',
-        },
-        {
-          content: 'Panel 2 content',
-          trigger: 'Panel 2 trigger',
-        },
-        {
-          content: 'Panel 3 content',
-          trigger: 'Panel 3 trigger',
-        },
-      ],
-      panelsCollapsed: true,
-    }
-  },
-  created () {
-    window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
-  },
-  unmounted () {
-    window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
-  },
-  methods: {
-    collapseAll() {
-      this.$refs.mainAccordion.collapseAll();
-    },
-    onPanelChange() {
-      this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
-    },
-  },
+	name: 'App',
+	components: {
+		Accordion
+	},
+	data() {
+		return {
+			accordionContent: [
+				{
+					content: 'Panel 1 content',
+					trigger: 'Panel 1 trigger',
+				},
+				{
+					content: 'Panel 2 content',
+					trigger: 'Panel 2 trigger',
+				},
+				{
+					content: 'Panel 3 content',
+					trigger: 'Panel 3 trigger',
+				},
+			],
+			panelsCollapsed: true,
+		}
+	},
+	created () {
+		window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
+	},
+	unmounted () {
+		window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
+	},
+	methods: {
+		collapseAll() {
+			this.$refs.mainAccordion.collapseAll();
+		},
+		onPanelChange() {
+			this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+		},
+	},
 }
 </script>
 ```
@@ -578,17 +578,17 @@ export default {
 
 ```js
 module.exports = {
-  chainWebpack: config => {
-    config.module
-      .rule('vue')
-      .use('vue-loader')
-      .tap(options => ({
-        ...options,
-        compilerOptions: {
-          // treat any tag that starts with ace- as custom elements
-          isCustomElement: tag => tag.startsWith('ace-')
-        }
-      }))
-  }
+	chainWebpack: config => {
+		config.module
+			.rule('vue')
+			.use('vue-loader')
+			.tap(options => ({
+				...options,
+				compilerOptions: {
+					// treat any tag that starts with ace- as custom elements
+					isCustomElement: tag => tag.startsWith('ace-')
+				}
+			}))
+	}
 }
 ```

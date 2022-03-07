@@ -52,6 +52,8 @@ export default class Template extends HTMLElement {
 
 
 	public connectedCallback(): void {
+		this.id = this.id || autoID(TEMPLATE);
+
 		/* GET DOM ELEMENTS */
 		// Add suffix `El` to the names of class constants containing elements:
 		// this.someEl = this.querySelector(`[${ATTRS.ATTR_NAME}]`);
@@ -79,7 +81,7 @@ export default class Template extends HTMLElement {
 			}
 		}));
 		// CUSTOM EVENT NOTES:
-		// Dispatch custom events on 'window'
+		// Dispatch custom events to 'window'
 		// When dispatching custom events include class instance ID in the 'detail' property
 	}
 
@@ -108,6 +110,5 @@ export default class Template extends HTMLElement {
 
 /* REGISTER CUSTOM ELEMENT */
 document.addEventListener('DOMContentLoaded', () => {
-	autoID(TEMPLATE);
 	customElements.define(TEMPLATE, Template);
 });

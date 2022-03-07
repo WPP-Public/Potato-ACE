@@ -29,7 +29,7 @@ import '<path-to-node_modules>/@potato/ace/components/carousel/carousel';
 
 For convenience the ES6 class is exported as `Carousel` and the attribute names used by the class are exported as properties of `ATTRS`.
 
-After the event `DOMContentLoaded` is fired on `document` an instance of Carousel is instantiated within each `<ace-carousel>` element and an ID `ace-carousel-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-carousel-ready` is dispatched on `window`.
+After the event `DOMContentLoaded` is fired on `document` an instance of Carousel is instantiated within each `<ace-carousel>` element and an ID `ace-carousel-<n>` is added for any instance without one, where `<n>` is a unique integer. Once instantiation is complete a custom event `ace-carousel-ready` is dispatched to `window`.
 
 It is strongly recommended that Carousel be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "carousel" should not be included in the label as Carousel has `aria-roledescription="carousel"` which is read out by screen readers.
 
@@ -39,7 +39,7 @@ All Carousels must have descendant buttons to display the previous and next slid
 
 A set of slide picker buttons, used to select each slide, can be added to Carousel by including an element with attribute `ace-carousel-slide-picker` and a descendant `<button>` for each slide. Alternatively, this element can be added with no descendant `button` elements and Carousel will populate it with a button for each slide. Carousel adds `aria-label` attributes to each slide picker button in the format `Slide n`, where `n` is the slide number. To allow for more approprite or localised strings, the string `Slide` can be replaced in the `aria-label` of all slide picker buttons with the value of the attribute `ace-carousel-slide-picker-btn-aria-label-prefix` of the element with attribute `ace-carousel-slide-picker`. It is strongly recommended that the slide picker follow the previous and next slide buttons in DOM hierarchy and therefore in tab sequence. This order should be used even if the slide picker buttons are to be displayed below or overlayed on top of the slides in which case their positioning should be set using CSS. For accessibility purposes Carousel buttons that are styled by developers and overlayed on top of the slides must use colors that provides sufficient contrast so they are clearly visible.
 
-All Carousel slides must be descendant within an element with attribute `ace-carousel-slides`. If no descendant has this attribute, the first child `<div>` will be used if present, otherwise Carousel will append a child `<div>` to itself and use it. Slides do not have to be present upon instantiation and can be dynamically added, or removed later, as long as custom event `ace-carousel-update-slides` is dispatched on the Carousel instance afterwards. Carousel adds `aria-label` attributes to each slide in the format `n of N`, where `n` is the slide number and `N` is the total number of slides. To allow for localised strings, the string `of` can be replaced with the value of the attribute `ace-carousel-slide-aria-label-infix` of the element with attribute `ace-carousel-slides`.
+All Carousel slides must be descendant within an element with attribute `ace-carousel-slides`. If no descendant has this attribute, the first child `<div>` will be used if present, otherwise Carousel will append a child `<div>` to itself and use it. Slides do not have to be present upon instantiation and can be dynamically added, or removed later, as long as custom event `ace-carousel-update-slides` is dispatched to the Carousel instance afterwards. Carousel adds `aria-label` attributes to each slide in the format `n of N`, where `n` is the slide number and `N` is the total number of slides. To allow for localised strings, the string `of` can be replaced with the value of the attribute `ace-carousel-slide-aria-label-infix` of the element with attribute `ace-carousel-slides`.
 
 ## Usage
 
@@ -100,7 +100,7 @@ Carousel uses the following custom events, the names of which are available in i
 
 ### Dispatched events
 
-The following events are dispatched on `window` by Carousel.
+The following events are dispatched to `window` by Carousel.
 
 #### Ready
 
@@ -110,7 +110,7 @@ This event is dispatched when Carousel finishes initialising just after page loa
 
 ```js
 'detail': {
-  'id': // ID of Carousel [string]
+	'id': // ID of Carousel [string]
 }
 ```
 
@@ -123,9 +123,9 @@ This event is dispatched when the displayed slide is changed. The event name is 
 
 ```js
 'detail': {
-  'currentlySelectedSlide': // The current selected slide number [number]
-  'id': // ID of Carousel [string]
-  'previouslySelectedSlide': // The previously selected slide number [number]
+	'currentlySelectedSlide': // The current selected slide number [number]
+	'id': // ID of Carousel [string]
+	'previouslySelectedSlide': // The previously selected slide number [number]
 }
 ```
 
@@ -137,40 +137,64 @@ These events are dispatched when the automatic slide show is started, stopped or
 
 ```js
 'detail': {
-  'id': // ID of Carousel [string]
+	'id': // ID of Carousel [string]
 }
 ```
 
 ### Listened for events
 
-Carousel listens for the following events, which should be dispatched on the specific `ace-carousel` element.
+Carousel listens for the following events that should be dispatched to `window`.
 
 
 #### Set previous slide
 
 `ace-carousel-set-prev-slide`
 
-This event should be dispatched to display the previous slide, or the last slide if the Carousel has the attribute `ace-carousel-infinite` and its first slide is displayed. The event name is available as `EVENTS.IN.SET_PREV_SLIDE`.
+This event should be dispatched to display the previous slide, or the last slide if the Carousel has the attribute `ace-carousel-infinite` and its first slide is displayed. The event name is available as `EVENTS.IN.SET_PREV_SLIDE` and its `detail` property should be composed as follows:
+
+```js
+'detail': {
+  'id': // ID of target Carousel [string]
+}
+```
 
 
 #### Set next slide
 
 `ace-carousel-set-next-slide`
 
-This event should be dispatched to display the next slide, or the first slide if the Carousel has the attribute `ace-carousel-infinite` and its the last slide is displayed. The event name is available as `EVENTS.IN.SET_NEXT_SLIDE`.
+This event should be dispatched to display the next slide, or the first slide if the Carousel has the attribute `ace-carousel-infinite` and its the last slide is displayed. The event name is available as `EVENTS.IN.SET_NEXT_SLIDE` and its `detail` property should be composed as follows:
+
+```js
+'detail': {
+  'id': // ID of target Carousel [string]
+}
+```
 
 
 #### Update slides
 
 `ace-carousel-update-slides`
 
-This event should be dispatched when slides are added or removed and causes Carousel to initialise them and then dispatch the `ace-carousel-ready` event. The event name is available as `EVENTS.IN.UPDATE_SLIDES`.
+This event should be dispatched when slides are added or removed and causes Carousel to initialise them and then dispatch the `ace-carousel-ready` event. The event name is available as `EVENTS.IN.UPDATE_SLIDES` and its `detail` property should be composed as follows:
+
+```js
+'detail': {
+  'id': // ID of target Carousel [string]
+}
+```
 
 #### Automatic slide show events
 
 `ace-carousel-start-auto-slide-show` & `ace-carousel-stop-auto-slide-show`
 
-These event should be dispatched to start or stop the automatic slide show respectively. The event names are available as `EVENTS.IN.START_AUTO_SLIDE_SHOW` and `EVENTS.IN.STOP_AUTO_SLIDE_SHOW` respectively.
+These event should be dispatched to start or stop the automatic slide show. The event names are available as `EVENTS.IN.START_AUTO_SLIDE_SHOW` and `EVENTS.IN.STOP_AUTO_SLIDE_SHOW` and their `detail` properties should be composed as follows:
+
+```js
+'detail': {
+  'id': // ID of target Carousel [string]
+}
+```
 
 ## Examples
 
@@ -244,7 +268,8 @@ The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-car
 import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const carouselEl = document.getElementById('custom-events-carousel');
+	const CAROUSEL_ID = 'custom-events-carousel';
+	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 
 	const addSlide = () => {
@@ -256,7 +281,10 @@ document.addEventListener('DOMContentLoaded', () => {
 		newSlideEl.appendChild(headingEl);
 		newSlideEl.appendChild(p);
 		slidesWrapper.appendChild(newSlideEl);
-		carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
+		window.dispatchEvent(new CustomEvent(
+			EVENTS.IN.UPDATE_SLIDES,
+			{'detail': {'id': CAROUSEL_ID}},
+		));
 	};
 
 	window.addEventListener('click', (e) => {
@@ -265,7 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'prev-slide-btn':
 			case 'next-slide-btn': {
 				const event = EVENTS.IN[`SET_${targetId === 'prev-slide-btn' ? 'PREV' : 'NEXT'}_SLIDE`];
-				carouselEl.dispatchEvent(new CustomEvent(event));
+				window.dispatchEvent(new CustomEvent(
+					event,
+					{'detail': {'id': CAROUSEL_ID}},
+				));
 				break;
 			}
 			case 'add-slide-btn':
@@ -275,7 +306,10 @@ document.addEventListener('DOMContentLoaded', () => {
 				} else {
 					slidesWrapper.removeChild(slidesWrapper.lastElementChild);
 				}
-				carouselEl.dispatchEvent(new CustomEvent(EVENTS.IN.UPDATE_SLIDES));
+				window.dispatchEvent(new CustomEvent(
+					EVENTS.IN.UPDATE_SLIDES,
+					{'detail': {'id': CAROUSEL_ID}},
+				));
 				break;
 		}
 	});
@@ -376,7 +410,7 @@ Carousel with automatic slide show. Two buttons have also been included, which d
 import {EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const carouselEl = document.getElementById('auto-carousel');
+	const CAROUSEL_ID = 'auto-carousel';
 
 	window.addEventListener('click', (e) => {
 		const targetId = e.target.id;
@@ -384,7 +418,10 @@ document.addEventListener('DOMContentLoaded', () => {
 			case 'start-auto-slide-show-custom-event-btn':
 			case 'stop-auto-slide-show-custom-event-btn': {
 				const event = EVENTS.IN[`${targetId === 'start-auto-slide-show-custom-event-btn' ? 'START' : 'STOP'}_AUTO_SLIDE_SHOW`];
-				carouselEl.dispatchEvent(new CustomEvent(event));
+				window.dispatchEvent(new CustomEvent(
+					event,
+					{'detail': {'id': CAROUSEL_ID}},
+				));
 				break;
 			}
 		}
