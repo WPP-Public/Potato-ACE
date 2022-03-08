@@ -30,239 +30,220 @@ $ace-listbox-selected-option-bg-color: #cccccc;
 </code></pre>
 <h2>Using ACE with JavaScript frameworks</h2>
 <h3>React</h3>
-<p>The following example shows how ACE components can be used with React. More general information about how to use web components with React can be found in <a href="https://reactjs.org/docs/web-components.html">React's Web Components guide</a>.</p>
-<p>The example demonstrates:</p>
-<ul>
-<li>Passing data from a parent component to an ACE Accordion component via <code>props</code>.</li>
-<li>Listening for a custom event dispatched by Accordion, then using <code>useState</code> and <code>useEffect</code> to conditionally disable a button in a parent component.</li>
-<li>Using <code>useRef</code> &amp; <code>forwardRef</code> to dispatch a custom event on Accordion from a parent component.</li>
-</ul>
-<p>Starting with a fresh project, created using <code>npx create-react-app</code>, ACE was installed using <code>npm i @potato/ace</code> before the following changes were made.</p>
-<p><em><strong>src/Accordion.jsx</strong></em></p>
-<pre><code class="language-jsx">import React, {forwardRef} from 'react';
-
-import '@potato/ace/components/accordion/accordion';
-
-// forwardRef used to reference Accordion DOM element, to dispatch custom event on it from App.js
-export const Accordion = forwardRef(({content}, ref) =&gt; {
-	return (
-		&lt;ace-accordion ref={ref}&gt;
-			{content.map((panel, index) =&gt; {
-				return &lt;React.Fragment key={index}&gt;
-					&lt;h3&gt;
-						&lt;button&gt;{panel.trigger}&lt;/button&gt;
-					&lt;/h3&gt;
-					&lt;div&gt;
-						&lt;p&gt;{panel.content}&lt;/p&gt;
-					&lt;/div&gt;
-				&lt;/React.Fragment&gt;
-			})}
-		&lt;/ace-accordion&gt;
-	);
-});
+<p>The following examples show how ACE components can be used with React. More general information about how to use custom elements with React can be found in the <a href="https://reactjs.org/docs/web-components.html">React web components guide</a>.</p>
+<p>These examples demonstrate how to use an ACE Accordion, pass data to it from a parent component via <code>props</code>, use <code>useEffect</code> in the parent to listen for a custom event dispatched by Accordion, and interact with Accordion from the parent using a custom event.</p>
+<h4>React without TypeScript</h4>
+<p>Starting with a fresh React project that does not use TypeScript, created using <code>npx create-react-app</code>:</p>
+<ol>
+<li>Install ACE:</li>
+</ol>
+<pre><code class="language-bash">npm i @potato/ace
 </code></pre>
-<p><em><strong>src/App.js</strong></em></p>
-<pre><code class="language-jsx">import {useEffect, useRef, useState} from 'react';
-
+<ol start="2">
+<li>Replace the contents of <em><strong>src/App.js</strong></em> with:</li>
+</ol>
+<pre><code class="language-jsx">import {useEffect, useState} from 'react';
 import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
 import {Accordion} from './Accordion';
 import './App.css';
 
 const accordionContent = [
-	{
-		content: 'Panel 1 content',
-		trigger: 'Panel 1 trigger',
-	},
-	{
-		content: 'Panel 2 content',
-		trigger: 'Panel 2 trigger',
-	},
-	{
-		content: 'Panel 3 content',
-		trigger: 'Panel 3 trigger',
-	},
+  {
+    content: 'Panel 1 content',
+    trigger: 'Panel 1 trigger',
+  },
+  {
+    content: 'Panel 2 content',
+    trigger: 'Panel 2 trigger',
+  }
 ];
 
 function App() {
-	// useRef used to reference Accordion DOM element in Accordion.jsx, to dispatch custom event on it
-	const accordionRef = useRef(null);
-	const [disableCollapseAllBtn, setDisableCollapseAllBtn] = useState(true);
+  const ACCORDION_ID = 'ace-accordion';
+  const [disableCollapseAllBtn, setDisableCollapseAllBtn] = useState(true);
 
-	// Accordion &quot;changed&quot; event handler that disables &quot;Collapse all&quot; button if all panels are already collaped
-	const handleAccordionPanelStateChange = () =&gt; {
-		const panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
-		setDisableCollapseAllBtn(panelsCollapsed);
-	}
+  // Accordion &quot;Panel visibility changed&quot; custom event handler to disable &quot;Collapse all&quot; button when all panels are collapsed
+  const handleAccordionPanelStateChange = () =&gt; {
+    const panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+    setDisableCollapseAllBtn(panelsCollapsed);
+  }
 
-	// useEffect used to add Accordion's &quot;changed&quot; event listener
-	useEffect(() =&gt; {
-		window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
-		return () =&gt; window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
-	}, []);
+  // useEffect used to add Accordion's &quot;Panel visibility changed&quot; custom event listener
+  useEffect(() =&gt; {
+    window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
+    return () =&gt; window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
+  }, []);
 
-	// Collapse Accordion's panels using its &quot;hide panels&quot; custom event
-	const collapseAll = () =&gt; accordionRef.current.dispatchEvent(
-		new CustomEvent(EVENTS.IN.HIDE_ALL_PANELS)
-	);
+  // Collapse Accordion's panels by dispatching its &quot;Hide panels&quot; custom event
+  const collapseAll = () =&gt; window.dispatchEvent(new CustomEvent(
+    EVENTS.IN.HIDE_ALL_PANELS,
+    {'detail': {'id': ACCORDION_ID}},
+  ));
 
-	return (
-		&lt;&gt;
-			&lt;Accordion content={accordionContent} ref={accordionRef} /&gt;
-			&lt;button	disabled={disableCollapseAllBtn} onClick={collapseAll} &gt;
-				Collapse all
-			&lt;/button&gt;
-		&lt;/&gt;
-	);
+  return (
+    &lt;&gt;
+      &lt;Accordion content={accordionContent} id={ACCORDION_ID} /&gt;
+      &lt;button	disabled={disableCollapseAllBtn} onClick={collapseAll} &gt;
+        Collapse all
+      &lt;/button&gt;
+    &lt;/&gt;
+  );
 }
 
 export default App;
 </code></pre>
-<p><em><strong>src/App.css</strong></em></p>
+<ol start="3">
+<li>Replace the contents of <em><strong>src/App.css</strong></em> with:</li>
+</ol>
 <pre><code class="language-css">@import '~@potato/ace/components/accordion/ace-accordion.css';
 </code></pre>
+<ol start="4">
+<li>Add a file <em><strong>src/Accordion.jsx</strong></em> with the following content:</li>
+</ol>
+<pre><code class="language-jsx">import React from 'react';
+import '@potato/ace/components/accordion/accordion';
+
+export const Accordion = ({content, id}) =&gt; {
+  return (
+    &lt;ace-accordion id={id}&gt;
+      {content.map((panel, index) =&gt; {
+        return &lt;React.Fragment key={index}&gt;
+          &lt;h3&gt;
+            &lt;button&gt;{panel.trigger}&lt;/button&gt;
+          &lt;/h3&gt;
+          &lt;div&gt;
+            &lt;p&gt;{panel.content}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/React.Fragment&gt;
+      })}
+    &lt;/ace-accordion&gt;
+  );
+};
+</code></pre>
 <h4>React with TypeScript</h4>
-<p>ACE components can also be used in React projects that use TypeScript.</p>
-<p>For example, to use ACE Accordion in a TypeScript React project follow the previous instructions then make the following changes.</p>
-<p><em><strong>src/Accordion.jsx</strong></em></p>
-<p>Rename <em>Accordion</em><em><strong>.jsx</strong></em> to <em>Accordion</em><em><strong>.tsx</strong></em>, then add this import</p>
-<pre><code class="language-tsx">import {AccordionContent} from './App';
+<p>Starting with a fresh React TypeScript project created using <code>npx create-react-app</code>:</p>
+<ol>
+<li>Install ACE:</li>
+</ol>
+<pre><code class="language-bash">npm i @potato/ace
 </code></pre>
-<p>then replace</p>
-<pre><code class="language-tsx">export const Accordion = forwardRef(({content}, ref) =&gt; {
-</code></pre>
-<p>with</p>
-<pre><code class="language-tsx">export const Accordion = forwardRef((props: {content:Array&lt;AccordionContent&gt;}, ref) =&gt; {
-</code></pre>
-<p>and replace</p>
-<pre><code class="language-tsx">{content.map((panel, index) =&gt; {
-</code></pre>
-<p>with</p>
-<pre><code class="language-tsx">{props.content.map((panel: AccordionContent, index: number) =&gt; {
-</code></pre>
-<p>and finally add this at the end of the file</p>
-<pre><code class="language-tsx">declare global {
-	namespace JSX {
-		interface IntrinsicElements {
-			'ace-accordion': any;
-		}
-	}
+<ol start="2">
+<li>Replace the contents of <em><strong>src/App.tsx</strong></em> with:</li>
+</ol>
+<pre><code class="language-jsx">import {useEffect, useState} from 'react';
+import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
+import {Accordion} from './Accordion';
+import './App.css';
+
+export interface AccordionContent {
+  content: string;
+  trigger: string;
 }
+
+const accordionContent: AccordionContent[] = [
+  {
+    content: 'Panel 1 content',
+    trigger: 'Panel 1 trigger',
+  },
+  {
+    content: 'Panel 2 content',
+    trigger: 'Panel 2 trigger',
+  }
+];
+
+function App() {
+  const ACCORDION_ID = 'ace-accordion';
+  const [disableCollapseAllBtn, setDisableCollapseAllBtn] = useState(true);
+
+  // Accordion &quot;Panel visibility changed&quot; custom event handler to disable &quot;Collapse all&quot; button when all panels are collapsed
+  const handleAccordionPanelStateChange = () =&gt; {
+    const panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+    setDisableCollapseAllBtn(panelsCollapsed);
+  }
+
+  // useEffect used to add Accordion's &quot;Panel visibility changed&quot; custom event listener
+  useEffect(() =&gt; {
+    window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
+    return () =&gt; window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, handleAccordionPanelStateChange);
+  }, []);
+
+  // Collapse Accordion's panels using its &quot;hide panels&quot; custom event
+  const collapseAll = () =&gt; window.dispatchEvent(new CustomEvent(
+    EVENTS.IN.HIDE_ALL_PANELS,
+    {'detail': {'id': ACCORDION_ID}},
+  ));
+
+  return (
+    &lt;&gt;
+      &lt;Accordion content={accordionContent} id={ACCORDION_ID} /&gt;
+      &lt;button	disabled={disableCollapseAllBtn} onClick={collapseAll} &gt;
+        Collapse all
+      &lt;/button&gt;
+    &lt;/&gt;
+  );
+}
+
+export default App;
 </code></pre>
-<p><em><strong>src/App.tsx</strong></em></p>
-<p>Replace</p>
-<pre><code class="language-tsx">const accordionRef = useRef(null);
+<ol start="3">
+<li>Replace the contents of <em><strong>src/App.css</strong></em> with:</li>
+</ol>
+<pre><code class="language-css">@import '~@potato/ace/components/accordion/ace-accordion.css';
 </code></pre>
-<p>with</p>
-<pre><code class="language-tsx">const accordionRef = useRef&lt;any&gt;(null);
-</code></pre>
-<p>and add this at the end of the file</p>
-<pre><code class="language-tsx">export interface AccordionContent {
-	content: string;
-	trigger: string;
+<ol start="4">
+<li>Add a file <em><strong>src/Accordion.tsx</strong></em> with:</li>
+</ol>
+<pre><code class="language-tsx">import React from 'react';
+import {AccordionContent} from './App';
+import '@potato/ace/components/accordion/accordion';
+
+interface Props {
+  content: Array&lt;AccordionContent&gt;,
+  id: string,
+}
+
+export const Accordion = ({content, id}: Props) =&gt; {
+  return (
+    &lt;ace-accordion id={id}&gt;
+      {content.map((panel: AccordionContent, index: number) =&gt; {
+        return &lt;React.Fragment key={index}&gt;
+          &lt;h3&gt;
+            &lt;button&gt;{panel.trigger}&lt;/button&gt;
+          &lt;/h3&gt;
+          &lt;div&gt;
+            &lt;p&gt;{panel.content}&lt;/p&gt;
+          &lt;/div&gt;
+        &lt;/React.Fragment&gt;
+      })}
+    &lt;/ace-accordion&gt;
+  );
+};
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'ace-accordion': any;
+    }
+  }
 }
 </code></pre>
 <h3>Angular</h3>
-<p>The following example shows how ACE components can be used with Angular.</p>
-<p>The example demonstrates:</p>
-<ul>
-<li>Passing data from a parent component to an ACE Accordion component via <code>@Input</code>.</li>
-<li>Using <code>@HostListener</code> in the parent component to listen for a custom event dispatched by Accordion, then conditionally disabling a button in a parent component.</li>
-<li>Using a reference variable and <code>@ViewChild</code> to dispatch a custom event on Accordion from a parent component.</li>
-</ul>
-<p>Starting with a fresh project, created using the Angular CLI command <code>ng new</code>, ACE was installed using <code>npm i @potato/ace</code> before the following changes were made.</p>
-<p><em><strong>src/app/accordion/accordion.component.html</strong></em></p>
-<pre><code class="language-html">&lt;ace-accordion&gt;
-	&lt;ng-container *ngFor=&quot;let panel of content&quot;&gt;
-		&lt;h3&gt;
-			&lt;button&gt;{{panel.trigger}}&lt;/button&gt;
-		&lt;/h3&gt;
-		&lt;div&gt;
-			&lt;p&gt;{{panel.content}}&lt;/p&gt;
-		&lt;/div&gt;
-	&lt;/ng-container&gt;
-&lt;/ace-accordion&gt;
+<p>The following examples shows how ACE components can be used with Angular.</p>
+<p>These examples demonstrate how to use an ACE Accordion, pass data to it from a parent component via <code>@Input</code>, use <code>@HostListener</code> in the parent to listen for a custom event dispatched by Accordion, and interact with Accordion from the parent using a custom event.</p>
+<p>Starting with a fresh Angular project created using Angular CLI command <code>ng new</code>:</p>
+<ol>
+<li>Install ACE:</li>
+</ol>
+<pre><code class="language-bash">npm i @potato/ace
 </code></pre>
-<p><em><strong>src/app/accordion/accordion.component.ts</strong></em></p>
-<pre><code class="language-ts">import { Component, Input } from '@angular/core';
-
-import '@potato/ace/components/accordion/accordion';
-
-export interface AccordionContent {
-	content: string;
-	trigger: string;
-}
-
-@Component({
-	selector: 'app-accordion',
-	templateUrl: './accordion.component.html',
-	styleUrls: ['./accordion.component.css']
-})
-export class AccordionComponent {
-	@Input()
-	content: Array&lt;AccordionContent&gt; = [];
-}
+<ol start="2">
+<li>Add the following to the <code>&quot;files&quot;</code> property in <em><strong>tsconfig.app.json</strong></em> :</li>
+</ol>
+<pre><code class="language-json">&quot;./node_modules/@potato/ace/components/accordion/accordion.ts&quot;
 </code></pre>
-<p><em><strong>src/app/accordion/accordion.component.css</strong></em></p>
-<pre><code class="language-css">@import '~@potato/ace/components/accordion/ace-accordion.css';
-</code></pre>
-<p><em><strong>src/app/app.component.html</strong></em></p>
-<pre><code class="language-html">&lt;app-accordion #accordion [content]=&quot;accordionContent&quot;&gt;&lt;/app-accordion&gt;
-
-&lt;button [disabled]=&quot;panelsCollapsed&quot; (click)=&quot;collapseAll()&quot;&gt;
-	Collapse all
-&lt;/button&gt;
-</code></pre>
-<p><em><strong>src/app/app.component.ts</strong></em></p>
-<pre><code class="language-ts">import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
-import { AccordionContent } from './accordion/accordion.component';
-import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
-
-@Component({
-	selector: 'app-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.css']
-})
-export class AppComponent implements AfterViewInit {
-	accordionContent: Array&lt;AccordionContent&gt; = [
-		{
-			content: 'Panel 1 content',
-			trigger: 'Panel 1 trigger',
-		},
-		{
-			content: 'Panel 2 content',
-			trigger: 'Panel 2 trigger',
-		},
-		{
-			content: 'Panel 3 content',
-			trigger: 'Panel 3 trigger',
-		},
-	];
-	aceAccordionEl: HTMLElement | null = null;
-	panelsCollapsed = true;
-
-	// @ViewChild and ngAfterViewInit used to get reference to Accordion DOM element in accordion.component.html, to dispatch custom event on it
-	@ViewChild('accordion', {read: ElementRef})
-	accordion!: ElementRef;
-
-	// @HostListener used to add Accordion &quot;changed&quot; event listener
-	@HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
-	onPanelChange(): void {
-		this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
-	}
-
-	ngAfterViewInit() {
-		this.aceAccordionEl = this.accordion.nativeElement.firstElementChild;
-	}
-
-	// Collapse Accordion's panels using it's &quot;hide panels&quot; custom event
-	collapseAll() {
-		this.aceAccordionEl?.dispatchEvent(
-			new CustomEvent(EVENTS.IN.HIDE_ALL_PANELS)
-		);
-	}
-}
-</code></pre>
-<p><em><strong>src/app/app.module.ts</strong></em></p>
+<ol start="3">
+<li>Replace the contents of <em><strong>src/app/app.module.ts</strong></em> with:</li>
+</ol>
 <pre><code class="language-ts">import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -270,191 +251,382 @@ import { AppComponent } from './app.component';
 import { AccordionComponent } from './accordion/accordion.component';
 
 @NgModule({
-	declarations: [
-		AccordionComponent,
-		AppComponent
-	],
-	imports: [
-		BrowserModule
-	],
-	schemas: [CUSTOM_ELEMENTS_SCHEMA],
-	providers: [],
-	bootstrap: [AppComponent]
+  declarations: [
+    AccordionComponent,
+    AppComponent
+  ],
+  imports: [
+    BrowserModule
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
 </code></pre>
-<p><em><strong>tsconfig.app.json</strong></em></p>
-<pre><code class="language-json">{
-	&quot;extends&quot;: &quot;./tsconfig.json&quot;,
-	&quot;compilerOptions&quot;: {
-		&quot;outDir&quot;: &quot;./out-tsc/app&quot;,
-		&quot;types&quot;: []
-	},
-	&quot;files&quot;: [
-		&quot;src/main.ts&quot;,
-		&quot;src/polyfills.ts&quot;,
-		&quot;./node_modules/@potato/ace/components/accordion/accordion.ts&quot;,
-	],
-	&quot;include&quot;: [
-		&quot;src/**/*.d.ts&quot;
-	]
+<ol start="4">
+<li>Replace the contents of <em><strong>src/app/app.component.ts</strong></em> with:</li>
+</ol>
+<pre><code class="language-ts">import { Component, HostListener } from '@angular/core';
+import { AccordionContent } from './accordion/accordion.component';
+import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  accordionContent: Array&lt;AccordionContent&gt; = [
+    {
+      content: 'Panel 1 content',
+      trigger: 'Panel 1 trigger',
+    },
+    {
+      content: 'Panel 2 content',
+      trigger: 'Panel 2 trigger',
+    },
+  ];
+  accordionId = 'ace-accordion';
+  panelsCollapsed = true;
+
+  // Collapse Accordion's panels using it's &quot;hide panels&quot; custom event
+  collapseAll() {
+    window.dispatchEvent(new CustomEvent(
+      EVENTS.IN.HIDE_ALL_PANELS,
+      {'detail': {'id': this.accordionId}},
+    ));
+  }
+
+  // @HostListener used to add Accordion &quot;Panel visibility changed&quot; event listener
+  @HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
+  onPanelChange(): void {
+    this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+  }
 }
+</code></pre>
+<ol start="5">
+<li>Replace the contents of <em><strong>src/app/app.component.html</strong></em> with:</li>
+</ol>
+<pre><code class="language-html">&lt;app-accordion [content]=&quot;accordionContent&quot; [accordionId]=&quot;accordionId&quot;&gt;&lt;/app-accordion&gt;
+&lt;button [disabled]=&quot;panelsCollapsed&quot; (click)=&quot;collapseAll()&quot;&gt;
+  Collapse all
+&lt;/button&gt;
+</code></pre>
+<ol start="6">
+<li>Generate a new component called <code>accordion</code>:</li>
+</ol>
+<pre><code class="language-bash">ng g c accordion
+</code></pre>
+<ol start="7">
+<li>Replace the contents of <em><strong>src/app/accordion/accordion.component.html</strong></em> with:</li>
+</ol>
+<pre><code class="language-html">&lt;ace-accordion [id]=&quot;accordionId&quot;&gt;
+  &lt;ng-container *ngFor=&quot;let panel of content&quot;&gt;
+    &lt;h3&gt;
+      &lt;button&gt;{{panel.trigger}}&lt;/button&gt;
+    &lt;/h3&gt;
+    &lt;div&gt;
+      &lt;p&gt;{{panel.content}}&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/ng-container&gt;
+&lt;/ace-accordion&gt;
+</code></pre>
+<ol start="8">
+<li>Replace the contents of <em><strong>src/app/accordion/accordion.component.ts</strong></em> with:</li>
+</ol>
+<pre><code class="language-ts">import { Component, Input } from '@angular/core';
+import '@potato/ace/components/accordion/accordion';
+
+export interface AccordionContent {
+  content: string;
+  trigger: string;
+}
+
+@Component({
+  selector: 'app-accordion',
+  templateUrl: './accordion.component.html',
+  styleUrls: ['./accordion.component.css']
+})
+export class AccordionComponent {
+  @Input()
+  accordionId: String = '';
+  
+  @Input()
+  content: Array&lt;AccordionContent&gt; = [];
+}
+</code></pre>
+<ol start="9">
+<li>Replace the contents of <em><strong>src/app/accordion/accordion.component.css</strong></em> with:</li>
+</ol>
+<pre><code class="language-css">@import '~@potato/ace/components/accordion/ace-accordion.css';
 </code></pre>
 <h4>Importing ACE JavaScript component files</h4>
-<p>In the event that an ACE component's TypeScript file cannot be used, e.g. if TypeScript compilation errors occur due to specific compiler options used in a project, the recommended approach is to instead use the ACE component's JavaScript file.</p>
-<p>This can be achieved by following the example above with the following overrides.</p>
-<p><em><strong>tsconfig.app.json</strong></em></p>
-<p>Replace contents with</p>
+<p>If ACE component TypeScript files cause TypeScript compilation errors due to a difference in compiler options between ACE and the project, the recommended approach is to use the provided ACE component JavaScript file.</p>
+<p>This can be achieved by adding <code>&quot;types&quot;: [&quot;node&quot;]</code> to the <code>&quot;compilerOptions&quot;</code> property in <em><strong>tsconfig.app.json</strong></em> and using <code>require('@potato/ace/components/&lt;component&gt;/&lt;component&gt;.js')</code> to import the ACE component's JavaScript file, where <code>&lt;component&gt;</code> is the component name. Exported properties, e.g. <code>ATTRS</code>, can also be imported using <code>const { ATTRS } = require('@potato/ace/components/&lt;component&gt;/&lt;component&gt;.js')</code>.</p>
+<p>To use the Accordion JavaScript file in the example above first follow the example and then:</p>
+<ol>
+<li>Replace contents of <em><strong>tsconfig.app.json</strong></em> with:</li>
+</ol>
 <pre><code class="language-json">{
-	&quot;extends&quot;: &quot;./tsconfig.json&quot;,
-	&quot;compilerOptions&quot;: {
-		&quot;outDir&quot;: &quot;./out-tsc/app&quot;,
-		&quot;types&quot;: [&quot;node&quot;]
-	},
-	&quot;files&quot;: [
-		&quot;src/main.ts&quot;,
-		&quot;src/polyfills.ts&quot;
-	],
-	&quot;include&quot;: [
-		&quot;src/**/*.d.ts&quot;
-	]
+  &quot;extends&quot;: &quot;./tsconfig.json&quot;,
+  &quot;compilerOptions&quot;: {
+    &quot;outDir&quot;: &quot;./out-tsc/app&quot;,
+    &quot;types&quot;: [&quot;node&quot;]
+  },
+  &quot;files&quot;: [
+    &quot;src/main.ts&quot;,
+    &quot;src/polyfills.ts&quot;
+  ],
+  &quot;include&quot;: [
+    &quot;src/**/*.d.ts&quot;
+  ]
 }
 </code></pre>
-<p><em><strong>src/app/app.component.ts</strong></em></p>
-<p>Replace</p>
+<ol start="2">
+<li>In <em><strong>src/app/app.component.ts</strong></em> replace:</li>
+</ol>
+<pre><code class="language-ts">import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
+</code></pre>
+<p>with</p>
+<pre><code class="language-ts">const { ATTRS, EVENTS } = require('@potato/ace/components/accordion/accordion.js');
+</code></pre>
+<p>and replace:</p>
+<pre><code class="language-ts">@HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
+</code></pre>
+<p>with:</p>
+<pre><code class="language-ts">@HostListener('window:ace-accordion-panel-visibility-changed', ['$event.detail'])
+</code></pre>
+<ol start="3">
+<li>In <em><strong>src/app/accordion/accordion.component.ts</strong></em> replace:</li>
+</ol>
 <pre><code class="language-ts">import '@potato/ace/components/accordion/accordion';
 </code></pre>
 <p>with</p>
 <pre><code class="language-ts">require('@potato/ace/components/accordion/accordion.js');
 </code></pre>
-<p><em><strong>src/app/app.component.ts</strong></em></p>
-<p>Replace</p>
-<pre><code class="language-ts">import { ATTRS, EVENTS } from '@potato/ace/components/accordion/accordion';
-</code></pre>
-<p>with</p>
-<pre><code class="language-ts">const { ATTRS, EVENTS } = require('@potato/ace/components/accordion/accordion.js');
-</code></pre>
-<p>then replace</p>
-<pre><code class="language-ts">@HostListener(`window:${EVENTS.OUT.PANEL_VISIBILITY_CHANGED}`, ['$event.detail'])
-</code></pre>
-<p>with</p>
-<pre><code class="language-ts">@HostListener('window:ace-accordion-panel-visibility-changed', ['$event.detail'])
-</code></pre>
 <h3>Vue</h3>
-<p>The following example shows how ACE components can be used with Vue (v3+). More general information about how to use web components with Vue can be found in <a href="https://v3.vuejs.org/guide/web-components.html#skipping-component-resolution">Vue's Web Components guide</a>.</p>
-<p>The example demonstrates:</p>
-<ul>
-<li>Passing data from a parent component to an ACE Accordion component via <code>props</code>.</li>
-<li>Using the <code>created</code> &amp; <code>unmounted</code> lifecycle hooks in the parent component to listen for a custom event dispatched by Accordion, then conditionally disabling a button in a parent component.</li>
-<li>Using template refs to dispatch a custom event on Accordion from a parent component.</li>
-</ul>
-<p>Starting with a fresh project, created using the Vue CLI and <code>vue create</code>, ACE was installed using <code>npm i @potato/ace</code> before the following changes were made.</p>
-<p><em><strong>src/components/Accordion.vue</strong></em></p>
+<p>The following examples shows how ACE components can be used with Vue (v3+). More general information about how to use custom elements with Vue can be found in the <a href="https://v3.vuejs.org/guide/web-components.html#skipping-component-resolution">Vue web components guide</a>.</p>
+<p>These examples demonstrate how to use an ACE Accordion, pass data to it from a parent component via <code>props</code>, use the <code>created</code> &amp; <code>unmounted</code> lifecycle hooks in the parent to listen for a custom event dispatched by Accordion, and interact with Accordion from the parent using a custom event.</p>
+<h4>Vue without TypeScript</h4>
+<p>Starting with a fresh Vue project that does not use TypeScript, created using Vue CLI command <code>vue create</code>:</p>
+<ol>
+<li>Install ACE:</li>
+</ol>
+<pre><code class="language-bash">npm i @potato/ace
+</code></pre>
+<ol start="2">
+<li>Create file <code>vue.config.js</code> with following content:</li>
+</ol>
+<pre><code class="language-js">module.exports = {
+  chainWebpack: config =&gt; {
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap(options =&gt; ({
+        ...options,
+        compilerOptions: {
+          // treat any tag that starts with ace- as custom elements
+          isCustomElement: tag =&gt; tag.startsWith('ace-')
+        }
+      }))
+  }
+}
+</code></pre>
+<ol start="3">
+<li>Replace the contents of <em><strong>src/App.vue</strong></em> with:</li>
+</ol>
 <pre><code class="language-html">&lt;template&gt;
-&lt;ace-accordion ref=&quot;accordion&quot;&gt;
-	&lt;template v-for=&quot;(panel, index) of content&quot; :key=&quot;index&quot;&gt;
-		&lt;h3&gt;
-			&lt;button&gt;{{panel.trigger}}&lt;/button&gt;
-		&lt;/h3&gt;
-		&lt;div&gt;
-			&lt;p&gt;{{panel.content}}&lt;/p&gt;
-		&lt;/div&gt;
-	&lt;/template&gt;
-&lt;/ace-accordion&gt;
+  &lt;Accordion :content=&quot;accordionContent&quot; :id=&quot;id&quot; /&gt;
+  &lt;button :disabled=&quot;panelsCollapsed&quot; @click=&quot;collapseAll&quot;&gt;
+    Collapse all
+  &lt;/button&gt;
 &lt;/template&gt;
 
+&lt;script&gt;
+  import Accordion from './components/Accordion.vue';
+  import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
+
+  export default {
+    name: 'App',
+    components: {
+      Accordion
+    },
+    data() {
+      return {
+        accordionContent: [
+          {
+            content: 'Panel 1 content',
+            trigger: 'Panel 1 trigger',
+          },
+          {
+            content: 'Panel 2 content',
+            trigger: 'Panel 2 trigger',
+          },
+        ],
+        id: 'ace-accordion',
+        panelsCollapsed: true,
+      }
+    },
+    created () {
+      window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
+    },
+    unmounted () {
+      window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
+    },
+    methods: {
+      collapseAll() {
+        window.dispatchEvent(new CustomEvent(
+          EVENTS.IN.HIDE_ALL_PANELS,
+          {'detail': {'id': this.id}},
+        ));
+      },
+      onPanelChange() {
+        this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+      },
+    },
+  }
+&lt;/script&gt;
+</code></pre>
+<ol start="4">
+<li>Rename <em><strong>src/components/HelloWorld.vue</strong></em> as <code>Accordion.vue</code> and replace the contents with:</li>
+</ol>
+<pre><code class="language-html">&lt;template&gt;
+	&lt;ace-accordion&gt;
+		&lt;template v-for=&quot;(panel, index) of content&quot; :key=&quot;index&quot;&gt;
+			&lt;h3&gt;
+				&lt;button&gt;{{panel.trigger}}&lt;/button&gt;
+			&lt;/h3&gt;
+			&lt;div&gt;
+				&lt;p&gt;{{panel.content}}&lt;/p&gt;
+			&lt;/div&gt;
+		&lt;/template&gt;
+	&lt;/ace-accordion&gt;
+&lt;/template&gt;
 
 &lt;script&gt;
-import {EVENTS} from '@potato/ace/components/accordion/accordion';
-
-export default {
-	name: 'Accordion',
-	props: {
-		content: Array
-	},
-	methods: {
-		collapseAll() {
-			this.$refs.accordion.dispatchEvent(
-				new CustomEvent(EVENTS.IN.HIDE_ALL_PANELS)
-			);
-		}
+	export default {
+		name: 'Accordion',
+		props: {
+			content: Array
+		},
 	}
-}
 &lt;/script&gt;
-
 
 &lt;style&gt;
-@import '~@potato/ace/components/accordion/ace-accordion.css';
+	@import '~@potato/ace/components/accordion/ace-accordion.css';
 &lt;/style&gt;
 </code></pre>
-<p><em><strong>src/App.vue</strong></em></p>
+<h4>Vue with TypeScript</h4>
+<p>Starting with a fresh Vue TypeScript project, created using Vue CLI command <code>vue create</code>:</p>
+<ol>
+<li>Install ACE:</li>
+</ol>
+<pre><code class="language-bash">npm i @potato/ace
+</code></pre>
+<ol start="2">
+<li>Create file <code>vue.config.js</code> with following content:</li>
+</ol>
+<pre><code class="language-js">module.exports = {
+  chainWebpack: config =&gt; {
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .tap(options =&gt; ({
+        ...options,
+        compilerOptions: {
+          // treat any tag that starts with ace- as custom elements
+          isCustomElement: tag =&gt; tag.startsWith('ace-')
+        }
+      }))
+  }
+}
+</code></pre>
+<ol start="3">
+<li>Replace the contents of <em><strong>src/App.vue</strong></em> with:</li>
+</ol>
 <pre><code class="language-html">&lt;template&gt;
-	&lt;Accordion :content=&quot;accordionContent&quot; ref=&quot;mainAccordion&quot;/&gt;
-
-	&lt;button :disabled=&quot;panelsCollapsed&quot; @click=&quot;collapseAll&quot;&gt;
-		Collapse all
-	&lt;/button&gt;
+  &lt;Accordion :content=&quot;accordionContent&quot; :id=&quot;id&quot; /&gt;
+  &lt;button :disabled=&quot;panelsCollapsed&quot; @click=&quot;collapseAll&quot;&gt;
+    Collapse all
+  &lt;/button&gt;
 &lt;/template&gt;
 
+&lt;script lang=&quot;ts&quot;&gt;
+  import {defineComponent} from 'vue';
+  import Accordion from './components/Accordion.vue';
+  import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
 
-&lt;script&gt;
-import Accordion from './components/Accordion.vue';
-import {ATTRS, EVENTS} from '@potato/ace/components/accordion/accordion';
-
-export default {
-	name: 'App',
-	components: {
-		Accordion
-	},
-	data() {
-		return {
-			accordionContent: [
-				{
-					content: 'Panel 1 content',
-					trigger: 'Panel 1 trigger',
-				},
-				{
-					content: 'Panel 2 content',
-					trigger: 'Panel 2 trigger',
-				},
-				{
-					content: 'Panel 3 content',
-					trigger: 'Panel 3 trigger',
-				},
-			],
-			panelsCollapsed: true,
-		}
-	},
-	created () {
-		window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
-	},
-	unmounted () {
-		window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
-	},
-	methods: {
-		collapseAll() {
-			this.$refs.mainAccordion.collapseAll();
-		},
-		onPanelChange() {
-			this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
-		},
-	},
-}
+  export default defineComponent({
+    name: 'App',
+    components: {
+      Accordion
+    },
+    data() {
+      return {
+        accordionContent: [
+          {
+            content: 'Panel 1 content',
+            trigger: 'Panel 1 trigger',
+          },
+          {
+            content: 'Panel 2 content',
+            trigger: 'Panel 2 trigger',
+          },
+        ],
+        id: 'ace-accordion',
+        panelsCollapsed: true,
+      }
+    },
+    created () {
+      window.addEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
+    },
+    unmounted () {
+      window.removeEventListener(EVENTS.OUT.PANEL_VISIBILITY_CHANGED, this.onPanelChange);
+    },
+    methods: {
+      collapseAll() {
+        window.dispatchEvent(new CustomEvent(
+          EVENTS.IN.HIDE_ALL_PANELS,
+          {'detail': {'id': this.id}},
+        ));
+      },
+      onPanelChange() {
+        this.panelsCollapsed = document.querySelectorAll(`[${ATTRS.PANEL_VISIBLE}]`).length === 0;
+      },
+    },
+  });
 &lt;/script&gt;
+
 </code></pre>
-<p><em><strong>vue.config.js</strong></em></p>
-<pre><code class="language-js">module.exports = {
-	chainWebpack: config =&gt; {
-		config.module
-			.rule('vue')
-			.use('vue-loader')
-			.tap(options =&gt; ({
-				...options,
-				compilerOptions: {
-					// treat any tag that starts with ace- as custom elements
-					isCustomElement: tag =&gt; tag.startsWith('ace-')
-				}
-			}))
-	}
-}
+<ol start="4">
+<li>Rename <em><strong>src/components/HelloWorld.vue</strong></em> as <code>Accordion.vue</code> and replace the contents with:</li>
+</ol>
+<pre><code class="language-html">&lt;template&gt;
+	&lt;ace-accordion&gt;
+		&lt;template v-for=&quot;(panel, index) of content&quot; :key=&quot;index&quot;&gt;
+			&lt;h3&gt;
+				&lt;button&gt;{{panel.trigger}}&lt;/button&gt;
+			&lt;/h3&gt;
+			&lt;div&gt;
+				&lt;p&gt;{{panel.content}}&lt;/p&gt;
+			&lt;/div&gt;
+		&lt;/template&gt;
+	&lt;/ace-accordion&gt;
+&lt;/template&gt;
+
+&lt;script lang=&quot;ts&quot;&gt;
+	import {defineComponent} from 'vue';
+
+	export default defineComponent({
+		name: 'Accordion',
+		props: {
+			content: Array
+		},
+	})
+&lt;/script&gt;
+
+&lt;style&gt;
+	@import '~@potato/ace/components/accordion/ace-accordion.css';
+&lt;/style&gt;
 </code></pre>
