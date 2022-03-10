@@ -1,7 +1,7 @@
 import {EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const CAROUSEL_ID = 'auto-carousel';
+	const CAROUSEL_ID = 'ace-auto-carousel';
 
 	window.addEventListener('click', (e) => {
 		const targetId = e.target.id;

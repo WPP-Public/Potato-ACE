@@ -1,7 +1,7 @@
-<h1>Carousel</h1>
+<h1 id="carousel">Carousel</h1>
 <p>Carousel is a set of slides, only one of which is displayed at a time, and buttons used to display the previous or next slide.</p>
 <p>Carousel conforms to <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#carousel">W3C's WAI-ARIA authoring practices</a>.</p>
-<h2>Set up</h2>
+<h2 id="set-up">Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/carousel/carousel';
 </code></pre>
@@ -19,15 +19,15 @@
 <p>All Carousels must have descendant buttons to display the previous and next slide and will use <code>&lt;button&gt;</code> elements with attributes <code>ace-carousel-prev-btn</code> and <code>ace-carousel-next-btn</code> respectively. For better accessibility these buttons should be the first and second focusable descendants, or second and third focusable descendants for automatic Carousels, even if they are to be displayed on the left and right of the carousel, as is common practice, with their positioning set using CSS. If no descendants have these attributes then the first and second, or second and third for automatic Carousels, decendant <code>&lt;button&gt;</code> elements will be used and given these attributes. The previous slide button will be given an aria-label of value <code>Go to previous slide</code>, or <code>Go to last slide</code> if the Carousel is infinite and the first slide is visible. Developers can however provide custom or localised strings as values of attributes <code>ace-carousel-go-to-prev-slide-label</code> and <code>ace-carousel-go-to-last-slide-label</code> respectively, set on the button. Similarly, the next slide button will be given an aria-label of value <code>Go to next slide</code>, or <code>Go to first slide</code> if the Carousel is infinite and the last slide is visible. Developers can however provide custom or localised strings as values of attributes <code>ace-carousel-go-to-next-slide-label</code> and <code>ace-carousel-go-to-first-slide-label</code> respectively, set on the button.</p>
 <p>A set of slide picker buttons, used to select each slide, can be added to Carousel by including an element with attribute <code>ace-carousel-slide-picker</code> and a descendant <code>&lt;button&gt;</code> for each slide. Alternatively, this element can be added with no descendant <code>button</code> elements and Carousel will populate it with a button for each slide. Carousel adds <code>aria-label</code> attributes to each slide picker button in the format <code>Slide n</code>, where <code>n</code> is the slide number. To allow for more approprite or localised strings, the string <code>Slide</code> can be replaced in the <code>aria-label</code> of all slide picker buttons with the value of the attribute <code>ace-carousel-slide-picker-btn-aria-label-prefix</code> of the element with attribute <code>ace-carousel-slide-picker</code>. It is strongly recommended that the slide picker follow the previous and next slide buttons in DOM hierarchy and therefore in tab sequence. This order should be used even if the slide picker buttons are to be displayed below or overlayed on top of the slides in which case their positioning should be set using CSS. For accessibility purposes Carousel buttons that are styled by developers and overlayed on top of the slides must use colors that provides sufficient contrast so they are clearly visible.</p>
 <p>All Carousel slides must be descendant within an element with attribute <code>ace-carousel-slides</code>. If no descendant has this attribute, the first child <code>&lt;div&gt;</code> will be used if present, otherwise Carousel will append a child <code>&lt;div&gt;</code> to itself and use it. Slides do not have to be present upon instantiation and can be dynamically added, or removed later, as long as custom event <code>ace-carousel-update-slides</code> is dispatched to the Carousel instance afterwards. Carousel adds <code>aria-label</code> attributes to each slide in the format <code>n of N</code>, where <code>n</code> is the slide number and <code>N</code> is the total number of slides. To allow for localised strings, the string <code>of</code> can be replaced with the value of the attribute <code>ace-carousel-slide-aria-label-infix</code> of the element with attribute <code>ace-carousel-slides</code>.</p>
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 <p>A Carousel displayed slide can be changed using the previous and next slide buttons, using custom events, or by changing the value of its attribute <code>ace-carousel-selected-slide</code> to the slide's number e.g. <code>2</code> will display the second slide and <code>3</code> the third. This attribute can be set before instantiation to display a specific slide on page load, but if omitted Carousel will add it and set its value to <code>1</code> thereby displaying the first slide. The attribute's value is also dynamically updated when the displayed slide is changed using the other methods.</p>
 <p>By default the previous and next slide buttons are disabled when the first and last slide is displayed respectively. Giving a Carousel the attribute <code>ace-carousel-infinite</code> allows infinite rotation through slides where clicking the previous button with the first slide displayed will display the last, and clicking the next button with the last slide displayed will display the first. This is an observed attribute that can be added or removed to dynamically enable or disable this behaviour.</p>
 <p>For automatic Carousels the automatic slide show is paused while the mouse pointer hovers over the Carousel or while a Carousel instance descendant, other than the automatic slide show toggle button, has keyboard focus, and automatically resumes afterwards. The automatic slide show will not start on page load if the page is hidden, i.e. it's in a background tab or the window is minimised, and will start as soon as the page becomes visible. It will also pause if the page becomes hidden at any point and will resume once the page is visible again.</p>
 <p>The automatic slide show can be stopped and started again using the automatic slide show toggle button or using custom events, with both methods setting Carousel attribute <code>ace-carousel-auto-slide-show-stopped</code> to <code>true</code> or <code>false</code>. This attribute can therefore be used to change the text string or icon of the toggle button simply using CSS. Note that this attribute will have value <code>false</code> while the Carousel is temporarily paused due to mouse hover or descendant keyboard focus.</p>
-<h2>Animating slide changes</h2>
+<h2 id="animating-slide-changes">Animating slide changes</h2>
 <p>Since animations can be achieved using many different methods Carousel does not animate slide changes. Developers interested in doing so can listen for the <code>ace-carousel-slide-changed</code> custom event and then apply their own animations, as demonstrated in one of the examples below.</p>
 <p>In order to implement animations without hindering accessibility developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration <code>display: none</code> or <code>visibility: hidden</code> to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"><code>prefers-reduced-motion</code> media query</a> as demonstrated in the example.</p>
-<h2>Styles</h2>
+<h2 id="styles">Styles</h2>
 <p>The following SASS is applied to Carousel. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
@@ -56,18 +56,18 @@ ace-carousel {
 	}
 }
 </code></pre>
-<h2>Custom events</h2>
+<h2 id="custom-events">Custom events</h2>
 <p>Carousel uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
-<h3>Dispatched events</h3>
+<h3 id="dispatched-events">Dispatched events</h3>
 <p>The following events are dispatched to <code>window</code> by Carousel.</p>
-<h4>Ready</h4>
+<h4 id="ready">Ready</h4>
 <p><code>ace-carousel-ready</code></p>
 <p>This event is dispatched when Carousel finishes initialising just after page load, and after dynamically added descendants are initialised in response to the <code>ace-carousel-update-slides</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of Carousel [string]
 }
 </code></pre>
-<h4>Selected slide changed</h4>
+<h4 id="selected-slide-changed">Selected slide changed</h4>
 <p><code>ace-carousel-selected-slide-changed</code></p>
 <p>This event is dispatched when the displayed slide is changed. The event name is available as <code>EVENTS.OUT.SELECTED_SLIDE_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
@@ -76,46 +76,46 @@ ace-carousel {
 	'previouslySelectedSlide': // The previously selected slide number [number]
 }
 </code></pre>
-<h4>Automatic slide show events</h4>
+<h4 id="automatic-slide-show-events">Automatic slide show events</h4>
 <p><code>ace-carousel-auto-slide-show-started</code>, <code>ace-carousel-auto-slide-show-stopped</code> &amp; <code>ace-carousel-auto-slide-show-paused</code></p>
 <p>These events are dispatched when the automatic slide show is started, stopped or paused, the latter of which occurs when the mouse pointer hovers over the Carousel or when a descendant, other than the automatic slide show toggle button, has keyboard focus. The event names are available as <code>EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED</code>, <code>EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED</code> and <code>EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED</code>, and their <code>detail</code> properties are composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of Carousel [string]
 }
 </code></pre>
-<h3>Listened for events</h3>
+<h3 id="listened-for-events">Listened for events</h3>
 <p>Carousel listens for the following events that should be dispatched to <code>window</code>.</p>
-<h4>Set previous slide</h4>
+<h4 id="set-previous-slide">Set previous slide</h4>
 <p><code>ace-carousel-set-prev-slide</code></p>
 <p>This event should be dispatched to display the previous slide, or the last slide if the Carousel has the attribute <code>ace-carousel-infinite</code> and its first slide is displayed. The event name is available as <code>EVENTS.IN.SET_PREV_SLIDE</code> and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of target Carousel [string]
 }
 </code></pre>
-<h4>Set next slide</h4>
+<h4 id="set-next-slide">Set next slide</h4>
 <p><code>ace-carousel-set-next-slide</code></p>
 <p>This event should be dispatched to display the next slide, or the first slide if the Carousel has the attribute <code>ace-carousel-infinite</code> and its the last slide is displayed. The event name is available as <code>EVENTS.IN.SET_NEXT_SLIDE</code> and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of target Carousel [string]
 }
 </code></pre>
-<h4>Update slides</h4>
+<h4 id="update-slides">Update slides</h4>
 <p><code>ace-carousel-update-slides</code></p>
 <p>This event should be dispatched when slides are added or removed and causes Carousel to initialise them and then dispatch the <code>ace-carousel-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_SLIDES</code> and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of target Carousel [string]
 }
 </code></pre>
-<h4>Automatic slide show events</h4>
+<h4 id="automatic-slide-show-events-1">Automatic slide show events</h4>
 <p><code>ace-carousel-start-auto-slide-show</code> &amp; <code>ace-carousel-stop-auto-slide-show</code></p>
 <p>These event should be dispatched to start or stop the automatic slide show. The event names are available as <code>EVENTS.IN.START_AUTO_SLIDE_SHOW</code> and <code>EVENTS.IN.STOP_AUTO_SLIDE_SHOW</code> and their <code>detail</code> properties should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
   'id': // ID of target Carousel [string]
 }
 </code></pre>
-<h2>Examples</h2>
+<h2 id="examples">Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<h3>Simple Carousel</h3>
+<h3 id="simple-carousel">Simple Carousel</h3>
 <p>Simple Carousel with 3 slides.</p>
 <div class="example-block"><ace-carousel aria-label="Simple">
 	<button>Previous slide</button>
@@ -161,7 +161,7 @@ ace-carousel {
 	&lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Carousel controlled using custom events</h3>
+<h3 id="carousel-controlled-using-custom-events">Carousel controlled using custom events</h3>
 <p>The buttons in this example dispatch the <code>ace-carousel-set-prev-slide</code>, <code>ace-carousel-set-next-slide</code> and <code>ace-carousel-update-slides</code> custom events on the Carousel. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><p>These buttons dispatch custom events</p>
 <button id="prev-slide-btn">Prev slide</button>
@@ -169,7 +169,7 @@ ace-carousel {
 <button id="add-slide-btn">Add slide to end</button>
 <button id="remove-slide-btn">Remove last slide</button>
 <hr>
-<ace-carousel aria-label="Custom events" id="custom-events-carousel">
+<ace-carousel aria-label="Custom events" id="ace-custom-events-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div>
@@ -197,7 +197,7 @@ ace-carousel {
 &lt;button id=&quot;add-slide-btn&quot;&gt;Add slide to end&lt;/button&gt;
 &lt;button id=&quot;remove-slide-btn&quot;&gt;Remove last slide&lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-carousel aria-label=&quot;Custom events&quot; id=&quot;custom-events-carousel&quot;&gt;
+&lt;ace-carousel aria-label=&quot;Custom events&quot; id=&quot;ace-custom-events-carousel&quot;&gt;
 	&lt;button&gt;Previous slide&lt;/button&gt;
 	&lt;button&gt;Next slide&lt;/button&gt;
 	&lt;div&gt;
@@ -222,7 +222,7 @@ ace-carousel {
 <pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const CAROUSEL_ID = 'custom-events-carousel';
+	const CAROUSEL_ID = 'ace-custom-events-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 
@@ -269,9 +269,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	});
 });
 </code></pre>
-<h3>Carousel with infinite rotation and second slide initially displayed</h3>
+<h3 id="carousel-with-infinite-rotation-and-second-slide-initially-displayed">Carousel with infinite rotation and second slide initially displayed</h3>
 <p>Carousel with infinite rotation that displays the second slide upon page load.</p>
-<div class="example-block"><ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="infinite-carousel">
+<div class="example-block"><ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="ace-infinite-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div>
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	</div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot; aria-label=&quot;Infinite rotation and second slide initially displayed&quot; id=&quot;infinite-carousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite ace-carousel-selected-slide=&quot;2&quot; aria-label=&quot;Infinite rotation and second slide initially displayed&quot; id=&quot;ace-infinite-carousel&quot;&gt;
 	&lt;button&gt;Previous slide&lt;/button&gt;
 	&lt;button&gt;Next slide&lt;/button&gt;
 	&lt;div&gt;
@@ -315,9 +315,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	&lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Carousel with slide picker</h3>
+<h3 id="carousel-with-slide-picker">Carousel with slide picker</h3>
 <p>Carousel with slide picker buttons and automatic slide show.</p>
-<div class="example-block"><ace-carousel aria-label="Slide picker" id="slide-picker-carousel">
+<div class="example-block"><ace-carousel aria-label="Slide picker" id="ace-slide-picker-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div ace-carousel-slide-picker></div>
@@ -340,7 +340,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	</div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Slide picker&quot; id=&quot;slide-picker-carousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel aria-label=&quot;Slide picker&quot; id=&quot;ace-slide-picker-carousel&quot;&gt;
 	&lt;button&gt;Previous slide&lt;/button&gt;
 	&lt;button&gt;Next slide&lt;/button&gt;
 	&lt;div ace-carousel-slide-picker&gt;&lt;/div&gt;
@@ -363,12 +363,12 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	&lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<h3>Carousel with automatic slide show</h3>
+<h3 id="carousel-with-automatic-slide-show">Carousel with automatic slide show</h3>
 <p>Carousel with automatic slide show. Two buttons have also been included, which dispatch the <code>ace-carousel-start-auto-slide-show</code> &amp; <code>ace-carousel-stop-auto-slide-show</code> custom events. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
 <button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
 <hr>
-<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="ace-auto-carousel">
 	<button>Toggle automatic slide show</button>
 	<button>Previous slide</button>
 	<button>Next slide</button>
@@ -394,7 +394,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-html">&lt;button id=&quot;stop-auto-slide-show-custom-event-btn&quot;&gt;Stop automatic slide show custom event&lt;/button&gt;
 &lt;button id=&quot;start-auto-slide-show-custom-event-btn&quot;&gt;Start automatic slide show custom event&lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time=&quot;2000&quot; ace-carousel-infinite aria-label=&quot;Automatic slide show&quot; id=&quot;auto-carousel&quot;&gt;
+&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time=&quot;2000&quot; ace-carousel-infinite aria-label=&quot;Automatic slide show&quot; id=&quot;ace-auto-carousel&quot;&gt;
 	&lt;button&gt;Toggle automatic slide show&lt;/button&gt;
 	&lt;button&gt;Previous slide&lt;/button&gt;
 	&lt;button&gt;Next slide&lt;/button&gt;
@@ -420,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <pre><code class="language-js">import {EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const CAROUSEL_ID = 'auto-carousel';
+	const CAROUSEL_ID = 'ace-auto-carousel';
 
 	window.addEventListener('click', (e) =&gt; {
 		const targetId = e.target.id;
@@ -438,9 +438,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	});
 });
 </code></pre>
-<h3>Animated Carousel</h3>
+<h3 id="animated-carousel">Animated Carousel</h3>
 <p>Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.</p>
-<div class="example-block"><ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
+<div class="example-block"><ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="animated-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div class="animated-carousel__slides">
@@ -468,7 +468,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	</div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite aria-label=&quot;Animated&quot; id=&quot;animated-carousel&quot; class=&quot;animated-carousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite aria-label=&quot;Animated&quot; id=&quot;ace-animated-carousel&quot; class=&quot;animated-carousel&quot;&gt;
 	&lt;button&gt;Previous slide&lt;/button&gt;
 	&lt;button&gt;Next slide&lt;/button&gt;
 	&lt;div class=&quot;animated-carousel__slides&quot;&gt;
@@ -526,7 +526,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		return;
 	}
 
-	const CAROUSEL_ID = 'animated-carousel';
+	const CAROUSEL_ID = 'ace-animated-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 	const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
@@ -580,9 +580,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	}, { passive: true });
 });
 </code></pre>
-<h3>Styled Carousel</h3>
+<h3 id="styled-carousel">Styled Carousel</h3>
 <p>An example of how Carousel can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.</p>
- <div class="example-block"><ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="styled-carousel"
+ <div class="example-block"><ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="ace-styled-carousel"
 	class="styled-carousel">
 	<button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span
 			class="pause-icon">&#10074; &#10074;</span></button>
@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	</div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label=&quot;Styled example&quot; id=&quot;styled-carousel&quot;
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label=&quot;Styled example&quot; id=&quot;ace-styled-carousel&quot;
 	class=&quot;styled-carousel&quot;&gt;
 	&lt;button class=&quot;styled-carousel__auto-slide-show-btn&quot;&gt;&lt;span class=&quot;play-icon&quot;&gt;&amp;#9658;&lt;/span&gt;&lt;span
 			class=&quot;pause-icon&quot;&gt;&amp;#10074; &amp;#10074;&lt;/span&gt;&lt;/button&gt;
@@ -770,7 +770,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		return;
 	}
 
-	const CAROUSEL_ID = 'styled-carousel';
+	const CAROUSEL_ID = 'ace-styled-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 	const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);

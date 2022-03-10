@@ -280,7 +280,7 @@ These are the three types of Comboboxes, all with manual selection.
 <h4>List auto-complete</h4>
 <span id="combobox-label-2">Choose an Avenger:</span>
 
-<ace-combobox id="ac-list-combobox">
+<ace-combobox id="ace-ac-list-combobox">
 	<input aria-autocomplete="list" aria-labelledby="combobox-label-2" />
 	<ul aria-label="Avengers">
 		<li>Iron Man</li>
@@ -303,7 +303,7 @@ These are the three types of Comboboxes, all with manual selection.
 <h4>Inline and list auto-complete</h4>
 <span id="combobox-label-3">Choose an Avenger:</span>
 
-<ace-combobox id="ac-both-combobox">
+<ace-combobox id="ace-ac-both-combobox">
 	<input aria-autocomplete="both" aria-labelledby="combobox-label-3" />
 	<ul aria-label="Avengers">
 		<li>Iron Man</li>
@@ -330,7 +330,7 @@ Same as previous example but with automatic selection enabled.
 <h4>No auto-complete</h4>
 <span id="combobox-label-4">Choose an Avenger:</span>
 
-<ace-combobox ace-combobox-autoselect id="simple-autoselect-combobox">
+<ace-combobox ace-combobox-autoselect id="ace-simple-autoselect-combobox">
 	<input aria-labelledby="combobox-label-4" />
 	<ul aria-label="Avengers">
 		<li>Iron Man</li>
@@ -353,7 +353,7 @@ Same as previous example but with automatic selection enabled.
 <h4>List auto-complete</h4>
 <span id="combobox-label-5">Choose an Avenger:</span>
 
-<ace-combobox ace-combobox-autoselect id="ac-list-autoselect-combobox">
+<ace-combobox ace-combobox-autoselect id="ace-ac-list-autoselect-combobox">
 	<input aria-autocomplete="list" aria-labelledby="combobox-label-5" />
 	<ul aria-label="Avengers">
 		<li>Iron Man</li>
@@ -376,7 +376,7 @@ Same as previous example but with automatic selection enabled.
 <h4>Inline and list auto-complete</h4>
 <span id="combobox-label-6">Choose an Avenger:</span>
 
-<ace-combobox ace-combobox-autoselect id="ac-both-autoselect-combobox">
+<ace-combobox ace-combobox-autoselect id="ace-ac-both-autoselect-combobox">
 	<input aria-autocomplete="both" aria-labelledby="combobox-label-6" />
 	<ul aria-label="Avengers">
 		<li>Iron Man</li>
@@ -414,7 +414,7 @@ The **Add options** button adds options to the initially empty Combobox then dis
 </form>
 <hr>
 <span id="combobox-label-7">Custom events controlled Combobox:</span>
-<ace-combobox id="custom-events-combobox">
+<ace-combobox id="ace-custom-events-combobox">
 	<input aria-labelledby="combobox-label-7" />
 	<ul aria-label="Custom events combobox options"></ul>
 </ace-combobox>
@@ -424,7 +424,7 @@ The **Add options** button adds options to the initially empty Combobox then dis
 import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const COMBOBOX_ID = 'custom-events-combobox';
+	const COMBOBOX_ID = 'ace-custom-events-combobox';
 	const comboboxEl = document.getElementById(COMBOBOX_ID);
 	const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
 	const selectOptionForm = document.getElementById('select-option-form');
@@ -488,7 +488,7 @@ This example demonstrates how Combobox can be used as a search box with results 
 
 <div>
 	<label id="search-combobox-label">Search:</label>
-	<ace-combobox id="search-combobox" ace-combobox-no-input-update>
+	<ace-combobox id="ace-search-combobox" ace-combobox-no-input-update>
 		<input aria-labelledby="search-combobox-label" />
 		<ul aria-label="Search results"></ul>
 	</ace-combobox>
@@ -505,7 +505,7 @@ This example demonstrates how Combobox can be used as a search box with results 
 import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 export const FAKE_DELAY = 3000;
-const COMBOBOX_ID = 'search-combobox';
+const COMBOBOX_ID = 'ace-search-combobox';
 
 document.addEventListener('DOMContentLoaded', () => {
 	let optionChosen, searching = false;

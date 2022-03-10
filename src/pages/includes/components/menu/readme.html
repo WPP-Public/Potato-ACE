@@ -1,7 +1,7 @@
-<h1>Menu</h1>
+<h1 id="menu">Menu</h1>
 <p>Menu is a component that contains a button that shows a hidden menu comprised of options.</p>
 <p>Menu conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#menubutton">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Set up</h2>
+<h2 id="set-up">Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/menu/menu';
 </code></pre>
@@ -15,11 +15,11 @@
 <p>For convenience the ES6 class is exported as <code>Menu</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Menu is instantiated within each <code>&lt;ace-menu&gt;</code> element and an ID <code>ace-menu-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-menu-ready</code> is dispatched to <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Menu must have both a descendant button, to show the hidden list of options, and a the descendant list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-menu-update-options</code> is dispatched to the Menu instance afterwards.</p>
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 <p>The list of options is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focused, with <kbd>↑</kbd> also selecting the last option in the list and the other three keys also selecting the first option. The list is aware of it's position within the window and ensures that it is fully visible in the viewport. It will hence appear below the trigger and aligned to it's left edge if there is enough space, otherwise it will appear above and/or aligned to the right edge, as necessary. Clicking outside a shown list or pressing <kdb>Esc</kbd> hides the list.</p>
 <p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> will select the option, hide the list and dispatch the <code>ace-menu-option-chosen</code> custom event.</p>
 <p>Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options.</p>
-<h2>Styles</h2>
+<h2 id="styles">Styles</h2>
 <p>The following SASS is applied to Menu. The SASS variables use <code>!default</code> so can also be easily overridden by developers. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
@@ -78,18 +78,18 @@ ace-menu {
 	}
 }
 </code></pre>
-<h2>Custom events</h2>
+<h2 id="custom-events">Custom events</h2>
 <p>Menu uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
-<h3>Dispatched events</h3>
+<h3 id="dispatched-events">Dispatched events</h3>
 <p>The following events are dispatched to <code>window</code> by Menu.</p>
-<h4>Ready</h4>
+<h4 id="ready">Ready</h4>
 <p><code>ace-menu-ready</code></p>
 <p>This event is dispatched when Menu finishes initialising just after page load, and after dynamically added options are initialised in response to the <code>ace-menu-update-options</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of Menu [string]
 }
 </code></pre>
-<h4>Option chosen</h4>
+<h4 id="option-chosen">Option chosen</h4>
 <p><code>ace-menu-option-chosen</code></p>
 <p>This event is dispatched when an option is chosen by the user. The event name is available as <code>EVENTS.OUT.OPTION_CHOSEN</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
@@ -100,18 +100,18 @@ ace-menu {
 	},
 }
 </code></pre>
-<h3>Listened for event</h3>
+<h3 id="listened-for-event">Listened for event</h3>
 <p>Menu listens for the following event that should be dispatched to <code>window</code>.</p>
-<h4>Update options</h4>
+<h4 id="update-options">Update options</h4>
 <p><code>ace-menu-update-options</code></p>
 <p>This event should be dispatched when options are added to or removed from the list and causes Menu to initialise them and then dispatch the <code>ace-menu-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code> and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of target Menu [string]
 }
 </code></pre>
-<h2>Examples</h2>
+<h2 id="examples">Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<h3>Simple Menu</h3>
+<h3 id="simple-menu">Simple Menu</h3>
 <p>Example of a simple Menu with options that contain text and an opiton containing a link.</p>
  <div class="example-block"><ace-menu>
 	<button>Menu trigger</button>
@@ -133,7 +133,7 @@ ace-menu {
 	&lt;/ul&gt;
 &lt;/ace-menu&gt;
 </code></pre>
-<h3>Menu with dynamic options</h3>
+<h3 id="menu-with-dynamic-options">Menu with dynamic options</h3>
 <p>In this example the Menu instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The last option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-menu-update-options</code> event that updates the list options. The extra JavaScript code required by this example is also included below.</p>
  <div class="example-block"><button id="add-option">
 	Add option
@@ -142,7 +142,7 @@ ace-menu {
 	Remove option
 </button>
 <hr>
-<ace-menu id="custom-events-menu">
+<ace-menu id="ace-custom-events-menu">
 	<button>Menu Trigger</button>
 	<ul></ul>
 </ace-menu>
@@ -154,7 +154,7 @@ ace-menu {
 	Remove option
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-menu id=&quot;custom-events-menu&quot;&gt;
+&lt;ace-menu id=&quot;ace-custom-events-menu&quot;&gt;
 	&lt;button&gt;Menu Trigger&lt;/button&gt;
 	&lt;ul&gt;&lt;/ul&gt;
 &lt;/ace-menu&gt;
@@ -162,7 +162,7 @@ ace-menu {
 <pre><code class="language-js">import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const MENU_ID = 'custom-events-menu';
+	const MENU_ID = 'ace-custom-events-menu';
 	const menuEl = document.getElementById(MENU_ID);
 	const menuListEl = menuEl.querySelector('ul');
 
@@ -187,10 +187,10 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	});
 });
 </code></pre>
-<h3>Styled Menu</h3>
+<h3 id="styled-menu">Styled Menu</h3>
 <p>An example of how Menu can be styled, with the applied CSS shown below.</p>
 <div class="example-block"><div class="styled-menu-container">
-	<ace-menu class="styled-menu" id="styled-menu">
+	<ace-menu class="styled-menu">
 		<button aria-label="View more options" title="View more options" class="styled-menu__trigger">
 		</button>
 		<ul class="styled-menu__list">
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </div>
 </div>
 <pre><code class="language-html">&lt;div class=&quot;styled-menu-container&quot;&gt;
-	&lt;ace-menu class=&quot;styled-menu&quot; id=&quot;styled-menu&quot;&gt;
+	&lt;ace-menu class=&quot;styled-menu&quot;&gt;
 		&lt;button aria-label=&quot;View more options&quot; title=&quot;View more options&quot; class=&quot;styled-menu__trigger&quot;&gt;
 		&lt;/button&gt;
 		&lt;ul class=&quot;styled-menu__list&quot;&gt;

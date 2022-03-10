@@ -3,14 +3,14 @@ import { ATTRS, CAROUSEL, EVENTS } from './carousel';
 
 const IDS = {
 	ADD_SLIDE_BTN: 'add-slide-btn',
-	AUTO_CAROUSEL: 'auto-carousel',
-	CUSTOM_EVENTS_CAROUSEL: 'custom-events-carousel',
-	INFINITE_CAROUSEL: 'infinite-carousel',
+	AUTO_CAROUSEL: 'ace-auto-carousel',
+	CUSTOM_EVENTS_CAROUSEL: 'ace-custom-events-carousel',
+	INFINITE_CAROUSEL: 'ace-infinite-carousel',
 	NEXT_SLIDE_BTN: 'next-slide-btn',
 	PREV_SLIDE_BTN: 'prev-slide-btn',
 	REMOVE_SLIDE_BTN: 'remove-slide-btn',
 	SIMPLE_CAROUSEL: `${CAROUSEL}-1`,
-	SLIDE_PICKER_CAROUSEL: `slide-picker-carousel`,
+	SLIDE_PICKER_CAROUSEL: `ace-slide-picker-carousel`,
 	START_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN: 'start-auto-slide-show-custom-event-btn',
 	STOP_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN: 'stop-auto-slide-show-custom-event-btn',
 };

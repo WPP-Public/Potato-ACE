@@ -1,8 +1,8 @@
 import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const OTHER_MODAL_ID = 'simple-modal';
-	const modalEl = document.getElementById('modal-from-modal');
+	const OTHER_MODAL_ID = 'ace-simple-modal';
+	const modalEl = document.getElementById('ace-modal-from-modal');
 	let otherModalTriggerClicked;
 
 	// If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden

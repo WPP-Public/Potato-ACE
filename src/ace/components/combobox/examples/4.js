@@ -1,7 +1,7 @@
 import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 export const FAKE_DELAY = 3000;
-const COMBOBOX_ID = 'search-combobox';
+const COMBOBOX_ID = 'ace-search-combobox';
 
 document.addEventListener('DOMContentLoaded', () => {
 	let optionChosen, searching = false;

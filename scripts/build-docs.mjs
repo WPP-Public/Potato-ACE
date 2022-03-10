@@ -1,17 +1,18 @@
 /*
 	Script to inject SASS and examples HTML into README.md and index.html files for components
 
- `node --experimental-modules scripts/build-docs.mjs` will inject SASS and examples HTML into README.md and index.html file for all components
+ `node --experimental-modules --experimental-json-modules scripts/build-docs.mjs` will inject SASS and examples HTML into README.md and index.html file for all components
 
- `node --experimental-modules scripts/build-docs.mjs <component>` will inject SASS and examples HTML into README.md and index.html file for given component
+ `node --experimental-modules --experimental-json-modules scripts/build-docs.mjs <component>` will inject SASS and examples HTML into README.md and index.html file for given component
 
- `node --experimental-modules scripts/build-docs.mjs <component-name> --examples-only` will inject examples HTML only (no SASS injection) into README.md and index.html file for given component
+ `node --experimental-modules --experimental-json-modules scripts/build-docs.mjs <component-name> --examples-only` will inject examples HTML only (no SASS injection) into README.md and index.html file for given component
 
- `node --experimental-modules scripts/build-docs.mjs <component-name> --html-only` will only convert README.md to readme.html
+ `node --experimental-modules --experimental-json-modules scripts/build-docs.mjs <component-name> --html-only` will only convert README.md to readme.html
 */
 
 import { LOG_COLORS } from './constants.mjs';
 import MarkdownIt from 'markdown-it';
+import anchor from 'markdown-it-anchor';
 import { promises as fsPromises } from 'fs';
 import pjson from '../package.json';
 
@@ -39,6 +40,7 @@ const md = new MarkdownIt({
 	linkify: true
 });
 
+md.use(anchor, {tabIndex: false});
 
 // REPLACE CONTENT BETWEEN GIVEN INDICES
 const replaceContentBetweenIndices = (sourceString, stringToInsert, startIndex, endIndex) => {
@@ -154,7 +156,7 @@ const injectExamples = async (componentName, mdFileContent, htmlOnly = false) =>
 			mdContentForMd = replaceContentBetweenIndices(mdContentForMd, exampleFileContents, startIndex, endIndex);
 			mdFromIndex = startIndex;
 
-			// Inject script tag for example file JS code into component's styles.pug file
+			// Inject style tag for example file SASS code into component's styles.pug file
 			stylesPugContent +=
 				`link(href='/css/${componentName}/examples/${file.replace('.scss', '.css')}' rel='stylesheet' type='text/css')\n`;
 		}
@@ -276,13 +278,21 @@ const buildDocsForAllComponents = async () => {
 };
 
 
-const buildHomePageDocs = async () => {
+const buildOtherPageDocs = async () => {
 	// Read md file
 	const mdFileContent = await fsPromises.readFile(`${libraryDir}/README.md`, fileEncoding);
 
 	// Convert md content for HTML page to HTML and save
-	const convertedHtmlContent = md.render(mdFileContent);
-	writeContentToFile(convertedHtmlContent, `${pagesDir}/readme.html`);
+	let convertedHtmlContent = md.render(mdFileContent);
+	await writeContentToFile(convertedHtmlContent, `${pagesDir}/readme.html`);
+
+	const jsFrameworksFileContent = await fsPromises.readFile(`${pagesDir}/js-frameworks/README.md`, fileEncoding);
+	convertedHtmlContent = md.render(jsFrameworksFileContent);
+	writeContentToFile(convertedHtmlContent, `${pagesDir}/js-frameworks/readme.html`);
+
+	const changelogFileContent = await fsPromises.readFile(`${pagesDir}/changelog/README.md`, fileEncoding);
+	convertedHtmlContent = md.render(changelogFileContent);
+	writeContentToFile(convertedHtmlContent, `${pagesDir}/changelog/readme.html`);
 };
 
 
@@ -298,7 +308,7 @@ const buildHomePageDocs = async () => {
 			await buildComponentDocs(componentName, htmlOnly, examplesOnly);
 		} else {
 			// Else build md and html for all components
-			buildHomePageDocs();
+			buildOtherPageDocs();
 			await buildDocsForAllComponents();
 		}
 	}

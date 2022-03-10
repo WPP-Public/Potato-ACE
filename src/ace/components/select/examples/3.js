@@ -1,7 +1,7 @@
 import { EVENTS } from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const SELECT_ID = 'custom-events-select';
+	const SELECT_ID = 'ace-custom-events-select';
 	const selectListEl = document.querySelector(`#${SELECT_ID} ul`);
 
 	const updateOptions = () => window.dispatchEvent(new CustomEvent(

@@ -1,7 +1,7 @@
 import { EVENTS } from '/ace/components/tooltip/tooltip.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const TOOLTIP_ID = 'custom-events-tooltip';
+	const TOOLTIP_ID = 'ace-custom-events-tooltip';
 
 	window.addEventListener('click', (e) => {
 		const targetId = e.target.id;

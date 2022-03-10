@@ -2,8 +2,8 @@ import { ATTRS, DISCLOSURE, EVENTS } from './disclosure';
 
 
 const IDS = {
-	CUSTOM_EVENTS_DISCLOSURE: 'custom-events-disclosure',
-	INIT_VISIBLE_DISCLOSURE: 'initially-visible-disclosure',
+	CUSTOM_EVENTS_DISCLOSURE: 'ace-custom-events-disclosure',
+	INIT_VISIBLE_DISCLOSURE: 'ace-initially-visible-disclosure',
 	SIMPLE_DISCLOSURE: `${DISCLOSURE}-1`,
 	TOGGLE_CUSTOM_EVENT_BTN: 'toggle-custom-event-btn',
 };
