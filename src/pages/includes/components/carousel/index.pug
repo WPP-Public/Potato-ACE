@@ -3,7 +3,10 @@ extends ../../base
 block article
 	include readme.html
 
-block scripts
+prepend scripts
+	script(src='/js/components/toc.js')
+
+append scripts
 	include scripts
 
 block styles
