@@ -3,7 +3,7 @@
 @use './header';
 
 $switch-bp: 'desktop';
-$width: 225px;
+$width: 240px;
 $z-index: 3;
 
 // Sidebar trigger btn styles are in `_header.scss`
@@ -36,18 +36,18 @@ $z-index: 3;
 		}
 	}
 
-	&__list {
+	&__list,
+	&__sublist {
 		list-style: none;
 	}
 
-
-	&__list-item,
-	&__list-subitem {
-		padding: $buffer-xs;
+	&__sublist {
+		padding-left: 4px;
 	}
 
 	&__list-item {
 		font-size: 2.5rem;
+		padding: $buffer-xs;
 
 		@include mq($from: $switch-bp) {
 			font-size: 2.25rem;
@@ -59,7 +59,7 @@ $z-index: 3;
 
 		@include mq($from: $switch-bp) {
 			font-size: 1.75rem;
-			padding-left: $buffer-s;
+			padding: 4px $buffer-xs;
 		}
 	}
 

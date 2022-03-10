@@ -1,24 +1,38 @@
 sidebar-comp(class='sidebar')
 	nav
 		ul(class='sidebar__list')
-			li(class='sidebar__list-item')
-				a(
-					class='sidebar__link'
-					href='/'
-				) Home
-			li(class='sidebar__list-item')
-				a(
-					class='sidebar__link'
-					href='/about'
-				) About
-			li(class='sidebar__list-item')
-				a(
-					class='sidebar__link'
-					href='/components'
-				) Components
-			each component, key in components
-				li(class='sidebar__list-subitem')
-					a(
-						class='sidebar__link'
-						href=`/${key}`
-					)=component.name
+			li(class='sidebar__list-item') ACE
+				ul(class='sidebar__sublist')
+					li(class='sidebar__list-subitem')
+						a(
+							class='sidebar__link'
+							href='/'
+						) Getting started
+					li(class='sidebar__list-subitem')
+						a(
+							class='sidebar__link'
+							href='/js-frameworks'
+						) ACE with JavaScript frameworks
+					li(class='sidebar__list-subitem')
+						a(
+							class='sidebar__link'
+							href='/changelog'
+						) Changelog
+					li(class='sidebar__list-subitem')
+						a(
+							class='sidebar__link'
+							href='/about'
+						) About
+			li(class='sidebar__list-item') Components
+				ul(class='sidebar__sublist')
+					li(class='sidebar__list-subitem')
+						a(
+							class='sidebar__link'
+							href='/components'
+						) All components
+					each component, key in components
+						li(class='sidebar__list-subitem')
+							a(
+								class='sidebar__link'
+								href=`/${key}`
+						)=component.name
