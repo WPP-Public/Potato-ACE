@@ -1,6 +1,5 @@
 /* FUNCTIONS THAT CAN BE USED BY ANY COMPONENT */
 import { DISPLAY_NAME, UTIL_ATTRS } from './constants.js';
-import { KeyType } from './types.js';
 
 
 /*
@@ -108,9 +107,8 @@ export const isInteractable = (element: HTMLElement): boolean => {
 /*
 	Check if key pressed matches any key in the provided keysToMatch array
 */
-export const keyPressedMatches = (keyPressed: string | number, keysToMatch: Array<KeyType> | KeyType): boolean => {
-	const keys = Array.isArray(keysToMatch) ? keysToMatch : [keysToMatch];
-	return keys.some((key) => key.CODE === keyPressed || key.KEY === keyPressed);
+export const keyPressedMatches = (keyPressed: string, keysToMatch: Array<string>): boolean => {
+	return keysToMatch.some(keyToMatch => keyToMatch === keyPressed);
 };
 
 

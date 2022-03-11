@@ -1,6 +1,3 @@
-import { KeysType } from './types.js';
-
-
 /*
 	Does browser support HTML attribute `inert`?
 */
@@ -36,51 +33,18 @@ const FOCUSABLE_ELEMENT_SELECTORS = [
 export const FOCUSABLE_ELEMENTS_SELECTOR = FOCUSABLE_ELEMENT_SELECTORS.join(':not([tabindex="-1"]),');
 
 
-export const KEYS: KeysType = {
-	A: {
-		CODE: 65,
-		KEY: 'a',
-	},
-	DOWN: {
-		CODE: 40,
-		KEY: 'ArrowDown',
-	},
-	END: {
-		CODE: 35,
-		KEY: 'End',
-	},
-	ENTER: {
-		CODE: 13,
-		KEY: 'Enter',
-	},
-	ESCAPE: {
-		CODE: 72,
-		KEY: 'Escape',
-	},
-	HOME: {
-		CODE: 36,
-		KEY: 'Home',
-	},
-	LEFT: {
-		CODE: 37,
-		KEY: 'ArrowLeft'
-	},
-	RIGHT: {
-		CODE: 39,
-		KEY: 'ArrowRight'
-	},
-	SPACE: {
-		CODE: 32,
-		KEY: ' ',
-	},
-	TAB: {
-		CODE: 9,
-		KEY: 'Tab',
-	},
-	UP: {
-		CODE: 38,
-		KEY: 'ArrowUp',
-	},
+export const KEYS = {
+	A: 'a',
+	DOWN: 'ArrowDown',
+	END: 'End',
+	ENTER: 'Enter',
+	ESCAPE: 'Escape',
+	HOME: 'Home',
+	LEFT: 'ArrowLeft',
+	RIGHT: 'ArrowRight',
+	SPACE: ' ',
+	TAB: 'Tab',
+	UP: 'ArrowUp',
 };
 
 

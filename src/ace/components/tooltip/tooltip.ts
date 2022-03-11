@@ -1,6 +1,6 @@
 /* IMPORTS */
 import { DISPLAY_NAME, FOCUSABLE_ELEMENTS_SELECTOR, KEYS, NAME } from '../../common/constants.js';
-import { autoID, handleOverflow, keyPressedMatches } from '../../common/functions.js';
+import { autoID, handleOverflow } from '../../common/functions.js';
 
 
 /* COMPONENT NAME */
@@ -172,8 +172,7 @@ export default class Tooltip extends HTMLElement {
 		Handle keydown event
 	*/
 	private keydownHandler(e: Event): void {
-		const keyPressed = (e as KeyboardEvent).key || (e as KeyboardEvent).which || (e as KeyboardEvent).keyCode;
-		if (keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+		if ((e as KeyboardEvent).key == KEYS.ESCAPE) {
 			if (!this.hasAttribute(ATTRS.VISIBLE)) {
 				return;
 			}
