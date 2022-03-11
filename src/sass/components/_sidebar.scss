@@ -41,8 +41,19 @@ $z-index: 3;
 		list-style: none;
 	}
 
+	&__list {
+		margin: 0 auto;
+		max-width: 300px;
+	}
+
 	&__sublist {
+		margin-top: $buffer-xs;
 		padding-left: 4px;
+	}
+
+	&__list-item,
+	&__list-subitem {
+		margin-bottom: 10px;
 	}
 
 	&__list-item {
