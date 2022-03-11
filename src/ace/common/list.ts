@@ -103,7 +103,7 @@ export default class List {
 			return;
 		}
 
-		const optionClicked = (e.target as Element).closest(`li`);
+		const optionClicked = (e.target as Element).closest('li');
 		if (!optionClicked) {
 			return;
 		}
@@ -143,9 +143,16 @@ export default class List {
 
 		const startingIndex = i;
 		do {
-			if (this.optionEls && this.optionEls[i].textContent?.toLowerCase().startsWith(this.query)) {
-				this.selectOptionOrMakeActive(i);
-				break;
+			if (this.optionEls) {
+				const optionText = this.optionEls[i]
+					.textContent
+					?.trim()
+					.toLowerCase();
+
+				if (optionText?.startsWith(this.query)) {
+					this.selectOptionOrMakeActive(i);
+					break;
+				}
 			}
 
 			i = getIndexBasedOnDirection(i, 1, this.optionElsCount, true);
@@ -239,7 +246,7 @@ export default class List {
 
 		if (keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN])) {
 			e.preventDefault();
-			const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
+			const direction = keyPressed == KEYS.UP ? -1 : 1;
 			const indexOfOptionToUpdate = getIndexBasedOnDirection(this.activeOptionIndex, direction, this.optionElsCount, true);
 			if (this.multiselectable) {
 				if (keyboardEvent.shiftKey) {
@@ -255,7 +262,7 @@ export default class List {
 
 		if (keyPressedMatches(keyPressed, [KEYS.HOME, KEYS.END])) {
 			e.preventDefault();
-			const homeKeyPressed = keyPressedMatches(keyPressed, KEYS.HOME);
+			const homeKeyPressed = keyPressed == KEYS.HOME;
 			const optionIndex = homeKeyPressed ? 0 : this.optionElsCount - 1;
 			if (this.multiselectable) {
 				// If Ctrl + Shift + Home pressed select all options between active and first options inclusive
@@ -270,7 +277,7 @@ export default class List {
 			return;
 		}
 
-		if (this.multiselectable && keyPressedMatches(keyPressed, KEYS.SPACE)) {
+		if (this.multiselectable && keyPressed == KEYS.SPACE) {
 			e.preventDefault();
 			if (keyboardEvent.shiftKey) {
 				if (this.lastSelectedOptionIndex || this.lastSelectedOptionIndex === 0) {
@@ -283,7 +290,7 @@ export default class List {
 		}
 
 		// Select or deselect all with 'Ctrl + A'
-		if (this.multiselectable && keyPressedMatches(keyPressed, KEYS.A) && (keyboardEvent.ctrlKey || keyboardEvent.metaKey)) {
+		if (this.multiselectable && keyPressed == KEYS.A && (keyboardEvent.ctrlKey || keyboardEvent.metaKey)) {
 			e.preventDefault();
 			this.allSelected = !this.allSelected;
 			if (this.optionEls) {
@@ -298,7 +305,7 @@ export default class List {
 			return;
 		}
 
-		this.findOption(keyboardEvent.key.toLowerCase());
+		this.findOption(keyPressed.toLowerCase());
 	}
 
 
@@ -340,11 +347,29 @@ export default class List {
 	*/
 	private scrollOptionIntoView(index: number): void {
 		if (this.optionEls) {
-			this.optionEls[index].scrollIntoView({
-				behaviour: 'smooth',
-				block: 'nearest',
-				inline: 'nearest',
-			} as ScrollIntoViewOptions);
+			const listElRect = this.listEl.getBoundingClientRect();
+			const optionElRect = this.optionEls[index].getBoundingClientRect();
+			const optionElTop = optionElRect.top;
+			const listElTop = listElRect.top;
+			const optionElBottom = optionElRect.bottom;
+			const listElBottom = listElRect.bottom;
+
+			// Scroll list up to show option
+			if (optionElTop < listElTop) {
+				this.listEl.scrollBy({
+					left: 0,
+					top: optionElTop - listElTop,
+				});
+				return;
+			}
+
+			// Scroll list down to show option
+			if (optionElBottom > listElBottom) {
+				this.listEl.scrollBy({
+					left: 0,
+					top: optionElBottom - listElBottom,
+				});
+			}
 		}
 	}
 

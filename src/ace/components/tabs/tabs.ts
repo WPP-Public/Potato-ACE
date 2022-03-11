@@ -271,11 +271,11 @@ export default class Tabs extends HTMLElement {
 		Handles keydown events on tab elements
 	*/
 	private keydownHandler(e: KeyboardEvent): void {
-		const keyPressed = e.key || e.which || e.keyCode;
-		const homeKeyPressed = keyPressedMatches(keyPressed, KEYS.HOME);
-		const endKeyPressed = keyPressedMatches(keyPressed, KEYS.END);
-		const prevTabKeyPressed = keyPressedMatches(keyPressed, this.prevTabKey);
-		const nextTabKeyPressed = keyPressedMatches(keyPressed, this.nextTabKey);
+		const keyPressed = e.key;
+		const homeKeyPressed = keyPressed == KEYS.HOME;
+		const endKeyPressed = keyPressed == KEYS.END;
+		const prevTabKeyPressed = keyPressed == this.prevTabKey;
+		const nextTabKeyPressed = keyPressed == this.nextTabKey;
 
 		// SPACE or ENTER key pressed
 		if (this.manualSelection && keyPressedMatches(keyPressed, [KEYS.ENTER, KEYS.SPACE])) {

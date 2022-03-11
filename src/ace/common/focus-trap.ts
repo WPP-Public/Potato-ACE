@@ -2,7 +2,7 @@
 	Class applies a focus trap to a given element and adds a mutation observer that updates the focus trap when any focusable descendant's class, style or disabled attribute changes.
 */
 import { FOCUSABLE_ELEMENTS_SELECTOR, KEYS } from './constants.js';
-import { isInteractable, keyPressedMatches } from './functions.js';
+import { isInteractable } from './functions.js';
 
 
 export default class FocusTrap {
@@ -48,8 +48,7 @@ export default class FocusTrap {
 
 
 	private keydownHandler(e: KeyboardEvent): void {
-		const keyPressed = e.key || e.which || e.keyCode;
-		if (!keyPressedMatches(keyPressed, KEYS.TAB)) {
+		if (e.key != KEYS.TAB) {
 			return;
 		}
 
