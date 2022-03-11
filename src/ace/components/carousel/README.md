@@ -241,7 +241,7 @@ The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-car
 <button id="add-slide-btn">Add slide to end</button>
 <button id="remove-slide-btn">Remove last slide</button>
 <hr>
-<ace-carousel aria-label="Custom events" id="custom-events-carousel">
+<ace-carousel aria-label="Custom events" id="ace-custom-events-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div>
@@ -268,7 +268,7 @@ The buttons in this example dispatch the `ace-carousel-set-prev-slide`, `ace-car
 import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const CAROUSEL_ID = 'custom-events-carousel';
+	const CAROUSEL_ID = 'ace-custom-events-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 
@@ -321,7 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 Carousel with infinite rotation that displays the second slide upon page load.
 
 ```html
-<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="infinite-carousel">
+<ace-carousel ace-carousel-infinite ace-carousel-selected-slide="2" aria-label="Infinite rotation and second slide initially displayed" id="ace-infinite-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div>
@@ -349,7 +349,7 @@ Carousel with infinite rotation that displays the second slide upon page load.
 Carousel with slide picker buttons and automatic slide show. 
 
 ```html
-<ace-carousel aria-label="Slide picker" id="slide-picker-carousel">
+<ace-carousel aria-label="Slide picker" id="ace-slide-picker-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div ace-carousel-slide-picker></div>
@@ -382,7 +382,7 @@ Carousel with automatic slide show. Two buttons have also been included, which d
 <button id="stop-auto-slide-show-custom-event-btn">Stop automatic slide show custom event</button>
 <button id="start-auto-slide-show-custom-event-btn">Start automatic slide show custom event</button>
 <hr>
-<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="auto-carousel">
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-auto-slide-show-time="2000" ace-carousel-infinite aria-label="Automatic slide show" id="ace-auto-carousel">
 	<button>Toggle automatic slide show</button>
 	<button>Previous slide</button>
 	<button>Next slide</button>
@@ -410,7 +410,7 @@ Carousel with automatic slide show. Two buttons have also been included, which d
 import {EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const CAROUSEL_ID = 'auto-carousel';
+	const CAROUSEL_ID = 'ace-auto-carousel';
 
 	window.addEventListener('click', (e) => {
 		const targetId = e.target.id;
@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
 Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
 
 ```html
-<ace-carousel ace-carousel-infinite aria-label="Animated" id="animated-carousel" class="animated-carousel">
+<ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="animated-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
 	<div class="animated-carousel__slides">
@@ -497,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		return;
 	}
 
-	const CAROUSEL_ID = 'animated-carousel';
+	const CAROUSEL_ID = 'ace-animated-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 	const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);
@@ -558,7 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 An example of how Carousel can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
  
 ```html
-<ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="styled-carousel"
+<ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="ace-styled-carousel"
 	class="styled-carousel">
 	<button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span
 			class="pause-icon">&#10074; &#10074;</span></button>
@@ -721,7 +721,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		return;
 	}
 
-	const CAROUSEL_ID = 'styled-carousel';
+	const CAROUSEL_ID = 'ace-styled-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 	const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);

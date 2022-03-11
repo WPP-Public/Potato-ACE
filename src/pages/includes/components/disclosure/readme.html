@@ -1,7 +1,7 @@
-<h1>Disclosure</h1>
+<h1 id="disclosure">Disclosure</h1>
 <p>Disclosure is a component whose visibility is changed using trigger buttons.</p>
 <p>Disclosure conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#disclosure">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Set up</h2>
+<h2 id="set-up">Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/disclosure/disclosure';
 </code></pre>
@@ -14,27 +14,27 @@
 </code></pre>
 <p>For convenience the ES6 class is exported as <code>Disclosure</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Disclosure is instantiated within each <code>&lt;ace-disclosure&gt;</code> element and an ID <code>ace-disclosure-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. Once instantiation is complete a custom event <code>ace-disclosure-ready</code> is dispatched to <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 <p>Disclosures are hidden by default but can be initially shown on page load by adding the <code>ace-disclosure-visible=&quot;true&quot;</code> attribute to it. The attribute <code>ace-disclosure-trigger-for</code> should be added to triggering element and its value set to the ID of the Disclosure to be triggered. For accessibility reasons it is recommended that only <code>&lt;button&gt;</code> elements are used for triggers. Disclosures can also be triggered using a custom event. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Triggers will by default toggle the visibiility of the Disclosure, but the <code>ace-disclosure-show-trigger</code> or <code>ace-disclosure-hide-trigger</code> attribute can be added to the trigger to ensure that it only shows or hides its Disclosure respectively.</p>
-<h2>Styles</h2>
+<h2 id="styles">Styles</h2>
 <p>The following SASS is applied to Disclosure.</p>
 <pre><code class="language-scss">ace-disclosure:not([ace-disclosure-visible]) {
 	display: none;
 }
 </code></pre>
-<h2>Custom events</h2>
+<h2 id="custom-events">Custom events</h2>
 <p>Disclosure uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
-<h3>Dispatched events</h3>
+<h3 id="dispatched-events">Dispatched events</h3>
 <p>The following events are dispatched to <code>window</code> by Disclosure.</p>
-<h4>Ready</h4>
+<h4 id="ready">Ready</h4>
 <p><code>ace-disclosure-ready</code></p>
 <p>This event is dispatched when Disclosure finishes initialising. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of Disclosure [string]
 }
 </code></pre>
-<h4>Visibility changed</h4>
+<h4 id="visibility-changed">Visibility changed</h4>
 <p><code>ace-disclosure-visibility-changed</code></p>
 <p>This event is dispatched when Disclosure's visibility changes. The event name is available as <code>EVENTS.OUT.VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
@@ -42,18 +42,18 @@
 	'visible': // Whether the Disclosure is visible or not [boolean]
 }
 </code></pre>
-<h3>Listened for event</h3>
+<h3 id="listened-for-event">Listened for event</h3>
 <p>Disclosure listens for the following event that should be dispatched to <code>window</code>.</p>
-<h4>Toggle</h4>
+<h4 id="toggle">Toggle</h4>
 <p><code>ace-disclosure-toggle</code></p>
 <p>This event should be dispatched to toggle the visibility of the Disclosure. The event name is available as <code>EVENTS.IN.TOGGLE</code> and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of target Disclosure [string]
 }
 </code></pre>
-<h2>Examples</h2>
+<h2 id="examples">Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<h3>Simple Disclosure</h3>
+<h3 id="simple-disclosure">Simple Disclosure</h3>
 <p>This is a simple, button-triggered Disclosure.</p>
 <div class="example-block"><button ace-disclosure-trigger-for="ace-disclosure-1">
 	Disclosure toggle
@@ -75,53 +75,53 @@
 	&lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot; /&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
-<h3>Initially visible Disclosure</h3>
+<h3 id="initially-visible-disclosure">Initially visible Disclosure</h3>
 <p>In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute <code>ace-disclosure-visible=&quot;true&quot;</code>.</p>
-<div class="example-block"><button ace-disclosure-trigger-for="initially-visible-disclosure">
+<div class="example-block"><button ace-disclosure-trigger-for="ace-initially-visible-disclosure">
 	Disclosure toggle trigger 1
 </button>
-<button ace-disclosure-trigger-for="initially-visible-disclosure">
+<button ace-disclosure-trigger-for="ace-initially-visible-disclosure">
 	Disclosure toggle trigger 2
 </button>
-<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
+<button ace-disclosure-trigger-for="ace-initially-visible-disclosure" ace-disclosure-trigger-show>
 	Disclosure show trigger
 </button>
-<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-hide>
+<button ace-disclosure-trigger-for="ace-initially-visible-disclosure" ace-disclosure-trigger-hide>
 	Disclosure hide trigger
 </button>
 <hr>
-<ace-disclosure ace-disclosure-visible id="initially-visible-disclosure">
+<ace-disclosure ace-disclosure-visible id="ace-initially-visible-disclosure">
 	<h2>Initially visible disclosure</h2>
 	<p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
 	<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 </ace-disclosure>
 </div>
-<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot;&gt;
+<pre><code class="language-html">&lt;button ace-disclosure-trigger-for=&quot;ace-initially-visible-disclosure&quot;&gt;
 	Disclosure toggle trigger 1
 &lt;/button&gt;
-&lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot;&gt;
+&lt;button ace-disclosure-trigger-for=&quot;ace-initially-visible-disclosure&quot;&gt;
 	Disclosure toggle trigger 2
 &lt;/button&gt;
-&lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot; ace-disclosure-trigger-show&gt;
+&lt;button ace-disclosure-trigger-for=&quot;ace-initially-visible-disclosure&quot; ace-disclosure-trigger-show&gt;
 	Disclosure show trigger
 &lt;/button&gt;
-&lt;button ace-disclosure-trigger-for=&quot;initially-visible-disclosure&quot; ace-disclosure-trigger-hide&gt;
+&lt;button ace-disclosure-trigger-for=&quot;ace-initially-visible-disclosure&quot; ace-disclosure-trigger-hide&gt;
 	Disclosure hide trigger
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-disclosure ace-disclosure-visible id=&quot;initially-visible-disclosure&quot;&gt;
+&lt;ace-disclosure ace-disclosure-visible id=&quot;ace-initially-visible-disclosure&quot;&gt;
 	&lt;h2&gt;Initially visible disclosure&lt;/h2&gt;
 	&lt;p&gt;This Disclosure is initially visible because it has the attribute &lt;code&gt;ace-disclosure-visible=&quot;true&quot;&lt;/code&gt;.&lt;/p&gt;
 	&lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot; /&gt;
 &lt;/ace-disclosure&gt;
 </code></pre>
-<h3>Disclosure controlled using custom event</h3>
+<h3 id="disclosure-controlled-using-custom-event">Disclosure controlled using custom event</h3>
 <p>The button in this example is <strong>not</strong> a trigger button but instead is a button that dispatches the <code>ace-disclosure-toggle</code> custom event on the Dsiclosure. This implementation is only for demonstration purposes and trigger buttons should have the <code>ace-disclosure-trigger-for</code> attribute instead. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button id="toggle-custom-event-btn">
 	Toggle disclosure using custom event
 </button>
 <hr>
-<ace-disclosure id="custom-events-disclosure">
+<ace-disclosure id="ace-custom-events-disclosure">
 	<h2>Custom event Disclosure</h2>
 	<p>This Disclosure's visibility is controlled using custom events.</p>
 	<img src="/img/logo.svg" height="100px" alt="Potato logo" />
@@ -131,7 +131,7 @@
 	Toggle disclosure using custom event
 &lt;/button&gt;
 &lt;hr&gt;
-&lt;ace-disclosure id=&quot;custom-events-disclosure&quot;&gt;
+&lt;ace-disclosure id=&quot;ace-custom-events-disclosure&quot;&gt;
 	&lt;h2&gt;Custom event Disclosure&lt;/h2&gt;
 	&lt;p&gt;This Disclosure's visibility is controlled using custom events.&lt;/p&gt;
 	&lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot; /&gt;
@@ -145,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	customEventBtn.addEventListener('click', () =&gt; {
 		window.dispatchEvent(new CustomEvent(
 			EVENTS.IN.TOGGLE,
-			{'detail': {'id': 'custom-events-disclosure'}},
+			{'detail': {'id': 'ace-custom-events-disclosure'}},
 		));
 	});
 });

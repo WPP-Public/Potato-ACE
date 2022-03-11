@@ -196,7 +196,7 @@ A Select to be used with HTML forms, with a hidden `<input>` with the selected o
 
 ```html
 <label id="ace-select-1-label">Choose an Avenger:</label>
-<ace-select ace-select-for-form id="for-form-select">
+<ace-select ace-select-for-form id="ace-select-for-form">
 	<ul aria-labelledby="ace-select-1-label">
 		<li>Select an option</li>
 		<li>Iron Man</li>
@@ -228,7 +228,7 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 </button>
 <hr>
 <label id="custom-events-select-label">Choose an Avenger:</label>
-<ace-select id="custom-events-select">
+<ace-select id="ace-custom-events-select">
 	<button><span ace-select-trigger-text>No options available</span></button>
 	<ul aria-labelledby="custom-events-select-label"></ul>
 </ace-select>
@@ -238,7 +238,7 @@ In this example the Select instantiates with an empty `<ul>` that can be populat
 import { EVENTS } from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const SELECT_ID = 'custom-events-select';
+	const SELECT_ID = 'ace-custom-events-select';
 	const selectListEl = document.querySelector(`#${SELECT_ID} ul`);
 
 	const updateOptions = () => window.dispatchEvent(new CustomEvent(

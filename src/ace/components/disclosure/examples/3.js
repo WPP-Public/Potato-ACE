@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	customEventBtn.addEventListener('click', () => {
 		window.dispatchEvent(new CustomEvent(
 			EVENTS.IN.TOGGLE,
-			{'detail': {'id': 'custom-events-disclosure'}},
+			{'detail': {'id': 'ace-custom-events-disclosure'}},
 		));
 	});
 });

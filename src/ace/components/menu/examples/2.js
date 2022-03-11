@@ -1,7 +1,7 @@
 import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const MENU_ID = 'custom-events-menu';
+	const MENU_ID = 'ace-custom-events-menu';
 	const menuEl = document.getElementById(MENU_ID);
 	const menuListEl = menuEl.querySelector('ul');
 

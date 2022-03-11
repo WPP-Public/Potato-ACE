@@ -4,9 +4,9 @@ import { getOptionId } from '../../../../cypress/functions';
 
 const IDS = {
 	ADD_OPTION_BTN: 'add-option',
-	CUSTOM_EVENTS_LB: 'custom-events-listbox',
-	FOR_FORM_LB: 'listbox-for-form',
-	MULTI_SELECT_LB: 'multiselect-listbox',
+	CUSTOM_EVENTS_LB: 'ace-custom-events-listbox',
+	FOR_FORM_LB: 'ace-listbox-for-form',
+	MULTI_SELECT_LB: 'ace-multiselect-listbox',
 	SINGLE_SELECT_LB: `${LISTBOX}-1`,
 };
 

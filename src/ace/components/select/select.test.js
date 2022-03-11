@@ -4,8 +4,8 @@ import { getOptionId } from '../../../../cypress/functions';
 
 const IDS = {
 	ADD_OPTION_BTN: 'add-option',
-	CUSTOM_EVENTS_SELECT: 'custom-events-select',
-	FOR_FORM_SELECT: `for-form-select`,
+	CUSTOM_EVENTS_SELECT: 'ace-custom-events-select',
+	FOR_FORM_SELECT: `ace-select-for-form`,
 	REMOVE_OPTION_BTN: 'remove-option',
 	SIMPLE_SELECT: `${SELECT}-1`,
 };

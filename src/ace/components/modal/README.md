@@ -176,10 +176,10 @@ Example of a simple modal with two triggers that is shown on page load. The exam
 The JavaScript used by this example is shown below.
 
 ```html
-<button ace-modal-trigger-for="simple-modal">Modal trigger 1</button>
-<button ace-modal-trigger-for="simple-modal">Modal trigger 2</button>
+<button ace-modal-trigger-for="ace-simple-modal">Modal trigger 1</button>
+<button ace-modal-trigger-for="ace-simple-modal">Modal trigger 2</button>
 
-<ace-modal aria-label="Example Modal" id="simple-modal" ace-modal-visible>
+<ace-modal aria-label="Example Modal" id="ace-simple-modal" ace-modal-visible>
 	<h3>Modal heading</h3>
 	<p>This modal was shown on page load because it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
 	<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
@@ -194,7 +194,7 @@ The JavaScript used by this example is shown below.
 import {EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const MODAL_ID = 'simple-modal';
+	const MODAL_ID = 'ace-simple-modal';
 	const modalEl = document.getElementById(MODAL_ID);
 	const disabledBtn = document.getElementById('disabled-btn');
 
@@ -237,16 +237,16 @@ Example of a Modal that has a trigger for another Modal and makes use of the `ac
 The JavaScript used by this example is shown below.
 
 ```html
-<button ace-modal-trigger-for="modal-from-modal">
+<button ace-modal-trigger-for="ace-modal-from-modal">
 	Second Modal's trigger
 </button>
 
-<ace-modal aria-label="Example of Modal that shows another Modal" id="modal-from-modal">
+<ace-modal aria-label="Example of Modal that shows another Modal" id="ace-modal-from-modal">
 	<button ace-modal-hide-modal-btn aria-label="Exit modal">&#x2715;</button>
 	<h3>Second Modal</h3>
 	<p>Second Modal</p>
 	<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-	<button ace-modal-trigger-for="simple-modal">Show first modal</button>
+	<button ace-modal-trigger-for="ace-simple-modal">Show first modal</button>
 </ace-modal>
 ```
 
@@ -254,8 +254,8 @@ The JavaScript used by this example is shown below.
 import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const OTHER_MODAL_ID = 'simple-modal';
-	const modalEl = document.getElementById('modal-from-modal');
+	const OTHER_MODAL_ID = 'ace-simple-modal';
+	const modalEl = document.getElementById('ace-modal-from-modal');
 	let otherModalTriggerClicked;
 
 	// If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden

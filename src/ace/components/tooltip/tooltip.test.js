@@ -2,7 +2,7 @@ import { ATTRS, DEFAULT_DELAY, EVENTS, TOOLTIP } from './tooltip';
 
 
 const IDS = {
-	CUSTOM_EVENTS_TOOLTIP: 'custom-events-tooltip',
+	CUSTOM_EVENTS_TOOLTIP: 'ace-custom-events-tooltip',
 	HIDE_TOOLTIP_BTN: 'hide-tooltip-btn',
 	SHOW_TOOLTIP_BTN: 'show-tooltip-btn',
 };

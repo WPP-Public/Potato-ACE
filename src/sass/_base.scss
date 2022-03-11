@@ -2,8 +2,10 @@
 @use './common/mixins' as *;
 
 @use './components/sidebar';
+@use './components/header';
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 
 // REPEATING ELEMENTS
 * {
@@ -61,6 +63,16 @@ h4,
 h5 {
 	font-weight: 700;
 	margin: 0 0 $buffer-s;
+
+	// Offset so article's main headings aren't obscured by header when scrolling to them after clicking on links in TOC
+	article > &::before {
+		$buffer: header.$height + $buffer-s;
+		content: '';
+		display: block;
+		height: $buffer;
+		margin: -($buffer) 0 0;
+		pointer-events: none;
+	}
 }
 
 h1,
@@ -86,7 +98,7 @@ h1 {
 }
 
 h2 {
-	font-size: 3rem;
+	font-size: 4rem;
 	font-weight: 700;
 	line-height: 1.2;
 }
@@ -168,5 +180,29 @@ main {
 	@include mq(desktop) {
 		display: grid;
 		grid-template-columns: sidebar.$width minmax(0, 1fr);
+	}
+}
+
+.toc {
+	@include bordered($padding: 5px $buffer-xs);
+
+	list-style: none;
+	max-height: 120px;
+	overflow-y: auto;
+
+	[heading="h3"] {
+		margin-left: $buffer-xs;
+	}
+
+	[heading="h4"] {
+		padding-left: calc(2 * #{$buffer-xs});
+	}
+
+	[heading="h5"] {
+		padding-left: calc(3 * #{$buffer-xs});
+	}
+
+	[heading="h6"] {
+		padding-left: calc(4 * #{$buffer-xs});
 	}
 }

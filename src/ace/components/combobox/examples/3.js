@@ -1,7 +1,7 @@
 import { ATTRS, EVENTS } from '/ace/components/combobox/combobox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const COMBOBOX_ID = 'custom-events-combobox';
+	const COMBOBOX_ID = 'ace-custom-events-combobox';
 	const comboboxEl = document.getElementById(COMBOBOX_ID);
 	const comboboxListEl = comboboxEl.querySelector(`[${ATTRS.LIST}]`);
 	const selectOptionForm = document.getElementById('select-option-form');

@@ -2,8 +2,8 @@ import { ATTRS, EVENTS } from './modal';
 
 
 const IDS = {
-	MODAL_FROM_MODAL: 'modal-from-modal',
-	SIMPLE_MODAL: 'simple-modal',
+	MODAL_FROM_MODAL: 'ace-modal-from-modal',
+	SIMPLE_MODAL: 'ace-simple-modal',
 };
 
 
