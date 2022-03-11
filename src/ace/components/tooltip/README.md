@@ -285,7 +285,7 @@ The first two buttons in this example dispatch the `ace-tooltip-show` and `ace-t
 
 <button>
 	Tooltip target
-	<ace-tooltip id="custom-events-tooltip">Tooltip text</ace-tooltip>
+	<ace-tooltip id="ace-custom-events-tooltip">Tooltip text</ace-tooltip>
 </button>
 ```
 
@@ -293,7 +293,7 @@ The first two buttons in this example dispatch the `ace-tooltip-show` and `ace-t
 import { EVENTS } from '/ace/components/tooltip/tooltip.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const TOOLTIP_ID = 'custom-events-tooltip';
+	const TOOLTIP_ID = 'ace-custom-events-tooltip';
 
 	window.addEventListener('click', (e) => {
 		const targetId = e.target.id;

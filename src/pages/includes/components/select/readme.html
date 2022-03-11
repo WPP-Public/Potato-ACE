@@ -1,7 +1,7 @@
-<h1>Select</h1>
+<h1 id="select">Select</h1>
 <p>Select is a dropdown list of options that mimics a native HTML <code>&lt;select&gt;</code> that has attribute <code>size</code> with a value of 1 or without it, while allowing more styling flexibility.</p>
 <p>Select conforms to the <a href="https://www.w3.org/TR/examples/listbox/listbox-collapsible.html">W3C WAI-ARIA authoring practices</a>, with the exception of a few minor interactions that allow it to more closely mimic a native HTML <code>&lt;select&gt;</code> element.</p>
-<h2>Set up</h2>
+<h2 id="set-up">Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/select/select';
 </code></pre>
@@ -17,11 +17,11 @@
 <p>Select must have a descendant button to show the hidden list of options, so if one is not present Select will create a <code>&lt;button&gt;</code> to use, prepend it to itself and update its text to match that of the first option in the list. Select must also have a descendant list and will use the first descendant <code>&lt;ul&gt;</code> for this. This list can be empty upon instantiation and options can be dynamically added to, or removed from, it later as long as custom event <code>ace-select-update-options</code> is dispatched to the Select instance afterwards.</p>
 <p>If using a Select in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-select-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-select-input</code>. The value of the selected option is stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded string. Similarly, the selected option ID is stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-id</code>.</p>
 <p>If using a Select in a HTML <code>&lt;form&gt;</code> the attribute <code>ace-select-for-form</code> can be added to it which causes it to create a hidden <code>&lt;input&gt;</code> with attribute <code>ace-select-input</code>. The value of the selected option is stored as the value of the <code>&lt;input&gt;</code> in the form of a URI encoded string. Similarly, the selected option ID is stored as the value of the <code>&lt;input&gt;</code> attribute <code>data-ace-listbox-selected-option-id</code>.</p>
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 <p>The list of options is displayed when users click on the trigger or press <kbd>↑</kbd>, <kbd>↓</kbd>, <kbd>Enter</kbd> or <kbd>Space</kbd> while the trigger is focused, with <kbd>↑</kbd> selecting the last option in the list and the other three keys selecting the first. The list is aware of it's position within the window and ensures that it is fully visible in the viewport. It will hence appear below the trigger and aligned to it's left edge if there is enough space, otherwise it will appear above and/or aligned to the right edge, as necessary.</p>
 <p>Clicking on an option or navigating to it using <kbd>↑</kbd> or <kbd>↓</kbd> and pressing <kbd>Enter</kbd> or <kbd>Space</kbd> will select the option, hide the list and update the trigger text to match that of the selected option, and then dispatch the <code>ace-select-option-chosen</code> custom event.</p>
 <p>Type-ahead can also be used to select an option by typing one or more characters that the option's text starts with. Repeatedly typing the same character with a short delay in-between will cycle through all matching options. Type-ahead can be used on a focused trigger, which will select the option and update the trigger text, or in a list where it will only select the option but not update the trigger text until <kbd>Enter</kbd> or <kbd>Space</kbd> are pressed to confirm. Pressing <kdb>Esc</kbd> or clicking outside the Select component hides a shown list without confirming a change in the selected option.</p>
-<h2>Styles</h2>
+<h2 id="styles">Styles</h2>
 <p>The following SASS is applied to Select. The SASS variables use <code>!default</code> so can also be easily overridden by users. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
 
@@ -76,18 +76,18 @@ ace-select {
 	}
 }
 </code></pre>
-<h2>Custom events</h2>
+<h2 id="custom-events">Custom events</h2>
 <p>Select uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
-<h3>Dispatched events</h3>
+<h3 id="dispatched-events">Dispatched events</h3>
 <p>The following events are dispatched to <code>window</code> by Select.</p>
-<h4>Ready</h4>
+<h4 id="ready">Ready</h4>
 <p><code>ace-select-ready</code></p>
 <p>This event is dispatched when Select finishes initialising just after page load, and after dynamically added options are initialised in response to the <code>ace-select-update-options</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of Select [string]
 }
 </code></pre>
-<h4>Option chosen</h4>
+<h4 id="option-chosen">Option chosen</h4>
 <p><code>ace-select-option-chosen</code></p>
 <p>This event is dispatched when an option is chosen by the user. The event name is available as <code>EVENTS.OUT.OPTION_CHOSEN</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
@@ -98,18 +98,18 @@ ace-select {
 	},
 }
 </code></pre>
-<h3>Listened for event</h3>
+<h3 id="listened-for-event">Listened for event</h3>
 <p>Select listens for the following event that should be dispatched to <code>window</code>.</p>
-<h4>Update options</h4>
+<h4 id="update-options">Update options</h4>
 <p><code>ace-select-update-options</code></p>
 <p>This event should be dispatched when options are added to or removed from the list and causes Select to initialise them and then dispatch the <code>ace-select-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE_OPTIONS</code> and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of target Select [string]
 }
 </code></pre>
-<h2>Examples</h2>
+<h2 id="examples">Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<h3>Simple Select</h3>
+<h3 id="simple-select">Simple Select</h3>
 <p>The default Select.</p>
 <div class="example-block"><label id="ace-select-1-label">Choose an Avenger:</label>
 <ace-select>
@@ -149,10 +149,10 @@ ace-select {
 	&lt;/ul&gt;
 &lt;/ace-select&gt;
 </code></pre>
-<h3>Select for forms</h3>
+<h3 id="select-for-forms">Select for forms</h3>
 <p>A Select to be used with HTML forms, with a hidden <code>&lt;input&gt;</code> with the selected option data.</p>
 <div class="example-block"><label id="ace-select-1-label">Choose an Avenger:</label>
-<ace-select ace-select-for-form id="for-form-select">
+<ace-select ace-select-for-form id="ace-select-for-form">
 	<ul aria-labelledby="ace-select-1-label">
 		<li>Select an option</li>
 		<li>Iron Man</li>
@@ -171,7 +171,7 @@ ace-select {
 </ace-select>
 </div>
 <pre><code class="language-html">&lt;label id=&quot;ace-select-1-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
-&lt;ace-select ace-select-for-form id=&quot;for-form-select&quot;&gt;
+&lt;ace-select ace-select-for-form id=&quot;ace-select-for-form&quot;&gt;
 	&lt;ul aria-labelledby=&quot;ace-select-1-label&quot;&gt;
 		&lt;li&gt;Select an option&lt;/li&gt;
 		&lt;li&gt;Iron Man&lt;/li&gt;
@@ -189,7 +189,7 @@ ace-select {
 	&lt;/ul&gt;
 &lt;/ace-select&gt;
 </code></pre>
-<h3>Select with dynamic options</h3>
+<h3 id="select-with-dynamic-options">Select with dynamic options</h3>
 <p>In this example the Select instantiates with an empty <code>&lt;ul&gt;</code> that can be populated with options using <strong>Add option</strong>. The last option can be removed using the <strong>Remove option</strong>. Both these buttons dispatch the <code>ace-select-update-options</code> event that updates the list options, and the trigger text. The extra JavaScript code required by this example is also included below.</p>
 <div class="example-block"><button id="add-option">
 	Add option
@@ -199,7 +199,7 @@ ace-select {
 </button>
 <hr>
 <label id="custom-events-select-label">Choose an Avenger:</label>
-<ace-select id="custom-events-select">
+<ace-select id="ace-custom-events-select">
 	<button><span ace-select-trigger-text>No options available</span></button>
 	<ul aria-labelledby="custom-events-select-label"></ul>
 </ace-select>
@@ -212,7 +212,7 @@ ace-select {
 &lt;/button&gt;
 &lt;hr&gt;
 &lt;label id=&quot;custom-events-select-label&quot;&gt;Choose an Avenger:&lt;/label&gt;
-&lt;ace-select id=&quot;custom-events-select&quot;&gt;
+&lt;ace-select id=&quot;ace-custom-events-select&quot;&gt;
 	&lt;button&gt;&lt;span ace-select-trigger-text&gt;No options available&lt;/span&gt;&lt;/button&gt;
 	&lt;ul aria-labelledby=&quot;custom-events-select-label&quot;&gt;&lt;/ul&gt;
 &lt;/ace-select&gt;
@@ -220,7 +220,7 @@ ace-select {
 <pre><code class="language-js">import { EVENTS } from '/ace/components/select/select.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const SELECT_ID = 'custom-events-select';
+	const SELECT_ID = 'ace-custom-events-select';
 	const selectListEl = document.querySelector(`#${SELECT_ID} ul`);
 
 	const updateOptions = () =&gt; window.dispatchEvent(new CustomEvent(
@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	});
 });
 </code></pre>
-<h3>Styled Select</h3>
+<h3 id="styled-select">Styled Select</h3>
 <p>An example of how Select can be styled, with the applied CSS shown below.</p>
 <div class="example-block"><label id="styled-select-label" class="styled-select-label">Choose an Avenger:</label>
 <ace-select class="styled-select">

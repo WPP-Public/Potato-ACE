@@ -3,10 +3,10 @@ import {ACCORDION, ATTRS, EVENTS} from './accordion';
 
 const IDS = {
 	APPEND_PANEL_BTN: 'append-panel-btn',
-	CUSTOM_EVENTS_ACCORDION: 'custom-events-accordion',
+	CUSTOM_EVENTS_ACCORDION: 'ace-custom-events-accordion',
 	HIDE_ALL_PANELS_BTN: 'hide-panels-btn',
 	HIDE_PANEL_BTN: 'hide-panel-btn',
-	ONE_VISIBLE_PANEL_ACCORDION: 'one-visible-panel-accordion',
+	ONE_VISIBLE_PANEL_ACCORDION: 'ace-one-visible-panel-accordion',
 	PANEL_NUMBER_INPUT: 'panel-number',
 	REMOVE_PANEL_BTN: 'remove-panel-btn',
 	SHOW_ALL_PANELS_BTN: 'show-panels-btn',

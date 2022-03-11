@@ -4,7 +4,7 @@ import { getOptionId } from '../../../../cypress/functions';
 
 const IDS = {
 	ADD_OPTION_BTN: 'add-option',
-	CUSTOM_EVENTS_MENU: 'custom-events-menu',
+	CUSTOM_EVENTS_MENU: 'ace-custom-events-menu',
 	REMOVE_OPTION_BTN: 'remove-option',
 	SIMPLE_MENU: `${MENU}-1`,
 };

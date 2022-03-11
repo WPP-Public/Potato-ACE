@@ -128,20 +128,20 @@ This is a simple, button-triggered Disclosure.
 In this example Disclosure 1 is initially hidden, whereas Disclosure 2 is initially visible as it has the attribute `ace-disclosure-visible="true"`.
 
 ```html
-<button ace-disclosure-trigger-for="initially-visible-disclosure">
+<button ace-disclosure-trigger-for="ace-initially-visible-disclosure">
 	Disclosure toggle trigger 1
 </button>
-<button ace-disclosure-trigger-for="initially-visible-disclosure">
+<button ace-disclosure-trigger-for="ace-initially-visible-disclosure">
 	Disclosure toggle trigger 2
 </button>
-<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-show>
+<button ace-disclosure-trigger-for="ace-initially-visible-disclosure" ace-disclosure-trigger-show>
 	Disclosure show trigger
 </button>
-<button ace-disclosure-trigger-for="initially-visible-disclosure" ace-disclosure-trigger-hide>
+<button ace-disclosure-trigger-for="ace-initially-visible-disclosure" ace-disclosure-trigger-hide>
 	Disclosure hide trigger
 </button>
 <hr>
-<ace-disclosure ace-disclosure-visible id="initially-visible-disclosure">
+<ace-disclosure ace-disclosure-visible id="ace-initially-visible-disclosure">
 	<h2>Initially visible disclosure</h2>
 	<p>This Disclosure is initially visible because it has the attribute <code>ace-disclosure-visible="true"</code>.</p>
 	<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
@@ -158,7 +158,7 @@ The button in this example is **not** a trigger button but instead is a button t
 	Toggle disclosure using custom event
 </button>
 <hr>
-<ace-disclosure id="custom-events-disclosure">
+<ace-disclosure id="ace-custom-events-disclosure">
 	<h2>Custom event Disclosure</h2>
 	<p>This Disclosure's visibility is controlled using custom events.</p>
 	<img src="/img/logo.svg" height="100px" alt="Potato logo" />
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	customEventBtn.addEventListener('click', () => {
 		window.dispatchEvent(new CustomEvent(
 			EVENTS.IN.TOGGLE,
-			{'detail': {'id': 'custom-events-disclosure'}},
+			{'detail': {'id': 'ace-custom-events-disclosure'}},
 		));
 	});
 });

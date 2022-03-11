@@ -1,7 +1,7 @@
 import {ATTRS, EVENTS} from '/ace/components/carousel/carousel.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const CAROUSEL_ID = 'custom-events-carousel';
+	const CAROUSEL_ID = 'ace-custom-events-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const slidesWrapper = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 

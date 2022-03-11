@@ -3,6 +3,8 @@
 
 .collaborator-list {
 	display: grid;
+	font-size: 2.5rem;
+	font-weight: 700;
 	gap: $buffer-l;
 	list-style: none;
 	margin-top: $buffer-xl;

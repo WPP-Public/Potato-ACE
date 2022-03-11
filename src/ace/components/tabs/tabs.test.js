@@ -3,18 +3,18 @@ import { ATTRS, EVENTS, TABS } from './tabs';
 
 const IDS = {
 	ADD_TAB_BTN: 'add-tab-btn',
-	CUSTOM_EVENTS_TABS: 'custom-events-tabs',
-	DEEP_LINKED_INITIALLY_SET_TABS: 'deep-linked-tabs-2',
-	DEEP_LINKED_TABS: 'deep-linked-tabs-1',
+	CUSTOM_EVENTS_TABS: 'ace-custom-events-tabs',
+	DEEP_LINKED_INITIALLY_SET_TABS: 'ace-deep-linked-tabs-2',
+	DEEP_LINKED_TABS: 'ace-deep-linked-tabs-1',
 	DYNAMIC_TABS: 'dynamic-tabs',
-	INFINITE_TABS: 'infinite-tabs',
-	MANUAL_TABS: 'manual-tabs',
+	INFINITE_TABS: 'ace-infinite-tabs',
+	MANUAL_TABS: 'ace-manual-tabs',
 	NEXT_TAB_BTN: 'next-tab-btn',
 	PREV_TAB_BTN: 'prev-tab-btn',
 	REMOVE_TAB_BTN: 'remove-tab-btn',
 	SET_TAB_FORM: 'set-tab-form',
 	SIMPLE_TABS: `${TABS}-1`,
-	VERTICAL_TABS: 'vertical-tabs',
+	VERTICAL_TABS: 'ace-vertical-tabs',
 };
 
 

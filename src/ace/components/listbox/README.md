@@ -164,7 +164,7 @@ A single-select Listbox with a descendant `<ul>` list and `<label>`.
 A multi-select Listbox.
 
 ```html
-<ace-listbox ace-listbox-multiselect id="multiselect-listbox">
+<ace-listbox ace-listbox-multiselect id="ace-multiselect-listbox">
 	<label id="multiselect-listbox-label">Choose an Avenger:</label>
 	<ul aria-labelledby="multiselect-listbox-label">
 		<li>Iron Man</li>
@@ -189,7 +189,7 @@ A multi-select Listbox to be used with HTML forms with a descendant `<ol>` list,
 
 ```html
 <label id="ol-listbox-label">Choose an Avenger:</label>
-<ace-listbox ace-listbox-multiselect ace-listbox-for-form id="listbox-for-form">
+<ace-listbox ace-listbox-multiselect ace-listbox-for-form id="ace-listbox-for-form">
 	<ol aria-labelledby="ol-listbox-label">
 		<li>Iron Man</li>
 		<li>Nick Fury</li>
@@ -219,7 +219,7 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 	Remove option
 </button>
 <hr>
-<ace-listbox id="custom-events-listbox">
+<ace-listbox id="ace-custom-events-listbox">
 	<label id="custom-events-listbox-label">Choose an Avenger:</label>
 	<ul aria-labelledby="custom-events-listbox-label"></ul>
 </ace-listbox>
@@ -229,8 +229,8 @@ In this example the Listbox instantiates with an empty `<ul>` that can be popula
 import { EVENTS } from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const LISTBOX_ID = 'custom-events-listbox';
-	const listboxEl = document.getElementById('custom-events-listbox');
+	const LISTBOX_ID = 'ace-custom-events-listbox';
+	const listboxEl = document.getElementById(LISTBOX_ID);
 
 	const updateOptions = () => window.dispatchEvent(new CustomEvent(
 		EVENTS.IN.UPDATE_OPTIONS,

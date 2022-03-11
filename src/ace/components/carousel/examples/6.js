@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		return;
 	}
 
-	const CAROUSEL_ID = 'animated-carousel';
+	const CAROUSEL_ID = 'ace-animated-carousel';
 	const carouselEl = document.getElementById(CAROUSEL_ID);
 	const carouselSlidesEl = carouselEl.querySelector(`[${ATTRS.SLIDES}]`);
 	const carouselSlideEls = carouselEl.querySelectorAll(`[${ATTRS.SLIDE}]`);

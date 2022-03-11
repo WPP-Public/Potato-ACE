@@ -1,8 +1,8 @@
 import { EVENTS } from '/ace/components/listbox/listbox.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const LISTBOX_ID = 'custom-events-listbox';
-	const listboxEl = document.getElementById('custom-events-listbox');
+	const LISTBOX_ID = 'ace-custom-events-listbox';
+	const listboxEl = document.getElementById(LISTBOX_ID);
 
 	const updateOptions = () => window.dispatchEvent(new CustomEvent(
 		EVENTS.IN.UPDATE_OPTIONS,
