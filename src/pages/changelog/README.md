@@ -5,6 +5,7 @@
 ### General
 
 - All custom events dispatched to ACE components must now be dispatched on `window` with the `detail` property of the custom event containing the ID of the target ACE component. This change makes it easier for ACE components to be used with JavaScript frameworks.
+- Fixed type-ahead for Listbox, Select and Menu so that it works with list options that have descendants with no text content, e.g. images.
 
 ### Accordion
 
