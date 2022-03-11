@@ -103,7 +103,7 @@ export default class List {
 			return;
 		}
 
-		const optionClicked = (e.target as Element).closest(`li`);
+		const optionClicked = (e.target as Element).closest('li');
 		if (!optionClicked) {
 			return;
 		}
@@ -143,9 +143,16 @@ export default class List {
 
 		const startingIndex = i;
 		do {
-			if (this.optionEls && this.optionEls[i].textContent?.toLowerCase().startsWith(this.query)) {
-				this.selectOptionOrMakeActive(i);
-				break;
+			if (this.optionEls) {
+				const optionText = this.optionEls[i]
+					.textContent
+					?.trim()
+					.toLowerCase();
+
+				if (optionText?.startsWith(this.query)) {
+					this.selectOptionOrMakeActive(i);
+					break;
+				}
 			}
 
 			i = getIndexBasedOnDirection(i, 1, this.optionElsCount, true);
@@ -340,11 +347,29 @@ export default class List {
 	*/
 	private scrollOptionIntoView(index: number): void {
 		if (this.optionEls) {
-			this.optionEls[index].scrollIntoView({
-				behaviour: 'smooth',
-				block: 'nearest',
-				inline: 'nearest',
-			} as ScrollIntoViewOptions);
+			const listElRect = this.listEl.getBoundingClientRect();
+			const optionElRect = this.optionEls[index].getBoundingClientRect();
+			const optionElTop = optionElRect.top;
+			const listElTop = listElRect.top;
+			const optionElBottom = optionElRect.bottom;
+			const listElBottom = listElRect.bottom;
+
+			// Scroll list up to show option
+			if (optionElTop < listElTop) {
+				this.listEl.scrollBy({
+					left: 0,
+					top: optionElTop - listElTop,
+				});
+				return;
+			}
+
+			// Scroll list down to show option
+			if (optionElBottom > listElBottom) {
+				this.listEl.scrollBy({
+					left: 0,
+					top: optionElBottom - listElBottom,
+				});
+			}
 		}
 	}
 
