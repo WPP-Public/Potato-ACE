@@ -4,7 +4,6 @@ import {
 	autoID,
 	getElByAttrOrSelector,
 	getIndexBasedOnDirection,
-	keyPressedMatches,
 	warnIfElHasNoAriaLabel
 } from '../../common/functions.js';
 
@@ -464,11 +463,11 @@ export default class Carousel extends HTMLElement {
 		Handles keydown event on slide picker
 	*/
 	private keydownHandler(e: KeyboardEvent): void {
-		const keyPressed = e.key || e.which || e.keyCode;
-		const homeKeyPressed = keyPressedMatches(keyPressed, KEYS.HOME);
-		const endKeyPressed = keyPressedMatches(keyPressed, KEYS.END);
-		const leftKeyPressed = keyPressedMatches(keyPressed, KEYS.LEFT);
-		const rightKeyPressed = keyPressedMatches(keyPressed, KEYS.RIGHT);
+		const keyPressed = e.key;
+		const homeKeyPressed = keyPressed == KEYS.HOME;
+		const endKeyPressed = keyPressed == KEYS.END;
+		const leftKeyPressed = keyPressed == KEYS.LEFT;
+		const rightKeyPressed = keyPressed == KEYS.RIGHT;
 
 		if (!homeKeyPressed && !endKeyPressed && !leftKeyPressed && !rightKeyPressed) {
 			return;

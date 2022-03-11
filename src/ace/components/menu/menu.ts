@@ -209,11 +209,11 @@ export default class Menu extends HTMLElement {
 			return;
 		}
 
-		const keyPressed = e.key || e.which || e.keyCode;
+		const keyPressed = e.key;
 		// UP, DOWN, ENTER or SPACE pressed on trigger
 		if (keydownOnTrigger && keyPressedMatches(keyPressed, [KEYS.UP, KEYS.DOWN, KEYS.ENTER, KEYS.SPACE])) {
 			e.preventDefault();
-			const optionToSelectIndex = keyPressedMatches(keyPressed, KEYS.UP) ? this.list.optionElsCount - 1 : 0;
+			const optionToSelectIndex = keyPressed == KEYS.UP ? this.list.optionElsCount - 1 : 0;
 			this.list.selectOption(optionToSelectIndex);
 			this.showList();
 			this.listEl.focus();
@@ -221,12 +221,12 @@ export default class Menu extends HTMLElement {
 		}
 
 		// Prevent page scroll when space pressed on list
-		if (keydownOnList && keyPressedMatches(keyPressed, KEYS.SPACE)) {
+		if (keydownOnList && keyPressed == KEYS.SPACE) {
 			e.preventDefault();
 		}
 
 		// ENTER on list
-		if (keydownOnList && keyPressedMatches(keyPressed, KEYS.ENTER)) {
+		if (keydownOnList && keyPressed == KEYS.ENTER) {
 			e.preventDefault();
 			if (!this.list.optionEls) {
 				return;
@@ -242,7 +242,7 @@ export default class Menu extends HTMLElement {
 		}
 
 		// ESC pressed on list or trigger
-		if (this.listVisible && keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+		if (this.listVisible && keyPressed == KEYS.ESCAPE) {
 			this.hideList();
 			this.triggerEl?.focus();
 		}

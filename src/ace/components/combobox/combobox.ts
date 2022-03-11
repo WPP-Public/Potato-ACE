@@ -456,9 +456,9 @@ export default class Combobox extends HTMLElement {
 			return;
 		}
 
-		const keyPressed = e.key || e.which || e.keyCode;
+		const keyPressed = e.key;
 
-		if (keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+		if (keyPressed == KEYS.ESCAPE) {
 			if (this.inputAutocompletes) {
 				this.inputEl.value = this.query;
 
@@ -471,7 +471,7 @@ export default class Combobox extends HTMLElement {
 			return;
 		}
 
-		if (keyPressedMatches(keyPressed, KEYS.ENTER)) {
+		if (keyPressed == KEYS.ENTER) {
 			if (this.selectedOptionIndex !== null) {
 				this.chooseOption(this.selectedOptionIndex);
 			}
@@ -483,7 +483,7 @@ export default class Combobox extends HTMLElement {
 			e.preventDefault();
 
 			// Determine which option to select and select it
-			const direction = keyPressedMatches(keyPressed, KEYS.UP) ? -1 : 1;
+			const direction = keyPressed == KEYS.UP ? -1 : 1;
 			let optionElToSelectIndex;
 			if (this.selectedOptionIndex !== null) {
 				optionElToSelectIndex =

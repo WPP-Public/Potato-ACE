@@ -283,15 +283,15 @@ export default class Select extends HTMLElement {
 			return;
 		}
 
-		const keyPressed = e.key || e.which || e.keyCode;
+		const keyPressed = e.key;
 		// Prevent TAB from changing focus when pressed on list
-		if (keydownOnList && keyPressedMatches(keyPressed, KEYS.TAB)) {
+		if (keydownOnList && keyPressed == KEYS.TAB) {
 			e.preventDefault();
 			return;
 		}
 
 		// ESC pressed on list
-		if (keydownOnList && keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+		if (keydownOnList && keyPressed == KEYS.ESCAPE) {
 			this.cancelOptionChange();
 			this.triggerEl?.focus();
 			return;
