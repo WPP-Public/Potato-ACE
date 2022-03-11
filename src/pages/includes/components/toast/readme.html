@@ -16,7 +16,7 @@
 <p>For convenience the ES6 class is exported as <code>Toast</code> and the attribute names used by the class are exported as properties of <code>ATTRS</code>.</p>
 <p>After the event <code>DOMContentLoaded</code> is fired on <code>document</code> an instance of Toast is instantiated within each <code>&lt;ace-toast&gt;</code> element and an ID <code>ace-toast-&lt;n&gt;</code> is added for any instance without one, where <code>&lt;n&gt;</code> is a unique integer. If the instance of Toast doesn't have a child with attribute <code>ace-toast-inner</code>, a child <code>div</code> is created, given this attribute and all other children of the Toast instance are moved into it. Once instantiation is complete a custom event <code>ace-toast-ready</code> is dispatched to <code>window</code>. See the <strong>Custom events</strong> section below for more details.</p>
 <h2>Usage</h2>
-<p>Toasts have an attribute <code>ace-toast-visible</code> which is initially set to <code>false</code>. This is an observed attribute and therefore dynamically be set to <code>true</code> which will cause the Toast to appear for a default show time of 4 seconds before disappearing. Developers can specify a custom show time by setting attribute <code>ace-toast-show-time</code> to the value of the show time in milliseconds as demonstrated in the example below.</p>
+<p>Toasts have an attribute <code>ace-toast-visible</code> which is initially set to <code>false</code>. This is an observed attribute and therefore dynamically be set to <code>true</code> which will cause the Toast to appear for a default time of 4 seconds before disappearing. Developers can specify a custom show-time by setting attribute <code>ace-toast-show-time</code> to the value of the show-time in milliseconds as demonstrated in the example below.</p>
 <h2>Styles</h2>
 <p>The following SASS is applied to Toast. The SASS variables use <code>!default</code> so can also be easily overridden by developers. SASS variables used that are not defined here are defined in <em>&lt;path-to-node_modules&gt;/@potato/ace/common/constants.scss</em>.</p>
 <pre><code class="language-scss">@import '../../common/constants';
@@ -78,26 +78,26 @@ ace-toast {
 </code></pre>
 <h2>Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<h3>Simple Toast and long show time Toast</h3>
-<p>A Toast with a default 4 second show time and one with a custom 5 second show time. The JavaScript used by this example is shown below.</p>
+<h3>Simple Toast and short show time Toast</h3>
+<p>A Toast with a default 4 second show time and one with a custom 2 second show time. The JavaScript used by this example is shown below.</p>
 <div class="example-block"><button id="simple-toast-btn">Show Toast</button>
-<button id="long-show-time-toast-btn">Show Toast with 5 second show time</button>
+<button id="short-show-time-toast-btn">Show Toast with 2 second show time</button>
 <ace-toast>
 	Toast with standard 4 second show time
 </ace-toast>
-<ace-toast ace-toast-show-time="5000">
-	Toast with developer-defined 5 second show time
+<ace-toast ace-toast-show-time="2000">
+	Toast with developer-defined 2 second show time
 </ace-toast>
 </div>
 <pre><code class="language-html">&lt;button id=&quot;simple-toast-btn&quot;&gt;Show Toast&lt;/button&gt;
-&lt;button id=&quot;long-show-time-toast-btn&quot;&gt;Show Toast with 5 second show time&lt;/button&gt;
+&lt;button id=&quot;short-show-time-toast-btn&quot;&gt;Show Toast with 2 second show time&lt;/button&gt;
 
 &lt;ace-toast&gt;
 	Toast with standard 4 second show time
 &lt;/ace-toast&gt;
 
-&lt;ace-toast ace-toast-show-time=&quot;5000&quot;&gt;
-	Toast with developer-defined 5 second show time
+&lt;ace-toast ace-toast-show-time=&quot;2000&quot;&gt;
+	Toast with developer-defined 2 second show time
 &lt;/ace-toast&gt;
 </code></pre>
 <pre><code class="language-js">import { ATTRS } from '/ace/components/toast/toast.js';
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	const toastEl = document.getElementById('ace-toast-1');
 	const secondToastEl = document.getElementById('ace-toast-2');
 	const showToastBtn = document.getElementById('simple-toast-btn');
-	const showSecondToastBtn = document.getElementById('long-show-time-toast-btn');
+	const showSecondToastBtn = document.getElementById('short-show-time-toast-btn');
 
 	showToastBtn.addEventListener('click', () =&gt; toastEl.setAttribute(ATTRS.VISIBLE, ''));
 	showSecondToastBtn.addEventListener('click', () =&gt; secondToastEl.setAttribute(ATTRS.VISIBLE, ''));
