@@ -1,6 +1,6 @@
 /* IMPORTS */
 import {BROWSER_SUPPORTS_INERT, KEYS, NAME} from '../../common/constants.js';
-import {autoID, keyPressedMatches, warnIfElHasNoAriaLabel} from '../../common/functions.js';
+import {autoID, warnIfElHasNoAriaLabel} from '../../common/functions.js';
 import FocusTrap from '../../common/focus-trap.js';
 
 
@@ -206,8 +206,7 @@ export default class Modal extends HTMLElement {
 	*/
 	private keydownHandler(e: KeyboardEvent): void {
 		// Hide Modal if Esc pressed
-		const keyPressed = e.key || e.which || e.keyCode;
-		if (keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+		if (e.key == KEYS.ESCAPE) {
 			this.removeAttribute(ATTRS.VISIBLE);
 			return;
 		}

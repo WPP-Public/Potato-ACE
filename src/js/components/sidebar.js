@@ -1,7 +1,6 @@
 /* IMPORTS */
 import FocusTrap from '../../ace/common/focus-trap.js';
 import { KEYS } from '../../ace/common/constants.js';
-import { keyPressedMatches } from '../../ace/common/functions.js';
 
 
 const SIDEBAR = 'sidebar';
@@ -93,11 +92,9 @@ export default class Sidebar extends HTMLElement {
 
 
 	keydownHandler(e) {
-		const keyPressed = e.key || e.which || e.keyCode;
-
 		// If ESC pressed when sidebar is open
 		const sidebarVisible = this.hasAttribute(ATTRS.SIDEBAR_VISIBLE);
-		if (sidebarVisible && keyPressedMatches(keyPressed, KEYS.ESCAPE)) {
+		if (sidebarVisible && e.key == KEYS.ESCAPE) {
 			this.sidebarBtn.removeAttribute(ATTRS.SIDEBAR_VISIBLE);
 			this.removeAttribute(ATTRS.SIDEBAR_VISIBLE);
 		}

@@ -35,7 +35,7 @@ After the event `DOMContentLoaded` is fired on `document` an instance of Toast i
 
 ## Usage
 
-Toasts have an attribute `ace-toast-visible` which is initially set to `false`. This is an observed attribute and therefore dynamically be set to `true` which will cause the Toast to appear for a default show time of 4 seconds before disappearing. Developers can specify a custom show time by setting attribute `ace-toast-show-time` to the value of the show time in milliseconds as demonstrated in the example below.
+Toasts have an attribute `ace-toast-visible` which is initially set to `false`. This is an observed attribute and therefore dynamically be set to `true` which will cause the Toast to appear for a default time of 4 seconds before disappearing. Developers can specify a custom show-time by setting attribute `ace-toast-show-time` to the value of the show-time in milliseconds as demonstrated in the example below.
 
 
 ## Styles
@@ -123,19 +123,20 @@ This event is dispatched when Toast visibility changes. The event name is availa
 
 Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.
 
-### Simple Toast and long show time Toast
-A Toast with a default 4 second show time and one with a custom 5 second show time. The JavaScript used by this example is shown below.
+### Simple Toast and short show-time Toast
+
+A Toast with a default 4 second show-time and one with a custom 2 second show-time. The JavaScript used by this example is shown below.
 
 ```html
 <button id="simple-toast-btn">Show Toast</button>
-<button id="long-show-time-toast-btn">Show Toast with 5 second show time</button>
+<button id="short-show-time-toast-btn">Show Toast with 2 second show-time</button>
 
 <ace-toast>
-	Toast with standard 4 second show time
+	Toast with standard 4 second show-time
 </ace-toast>
 
-<ace-toast ace-toast-show-time="5000">
-	Toast with developer-defined 5 second show time
+<ace-toast ace-toast-show-time="2000">
+	Toast with developer-defined 2 second show-time
 </ace-toast>
 ```
 
@@ -146,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	const toastEl = document.getElementById('ace-toast-1');
 	const secondToastEl = document.getElementById('ace-toast-2');
 	const showToastBtn = document.getElementById('simple-toast-btn');
-	const showSecondToastBtn = document.getElementById('long-show-time-toast-btn');
+	const showSecondToastBtn = document.getElementById('short-show-time-toast-btn');
 
 	showToastBtn.addEventListener('click', () => toastEl.setAttribute(ATTRS.VISIBLE, ''));
 	showSecondToastBtn.addEventListener('click', () => secondToastEl.setAttribute(ATTRS.VISIBLE, ''));

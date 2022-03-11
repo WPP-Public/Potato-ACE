@@ -2,8 +2,8 @@ import { ATTRS, DEFAULT_SHOW_TIME, EVENTS, TOAST } from './toast';
 
 
 const IDS = {
-	LONG_SHOW_TIME_TOAST: 'ace-toast-2',
-	LONG_SHOW_TIME_TOAST_BTN: 'long-show-time-toast-btn',
+	SHORT_SHOW_TIME_TOAST: 'ace-toast-2',
+	SHORT_SHOW_TIME_TOAST_BTN: 'short-show-time-toast-btn',
 	SIMPLE_TOAST: 'ace-toast-1',
 	SIMPLE_TOAST_BTN: 'simple-toast-btn',
 };
@@ -45,7 +45,7 @@ context(`Toast`, () => {
 		it(`Should initialise correctly`, () => toastInitChecks());
 
 
-		it(`Should show when attribute ace-toast-visible is set to 'true' and hide after default show time`, () => {
+		it(`Should show when attribute ace-toast-visible is set to 'true' and hide after default show-time`, () => {
 			let expectedDetail = {
 				'id': TOAST_ID,
 				'visible': true,
@@ -66,7 +66,7 @@ context(`Toast`, () => {
 		});
 
 
-		it(`Should change the show time when ace-toast-show-time attribute is changed`, () => {
+		it(`Should change the show-time when ace-toast-show-time attribute is changed`, () => {
 			const NEW_SHOW_TIME = 200;
 
 			cy.get('@toast')
@@ -84,8 +84,8 @@ context(`Toast`, () => {
 	});
 
 
-	context(`Long show time Toast`, () => {
-		const TOAST_ID = IDS.LONG_SHOW_TIME_TOAST;
+	context(`Custom show-time Toast`, () => {
+		const TOAST_ID = IDS.SHORT_SHOW_TIME_TOAST;
 
 		beforeEach(() => getEls(TOAST_ID));
 
@@ -93,7 +93,7 @@ context(`Toast`, () => {
 		it(`Should initialise correctly`, () => toastInitChecks());
 
 
-		it(`Should show when attribute ace-toast-visible is set to 'true' and hide after specified show time`, () => {
+		it(`Should show when attribute ace-toast-visible is set to 'true' and hide after specified show-time`, () => {
 			let expectedDetail = {
 				'id': TOAST_ID,
 				'visible': true,
