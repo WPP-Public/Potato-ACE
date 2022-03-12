@@ -197,7 +197,7 @@ In this example the Menu instantiates with an empty `<ul>` that can be populated
 	Remove option
 </button>
 <hr>
-<ace-menu id="custom-events-menu">
+<ace-menu id="ace-custom-events-menu">
 	<button>Menu Trigger</button>
 	<ul></ul>
 </ace-menu>
@@ -207,7 +207,7 @@ In this example the Menu instantiates with an empty `<ul>` that can be populated
 import { EVENTS } from '/ace/components/menu/menu.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const MENU_ID = 'custom-events-menu';
+	const MENU_ID = 'ace-custom-events-menu';
 	const menuEl = document.getElementById(MENU_ID);
 	const menuListEl = menuEl.querySelector('ul');
 
@@ -239,7 +239,7 @@ An example of how Menu can be styled, with the applied CSS shown below.
 
 ```html
 <div class="styled-menu-container">
-	<ace-menu class="styled-menu" id="styled-menu">
+	<ace-menu class="styled-menu">
 		<button aria-label="View more options" title="View more options" class="styled-menu__trigger">
 		</button>
 		<ul class="styled-menu__list">

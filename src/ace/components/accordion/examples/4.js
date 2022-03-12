@@ -1,7 +1,7 @@
 import {ATTRS, EVENTS} from '/ace/components/accordion/accordion.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const ACCORDION_ID = 'custom-events-accordion';
+	const ACCORDION_ID = 'ace-custom-events-accordion';
 	const accordionEl = document.getElementById(ACCORDION_ID);
 
 	window.addEventListener('click', (e) => {

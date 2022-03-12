@@ -1,7 +1,7 @@
-<h1>Accordion</h1>
+<h1 id="accordion">Accordion</h1>
 <p>Accordion is a component consisting of vertically stacked sections of content that can be shown or hidden or using trigger buttons, commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.</p>
 <p>Accordion conforms to the <a href="https://www.w3.org/TR/wai-aria-practices-1.1/#accordion">W3C WAI-ARIA authoring practices</a>.</p>
-<h2>Set up</h2>
+<h2 id="set-up">Set up</h2>
 <p>First import the styles into your main SASS file, replacing <code>&lt;path-to-node_modules&gt;</code> with the path to the <em>node_modules</em> directory relative to the file:</p>
 <pre><code class="language-scss">@import '&lt;path-to-node_modules&gt;/@potato/ace/components/accordion/accordion';
 </code></pre>
@@ -17,12 +17,12 @@
 <p>For each section of content Accordion requires a descendant <strong>panel</strong> and a corresponding descendant <strong>header</strong> that in turn contains a child <strong>trigger</strong>. The number of headers, triggers and panels must be the same. Having said this, Accordions can be initalised with none of these, which can instead be added later and initialised by dispatching a custom event. See the <strong>Custom events</strong> section below for more details.</p>
 <p>Accordion headers must be HTML heading elements, i.e. <code>&lt;h1&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;h3&gt;</code>, <code>&lt;h4&gt;</code>, <code>&lt;h5&gt;</code> or<code>&lt;h6&gt;</code> and of the same type, e.g. all <code>&lt;h3&gt;</code>. Accordion will use all heading elements with attribute <code>ace-accordion-header</code> as long as they are of the same type. If no descendant heading elements have this attribute then all descendant heading elements will be used as headers, as long as they are of the same type, and given this attribute.</p>
 <p>Each header must have only a single child element that must also be a <code>&lt;button&gt;</code>, which will be used as the trigger and given the attribute <code>ace-accordion-trigger</code>. Accordion must have a corresponding panel for each trigger element and will use any descendants with attribute <code>ace-accordion-panel</code>. If no descendants have this attribute then all non-heading child elements will be used as panels and given this attribute.</p>
-<h2>Usage</h2>
+<h2 id="usage">Usage</h2>
 <p>The visibility of a panel can be toggled by clicking on it's corresponding trigger button and by default multiple panels can be visible at the same time. Adding attribute <code>ace-accordion-one-visible-panel</code> to the Accordion ensures that only one panel is visible at a time and showing one panel will hide the currently visible panel. By default Accordion initialises with all panels hidden but setting attribute <code>ace-accordion-panel-visible</code> to <code>true</code> on a panel will make that panel visible upon page load.</p>
-<h2>Animating panels</h2>
+<h2 id="animating-panels">Animating panels</h2>
 <p>Since animations can be achieved using many different methods Accordion does not animate the showing and hiding of panels. Developers interested in doing so can listen for the <code>ace-carousel-panel-visibility-changed</code> custom event and then apply their own animations, as demonstrated in one of the examples below.</p>
 <p>In order to implement animations without hindering accessibility developers must hide non-visible panels from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration <code>display: none</code> or <code>visibility: hidden</code> to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"><code>prefers-reduced-motion</code> media query</a> as demonstrated in the example.</p>
-<h2>Styles</h2>
+<h2 id="styles">Styles</h2>
 <p>The following SASS is applied to Accordion.</p>
 <pre><code class="language-scss">[ace-accordion-trigger] {
 	width: 100%;
@@ -32,18 +32,18 @@
 	display: none;
 }
 </code></pre>
-<h2>Custom events</h2>
+<h2 id="custom-events">Custom events</h2>
 <p>Accordion uses the following custom events, the names of which are available in its exported <code>EVENTS</code> object, similar to <code>ATTRS</code>, so they may be imported into other modules.</p>
-<h3>Dispatched events</h3>
+<h3 id="dispatched-events">Dispatched events</h3>
 <p>The following events are dispatched to <code>window</code> by Accordion.</p>
-<h4>Ready</h4>
+<h4 id="ready">Ready</h4>
 <p><code>ace-accordion-ready</code></p>
 <p>This event is dispatched when Accordion finishes initialising just after page load, and after dynamically added descendants are initialised in response to the <code>ace-accordion-update</code> custom event being dispatched. The event name is available as <code>EVENTS.OUT.READY</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of Accordion [string]
 }
 </code></pre>
-<h4>Panel visibility changed</h4>
+<h4 id="panel-visibility-changed">Panel visibility changed</h4>
 <p><code>ace-accordion-panel-visibility-changed</code></p>
 <p>This event is dispatched when a panel's visiblity changes. The event name is available as <code>EVENTS.OUT.PANEL_VISIBILITY_CHANGED</code> and its <code>detail</code> property is composed as follows:</p>
 <pre><code class="language-js">'detail': {
@@ -52,9 +52,9 @@
 	'panelVisible': // Whether the panel is now visible or not [boolean]
 }
 </code></pre>
-<h3>Listened for events</h3>
+<h3 id="listened-for-events">Listened for events</h3>
 <p>Accordion listens for the following events that should be dispatched to <code>window</code>.</p>
-<h4>Show, hide and toggle panel</h4>
+<h4 id="show%2C-hide-and-toggle-panel">Show, hide and toggle panel</h4>
 <p><code>ace-accordion-show-panel</code>, <code>ace-accordion-hide-panel</code> &amp; <code>ace-accordion-toggle-panel</code></p>
 <p>These events should be dispatched to show, hide and toggle the visibility of a panel. The event names are available as <code>EVENTS.IN.SHOW_PANEL</code>, <code>EVENTS.IN.HIDE_PANEL</code> and <code>EVENTS.IN.TOGGLE_PANEL</code>, and their <code>detail</code> properties should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
@@ -62,23 +62,23 @@
 	'panelNumber': // The number of the panel to change the visibility of [number]
 }
 </code></pre>
-<h4>Show and hide all panels</h4>
+<h4 id="show-and-hide-all-panels">Show and hide all panels</h4>
 <p><code>ace-accordion-show-all-panels</code> &amp; <code>ace-accordion-hide-all-panels</code></p>
 <p>These events should be dispatched to show and hide all panels. The event names are available as <code>EVENTS.IN.SHOW_ALL_PANELS</code> and <code>EVENTS.IN.HIDE_ALL_PANELS</code> and their <code>detail</code> properties should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of target Accordion [string]
 }
 </code></pre>
-<h4>Update</h4>
+<h4 id="update">Update</h4>
 <p><code>ace-accordion-update</code></p>
 <p>This event should be dispatched when headers, triggers and panels are added or removed and causes Accordion to initialise them and then dispatch the <code>ace-accordion-ready</code> event. The event name is available as <code>EVENTS.IN.UPDATE</code> and its <code>detail</code> property should be composed as follows:</p>
 <pre><code class="language-js">'detail': {
 	'id': // ID of target Accordion [string]
 }
 </code></pre>
-<h2>Examples</h2>
+<h2 id="examples">Examples</h2>
 <p>Each example contains a live demo and the HTML code that produced it. The code shown may differ slightly to that rendered for the demo as some components may alter their HTML when they initialise.</p>
-<h3>Simple Accordion</h3>
+<h3 id="simple-accordion">Simple Accordion</h3>
 <p>Example of a simple Accordion with 3 panels.</p>
 <div class="example-block"><ace-accordion>
 	<h3>
@@ -122,9 +122,9 @@
 	&lt;/div&gt;
 &lt;/ace-accordion&gt;
 </code></pre>
-<h3>Accordion with initially visible second panel and one panel visible at a time</h3>
+<h3 id="accordion-with-initially-visible-second-panel-and-one-panel-visible-at-a-time">Accordion with initially visible second panel and one panel visible at a time</h3>
 <p>This Accordion will show the second panel upon page load as it has the attribute <code>ace-accordion-panel-visible</code> with value <code>true</code>. The Accordion also has the attribute <code>ace-accordion-one-visible-panel</code> so only one panel is visible at a time and showing a panel will hide the currently visible panel.</p>
-<div class="example-block"><ace-accordion ace-accordion-one-visible-panel id="one-visible-panel-accordion">
+<div class="example-block"><ace-accordion ace-accordion-one-visible-panel id="ace-one-visible-panel-accordion">
 	<h3>
 		<button>Trigger 1</button>
 	</h3>
@@ -145,7 +145,7 @@
 	</div>
 </ace-accordion>
 </div>
-<pre><code class="language-html">&lt;ace-accordion ace-accordion-one-visible-panel id=&quot;one-visible-panel-accordion&quot;&gt;
+<pre><code class="language-html">&lt;ace-accordion ace-accordion-one-visible-panel id=&quot;ace-one-visible-panel-accordion&quot;&gt;
 	&lt;h3&gt;
 		&lt;button&gt;Trigger 1&lt;/button&gt;
 	&lt;/h3&gt;
@@ -166,10 +166,10 @@
 	&lt;/div&gt;
 &lt;/ace-accordion&gt;
 </code></pre>
-<h3>Animated Accordion</h3>
+<h3 id="animated-accordion">Animated Accordion</h3>
 <p>Example of how an Accordion can be animated. Custom styles have been applied to this example and are shown below.</p>
 <p>Note that this method should only be used if the panels are of the same or similar heights. The reason for this is that the height transitions from 0px to <code>max-height</code> over the transition duration time, therefore <code>max-height</code> must be set to a value that allows the tallest panel to be visible. If one panel is significantly taller than the others the shorter panels have less to reveal during the transition which will therefore seem to take less time than expected as when the panel is fully visible the transition is still ongoing until <code>max-height</code> reaches the value given.</p>
-<div class="example-block"><ace-accordion ace-accordion-one-visible-panel class="animated-accordion" id="animated-accordion" >
+<div class="example-block"><ace-accordion ace-accordion-one-visible-panel class="animated-accordion" id="ace-animated-accordion" >
 	<h3>
 		<button>Trigger 1</button>
 	</h3>
@@ -193,7 +193,7 @@
 	</div>
 </ace-accordion>
 </div>
-<pre><code class="language-html">&lt;ace-accordion ace-accordion-one-visible-panel class=&quot;animated-accordion&quot; id=&quot;animated-accordion&quot; &gt;
+<pre><code class="language-html">&lt;ace-accordion ace-accordion-one-visible-panel class=&quot;animated-accordion&quot; id=&quot;ace-animated-accordion&quot; &gt;
 	&lt;h3&gt;
 		&lt;button&gt;Trigger 1&lt;/button&gt;
 	&lt;/h3&gt;
@@ -237,7 +237,7 @@
 	}
 }
 </code></pre>
-<h3>Accordion controlled through custom events</h3>
+<h3 id="accordion-controlled-through-custom-events">Accordion controlled through custom events</h3>
 <p>The JavaScript used by this example is shown below.</p>
 <div class="example-block"><label>
 	Panel number:
@@ -253,7 +253,7 @@
 <button id="append-panel-btn">Append panel</button>
 <button id="remove-panel-btn">Remove first panel</button>
 <hr>
-<ace-accordion id="custom-events-accordion">
+<ace-accordion id="ace-custom-events-accordion">
 	<h3>
 		<button>Trigger 1</button>
 	</h3>
@@ -289,7 +289,7 @@
 &lt;button id=&quot;remove-panel-btn&quot;&gt;Remove first panel&lt;/button&gt;
 &lt;hr&gt;
 
-&lt;ace-accordion id=&quot;custom-events-accordion&quot;&gt;
+&lt;ace-accordion id=&quot;ace-custom-events-accordion&quot;&gt;
 	&lt;h3&gt;
 		&lt;button&gt;Trigger 1&lt;/button&gt;
 	&lt;/h3&gt;
@@ -309,12 +309,11 @@
 		&lt;p&gt;Panel 3 content&lt;/p&gt;
 	&lt;/div&gt;
 &lt;/ace-accordion&gt;
-
 </code></pre>
 <pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/accordion/accordion.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const ACCORDION_ID = 'custom-events-accordion';
+	const ACCORDION_ID = 'ace-custom-events-accordion';
 	const accordionEl = document.getElementById(ACCORDION_ID);
 
 	window.addEventListener('click', (e) =&gt; {
@@ -386,7 +385,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	});
 });
 </code></pre>
-<h3>Styled Accordion</h3>
+<h3 id="styled-accordion">Styled Accordion</h3>
 <p>An example of how Accordion can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below.</p>
 <div class="example-block"><h2>Potato</h2>
 <p>Things we do at Potato:</p>

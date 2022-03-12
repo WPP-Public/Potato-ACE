@@ -251,7 +251,7 @@ The default Tabs with three tabs.
 Tabs with infinite rotation.
 
 ```html
-<ace-tabs id="infinite-tabs" ace-tabs-infinite ace-tabs-selected-tab="2">
+<ace-tabs id="ace-infinite-tabs" ace-tabs-infinite ace-tabs-selected-tab="2">
 	<div aria-label="Tabs with infinite scroll">
 		<button>Tab 1</button>
 		<button>Tab 2</button>
@@ -280,7 +280,7 @@ Tabs with infinite rotation.
 Tabs with vertically stacked tabs.
 
 ```html
-<ace-tabs id="vertical-tabs" ace-tabs-vertical>
+<ace-tabs id="ace-vertical-tabs" ace-tabs-vertical>
 	<div aria-label="Tabs with vertically-oriented tablist">
 		<button>Tab 1</button>
 		<button>Tab 2</button>
@@ -309,7 +309,7 @@ Tabs with vertically stacked tabs.
 Tabs with panels that are displayed by pressing <kbd>Space</kbd> or <kbd>Enter</kbd> when their corresponding tab is focused.
 
 ```html
-<ace-tabs id="manual-tabs" ace-tabs-manual>
+<ace-tabs id="ace-manual-tabs" ace-tabs-manual>
 	<div aria-label="Tabs with manual activation">
 		<button>Tab 1</button>
 		<button>Tab 2</button>
@@ -340,7 +340,7 @@ Two Tabs components with deep linking enabled.
 ```html
 <h3>Deep-linked</h3>
 
-<ace-tabs id="deep-linked-tabs-1" ace-tabs-deep-linked>
+<ace-tabs id="ace-deep-linked-tabs-1" ace-tabs-deep-linked>
 	<div aria-label="Deep-linked Tabs">
 		<button>Tab 1</button>
 		<button>Tab 2</button>
@@ -367,7 +367,7 @@ Two Tabs components with deep linking enabled.
 
 <h3>Deep-linked vertical Tabs with initially set tab 2</h3>
 
-<ace-tabs id="deep-linked-tabs-2" ace-tabs-deep-linked ace-tabs-vertical ace-tabs-selected-tab="2">
+<ace-tabs id="ace-deep-linked-tabs-2" ace-tabs-deep-linked ace-tabs-vertical ace-tabs-selected-tab="2">
 	<div aria-label="Deep-linked, vertical Tabs with initially set tab">
 		<button>Tab 1</button>
 		<button>Tab 2</button>
@@ -404,7 +404,7 @@ The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-
 
 <hr>
 
-<ace-tabs id="custom-events-tabs">
+<ace-tabs id="ace-custom-events-tabs">
 	<div aria-label="Tabs that repond to custom events">
 		<button>Tab 1</button>
 		<button>Tab 2</button>
@@ -432,7 +432,7 @@ The buttons in this example dispatch the `ace-tabs-set-prev-tab`, `ace-tabs-set-
 import { ATTRS, EVENTS } from '/ace/components/tabs/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-	const TABS_ID = 'custom-events-tabs';
+	const TABS_ID = 'ace-custom-events-tabs';
 	const tabsEl = document.getElementById(TABS_ID);
 	const tablistEl = tabsEl.querySelector(`[${ATTRS.TABLIST}]`);
 

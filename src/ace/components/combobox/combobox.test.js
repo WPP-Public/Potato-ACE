@@ -3,16 +3,16 @@ import { getOptionId } from '../../../../cypress/functions';
 
 
 const IDS = {
-	AC_BOTH_AS_CB: 'ac-both-autoselect-combobox',
-	AC_BOTH_CB: 'ac-both-combobox',
-	AC_LIST_AS_CB: 'ac-list-autoselect-combobox',
-	AC_LIST_CB: 'ac-list-combobox',
+	AC_BOTH_AS_CB: 'ace-ac-both-autoselect-combobox',
+	AC_BOTH_CB: 'ace-ac-both-combobox',
+	AC_LIST_AS_CB: 'ace-ac-list-autoselect-combobox',
+	AC_LIST_CB: 'ace-ac-list-combobox',
 	ADD_OPTIONS_BTN: 'add-options-btn',
-	CUSTOM_EVENTS_CB: 'custom-events-combobox',
+	CUSTOM_EVENTS_CB: 'ace-custom-events-combobox',
 	HIDE_LIST_BTN: 'hide-list-btn',
 	SELECT_OPTION_FORM: 'select-option-form',
 	SHOW_LIST_BTN: 'show-list-btn',
-	SIMPLE_AS_CB: 'simple-autoselect-combobox',
+	SIMPLE_AS_CB: 'ace-simple-autoselect-combobox',
 	SIMPLE_CB: `${COMBOBOX}-1`,
 };
 
