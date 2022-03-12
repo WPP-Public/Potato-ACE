@@ -1,0 +1,66 @@
+<h1 id="changelog">Changelog</h1>
+<h2 id="v2">v2</h2>
+<h3 id="general">General</h3>
+<ul>
+<li>All custom events dispatched to ACE components must now be dispatched on <code>window</code> with the <code>detail</code> property of the custom event containing the ID of the target ACE component. This change makes it easier for ACE components to be used with JavaScript frameworks.</li>
+<li>Fixed type-ahead for Listbox, Select and Menu so that it works with list options that have descendants with no text content, e.g. images.</li>
+</ul>
+<h3 id="accordion">Accordion</h3>
+<ul>
+<li>Custom event name <code>CHANGED</code> changed to <code>PANEL_VISIBILITY_CHANGED</code>.</li>
+<li>Custom events <code>ace-accordion-show-panels</code>&amp; <code>ace-accordion-hide-panels</code> renamed to <code>ace-accordion-show-all-panels</code> &amp; <code>ace-accordion-hide-all-panels</code> respectively.</li>
+<li>Trigger button now takes up entire width of parent heading element so that it can be activated when using Android's Talkback.</li>
+</ul>
+<h3 id="carousel">Carousel</h3>
+<ul>
+<li>Custom event<code>ace-carousel-slide-changed</code> renamed to <code>ace-carousel-selected-slide-changed</code>.</li>
+</ul>
+<h3 id="disclosure">Disclosure</h3>
+<ul>
+<li>Custom event<code>ace-disclosure-changed</code> renamed to <code>ace-disclosure-visibility-changed</code>.</li>
+</ul>
+<h3 id="listbox">Listbox</h3>
+<ul>
+<li>Fixed bug that made the entire page scroll to Listboxes on page load.</li>
+</ul>
+<h3 id="modal">Modal</h3>
+<ul>
+<li>Modal is now hidden using <code>visibility: hidden</code> as opposed to <code>display: none</code> due to issue with VoiceOver not moving focus to Modal when opened.</li>
+<li>Modal itself now receives focus as opposed to it's first focussable descendant. This allows screen readers to announce it properly when it is shown.</li>
+<li>Custom event<code>ace-modal-changed</code> renamed to <code>ace-modal-visibility-changed</code>.</li>
+</ul>
+<h3 id="tabs">Tabs</h3>
+<ul>
+<li>Custom event<code>ace-tab-changed</code> renamed to <code>ace-tabs-selected-tab-changed</code>.</li>
+</ul>
+<h3 id="toast">Toast</h3>
+<ul>
+<li>Toast now moves it's children into an inner <code>div</code> upon instantiation and attaches accessibility attributes to the <code>div</code> so that the Toast is announced by Android's Talkback screen reader.</li>
+<li>Custom event<code>ace-toast-changed</code> renamed to <code>ace-toast-visibility-changed</code>.</li>
+</ul>
+<h3 id="tooltip">Tooltip</h3>
+<ul>
+<li>Custom event<code>ace-tooltip-changed</code> renamed to <code>ace-tooltip-visibility-changed</code>.</li>
+<li>Handler function that repositions overflowing tooltip is now called during initialisation to prevent Tooltips from overflowing and the page from resizing.</li>
+<li>Reduced default delay time to 750ms.</li>
+<li>Removed <code>ace-tooltip-nowrap</code> and instead gave Tooltips a <code>width: max-content</code> and a max-width to improve their sizing and how they overflow.</li>
+<li>Add a font-size and font-weight to Tooltips so they don't inherit different styles from their targets.</li>
+</ul>
+<h2 id="v1.3">v1.3</h2>
+<ul>
+<li>Switched to TypeScript strict mode to allow better integration with projects that use strict mode.</li>
+</ul>
+<h2 id="v1.2.2">v1.2.2</h2>
+<ul>
+<li>Improved automatic ID generation</li>
+</ul>
+<h2 id="v1.2-%26-1.2.1">v1.2 &amp; 1.2.1</h2>
+<ul>
+<li>Minor updates</li>
+</ul>
+<h2 id="v1.0.1">v1.0.1</h2>
+<ul>
+<li>Added Accordion, Carousel, Combobox, Menu, Modal, Tabs, Toast, Tooltip.</li>
+<li>Added TypeScript files for all components.</li>
+<li>Added component CSS files alongside SASS files.</li>
+</ul>
