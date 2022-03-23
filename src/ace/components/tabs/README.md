@@ -524,7 +524,7 @@ An example of how Tabs can be styled, with the applied CSS shown below.
 
 	&__tab,
 	&__panel {
-		font-family: 'Roboto', sans-serif;
+		font-family: Roboto, sans-serif;
 		font-size: 14px;
 	}
 
@@ -554,5 +554,4 @@ An example of how Tabs can be styled, with the applied CSS shown below.
 		}
 	}
 }
-
 ```

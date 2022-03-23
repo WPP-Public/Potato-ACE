@@ -589,6 +589,8 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
 ```
 
 ```scss
+@use 'sass:list';
+
 .styled-carousel {
 	color: #fff;
 	max-width: 600px;
@@ -684,7 +686,7 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
 		$bg-colors: #173d57, #66204a, #20122e;
 		@for $i from 1 through length($bg-colors) {
 			&:nth-of-type(#{$i}) {
-				background: nth($bg-colors, $i);
+				background: list.nth($bg-colors, $i);
 			}
 		}
 	}

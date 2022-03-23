@@ -307,7 +307,7 @@ An example of how Menu can be styled, with the applied CSS shown below.
 		align-items: center;
 		cursor: pointer;
 		display: flex;
-		font-family: 'Roboto', sans-serif;
+		font-family: Roboto, sans-serif;
 		font-size: 14px;
 		padding: 10px 16px;
 

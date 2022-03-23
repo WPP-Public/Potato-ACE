@@ -640,7 +640,9 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	&lt;/div&gt;
 &lt;/ace-carousel&gt;
 </code></pre>
-<pre><code class="language-scss">.styled-carousel {
+<pre><code class="language-scss">@use 'sass:list';
+
+.styled-carousel {
 	color: #fff;
 	max-width: 600px;
 	position: relative;
@@ -735,7 +737,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 		$bg-colors: #173d57, #66204a, #20122e;
 		@for $i from 1 through length($bg-colors) {
 			&amp;:nth-of-type(#{$i}) {
-				background: nth($bg-colors, $i);
+				background: list.nth($bg-colors, $i);
 			}
 		}
 	}

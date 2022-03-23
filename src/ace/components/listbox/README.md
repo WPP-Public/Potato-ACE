@@ -302,7 +302,7 @@ An example of how Listbox can be styled, with the applied CSS shown below.
 	&__label,
 	&__input,
 	&__option {
-		font-family: 'Roboto', sans-serif;
+		font-family: Roboto, sans-serif;
 		font-size: 14px;
 	}
 

@@ -59,7 +59,7 @@ The following SASS is applied to Modal. The SASS variables use `!default` so can
 
 
 // VARIABLES
-$ace-modal-backdrop-bg-color: rgba(0, 0, 0, .5) !default;
+$ace-modal-backdrop-bg-color: rgba(#000, .5) !default;
 $ace-modal-bg-color: #fff !default;
 $ace-modal-padding: $ace-spacing-3 !default;
 $ace-modal-switch-breakpoint: 768px;

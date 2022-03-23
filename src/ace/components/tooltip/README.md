@@ -267,7 +267,7 @@ Tooltips are not compatible with disabled targets as they are not focusable nor 
 .disabled {
 	background: rgba(#eee, .4);
 	border: none;
-	color: rgba(0, 0, 0, .4);
+	color: rgba(#000, .4);
 	cursor: not-allowed;
 	padding: 4px 8px;
 }
@@ -340,7 +340,7 @@ An example of how Tooltip can be styled to resemble a commonly used design. Cust
 	$arrow-size: 12px;
 
 	border-radius: 4px;
-	font-family: 'Roboto', sans-serif;
+	font-family: Roboto, sans-serif;
 	font-size: 14px;
 	font-weight: 500;
 	margin: 16px 0;

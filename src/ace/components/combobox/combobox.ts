@@ -333,9 +333,12 @@ export default class Combobox extends HTMLElement {
 				this.showList();
 				break;
 			case EVENTS.IN.UPDATE_OPTIONS:
-				this.list?.initOptionEls();
-				if (this.listAutocompletes && this.list?.optionEls) {
-					this.allOptionEls = [...this.list?.optionEls].map(optionEl => optionEl.cloneNode(true));
+				if (!this.list) {
+					return;
+				}
+				this.list.initOptionEls();
+				if (this.listAutocompletes && this.list.optionEls) {
+					this.allOptionEls = [...this.list.optionEls].map(optionEl => optionEl.cloneNode(true));
 				}
 				window.dispatchEvent(new CustomEvent(EVENTS.OUT.OPTIONS_UPDATED, {
 					'detail': {

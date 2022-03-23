@@ -683,7 +683,7 @@ An example of how Combobox can be styled, with the applied CSS shown below.
 	&__input,
 	&__option,
 	&__status {
-		font-family: 'Roboto', sans-serif;
+		font-family: Roboto, sans-serif;
 		font-size: 14px;
 	}
 

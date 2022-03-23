@@ -316,7 +316,7 @@ An example of how Select can be styled, with the applied CSS shown below.
 	&-label,
 	&__trigger,
 	&__option {
-		font-family: 'Roboto', sans-serif;
+		font-family: Roboto, sans-serif;
 		font-size: 14px;
 	}
 
