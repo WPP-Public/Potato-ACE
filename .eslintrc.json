@@ -10,20 +10,42 @@
 		"plugin:@typescript-eslint/recommended",
 		"plugin:@typescript-eslint/eslint-recommended"
 	],
-	"plugins": [
-		"@typescript-eslint",
-		"cypress",
-		"no-autofix"
-	],
 	"globals": {
 		"Atomics": "readonly",
 		"SharedArrayBuffer": "readonly"
 	},
+	"ignorePatterns": ["**/*/*.d.ts"],
+	"overrides": [
+		{
+			"files": ["*.ts", "*.tsx"],
+			"rules": {
+				"@typescript-eslint/explicit-function-return-type": ["error"]
+			}
+		},
+		{
+			"files": ["*.d.ts"],
+			"rules": {
+				"no-unused-vars": 0
+			}
+		},
+		{
+			"files": ["*[!.test].js"],
+			"rules": {
+				"indent": 0,
+				"@typescript-eslint/explicit-module-boundary-types": 0
+			}
+		}
+	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 2018,
 		"sourceType": "module"
 	},
+	"plugins": [
+		"@typescript-eslint",
+		"cypress",
+		"no-autofix"
+	],
 	"rules": {
 		"@typescript-eslint/explicit-function-return-type": "off",
 		"@typescript-eslint/no-explicit-any": "off",
@@ -51,25 +73,4 @@
 			"asc"
 		]
 	},
-	"overrides": [
-		{
-			"files": ["*.ts", "*.tsx"],
-			"rules": {
-				"@typescript-eslint/explicit-function-return-type": ["error"]
-			}
-		},
-		{
-			"files": ["*.d.ts"],
-			"rules": {
-				"no-unused-vars": 0
-			}
-		},
-		{
-			"files": ["*[!.test].js"],
-			"rules": {
-				"indent": 0,
-				"@typescript-eslint/explicit-module-boundary-types": 0
-			}
-		}
-	]
 }
