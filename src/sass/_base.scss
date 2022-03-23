@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use './common/constants' as *;
 @use './common/mixins' as *;
 
@@ -42,9 +44,9 @@ a {
 // Inline Code
 code {
 	:not(pre) > & {
-		background: map-get($pot-mauve, 7);
+		background: map.get($pot-mauve, 7);
 		border-radius: $border-radius;
-		color: map-get($pot-grey, 1);
+		color: map.get($pot-grey, 1);
 		font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
 		font-size: 1.4rem;
 		padding: 2px 4px;
@@ -118,8 +120,8 @@ hr {
 }
 
 kbd {
-	background-color: map-get($pot-grey, 1);
-	border: 1px solid map-get($pot-grey, 3);
+	background-color: map.get($pot-grey, 1);
+	border: 1px solid map.get($pot-grey, 3);
 	border-radius: 3px;
 	font-family: inherit;
 	font-size: 1.3rem;
@@ -144,7 +146,7 @@ table {
 tr,
 td,
 th {
-	border: 1px solid map-get($pot-mauve, 7);
+	border: 1px solid map.get($pot-mauve, 7);
 }
 
 td,

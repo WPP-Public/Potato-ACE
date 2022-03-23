@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../common/constants' as *;
 @use '../common/mixins' as *;
 @use '../common/utils' as *;
@@ -7,7 +9,7 @@ $z-index: 2;
 
 .header {
 	align-items: center;
-	background: map-get($pot-grey, 7);
+	background: map.get($pot-grey, 7);
 	color: #fff;
 	display: flex;
 	font-weight: 700;
@@ -32,7 +34,7 @@ $z-index: 2;
 	}
 
 	&__lockup {
-		@extend .unstyled-anchor;
+		@extend %unstyled-anchor;
 
 		align-items: center;
 		display: inline-flex;
@@ -72,7 +74,7 @@ $z-index: 2;
 	}
 
 	&__sidebar-btn {
-		@extend .u-only-handheld;
+		@extend %u-only-handheld;
 		@include icon-btn(50px, '../img/menu.svg');
 		@include overlayed-pseudo($type: 'before');
 
@@ -80,7 +82,7 @@ $z-index: 2;
 		margin-left: $buffer-xs;
 
 		&::before {
-			background-color: map-get($pot-blue, 5);
+			background-color: map.get($pot-blue, 5);
 			mask-image: url('../img/close.svg');
 			mask-position: center center;
 			mask-repeat: no-repeat;

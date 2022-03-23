@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use '../common/constants' as *;
 
 .btn {
@@ -11,7 +13,7 @@
 	transition: background-color $transition;
 
 	&--primary {
-		background: map-get($pot-blue, 5);
+		background: map.get($pot-blue, 5);
 		color: #fff;
 
 		&:focus,

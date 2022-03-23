@@ -1,7 +1,9 @@
+@use 'sass:map';
+
 @use '../common/constants' as *;
 @use '../common/mixins' as *;
 
-$component-border-color: map-get($pot-blue, 5);
+$component-border-color: map.get($pot-blue, 5);
 
 .component {
 	@include bordered(0, $component-border-color);
@@ -35,7 +37,7 @@ $component-border-color: map-get($pot-blue, 5);
 		@include icon-btn(75px, '../img/play.svg', #fff);
 
 		border: 1px solid $component-border-color;
-		box-shadow: 0 8px 15px rgba(0, 0, 0, .1);
+		box-shadow: 0 8px 15px rgba(#000, .1);
 		left: 50%;
 		position: absolute;
 		top: 50%;

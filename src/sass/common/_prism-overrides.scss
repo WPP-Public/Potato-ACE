@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use './constants' as *;
 @use './mixins' as *;
 
@@ -8,7 +10,7 @@ $_btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$_btn-offset}));
 
 // CODE BLOCK
 .code-toolbar {
-	background: map-get($pot-grey, 7);
+	background: map.get($pot-grey, 7);
 	border-radius: $border-radius;
 	font-size: $code-block-font-size;
 	margin-bottom: $buffer-m;
@@ -20,11 +22,11 @@ $_btn-size: calc((#{$code-block-font-size} * 3.5) - (2 * #{$_btn-offset}));
 	}
 
 	.variable {
-		color: map-get($pot-yellow, 4);
+		color: map.get($pot-yellow, 4);
 	}
 
 	.comment {
-		color: map-get($pot-grey, 2);
+		color: map.get($pot-grey, 2);
 	}
 }
 
@@ -51,7 +53,7 @@ code.language-bash::before {
 			background-color: #fff;
 
 			&::after {
-				background-color: map-get($pot-blue, 4);
+				background-color: map.get($pot-blue, 4);
 			}
 		}
 	}

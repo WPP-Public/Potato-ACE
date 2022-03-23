@@ -24,6 +24,6 @@ article {
 			color: $active-color;
 		}
 
-		@include focus-outline();
+		@include focus-outline;
 	}
 }

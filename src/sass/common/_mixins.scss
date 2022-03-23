@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @use './constants' as *;
 
 // MEDIA QUERIES
@@ -17,46 +19,38 @@
 	@if $only { // if $only given, ignore user $from and $until values and set these
 		// Map device names to breakpoint values in ./_variables.scss for $from and $until
 		@if $only == 'tablet' {
-			$from: map-get($breakpoints, tablet);
-			$until: map-get($breakpoints, desktop);
+			$from: map.get($breakpoints, tablet);
+			$until: map.get($breakpoints, desktop);
+		} @else if $only == 'desktop' {
+			$from: map.get($breakpoints, desktop);
+			$until: map.get($breakpoints, wide);
 		}
-		@else if $only == 'desktop' {
-			$from: map-get($breakpoints, desktop);
-			$until: map-get($breakpoints, wide);
-		}
-	}
-	@else {
+	} @else {
 		// FROM
 		// Map device names to breakpoint values in ./_variables.scss for $from
 		@if $from == 'tablet' {
-			$from: map-get($breakpoints, tablet);
-		}
-		@else if $from == 'desktop' {
-			$from: map-get($breakpoints, desktop);
-		}
-		@else if $from == 'wide' {
-			$from: map-get($breakpoints, wide);
+			$from: map.get($breakpoints, tablet);
+		} @else if $from == 'desktop' {
+			$from: map.get($breakpoints, desktop);
+		} @else if $from == 'wide' {
+			$from: map.get($breakpoints, wide);
 		}
 		// Map device names to breakpoint values in ./_variables.scss for $until
 		@if $until == 'tablet' {
-			$until: map-get($breakpoints, tablet);
-		}
-		@else if $until == 'desktop' {
-			$until: map-get($breakpoints, desktop);
-		}
-		@else if $until == 'wide' {
-			$until: map-get($breakpoints, wide);
+			$until: map.get($breakpoints, tablet);
+		} @else if $until == 'desktop' {
+			$until: map.get($breakpoints, desktop);
+		} @else if $until == 'wide' {
+			$until: map.get($breakpoints, wide);
 		}
 	}
 	@if $from {
 		@if $until { // if both $from and $until given (by user or due to $only being given)
 			@media (min-width: $from) and (max-width: #{$until - 1px}) { @content; }
-		}
-		@else { // if only $from given
+		} @else { // if only $from given
 			@media (min-width: $from) { @content; }
 		}
-	}
-	@else if $until { // if only $until given
+	} @else if $until { // if only $until given
 		@media (max-width: #{$until - 1px}) { @content; }
 	}
 }
@@ -88,25 +82,25 @@
 
 // VERTICAL SPACING
 @mixin v-spacing($prop, $position, $size) {
-	$spacings: map-get($vertical-spacings, #{$size});
-	#{$prop}-#{$position}: map-get($spacings, 'mobile') !important;
+	$spacings: map.get($vertical-spacings, #{$size});
+	#{$prop}-#{$position}: map.get($spacings, 'mobile') !important;
 	// Add tablet spacings if different from mobile
-	@if map-get($spacings, 'mobile') != map-get($spacings, 'tablet') {
+	@if map.get($spacings, 'mobile') != map.get($spacings, 'tablet') {
 		@include mq(tablet) {
-			#{$prop}-#{$position}: map-get($spacings, 'tablet') !important;
+			#{$prop}-#{$position}: map.get($spacings, 'tablet') !important;
 		}
 	}
 	// Add desktop spacings if different from tablet
-	@if map-get($spacings, 'tablet') != map-get($spacings, 'desktop') {
+	@if map.get($spacings, 'tablet') != map.get($spacings, 'desktop') {
 		@include mq(desktop) {
-			#{$prop}-#{$position}: map-get($spacings, 'desktop') !important;
+			#{$prop}-#{$position}: map.get($spacings, 'desktop') !important;
 		}
 	}
 }
 
 
 // ADD BORDER TO ELEMENT
-@mixin bordered($padding: $buffer-s, $color: map-get($pot-mauve, 7)) {
+@mixin bordered($padding: $buffer-s, $color: map.get($pot-mauve, 7)) {
 	border: $border-width solid $color;
 	border-radius: $border-radius;
 	padding: $padding;
@@ -130,12 +124,11 @@
 
 // MAKE ELEMENT AN ICON BUTTON
 @mixin icon-btn($size: $icon-btn-size, $icon-url: '', $bg-color: false) {
-	@include overlayed-pseudo();
+	@include overlayed-pseudo;
 
 	@if $bg-color {
 		background-color: $bg-color;
-	}
-	@else {
+	} @else {
 		background-color: transparent;
 	}
 
@@ -149,7 +142,7 @@
 
 	&:focus,
 	&:hover {
-		background-color: map-get($pot-blue, 4);
+		background-color: map.get($pot-blue, 4);
 
 		&::after {
 			background-color: #fff;
@@ -161,7 +154,7 @@
 	}
 
 	&::after {
-		background-color: map-get($pot-blue, 5);
+		background-color: map.get($pot-blue, 5);
 		mask-image: url($icon-url);
 		mask-position: center center;
 		mask-repeat: no-repeat;
@@ -174,8 +167,7 @@
 @mixin focus-outline($outline: false, $light: false) {
 	@if $light {
 		$outline: $outline-light;
-	}
-	@else if $outline == false {
+	} @else if $outline == false {
 		$outline: $outline-dark;
 	}
 

@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 // BREAKPOINTS
 $breakpoints: (
 	tablet: 600px,
@@ -69,10 +71,10 @@ $pot-yellow: (
 	7: #53483b,
 );
 
-$active-color: map-get($pot-blue, 7);
-$interactive-color: map-get($pot-blue, 6);
-$interactive-light-color: map-get($pot-blue, 4);
-$text-color: map-get($pot-grey, 7);
+$active-color: map.get($pot-blue, 7);
+$interactive-color: map.get($pot-blue, 6);
+$interactive-light-color: map.get($pot-blue, 4);
+$text-color: map.get($pot-grey, 7);
 
 $outline-width: 2px;
 $outline-dark-color: $active-color;
@@ -82,7 +84,7 @@ $outline-light: $outline-width solid $outline-light-color;
 
 $scrollbar-webkit-width: 7px;
 $scrollbar-webkit-border-radius: 20px;
-$scrollbar-color: map-get($pot-mauve, 3);
+$scrollbar-color: map.get($pot-mauve, 3);
 
 // ANIMATIONS
 $animation: .5s forwards;
