@@ -435,25 +435,25 @@ document.addEventListener('DOMContentLoaded', () => {
 Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
 
 ```html
-<ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="animated-carousel">
+<ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="ace-animated-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
-	<div class="animated-carousel__slides">
-		<div class="animated-carousel__slide">
+	<div class="ace-animated-carousel__slides">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 1 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
 			<p>Slide 1 content.</p>
 			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 		</div>
-		<div class="animated-carousel__slide">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 2 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
 			<p>Slide 2 content.</p>
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 		</div>
-		<div class="animated-carousel__slide">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 3 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
@@ -466,7 +466,7 @@ Example of Carousel with animated slide changes. Custom styles have been applied
 
 ```scss
 @media (prefers-reduced-motion: no-preference) {
-	.animated-carousel {
+	.ace-animated-carousel {
 		&__slides {
 			display: flex;
 			overflow-x: hidden;

@@ -440,25 +440,25 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 </code></pre>
 <h3 id="animated-carousel">Animated Carousel</h3>
 <p>Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.</p>
-<div class="example-block"><ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="animated-carousel">
+<div class="example-block"><ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="ace-animated-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
-	<div class="animated-carousel__slides">
-		<div class="animated-carousel__slide">
+	<div class="ace-animated-carousel__slides">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 1 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
 			<p>Slide 1 content.</p>
 			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 		</div>
-		<div class="animated-carousel__slide">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 2 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
 			<p>Slide 2 content.</p>
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 		</div>
-		<div class="animated-carousel__slide">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 3 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
@@ -468,25 +468,25 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 	</div>
 </ace-carousel>
 </div>
-<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite aria-label=&quot;Animated&quot; id=&quot;ace-animated-carousel&quot; class=&quot;animated-carousel&quot;&gt;
+<pre><code class="language-html">&lt;ace-carousel ace-carousel-infinite aria-label=&quot;Animated&quot; id=&quot;ace-animated-carousel&quot; class=&quot;ace-animated-carousel&quot;&gt;
 	&lt;button&gt;Previous slide&lt;/button&gt;
 	&lt;button&gt;Next slide&lt;/button&gt;
-	&lt;div class=&quot;animated-carousel__slides&quot;&gt;
-		&lt;div class=&quot;animated-carousel__slide&quot;&gt;
+	&lt;div class=&quot;ace-animated-carousel__slides&quot;&gt;
+		&lt;div class=&quot;ace-animated-carousel__slide&quot;&gt;
 			&lt;h3&gt;Slide 1 heading&lt;/h3&gt;
 			&lt;button&gt;Button&lt;/button&gt;
 			&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;
 			&lt;p&gt;Slide 1 content.&lt;/p&gt;
 			&lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot; /&gt;
 		&lt;/div&gt;
-		&lt;div class=&quot;animated-carousel__slide&quot;&gt;
+		&lt;div class=&quot;ace-animated-carousel__slide&quot;&gt;
 			&lt;h3&gt;Slide 2 heading&lt;/h3&gt;
 			&lt;button&gt;Button&lt;/button&gt;
 			&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;
 			&lt;p&gt;Slide 2 content.&lt;/p&gt;
 			&lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot; /&gt;
 		&lt;/div&gt;
-		&lt;div class=&quot;animated-carousel__slide&quot;&gt;
+		&lt;div class=&quot;ace-animated-carousel__slide&quot;&gt;
 			&lt;h3&gt;Slide 3 heading&lt;/h3&gt;
 			&lt;button&gt;Button&lt;/button&gt;
 			&lt;a href=&quot;#&quot;&gt;Link&lt;/a&gt;
@@ -497,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 &lt;/ace-carousel&gt;
 </code></pre>
 <pre><code class="language-scss">@media (prefers-reduced-motion: no-preference) {
-	.animated-carousel {
+	.ace-animated-carousel {
 		&amp;__slides {
 			display: flex;
 			overflow-x: hidden;
