@@ -559,26 +559,26 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
  
 ```html
 <ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="ace-styled-carousel"
-	class="styled-carousel">
-	<button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span
+	class="ace-styled-carousel">
+	<button class="ace-styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span
 			class="pause-icon">&#10074; &#10074;</span></button>
-	<button class="styled-carousel__slide-btn styled-carousel__slide-btn--prev">&#10094;</button>
-	<button class="styled-carousel__slide-btn styled-carousel__slide-btn--next">&#10095;</button>
-	<div ace-carousel-slide-picker class="styled-carousel__slide-picker"></div>
-	<div class="styled-carousel__slides">
-		<div class="styled-carousel__slide">
+	<button class="ace-styled-carousel__slide-btn ace-styled-carousel__slide-btn--prev">&#10094;</button>
+	<button class="ace-styled-carousel__slide-btn ace-styled-carousel__slide-btn--next">&#10095;</button>
+	<div ace-carousel-slide-picker class="ace-styled-carousel__slide-picker"></div>
+	<div class="ace-styled-carousel__slides">
+		<div class="ace-styled-carousel__slide">
 			<h3>Slide 1 heading</h3>
 			<button>Button</button>
 			<p>Slide 1 content.</p>
 			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 		</div>
-		<div class="styled-carousel__slide">
+		<div class="ace-styled-carousel__slide">
 			<h3>Slide 2 heading</h3>
 			<button>Button</button>
 			<p>Slide 2 content.</p>
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 		</div>
-		<div class="styled-carousel__slide">
+		<div class="ace-styled-carousel__slide">
 			<h3>Slide 3 heading</h3>
 			<button>Button</button>
 			<p>Slide 3 content.</p>
@@ -589,7 +589,7 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
 ```
 
 ```scss
-.styled-carousel {
+.ace-styled-carousel {
 	color: #fff;
 	max-width: 600px;
 	position: relative;
