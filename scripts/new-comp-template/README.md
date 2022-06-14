@@ -37,7 +37,7 @@ After the event `DOMContentLoaded` is fired on `document` an instance of Templat
 
 <!-- 1. Required elements that developers must provide before page load. For each, mention the custom attribute it can be given for explicit assignment, and whether this attribute can be omitted and the component can implicitly determine which element to use based on its position in the DOM hierarchy. Example: -->
 
-> Template must have a descendant button to \_\_\_\_\_, and will use a descendant `<button>` with attribute `ace-template-btn`. If no descendant has this attribute then the first decendant `<button>` will be used and given this attribute.
+> Template must have a descendant button to \_\_\_\_\_, and will use a descendant `<button>` with attribute `ace-template-btn`. If no descendant has this attribute then the first descendant `<button>` will be used and given this attribute.
 
 <!-- 2. Elements and/or attributes that developers are strongly advised to provide such as `<label>`, `aria-label` or `aria-labelledby`. -->
 

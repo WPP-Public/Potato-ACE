@@ -145,7 +145,7 @@ export default class Carousel extends HTMLElement {
 			this.autoSlideShowBtn = this.querySelector('button');
 
 			if (!this.autoSlideShowBtn) {
-				console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show Carousel that in turn requires a descendant <button> element that is the first focusable element in order to toggle the automatic slide show.`);
+				console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show. It therefore requires a descendant <button> element that is the first focusable element needed to toggle the automatic slide show.`);
 				return;
 			}
 		}
@@ -425,7 +425,7 @@ export default class Carousel extends HTMLElement {
 				this.slideEls?.forEach(() => this.slidePickerEl?.appendChild(document.createElement('button')));
 				slidePickerBtns = this.slidePickerEl?.querySelectorAll('button');
 			} else if (slidePickerBtnsCount !== this.slideCount) {
-				console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has decendant with attribute ${ATTRS.SLIDE_PICKER} that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
+				console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has descendant with attribute ${ATTRS.SLIDE_PICKER} that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
 				return;
 			}
 
