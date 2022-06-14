@@ -45,7 +45,7 @@ The visibility of a panel can be toggled by clicking on it's corresponding trigg
 
 Since animations can be achieved using many different methods Accordion does not animate the showing and hiding of panels. Developers interested in doing so can listen for the `ace-carousel-panel-visibility-changed` custom event and then apply their own animations, as demonstrated in one of the examples below.
 
-In order to implement animations without hindering accessibility developers must hide non-visible panels from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
+In order to implement animations without hindering accessibility developers must hide non-visible panels from screen readers and remove their focusable descendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
 
 
 ## Styles

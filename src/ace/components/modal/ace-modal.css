@@ -1,5 +1,6 @@
 ace-modal {
   background: #fff;
+  overflow: auto;
   padding: 24px;
   position: fixed;
   z-index: calc(2 + 1);
