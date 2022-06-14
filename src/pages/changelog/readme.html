@@ -1,4 +1,14 @@
 <h1 id="changelog">Changelog</h1>
+<h2 id="v2.0.1">v2.0.1</h2>
+<h3 id="carousel">Carousel</h3>
+<ul>
+<li>Next and previous slide buttons are no longer required if slide picker buttons are provided.</li>
+</ul>
+<h3 id="modal">Modal</h3>
+<ul>
+<li>Variable <code>$ace-modal-switch-breakpoint</code> redefined with <code>!default</code>.</li>
+<li>Added <code>overflow: auto</code> to <code>ace-modal</code> so that overflow content is visible.</li>
+</ul>
 <h2 id="v2">v2</h2>
 <h3 id="general">General</h3>
 <ul>
@@ -11,7 +21,7 @@
 <li>Custom events <code>ace-accordion-show-panels</code>&amp; <code>ace-accordion-hide-panels</code> renamed to <code>ace-accordion-show-all-panels</code> &amp; <code>ace-accordion-hide-all-panels</code> respectively.</li>
 <li>Trigger button now takes up entire width of parent heading element so that it can be activated when using Android's Talkback.</li>
 </ul>
-<h3 id="carousel">Carousel</h3>
+<h3 id="carousel-1">Carousel</h3>
 <ul>
 <li>Custom event<code>ace-carousel-slide-changed</code> renamed to <code>ace-carousel-selected-slide-changed</code>.</li>
 </ul>
@@ -23,7 +33,7 @@
 <ul>
 <li>Fixed bug that made the entire page scroll to Listboxes on page load.</li>
 </ul>
-<h3 id="modal">Modal</h3>
+<h3 id="modal-1">Modal</h3>
 <ul>
 <li>Modal is now hidden using <code>visibility: hidden</code> as opposed to <code>display: none</code> due to issue with VoiceOver not moving focus to Modal when opened.</li>
 <li>Modal itself now receives focus as opposed to it's first focussable descendant. This allows screen readers to announce it properly when it is shown.</li>
