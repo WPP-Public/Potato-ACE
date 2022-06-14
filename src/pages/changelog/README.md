@@ -1,4 +1,14 @@
 # Changelog
+## v2.0.1
+
+### Carousel
+
+- Next and previous slide buttons are no longer required if slide picker buttons are provided.
+
+### Modal
+
+- Variable `$ace-modal-switch-breakpoint` redefined with `!default`.
+- Added `overflow: auto` to `ace-modal` so that overflow content is visible.
 
 ## v2
 

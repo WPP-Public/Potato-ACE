@@ -32,12 +32,13 @@
 $ace-modal-backdrop-bg-color: rgba(0, 0, 0, .5) !default;
 $ace-modal-bg-color: #fff !default;
 $ace-modal-padding: $ace-spacing-3 !default;
-$ace-modal-switch-breakpoint: 768px;
+$ace-modal-switch-breakpoint: 768px !default;
 
 
 // STYLES
 ace-modal {
 	background: $ace-modal-bg-color;
+	overflow: auto;
 	padding: $ace-modal-padding;
 	position: fixed;
 	z-index: $ace-modal-z-index;
