@@ -78,9 +78,9 @@ To release a new version of ACE package on npm:
 3. Create a new release branch `ace-releases/<new-version-number>` from `main`, where `<new-version-number>` is the new version number determined in step 2.
 4. Document all the changes in changelog file `src/pages/changelog/README.md`.
 5. Change the `"version"` propety value in `src/ace/package.json` to the new version number.
-6. Increment the second digit of the `"version"` propety value in `package.json` to signify a minor release.
-7. Commit these changes to the new release branch and merge into `main` **without deleting the source branch**.
-8. Release new version of the website from the pipeline once tests pass.
+6. Commit these changes to the new release branch and merge into `main` **without deleting the source branch**.
+7. Create a new tag, determining the tag version number by incrementing the second digit of the last tag version number to signify a minor release.
+8. Release new version of the website using a tag from the pipeline once tests pass.
 9. Run `npm run publish` to release new version of ACE package on npm.
 
 # Documentation engine
