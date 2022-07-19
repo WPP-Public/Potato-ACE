@@ -232,6 +232,9 @@ export default class Modal extends HTMLElement {
 				(child as any).inert = true;
 				this.inertedEls.push(child);
 			});
+		} else {
+			this.focusTrap?.getInteractableDescendants();
+			console.log(this.focusTrap?.interactableDescendants);
 		}
 
 		this.focus();
