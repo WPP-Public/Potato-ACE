@@ -116,9 +116,9 @@ ace-modal {
 <h3 id="simple-modal">Simple Modal</h3>
 <p>Example of a simple modal with two triggers that is shown on page load. The example also demonstrates how the focus trap and the <code>ace-disclosure-update-focus-trap</code> custom event work. After triggering the Modal, use <strong>Toggle disabled button</strong> button to toggle the disabled state of the disabled button, and notice that the mutation observer updates the focus trap. Next use the <strong>Add link to Modal</strong> and <strong>Remove link from Modal</strong> buttons to add and remove links and dispatch the custom event, and notice how the focus trap is again updated.</p>
 <p>The JavaScript used by this example is shown below.</p>
-<div class="example-block"><button ace-modal-trigger-for="ace-simple-modal">Modal trigger 1</button>
-<button ace-modal-trigger-for="ace-simple-modal">Modal trigger 2</button>
-<ace-modal aria-label="Example Modal" id="ace-simple-modal" ace-modal-visible>
+<div class="example-block"><button ace-modal-trigger-for="ace-visible-modal">Modal trigger 1</button>
+<button ace-modal-trigger-for="ace-visible-modal">Modal trigger 2</button>
+<ace-modal aria-label="Example Modal" id="ace-visible-modal" ace-modal-visible>
 	<h3>Modal heading</h3>
 	<p>This modal was shown on page load because it had attribute <code>ace-modal-visible</code> when the page was loaded.</p>
 	<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
@@ -128,10 +128,10 @@ ace-modal {
 	<button id="disabled-btn" disabled>Disabled Button</button>
 </ace-modal>
 </div>
-<pre><code class="language-html">&lt;button ace-modal-trigger-for=&quot;ace-simple-modal&quot;&gt;Modal trigger 1&lt;/button&gt;
-&lt;button ace-modal-trigger-for=&quot;ace-simple-modal&quot;&gt;Modal trigger 2&lt;/button&gt;
+<pre><code class="language-html">&lt;button ace-modal-trigger-for=&quot;ace-visible-modal&quot;&gt;Modal trigger 1&lt;/button&gt;
+&lt;button ace-modal-trigger-for=&quot;ace-visible-modal&quot;&gt;Modal trigger 2&lt;/button&gt;
 
-&lt;ace-modal aria-label=&quot;Example Modal&quot; id=&quot;ace-simple-modal&quot; ace-modal-visible&gt;
+&lt;ace-modal aria-label=&quot;Example Modal&quot; id=&quot;ace-visible-modal&quot; ace-modal-visible&gt;
 	&lt;h3&gt;Modal heading&lt;/h3&gt;
 	&lt;p&gt;This modal was shown on page load because it had attribute &lt;code&gt;ace-modal-visible&lt;/code&gt; when the page was loaded.&lt;/p&gt;
 	&lt;img src=&quot;/img/logo.svg&quot; height=&quot;100px&quot; alt=&quot;Potato logo&quot;/&gt;
@@ -144,7 +144,7 @@ ace-modal {
 <pre><code class="language-js">import {EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const MODAL_ID = 'ace-simple-modal';
+	const MODAL_ID = 'ace-visible-modal';
 	const modalEl = document.getElementById(MODAL_ID);
 	const disabledBtn = document.getElementById('disabled-btn');
 
@@ -183,34 +183,34 @@ document.addEventListener('DOMContentLoaded', () =&gt; {
 <h3 id="modal-that-triggers-another-modal">Modal that triggers another Modal</h3>
 <p>Example of a Modal that has a trigger for another Modal and makes use of the <code>ace-modal-visibility-changed</code> custom event. When the second Modal's trigger in the first Modal is clicked, the first Modal is hidden and the second Modal shown. When the second Modal is closed and its <code>ace-modal-visibility-changed</code> custom event is dispatched, the first Modal is shown again.</p>
 <p>The JavaScript used by this example is shown below.</p>
-<div class="example-block"><button ace-modal-trigger-for="ace-modal-from-modal">
+<div class="example-block"><button ace-modal-trigger-for="ace-hidden-modal">
 	Second Modal's trigger
 </button>
-<ace-modal aria-label="Example of Modal that shows another Modal" id="ace-modal-from-modal">
+<ace-modal aria-label="Example of Modal that shows another Modal" id="ace-hidden-modal">
 	<button ace-modal-hide-modal-btn aria-label="Exit modal">&#x2715;</button>
 	<h3>Second Modal</h3>
 	<p>Second Modal</p>
 	<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
-	<button ace-modal-trigger-for="ace-simple-modal">Show first modal</button>
+	<button ace-modal-trigger-for="ace-visible-modal">Show first modal</button>
 </ace-modal>
 </div>
-<pre><code class="language-html">&lt;button ace-modal-trigger-for=&quot;ace-modal-from-modal&quot;&gt;
+<pre><code class="language-html">&lt;button ace-modal-trigger-for=&quot;ace-hidden-modal&quot;&gt;
 	Second Modal's trigger
 &lt;/button&gt;
 
-&lt;ace-modal aria-label=&quot;Example of Modal that shows another Modal&quot; id=&quot;ace-modal-from-modal&quot;&gt;
+&lt;ace-modal aria-label=&quot;Example of Modal that shows another Modal&quot; id=&quot;ace-hidden-modal&quot;&gt;
 	&lt;button ace-modal-hide-modal-btn aria-label=&quot;Exit modal&quot;&gt;&amp;#x2715;&lt;/button&gt;
 	&lt;h3&gt;Second Modal&lt;/h3&gt;
 	&lt;p&gt;Second Modal&lt;/p&gt;
 	&lt;img src=&quot;/img/phone-spuddy.png&quot; height=&quot;100px&quot; alt=&quot;Potato Spuddy with headphones and phone&quot;/&gt;
-	&lt;button ace-modal-trigger-for=&quot;ace-simple-modal&quot;&gt;Show first modal&lt;/button&gt;
+	&lt;button ace-modal-trigger-for=&quot;ace-visible-modal&quot;&gt;Show first modal&lt;/button&gt;
 &lt;/ace-modal&gt;
 </code></pre>
 <pre><code class="language-js">import {ATTRS, EVENTS} from '/ace/components/modal/modal.js';
 
 document.addEventListener('DOMContentLoaded', () =&gt; {
-	const OTHER_MODAL_ID = 'ace-simple-modal';
-	const modalEl = document.getElementById('ace-modal-from-modal');
+	const OTHER_MODAL_ID = 'ace-visible-modal';
+	const modalEl = document.getElementById('ace-hidden-modal');
 	let otherModalTriggerClicked;
 
 	// If other Modal is shown using trigger in this Modal, show this Modal when other Modal is hidden
