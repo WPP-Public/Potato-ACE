@@ -1,8 +1,8 @@
 # Project set-up
 
-1. Use node.js v14.15.4 using
+1. Use node.js v16.16.0 using
 	```
-	nvm install 14.15.4
+	nvm install 16.16.0
 	```
 2. Install gulp cli globally using
 	```
