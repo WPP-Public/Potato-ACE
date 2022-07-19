@@ -1,8 +1,8 @@
 # Project set-up
 
-1. Use node.js v14.15.4 using
+1. Use node.js v14.17.1 using
 	```
-	nvm install 14.15.4
+	nvm install 14.17.1
 	```
 2. Install gulp cli globally using
 	```
@@ -69,6 +69,19 @@ To create a new component:
 	  ```
 	- Add the mp4 file to a directory named *media* in the component directory
 
+# ACE package releases
+
+To release a new version of ACE package on npm:
+
+1. Compare branch `main` with the latest release branch (release braches are prefixed with `ace-releases/`).
+2. Determine what the new version number should be based on the diff, the latest release branch version number and [semantec versioning](https://semver.org/#summary).
+3. Create a new release branch `ace-releases/<new-version-number>` from `main`, where `<new-version-number>` is the new version number determined in step 2.
+4. Document all the changes in changelog file `src/pages/changelog/README.md`.
+5. Change the `"version"` propety value in `src/ace/package.json` to the new version number.
+6. Increment the second digit of the `"version"` propety value in `package.json` to signify a minor release.
+7. Commit these changes to the new release branch and merge into `main` **without deleting the source branch**.
+8. Release new version of the website from the pipeline once tests pass.
+9. Run `npm run publish` to release new version of ACE package on npm.
 
 # Documentation engine
 
