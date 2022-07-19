@@ -145,24 +145,9 @@ export default class Carousel extends HTMLElement {
 			this.autoSlideShowBtn = this.querySelector('button');
 
 			if (!this.autoSlideShowBtn) {
-				console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show Carousel that in turn requires a descendant <button> element that is the first focusable element in order to toggle the automatic slide show.`);
+				console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show. It therefore requires a descendant <button> element that is the first focusable element needed to toggle the automatic slide show.`);
 				return;
 			}
-		}
-
-		// Previous and next slide buttons
-		const prevSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(2)' : 'button';
-		const nextSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(3)' : 'button:nth-of-type(2)';
-		this.prevSlideBtn =
-			this.querySelector(`button[${ATTRS.PREV_SLIDE_BTN}]`) ||
-			this.querySelector(prevSlideBtnSelector);
-		this.nextSlideBtn =
-			this.querySelector(`button[${ATTRS.NEXT_SLIDE_BTN}]`) ||
-			this.querySelector(nextSlideBtnSelector);
-
-		if (!this.prevSlideBtn || !this.nextSlideBtn) {
-			console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to ${this.autoSlideShowCarousel ? 'toggle the automatic slide show and' : ''} display the previous and next slides.`);
-			return;
 		}
 
 		// Slide picker
@@ -175,6 +160,21 @@ export default class Carousel extends HTMLElement {
 		if (!this.slidesWrapper) {
 			this.slidesWrapper = document.createElement('div');
 			this.appendChild(this.slidesWrapper);
+		}
+
+		// Previous and next slide buttons
+		const prevSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(2)' : 'button';
+		const nextSlideBtnSelector = this.autoSlideShowCarousel ? 'button:nth-of-type(3)' : 'button:nth-of-type(2)';
+		this.prevSlideBtn =
+			this.querySelector(`button[${ATTRS.PREV_SLIDE_BTN}]`) ||
+			this.querySelector(prevSlideBtnSelector);
+		this.nextSlideBtn =
+			this.querySelector(`button[${ATTRS.NEXT_SLIDE_BTN}]`) ||
+			this.querySelector(nextSlideBtnSelector);
+
+		if ((!this.prevSlideBtn || !this.nextSlideBtn) && !this.carouselHasSlidePicker) {
+			console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to${this.autoSlideShowCarousel ? ' toggle the automatic slide show and' : ''} display the previous and next slides.`);
+			return;
 		}
 
 
@@ -200,10 +200,10 @@ export default class Carousel extends HTMLElement {
 		}
 
 		// Get user provided aria labels for the prev and next slide btns or use default values
-		this.goToFirstSlideLabel = this.nextSlideBtn.getAttribute(ATTRS.GO_TO_FIRST_SLIDE_LABEL) || this.goToFirstSlideLabel;
-		this.goToLastSlideLabel = this.prevSlideBtn.getAttribute(ATTRS.GO_TO_LAST_SLIDE_LABEL) || this.goToLastSlideLabel;
-		this.goToNextSlideLabel = this.nextSlideBtn.getAttribute(ATTRS.GO_TO_NEXT_SLIDE_LABEL) || this.goToNextSlideLabel;
-		this.goToPrevSlideLabel = this.prevSlideBtn.getAttribute(ATTRS.GO_TO_PREV_SLIDE_LABEL) || this.goToPrevSlideLabel;
+		this.goToFirstSlideLabel = this.nextSlideBtn?.getAttribute(ATTRS.GO_TO_FIRST_SLIDE_LABEL) || this.goToFirstSlideLabel;
+		this.goToLastSlideLabel = this.prevSlideBtn?.getAttribute(ATTRS.GO_TO_LAST_SLIDE_LABEL) || this.goToLastSlideLabel;
+		this.goToNextSlideLabel = this.nextSlideBtn?.getAttribute(ATTRS.GO_TO_NEXT_SLIDE_LABEL) || this.goToNextSlideLabel;
+		this.goToPrevSlideLabel = this.prevSlideBtn?.getAttribute(ATTRS.GO_TO_PREV_SLIDE_LABEL) || this.goToPrevSlideLabel;
 
 		// For localisation, users can provide a string to prefix before the slide number in the slide picker button aria-label attributes, e.g. if this.slidePickerEl has attribute ace-carousel-slide-picker-btn-aria-label-prefix="Diapositiva" the aria labels of the slide picker buttons will be "Diapositiva n" where n is the slide number.
 		if (this.carouselHasSlidePicker) {
@@ -227,10 +227,10 @@ export default class Carousel extends HTMLElement {
 
 		// Previous and next slide buttons
 		const slidesWrapperId = this.slidesWrapper.id || `${this.id}-slides`;
-		this.prevSlideBtn.setAttribute(ATTRS.PREV_SLIDE_BTN, '');
-		this.prevSlideBtn.setAttribute('aria-controls', slidesWrapperId);
-		this.nextSlideBtn.setAttribute(ATTRS.NEXT_SLIDE_BTN, '');
-		this.nextSlideBtn.setAttribute('aria-controls', slidesWrapperId);
+		this.prevSlideBtn?.setAttribute(ATTRS.PREV_SLIDE_BTN, '');
+		this.prevSlideBtn?.setAttribute('aria-controls', slidesWrapperId);
+		this.nextSlideBtn?.setAttribute(ATTRS.NEXT_SLIDE_BTN, '');
+		this.nextSlideBtn?.setAttribute('aria-controls', slidesWrapperId);
 
 		// Carousel with slide picker
 		if (this.carouselHasSlidePicker) {
@@ -425,7 +425,7 @@ export default class Carousel extends HTMLElement {
 				this.slideEls?.forEach(() => this.slidePickerEl?.appendChild(document.createElement('button')));
 				slidePickerBtns = this.slidePickerEl?.querySelectorAll('button');
 			} else if (slidePickerBtnsCount !== this.slideCount) {
-				console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has decendant with attribute ${ATTRS.SLIDE_PICKER} that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
+				console.warn(`${DISPLAY_NAME}: Carousel with ID ${this.id} has descendant with attribute ${ATTRS.SLIDE_PICKER} that must have an equal number of slide picker buttons as slides. Either provide the correct number of slide picker buttons, or no buttons at all and Carousel will automatically generate the correct number required.`);
 				return;
 			}
 

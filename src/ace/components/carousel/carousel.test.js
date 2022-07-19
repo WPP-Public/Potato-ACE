@@ -75,7 +75,7 @@ const checkSlideSelected = (slideNumber) => {
 };
 
 
-const initChecks = () => {
+const initChecks = (noNextAndPrevBtns = false) => {
 	cy.get('@carousel')
 		.invoke('attr', 'id')
 		.then((id) => {
@@ -86,18 +86,21 @@ const initChecks = () => {
 				.and(`${isAutoSlideShowCarousel ? '' : 'not.'}have.attr`, ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
 				.and(`${isAutoSlideShowCarousel ? '' : 'not.'}have.attr`, ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
 
-				// Check initial attributes of previous slide button
-				.get('@carouselPrevSlideBtn')
-				.should('have.attr', ATTRS.PREV_SLIDE_BTN, '')
-				.and('have.attr', 'aria-controls', SLIDES_ID)
+			if (!noNextAndPrevBtns) {
+				cy.get('@carousel')
+					// Check initial attributes of previous slide button
+					.get('@carouselPrevSlideBtn')
+					.should('have.attr', ATTRS.PREV_SLIDE_BTN, '')
+					.and('have.attr', 'aria-controls', SLIDES_ID)
 
-				// Check initial attributes of next slide button
-				.get('@carouselNextSlideBtn')
-				.should('have.attr', ATTRS.NEXT_SLIDE_BTN, '')
-				.and('have.attr', 'aria-controls', SLIDES_ID)
+					// Check initial attributes of next slide button
+					.get('@carouselNextSlideBtn')
+					.should('have.attr', ATTRS.NEXT_SLIDE_BTN, '')
+					.and('have.attr', 'aria-controls', SLIDES_ID);
+			}
 
-				// Check initial attributes of slides wrapper
-				.get('@carouselSlidesWrapper')
+			// Check initial attributes of slides wrapper
+			cy.get('@carouselSlidesWrapper')
 				.should('have.id', SLIDES_ID)
 				.and('have.attr', 'aria-live', `${isAutoSlideShowCarousel ? 'off' : 'polite'}`)
 
@@ -143,7 +146,7 @@ const initChecks = () => {
 					const selectedSlideNumber = +selectedSlideNumberString;
 					checkSlideSelected(selectedSlideNumber);
 
-					if (!isInfiniteCarousel) {
+					if (!isInfiniteCarousel && !noNextAndPrevBtns) {
 						cy.get('@carouselPrevSlideBtn').should(`${selectedSlideNumber === 1 ? '' : 'not.'}be.disabled`);
 					}
 				});
@@ -275,7 +278,7 @@ context(`Carousel`, () => {
 		beforeEach(() => getEls(CAROUSEL_ID));
 
 
-		it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
+		it(`Should initialise correctly`, () => initChecks());
 
 
 		it(`Should respond to next and previous slide buttons correctly`, () => testSlideChangeBtns());
@@ -298,7 +301,7 @@ context(`Carousel`, () => {
 		beforeEach(() => getEls(CAROUSEL_ID));
 
 
-		it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
+		it(`Should initialise correctly`, () => initChecks());
 
 
 		it(`Should respond to next and previous slide buttons correctly`, () => {
@@ -330,19 +333,25 @@ context(`Carousel`, () => {
 		before(() => beforeAll(CAROUSEL_ID));
 
 
-		beforeEach(() => getEls(CAROUSEL_ID));
+		beforeEach(() => {
+			cy.get(`#${CAROUSEL_ID}`)
+				.as('carousel')
+				.find(`[${ATTRS.SLIDES}]`)
+				.as('carouselSlidesWrapper')
+				.find(`[${ATTRS.SLIDE}]`)
+				.as('carouselSlides')
+				.get('@carousel')
+				.find(`[${ATTRS.SLIDE_PICKER}]`)
+				.as('carouselSlidePicker')
+				.find('button')
+				.as('carouselSlidePickerBtns');
+		});
 
 
-		it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
-
-
-		it(`Should respond to next and previous slide buttons correctly`, () => testSlideChangeBtns());
+		it(`Should initialise correctly`, () => initChecks(true));
 
 
 		it(`Should select correct slide when observed attribute changed`, () => testSelectedSlideObsAttr(2));
-
-
-		it(`Should select infinite rotation when observed attribute added`, () => testInfiniteObsAttr());
 
 
 		describe(`Slide picker tests`, () => {
@@ -413,7 +422,7 @@ context(`Carousel`, () => {
 		beforeEach(() => getEls(CAROUSEL_ID));
 
 
-		it(`Should initialise correctly`, () => initChecks(CAROUSEL_ID));
+		it(`Should initialise correctly`, () => initChecks());
 
 
 		describe(`Stopped slide show tests `, () => {
@@ -512,7 +521,7 @@ context(`Carousel`, () => {
 					.focus()
 					.blur();
 
-				// TODO: Figure out how to trigger 'mouseleave' event with relatedTarget set to non-decendant element of Carousel to resume the slideshow
+				// TODO: Figure out how to trigger 'mouseleave' event with relatedTarget set to non-descendant element of Carousel to resume the slideshow
 			});
 
 

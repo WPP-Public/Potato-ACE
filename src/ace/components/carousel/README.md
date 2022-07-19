@@ -33,9 +33,9 @@ After the event `DOMContentLoaded` is fired on `document` an instance of Carouse
 
 It is strongly recommended that Carousel be provided with an accessible label using `aria-label` or `aria-labelledby`. The word "carousel" should not be included in the label as Carousel has `aria-roledescription="carousel"` which is read out by screen readers.
 
-Carousels can periodically display the next slide if given the attribute `ace-carousel-auto-slide-show`. Such automatic Carousels change the slide every 5 seconds by default, however developers can provide a custom interval time in milliseconds as the value of Carousel attribute `ace-carousel-auto-slide-show-time`. The automatic slide show can be stopped or started using a required, descendant toggle button, or by custom events. Automatic Carousels must have a descendant button to stop and start the automatic slide show, which for better accessibility must be the first focusable descendant. Automatic Carousels will therefore use the first decendant `<button>` for this and give it the attribute `ace-carousel-auto-slide-show-btn`. This button will be given an `aria-label` "Stop automatic slide show" or "Start automatic slide show" when the automatic slide show is running or not respectively. Developers can provide custom or localised strings as values of Carousel attributes `ace-carousel-stop-auto-slide-show-label` and `ace-carousel-start-auto-slide-show-label`.
+Carousels can periodically display the next slide if given the attribute `ace-carousel-auto-slide-show`. Such automatic Carousels change the slide every 5 seconds by default, however developers can provide a custom interval time in milliseconds as the value of Carousel attribute `ace-carousel-auto-slide-show-time`. The automatic slide show can be stopped or started using a required, descendant toggle button, or by custom events. Automatic Carousels must have a descendant button to stop and start the automatic slide show, which for better accessibility must be the first focusable descendant. Automatic Carousels will therefore use the first descendant `<button>` for this and give it the attribute `ace-carousel-auto-slide-show-btn`. This button will be given an `aria-label` "Stop automatic slide show" or "Start automatic slide show" when the automatic slide show is running or not respectively. Developers can provide custom or localised strings as values of Carousel attributes `ace-carousel-stop-auto-slide-show-label` and `ace-carousel-start-auto-slide-show-label`.
 
-All Carousels must have descendant buttons to display the previous and next slide and will use `<button>` elements with attributes `ace-carousel-prev-btn` and `ace-carousel-next-btn` respectively. For better accessibility these buttons should be the first and second focusable descendants, or second and third focusable descendants for automatic Carousels, even if they are to be displayed on the left and right of the carousel, as is common practice, with their positioning set using CSS. If no descendants have these attributes then the first and second, or second and third for automatic Carousels, decendant `<button>` elements will be used and given these attributes. The previous slide button will be given an aria-label of value `Go to previous slide`, or `Go to last slide` if the Carousel is infinite and the first slide is visible. Developers can however provide custom or localised strings as values of attributes `ace-carousel-go-to-prev-slide-label` and `ace-carousel-go-to-last-slide-label` respectively, set on the button. Similarly, the next slide button will be given an aria-label of value `Go to next slide`, or `Go to first slide` if the Carousel is infinite and the last slide is visible. Developers can however provide custom or localised strings as values of attributes `ace-carousel-go-to-next-slide-label` and `ace-carousel-go-to-first-slide-label` respectively, set on the button.
+All Carousels, except those with slide picker buttons, must have descendant buttons to display the previous and next slides. Descendant `<button>` elements with attributes `ace-carousel-prev-btn` and `ace-carousel-next-btn` are used. For better accessibility these buttons should be the first and second focusable descendants, or second and third focusable descendants for automatic Carousels. To display these buttons on the left and right sides of the Carousel, as is common practice, CSS should be used. If no descendants have these attributes then the first and second, or second and third for automatic Carousels, descendant `<button>` elements will be used and given these attributes. The previous slide button will be given an aria-label of value `Go to previous slide`, or `Go to last slide` if the Carousel is infinite and the first slide is visible. Developers can however provide custom or localised strings as values of attributes `ace-carousel-go-to-prev-slide-label` and `ace-carousel-go-to-last-slide-label` respectively, set on the button. Similarly, the next slide button will be given an aria-label of value `Go to next slide`, or `Go to first slide` if the Carousel is infinite and the last slide is visible. Developers can however provide custom or localised strings as values of attributes `ace-carousel-go-to-next-slide-label` and `ace-carousel-go-to-first-slide-label` respectively, set on the button.
 
 A set of slide picker buttons, used to select each slide, can be added to Carousel by including an element with attribute `ace-carousel-slide-picker` and a descendant `<button>` for each slide. Alternatively, this element can be added with no descendant `button` elements and Carousel will populate it with a button for each slide. Carousel adds `aria-label` attributes to each slide picker button in the format `Slide n`, where `n` is the slide number. To allow for more approprite or localised strings, the string `Slide` can be replaced in the `aria-label` of all slide picker buttons with the value of the attribute `ace-carousel-slide-picker-btn-aria-label-prefix` of the element with attribute `ace-carousel-slide-picker`. It is strongly recommended that the slide picker follow the previous and next slide buttons in DOM hierarchy and therefore in tab sequence. This order should be used even if the slide picker buttons are to be displayed below or overlayed on top of the slides in which case their positioning should be set using CSS. For accessibility purposes Carousel buttons that are styled by developers and overlayed on top of the slides must use colors that provides sufficient contrast so they are clearly visible.
 
@@ -56,7 +56,7 @@ The automatic slide show can be stopped and started again using the automatic sl
 
 Since animations can be achieved using many different methods Carousel does not animate slide changes. Developers interested in doing so can listen for the `ace-carousel-slide-changed` custom event and then apply their own animations, as demonstrated in one of the examples below.
 
-In order to implement animations without hindering accessibility developers must hide non-selected slides from screen readers and remove their focusable decendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
+In order to implement animations without hindering accessibility developers must hide non-selected slides from screen readers and remove their focusable descendants from the tab sequence after the animation ends, both of which can be achieved by applying CSS declaration `display: none` or `visibility: hidden` to them. Furthermore, animations should not be shown to users that have requested the operating system minimise the amount of non-essential motion it uses. To acheive this developers can make use of the [`prefers-reduced-motion` media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion) as demonstrated in the example.
 
 
 ## Styles
@@ -346,12 +346,10 @@ Carousel with infinite rotation that displays the second slide upon page load.
 
 ### Carousel with slide picker
 
-Carousel with slide picker buttons and automatic slide show. 
+Carousel with slide picker buttons and automatic slide show. Note: Previous and next slide buttons are optional when slide picker buttons are present.
 
 ```html
 <ace-carousel aria-label="Slide picker" id="ace-slide-picker-carousel">
-	<button>Previous slide</button>
-	<button>Next slide</button>
 	<div ace-carousel-slide-picker></div>
 	<div>
 		<div>
@@ -435,25 +433,25 @@ document.addEventListener('DOMContentLoaded', () => {
 Example of Carousel with animated slide changes. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
 
 ```html
-<ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="animated-carousel">
+<ace-carousel ace-carousel-infinite aria-label="Animated" id="ace-animated-carousel" class="ace-animated-carousel">
 	<button>Previous slide</button>
 	<button>Next slide</button>
-	<div class="animated-carousel__slides">
-		<div class="animated-carousel__slide">
+	<div class="ace-animated-carousel__slides">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 1 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
 			<p>Slide 1 content.</p>
 			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 		</div>
-		<div class="animated-carousel__slide">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 2 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
 			<p>Slide 2 content.</p>
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 		</div>
-		<div class="animated-carousel__slide">
+		<div class="ace-animated-carousel__slide">
 			<h3>Slide 3 heading</h3>
 			<button>Button</button>
 			<a href="#">Link</a>
@@ -466,7 +464,7 @@ Example of Carousel with animated slide changes. Custom styles have been applied
 
 ```scss
 @media (prefers-reduced-motion: no-preference) {
-	.animated-carousel {
+	.ace-animated-carousel {
 		&__slides {
 			display: flex;
 			overflow-x: hidden;
@@ -556,29 +554,29 @@ document.addEventListener('DOMContentLoaded', () => {
 ### Styled Carousel
 
 An example of how Carousel can be styled to resemble a commonly used design. Custom styles have been applied to this example and are shown below. The JavaScript used by this example is shown below.
- 
+
 ```html
 <ace-carousel ace-carousel-auto-slide-show ace-carousel-infinite aria-label="Styled example" id="ace-styled-carousel"
-	class="styled-carousel">
-	<button class="styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span
+	class="ace-styled-carousel">
+	<button class="ace-styled-carousel__auto-slide-show-btn"><span class="play-icon">&#9658;</span><span
 			class="pause-icon">&#10074; &#10074;</span></button>
-	<button class="styled-carousel__slide-btn styled-carousel__slide-btn--prev">&#10094;</button>
-	<button class="styled-carousel__slide-btn styled-carousel__slide-btn--next">&#10095;</button>
-	<div ace-carousel-slide-picker class="styled-carousel__slide-picker"></div>
-	<div class="styled-carousel__slides">
-		<div class="styled-carousel__slide">
+	<button class="ace-styled-carousel__slide-btn ace-styled-carousel__slide-btn--prev">&#10094;</button>
+	<button class="ace-styled-carousel__slide-btn ace-styled-carousel__slide-btn--next">&#10095;</button>
+	<div ace-carousel-slide-picker class="ace-styled-carousel__slide-picker"></div>
+	<div class="ace-styled-carousel__slides">
+		<div class="ace-styled-carousel__slide">
 			<h3>Slide 1 heading</h3>
 			<button>Button</button>
 			<p>Slide 1 content.</p>
 			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 		</div>
-		<div class="styled-carousel__slide">
+		<div class="ace-styled-carousel__slide">
 			<h3>Slide 2 heading</h3>
 			<button>Button</button>
 			<p>Slide 2 content.</p>
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 		</div>
-		<div class="styled-carousel__slide">
+		<div class="ace-styled-carousel__slide">
 			<h3>Slide 3 heading</h3>
 			<button>Button</button>
 			<p>Slide 3 content.</p>
@@ -591,7 +589,7 @@ An example of how Carousel can be styled to resemble a commonly used design. Cus
 ```scss
 @use 'sass:list';
 
-.styled-carousel {
+.ace-styled-carousel {
 	color: #fff;
 	max-width: 600px;
 	position: relative;
