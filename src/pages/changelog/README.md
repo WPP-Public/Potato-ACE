@@ -1,4 +1,11 @@
 # Changelog
+
+## v2.0.2
+
+### Modal
+
+- Fix for modal focus trap, broken by switching from `display: none` to `visibility: hidden` in v2   
+
 ## v2.0.1
 
 ### Carousel
@@ -69,12 +76,6 @@
 - Improved automatic ID generation
 
 
-## v1.2 & 1.2.1
+## v1.2.1
 
-- Minor updates
-
-## v1.0.1
-
-- Added Accordion, Carousel, Combobox, Menu, Modal, Tabs, Toast, Tooltip.
-- Added TypeScript files for all components.
-- Added component CSS files alongside SASS files.
+Initial stable release
