@@ -234,7 +234,6 @@ export default class Modal extends HTMLElement {
 			});
 		} else {
 			this.focusTrap?.getInteractableDescendants();
-			console.log(this.focusTrap?.interactableDescendants);
 		}
 
 		this.focus();
