@@ -14,7 +14,7 @@ import { LOG_COLORS } from './constants.mjs';
 import MarkdownIt from 'markdown-it';
 import anchor from 'markdown-it-anchor';
 import { promises as fsPromises } from 'fs';
-import pjson from '../package.json' assert {type: "json"};
+import pjson from '../package.json';
 
 
 // CONSTANTS
