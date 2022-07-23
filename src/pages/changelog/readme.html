@@ -1,10 +1,15 @@
 <h1 id="changelog">Changelog</h1>
+<h2 id="v2.0.2">v2.0.2</h2>
+<h3 id="modal">Modal</h3>
+<ul>
+<li>Fix for modal focus trap, broken by switching from <code>display: none</code> to <code>visibility: hidden</code> in v2</li>
+</ul>
 <h2 id="v2.0.1">v2.0.1</h2>
 <h3 id="carousel">Carousel</h3>
 <ul>
 <li>Next and previous slide buttons are no longer required if slide picker buttons are provided.</li>
 </ul>
-<h3 id="modal">Modal</h3>
+<h3 id="modal-1">Modal</h3>
 <ul>
 <li>Variable <code>$ace-modal-switch-breakpoint</code> redefined with <code>!default</code>.</li>
 <li>Added <code>overflow: auto</code> to <code>ace-modal</code> so that overflow content is visible.</li>
@@ -33,7 +38,7 @@
 <ul>
 <li>Fixed bug that made the entire page scroll to Listboxes on page load.</li>
 </ul>
-<h3 id="modal-1">Modal</h3>
+<h3 id="modal-2">Modal</h3>
 <ul>
 <li>Modal is now hidden using <code>visibility: hidden</code> as opposed to <code>display: none</code> due to issue with VoiceOver not moving focus to Modal when opened.</li>
 <li>Modal itself now receives focus as opposed to it's first focussable descendant. This allows screen readers to announce it properly when it is shown.</li>
@@ -64,13 +69,5 @@
 <ul>
 <li>Improved automatic ID generation</li>
 </ul>
-<h2 id="v1.2-%26-1.2.1">v1.2 &amp; 1.2.1</h2>
-<ul>
-<li>Minor updates</li>
-</ul>
-<h2 id="v1.0.1">v1.0.1</h2>
-<ul>
-<li>Added Accordion, Carousel, Combobox, Menu, Modal, Tabs, Toast, Tooltip.</li>
-<li>Added TypeScript files for all components.</li>
-<li>Added component CSS files alongside SASS files.</li>
-</ul>
+<h2 id="v1.2.1">v1.2.1</h2>
+<p>Initial stable release</p>

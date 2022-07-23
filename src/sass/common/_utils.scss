@@ -29,9 +29,23 @@
 	}
 }
 
-.u-only-handheld %u-only-handheld {
+.u-only-handheld {
 	@include mq($from: desktop) {
 		display: none;
+	}
+}
+
+
+.u-unstyled-anchor {
+	font-weight: inherit;
+	transition: inherit;
+
+	&,
+	&:active,
+	&:focus,
+	&:hover,
+	&:visited {
+		color: inherit;
 	}
 }
 
@@ -50,19 +64,5 @@
 				}
 			}
 		}
-	}
-}
-
-
-.unstyled-anchor %unstyled-anchor {
-	font-weight: inherit;
-	transition: inherit;
-
-	&,
-	&:active,
-	&:focus,
-	&:hover,
-	&:visited {
-		color: inherit;
 	}
 }
