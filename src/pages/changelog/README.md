@@ -1,5 +1,12 @@
 # Changelog
 
+## v2.1
+
+### General
+
+- Updates to make components conform to latest W3C's WAI ARIA authoring practices.
+- Updated documentation links for the W3C's WAI ARIA authoring practices pages
+
 ## v2.0.2
 
 ### Modal
