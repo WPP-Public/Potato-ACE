@@ -7,6 +7,11 @@
 - Updates to make components conform to latest W3C's WAI ARIA authoring practices.
 - Updated documentation links for the W3C's WAI ARIA authoring practices pages
 
+### Carousel
+
+- Automatic slide show Carousel no longer resumes the automatic slide show when focus leaves the Carousel
+
+
 ## v2.0.2
 
 ### Modal
