@@ -2,7 +2,7 @@
 
 Carousel is a set of slides, only one of which is displayed at a time, and buttons used to display the previous or next slide.
 
-Carousel conforms to [W3C's WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel).
+Carousel conforms to [W3C's WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/).
 
 
 ## Set up
@@ -387,17 +387,17 @@ Carousel with automatic slide show. Two buttons have also been included, which d
 	<div>
 		<div>
 			<h3>Slide 1 heading</h3>
-			<p>Slide 1 content.</p>
+			<p><a href="http://ace.p.ota.to">ACE home page</a></p>
 			<img src="/img/logo.svg" height="100px" alt="Potato logo"/>
 		</div>
 		<div>
 			<h3>Slide 2 heading</h3>
-			<p>Slide 2 content.</p>
+			<p><a href="http://ace.p.ota.to">ACE home page</a></p>
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone"/>
 		</div>
 		<div>
 			<h3>Slide 3 heading</h3>
-			<p>Slide 3 content.</p>
+			<p><a href="http://ace.p.ota.to">ACE home page</a></p>
 			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles"/>
 		</div>
 	</div>
@@ -439,23 +439,29 @@ Example of Carousel with animated slide changes. Custom styles have been applied
 	<div class="ace-animated-carousel__slides">
 		<div class="ace-animated-carousel__slide">
 			<h3>Slide 1 heading</h3>
-			<button>Button</button>
-			<a href="#">Link</a>
 			<p>Slide 1 content.</p>
+			<p>
+				<button>Button</button>
+				<a href="#">Link</a>
+			</p>
 			<img src="/img/logo.svg" height="100px" alt="Potato logo" />
 		</div>
 		<div class="ace-animated-carousel__slide">
 			<h3>Slide 2 heading</h3>
-			<button>Button</button>
-			<a href="#">Link</a>
 			<p>Slide 2 content.</p>
+			<p>
+				<button>Button</button>
+				<a href="#">Link</a>
+			</p>
 			<img src="/img/phone-spuddy.png" height="100px" alt="Potato Spuddy with headphones and phone" />
 		</div>
 		<div class="ace-animated-carousel__slide">
 			<h3>Slide 3 heading</h3>
-			<button>Button</button>
-			<a href="#">Link</a>
 			<p>Slide 3 content.</p>
+			<p>
+				<button>Button</button>
+				<a href="#">Link</a>
+			</p>
 			<img src="/img/goggles-spuddy.png" height="100px" alt="Potato Spuddy with virtual reality goggles" />
 		</div>
 	</div>

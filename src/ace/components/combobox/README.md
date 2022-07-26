@@ -2,7 +2,7 @@
 
 Combobox is a combination of a text box and a pop-up listbox containing options that help the user set the value of the text box.
 
-Combobox conforms to the ARIA 1.0 pattern of [W3C's WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#combobox).
+Combobox conforms to the ARIA 1.0 pattern of [W3C's WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/).
 
 
 ## Set up

@@ -1,16 +1,31 @@
 <h1 id="changelog">Changelog</h1>
-<h2 id="v2.0.1">v2.0.1</h2>
+<h2 id="v2.1">v2.1</h2>
+<h3 id="general">General</h3>
+<ul>
+<li>Updates to make components conform to latest W3C's WAI ARIA authoring practices.</li>
+<li>Updated documentation links for the W3C's WAI ARIA authoring practices pages</li>
+</ul>
 <h3 id="carousel">Carousel</h3>
+<ul>
+<li>Automatic slide show Carousel no longer resumes the automatic slide show when focus leaves the Carousel</li>
+</ul>
+<h2 id="v2.0.2">v2.0.2</h2>
+<h3 id="modal">Modal</h3>
+<ul>
+<li>Fix for modal focus trap, broken by switching from <code>display: none</code> to <code>visibility: hidden</code> in v2</li>
+</ul>
+<h2 id="v2.0.1">v2.0.1</h2>
+<h3 id="carousel-1">Carousel</h3>
 <ul>
 <li>Next and previous slide buttons are no longer required if slide picker buttons are provided.</li>
 </ul>
-<h3 id="modal">Modal</h3>
+<h3 id="modal-1">Modal</h3>
 <ul>
 <li>Variable <code>$ace-modal-switch-breakpoint</code> redefined with <code>!default</code>.</li>
 <li>Added <code>overflow: auto</code> to <code>ace-modal</code> so that overflow content is visible.</li>
 </ul>
 <h2 id="v2">v2</h2>
-<h3 id="general">General</h3>
+<h3 id="general-1">General</h3>
 <ul>
 <li>All custom events dispatched to ACE components must now be dispatched on <code>window</code> with the <code>detail</code> property of the custom event containing the ID of the target ACE component. This change makes it easier for ACE components to be used with JavaScript frameworks.</li>
 <li>Fixed type-ahead for Listbox, Select and Menu so that it works with list options that have descendants with no text content, e.g. images.</li>
@@ -21,7 +36,7 @@
 <li>Custom events <code>ace-accordion-show-panels</code>&amp; <code>ace-accordion-hide-panels</code> renamed to <code>ace-accordion-show-all-panels</code> &amp; <code>ace-accordion-hide-all-panels</code> respectively.</li>
 <li>Trigger button now takes up entire width of parent heading element so that it can be activated when using Android's Talkback.</li>
 </ul>
-<h3 id="carousel-1">Carousel</h3>
+<h3 id="carousel-2">Carousel</h3>
 <ul>
 <li>Custom event<code>ace-carousel-slide-changed</code> renamed to <code>ace-carousel-selected-slide-changed</code>.</li>
 </ul>
@@ -33,7 +48,7 @@
 <ul>
 <li>Fixed bug that made the entire page scroll to Listboxes on page load.</li>
 </ul>
-<h3 id="modal-1">Modal</h3>
+<h3 id="modal-2">Modal</h3>
 <ul>
 <li>Modal is now hidden using <code>visibility: hidden</code> as opposed to <code>display: none</code> due to issue with VoiceOver not moving focus to Modal when opened.</li>
 <li>Modal itself now receives focus as opposed to it's first focussable descendant. This allows screen readers to announce it properly when it is shown.</li>
@@ -64,13 +79,5 @@
 <ul>
 <li>Improved automatic ID generation</li>
 </ul>
-<h2 id="v1.2-%26-1.2.1">v1.2 &amp; 1.2.1</h2>
-<ul>
-<li>Minor updates</li>
-</ul>
-<h2 id="v1.0.1">v1.0.1</h2>
-<ul>
-<li>Added Accordion, Carousel, Combobox, Menu, Modal, Tabs, Toast, Tooltip.</li>
-<li>Added TypeScript files for all components.</li>
-<li>Added component CSS files alongside SASS files.</li>
-</ul>
+<h2 id="v1.2.1">v1.2.1</h2>
+<p>Initial stable release</p>
