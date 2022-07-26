@@ -2,7 +2,7 @@
 
 Listbox is a list of options that allows users to select one (single-select) or more (multi-select) using a mouse or keyboard. It mimics a native HTML `<select>` that has attribute `size` with a value or 1 or higher, while allows more styling flexibility.
 
-Listbox conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox).
+Listbox conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/).
 
 
 ## Set up
