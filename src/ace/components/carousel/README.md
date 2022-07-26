@@ -2,7 +2,7 @@
 
 Carousel is a set of slides, only one of which is displayed at a time, and buttons used to display the previous or next slide.
 
-Carousel conforms to [W3C's WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#carousel).
+Carousel conforms to [W3C's WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/carousel/).
 
 
 ## Set up
