@@ -2,7 +2,7 @@
 
 Menu is a component that contains a button that shows a hidden menu comprised of options.
 
-Menu conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#menubutton).
+Menu conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/menubutton/).
 
 
 ## Set up

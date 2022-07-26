@@ -2,7 +2,7 @@
 
 A Tooltip is a hidden component that contains information related to a target element, which becomes visible when the target receives keyboard focus, the mouse hovers over the target, or a user touches the target on a touch screen device for a short period of time.
 
-Tooltip conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#tooltip).
+Tooltip conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/).
 
 
 ## Set up

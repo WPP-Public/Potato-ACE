@@ -2,7 +2,7 @@
 
 Modal is a component that is overlaid on top of other site content and prevents users from interacting with content outside of it.
 
-Modal conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#dialog_modal).
+Modal conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/dialogmodal/).
 
 
 ## Set up
