@@ -2,7 +2,7 @@
 
 Select is a dropdown list of options that mimics a native HTML `<select>` that has attribute `size` with a value of 1 or without it, while allowing more styling flexibility.
 
-Select conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/examples/listbox/listbox-collapsible.html), with the exception of a few minor interactions that allow it to more closely mimic a native HTML `<select>` element.
+Select conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/example-index/combobox/combobox-select-only.html), with the exception of a few minor interactions that allow it to more closely mimic a native HTML `<select>` element.
 
 
 ## Set up
