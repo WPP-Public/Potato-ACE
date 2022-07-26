@@ -16,7 +16,6 @@ export const ATTRS = {
 	AUTO_SLIDE_SHOW: `${CAROUSEL}-auto-slide-show`,
 	AUTO_SLIDE_SHOW_ACTIVE: `${CAROUSEL}-auto-slide-show-active`,
 	AUTO_SLIDE_SHOW_BTN: `${CAROUSEL}-auto-slide-show-btn`,
-	AUTO_SLIDE_SHOW_STOPPED: `${CAROUSEL}-auto-slide-show-stopped`,
 	AUTO_SLIDE_SHOW_TIME: `${CAROUSEL}-auto-slide-show-time`,
 	GO_TO_FIRST_SLIDE_LABEL: `${CAROUSEL}-go-to-first-slide-label`,
 	GO_TO_LAST_SLIDE_LABEL: `${CAROUSEL}-go-to-last-slide-label`,
@@ -48,7 +47,6 @@ export const EVENTS = {
 		UPDATE_SLIDES: `${CAROUSEL}-update-slides`,
 	},
 	OUT: {
-		AUTO_SLIDE_SHOW_PAUSED: `${CAROUSEL}-auto-slide-show-paused`,
 		AUTO_SLIDE_SHOW_STARTED: `${CAROUSEL}-auto-slide-show-started`,
 		AUTO_SLIDE_SHOW_STOPPED: `${CAROUSEL}-auto-slide-show-stopped`,
 		READY: `${CAROUSEL}-ready`,
@@ -62,9 +60,10 @@ export const DEFAULT_SLIDE_SHOW_TIME = 5000;
 
 /* CLASS */
 export default class Carousel extends HTMLElement {
+	private autoSlideShowActive = false;
 	private autoSlideShowBtn: HTMLButtonElement | null = null;
 	private autoSlideShowCarousel = false;
-	private autoSlideShowStopped = false;
+	private autoSlideShowPaused = false;
 	private autoSlideShowTime = DEFAULT_SLIDE_SHOW_TIME;
 	private autoSlideShowTimer: number | undefined;
 	private carouselHasSlidePicker = false;
@@ -145,7 +144,7 @@ export default class Carousel extends HTMLElement {
 			this.autoSlideShowBtn = this.querySelector('button');
 
 			if (!this.autoSlideShowBtn) {
-				console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW} and is therefore an automatic slide show. It therefore requires a descendant <button> element that is the first focusable element needed to toggle the automatic slide show.`);
+				console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} has attribute ${ATTRS.AUTO_SLIDE_SHOW}, which makes it an automatic slide show. It therefore requires a descendant <button> element that is the first focusable element, needed to toggle the automatic slide show.`);
 				return;
 			}
 		}
@@ -173,7 +172,7 @@ export default class Carousel extends HTMLElement {
 			this.querySelector(nextSlideBtnSelector);
 
 		if ((!this.prevSlideBtn || !this.nextSlideBtn) && !this.carouselHasSlidePicker) {
-			console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} must contain ${this.autoSlideShowCarousel ? 'three' : 'two'} descendant <button> elements needed to${this.autoSlideShowCarousel ? ' toggle the automatic slide show and' : ''} display the previous and next slides.`);
+			console.error(`${DISPLAY_NAME}: Carousel with ID ${this.id} must contain either slide picker buttons or previous and next slide buttons.`);
 			return;
 		}
 
@@ -326,12 +325,8 @@ export default class Carousel extends HTMLElement {
 		if (this.autoSlideShowCarousel) {
 			const autoSlideShowBtnClicked = target.closest(`[${ATTRS.AUTO_SLIDE_SHOW_BTN}]`);
 			if (autoSlideShowBtnClicked) {
-				this.autoSlideShowStopped = !this.autoSlideShowStopped;
-				if (this.autoSlideShowStopped) {
-					this.stopAutoSlideShow();
-				} else {
-					this.startAutoSlideShow();
-				}
+				this.autoSlideShowActive ? this.stopAutoSlideShow() :	this.startAutoSlideShow();
+				return;
 			}
 		}
 
@@ -368,11 +363,9 @@ export default class Carousel extends HTMLElement {
 				this.initSlides();
 				break;
 			case EVENTS.IN.START_AUTO_SLIDE_SHOW:
-				this.autoSlideShowStopped = false;
 				this.startAutoSlideShow();
 				break;
 			case EVENTS.IN.STOP_AUTO_SLIDE_SHOW:
-				this.autoSlideShowStopped = true;
 				this.stopAutoSlideShow();
 		}
 	}
@@ -384,20 +377,21 @@ export default class Carousel extends HTMLElement {
 	private focusAndMouseHandler(e: FocusEvent): void {
 		switch (e.type) {
 			case 'focusin':
-			case 'mouseenter': {
-				const target = e.target as HTMLElement;
-				if (target.hasAttribute(ATTRS.AUTO_SLIDE_SHOW_BTN)) {
-					this.startAutoSlideShow(true);
-					return;
-				}
-				this.stopAutoSlideShow(true);
+				this.stopAutoSlideShow();
 				break;
-			}
-			case 'focusout':
+			case 'mouseenter':
+				if (this.autoSlideShowActive) {
+					this.stopAutoSlideShow();
+					this.autoSlideShowPaused = true;
+				}
+				break;
 			case 'mouseleave': {
-				const relatedTarget = e.relatedTarget as HTMLElement;
-				if (relatedTarget && !relatedTarget.closest(`#${this.id}`)) {
-					this.startAutoSlideShow(true);
+				if (this.autoSlideShowPaused) {
+					const relatedTarget = e.relatedTarget as HTMLElement;
+					if (relatedTarget && !relatedTarget.closest(`#${this.id}`)) {
+						this.startAutoSlideShow();
+						this.autoSlideShowPaused = false;
+					}
 				}
 			}
 		}
@@ -593,8 +587,10 @@ export default class Carousel extends HTMLElement {
 				slide.removeAttribute(ATTRS.SLIDE_SELECTED);
 			}
 			slide.setAttribute('aria-label', `${index + 1} ${this.slideAriaLabelInfix} ${this.slideCount}`);
-			slide.setAttribute('aria-roledescription', 'slide');
 			slide.setAttribute('role', this.carouselHasSlidePicker ? 'tabpanel' : 'group');
+			if (!this.carouselHasSlidePicker) {
+				slide.setAttribute('aria-roledescription', 'slide');
+			}
 		});
 	}
 
@@ -602,27 +598,21 @@ export default class Carousel extends HTMLElement {
 	/*
 		Start carousel auto slide show
 	*/
-	private startAutoSlideShow(paused = false): void {
+	private startAutoSlideShow(): void {
 		if (
-			this.autoSlideShowStopped ||
-			this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE) === 'true' ||
+			this.autoSlideShowActive ||
 			(document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN as string]
 		) {
 			return;
 		}
 
 		window.clearInterval(this.autoSlideShowTimer);
-		this.autoSlideShowTimer = window.setInterval(() => {
-			this.selectSlideBasedOnDirection(1);
-		}, this.autoSlideShowTime);
+		this.autoSlideShowTimer = window.setInterval(() => this.selectSlideBasedOnDirection(1), this.autoSlideShowTime);
 
 		this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true');
 		this.slidesWrapper?.setAttribute('aria-live', 'off');
-
-		if (!paused) {
-			this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
-			this.autoSlideShowBtn?.setAttribute('aria-label', this.stopAutoSlideShowLabel);
-		}
+		this.autoSlideShowBtn?.setAttribute('aria-label', this.stopAutoSlideShowLabel);
+		this.autoSlideShowActive = true;
 
 		window.dispatchEvent(new CustomEvent(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, {
 			'detail': {
@@ -635,22 +625,19 @@ export default class Carousel extends HTMLElement {
 	/*
 		Stop Carousel auto slide show
 	*/
-	private stopAutoSlideShow(paused = false): void {
-		if (this.getAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE) === 'false') {
+	private stopAutoSlideShow(): void {
+		this.autoSlideShowPaused = false;
+		if (!this.autoSlideShowActive) {
 			return;
 		}
 
 		window.clearInterval(this.autoSlideShowTimer);
 		this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false');
 		this.slidesWrapper?.setAttribute('aria-live', 'polite');
+		this.autoSlideShowBtn?.setAttribute('aria-label', this.startAutoSlideShowLabel);
+		this.autoSlideShowActive = false;
 
-		if (!paused) {
-			this.setAttribute(ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true');
-			this.autoSlideShowBtn?.setAttribute('aria-label', this.startAutoSlideShowLabel);
-		}
-
-		const eventName = (EVENTS.OUT as any)[`AUTO_SLIDE_SHOW_${paused ? 'PAUSED' : 'STOPPED'}`];
-		window.dispatchEvent(new CustomEvent(eventName, {
+		window.dispatchEvent(new CustomEvent(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, {
 			'detail': {
 				'id': this.id,
 			}
@@ -662,15 +649,9 @@ export default class Carousel extends HTMLElement {
 		Handle document visibility changes, pausing the carousel
 	*/
 	private visibilityChangeHandler(): void {
-		if (this.autoSlideShowStopped) {
-			return;
-		}
-
-		if ((document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN as string]) {
-			this.stopAutoSlideShow(true);
-		} else {
-			this.startAutoSlideShow(true);
-		}
+		(document as any)[PAGE_VISIBILITY_API_STRINGS.HIDDEN as string] ?
+			this.stopAutoSlideShow() :
+			this.startAutoSlideShow();
 	}
 }
 

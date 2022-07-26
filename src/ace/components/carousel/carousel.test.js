@@ -83,8 +83,7 @@ const initChecks = (noNextAndPrevBtns = false) => {
 			cy.get('@carousel')
 				.should('have.attr', 'aria-roledescription', 'carousel')
 				.and('have.attr', 'role', 'region')
-				.and(`${isAutoSlideShowCarousel ? '' : 'not.'}have.attr`, ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-				.and(`${isAutoSlideShowCarousel ? '' : 'not.'}have.attr`, ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
+				.and(`${isAutoSlideShowCarousel ? '' : 'not.'}have.attr`, ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true');
 
 			if (!noNextAndPrevBtns) {
 				cy.get('@carousel')
@@ -112,7 +111,7 @@ const initChecks = (noNextAndPrevBtns = false) => {
 							cy.wrap($slide)
 								.should('have.attr', ATTRS.SLIDE, '')
 								.and('have.attr', 'aria-label', `${index + 1} of ${$slides.length}`)
-								.and('have.attr', 'aria-roledescription', 'slide')
+								.and(`${carouselHasSlidePicker ? 'not.': ''}have.attr`, 'aria-roledescription', 'slide')
 								.and('have.attr', 'role', `${carouselHasSlidePicker ? 'tabpanel' : 'group'}`);
 						});
 				});
@@ -438,21 +437,21 @@ context(`Carousel`, () => {
 			it(`Should respond to next and previous slide buttons correctly`, () => {
 				testSlideChangeBtns();
 				// Start slideshow
-				cy.get('@carouselAutoSlideShowBtn').click();
+				cy.get('@carouselAutoSlideShowBtn').click().click();
 			});
 
 
 			it(`Should select correct slide when observed attribute changed`, () => {
 				testSelectedSlideObsAttr(2);
 				// Start slideshow
-				cy.get('@carouselAutoSlideShowBtn').click();
+				cy.get('@carouselAutoSlideShowBtn').click().click();
 			});
 
 
 			it(`Should select infinite rotation when observed attribute added`, () => {
 				testInfiniteObsAttr();
 				// Start slideshow
-				cy.get('@carouselAutoSlideShowBtn').click();
+				cy.get('@carouselAutoSlideShowBtn').click().click();
 			});
 		});
 
@@ -477,51 +476,30 @@ context(`Carousel`, () => {
 
 
 			it(`Should pause automatic slide show when mouse hovers over Carousel`, () => {
-				cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, { 'id': CAROUSEL_ID })
+				cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, { 'id': CAROUSEL_ID })
 					.get('@carousel')
 					.trigger('mouseenter', 'bottomRight', { eventConstructor: 'MouseEvent' })
 					.get('@carousel')
 					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-					.and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
 					.get('@carouselSlidesWrapper')
 					.should('have.attr', 'aria-live', 'polite')
 					.get('@carouselAutoSlideShowBtn')
-					.focus()
-					.blur();
+					.click();
 			});
 
 
-			it(`Should pause automatic slide show when a descendant of Carousel, other than toggle button, receives keyboard focus`, () => {
-				cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, { 'id': CAROUSEL_ID })
+			it(`Should pause automatic slide show when a descendant of Carousel receives keyboard focus`, () => {
+				cy.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STOPPED, { 'id': CAROUSEL_ID })
 					.get('@carousel')
 					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
 					.get('@carouselPrevSlideBtn')
 					.focus()
 					.get('@carousel')
 					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-					.and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
-					.get('@carouselSlidesWrapper')
-					.should('have.attr', 'aria-live', 'polite')
-					.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, { 'id': CAROUSEL_ID })
-					.get('@carouselAutoSlideShowBtn')
-					.focus()
-					.get('@carousel')
-					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-					.get('@carouselSlidesWrapper')
-					.should('have.attr', 'aria-live', 'off')
-					.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_PAUSED, { 'id': CAROUSEL_ID })
-					.get('@carouselNextSlideBtn')
-					.focus()
-					.get('@carousel')
-					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-					.and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
 					.get('@carouselSlidesWrapper')
 					.should('have.attr', 'aria-live', 'polite')
 					.get('@carouselAutoSlideShowBtn')
-					.focus()
-					.blur();
-
-				// TODO: Figure out how to trigger 'mouseleave' event with relatedTarget set to non-descendant element of Carousel to resume the slideshow
+					.click();
 			});
 
 
@@ -532,8 +510,11 @@ context(`Carousel`, () => {
 					.get('@carouselAutoSlideShowBtn')
 					.click()
 					.get('@carousel')
+					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
+					.get('@carouselAutoSlideShowBtn')
+					.click()
+					.get('@carousel')
 					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-					.and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
 					.get('@carouselSlidesWrapper')
 					.should('have.attr', 'aria-live', 'polite')
 					.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, { 'id': CAROUSEL_ID })
@@ -541,7 +522,6 @@ context(`Carousel`, () => {
 					.click()
 					.get('@carousel')
 					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-					.and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false')
 					.get('@carouselSlidesWrapper')
 					.should('have.attr', 'aria-live', 'off');
 			});
@@ -553,13 +533,11 @@ context(`Carousel`, () => {
 					.click()
 					.get('@carousel')
 					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'false')
-					.and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'true')
 					.addCustomEventListener(EVENTS.OUT.AUTO_SLIDE_SHOW_STARTED, { 'id': CAROUSEL_ID })
 					.get(`#${IDS.START_AUTO_SLIDE_SHOW_CUSTOM_EVENT_BTN}`)
 					.click()
 					.get('@carousel')
-					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true')
-					.and('have.attr', ATTRS.AUTO_SLIDE_SHOW_STOPPED, 'false');
+					.should('have.attr', ATTRS.AUTO_SLIDE_SHOW_ACTIVE, 'true');
 			});
 		});
 	});

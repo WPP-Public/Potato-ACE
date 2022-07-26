@@ -2,7 +2,7 @@
 
 Accordion is a component consisting of vertically stacked sections of content that can be shown or hidden or using trigger buttons, commonly used to reduce the need to scroll when presenting multiple sections of content on a single page.
 
-Accordion conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/TR/wai-aria-practices-1.1/#accordion).
+Accordion conforms to the [W3C WAI-ARIA authoring practices](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/).
 
 
 ## Set up

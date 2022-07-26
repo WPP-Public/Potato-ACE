@@ -4,7 +4,7 @@
 	It adds focus, click and keydown handlers, as well as public methods to change the active and/or selected options.
 
 	Conforms to the Listbox spec found here:
-	https://www.w3.org/TR/wai-aria-practices-1.1/#Listbox
+	https://www.w3.org/WAI/ARIA/apg/patterns/listbox/
 */
 import { DISPLAY_NAME, KEYS, NAME } from './constants.js';
 import { getIndexBasedOnDirection, keyPressedMatches, warnIfElHasNoAriaLabel } from './functions.js';
@@ -314,7 +314,7 @@ export default class List {
 		An "active" option is the one that currently has perceived focus
 		There can be only one active option at any given time.
 		For more info on the difference between "active" and "selected" see
-		https://www.w3.org/TR/wai-aria-practices-1.1/#kbd_focus_vs_selection
+		https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_focus_vs_selection
 	*/
 	private makeOptionActive(index: number): void {
 		if (!this.optionEls) {
